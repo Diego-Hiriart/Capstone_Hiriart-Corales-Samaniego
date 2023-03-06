@@ -3,8 +3,9 @@ const int rightLed=3;
 int leftTouch=0;
 int rightTouch=0;
 const String messageStartDelimiter = "s";
-const String messageEndDelimiter = "\n";
-const int messageLength = 8;
+const String messageEndDelimiter = "e";
+const String newMessageDelimiter = "\n";
+const int messageLength = 7;
 
 void setup() {
   // put your setup code here, to run once:
@@ -23,11 +24,13 @@ void serialReceive(){
   //Read string like start;left;right;end e.g. s;0;1;e
   if(Serial.available() >= 8){
     String nodeMCUMessage = "";
-    while(!nodeMCUMessage.endsWith(messageEndDelimiter)){
+    while(!nodeMCUMessage.endsWith(newMessageDelimiter)){
       nodeMCUMessage += (char)Serial.read();
     }
     Serial.write(nodeMCUMessage.c_str());
-    if(nodeMCUMessage.startsWith(messageStartDelimiter) && nodeMCUMessage.length() == messageLength){
+    nodeMCUMessage.trim();
+    if(nodeMCUMessage.startsWith(messageStartDelimiter) && nodeMCUMessage.endsWith(messageEndDelimiter) 
+    && nodeMCUMessage.length() == messageLength){
       String leftValue = nodeMCUMessage.substring(2, 3);
       String rightValue = nodeMCUMessage.substring(4, 5);
       leftTouch=leftValue.toInt();
