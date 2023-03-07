@@ -1,5 +1,5 @@
-const int inputLeft=2;
-const int inputRight=3;
+const int inputLeft=D1;
+const int inputRight=D2;
 int leftTouch=0;
 int rightTouch=0;
 
@@ -18,8 +18,8 @@ void loop() {
 
 void fencerTouch(){
   //Check if a touch was made
-  int leftTouch = digitalRead(inputLeft);
-  int rightTouch = digitalRead(inputRight);  
+  leftTouch = digitalRead(inputLeft);
+  rightTouch = digitalRead(inputRight);  
 }
 
 void serialSend(){
