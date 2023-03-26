@@ -1,8 +1,9 @@
 import React from 'react'
+import Signup from './pages/Signup'
 
-function App() {
+const App = () => {
   return (
-    <div>App</div>
+    <Signup />
   )
 }
 
