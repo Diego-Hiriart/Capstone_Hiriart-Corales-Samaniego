@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
-import { serverLog } from "./utils/logs";
+
+import { healthCheck } from "./data/user";
+import { debugLog, serverLog } from "./utils/logs";
 
 const app = express();
 const port = 3000;
@@ -8,6 +10,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Request" + req.body);
 });
 
-app.listen(port, () => {
-  serverLog(`Running on https://localhost:${port}`);
+app.listen(port, async () => {
+  serverLog(`Running on: https://localhost:${port}`);
+  debugLog(`Database check: ${await healthCheck()}`);
 });
