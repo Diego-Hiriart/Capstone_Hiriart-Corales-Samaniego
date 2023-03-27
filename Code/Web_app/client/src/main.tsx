@@ -1,10 +1,13 @@
 import { CssBaseline } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/es";
+import SignUp from "./pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "signup",
-        element: <Signup />,
+        element: <SignUp />,
       },
       {
         path: "login",
@@ -25,7 +28,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <CssBaseline />
-    <RouterProvider router={router} />
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+      <CssBaseline />
+      <RouterProvider router={router} />
+    </LocalizationProvider>
   </React.StrictMode>
 );
