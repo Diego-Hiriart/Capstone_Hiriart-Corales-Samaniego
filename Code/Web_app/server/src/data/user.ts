@@ -1,27 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { errorLog } from "../utils/logs";
 
 const prisma = new PrismaClient();
-
-export async function healthCheck() {
-  try {
-    const userCount = await prisma.user.count();
-
-    if (typeof userCount !== "number") {
-      throw new Error("Couldn't connect to database");
-    }
-
-    return "Ok";
-  } catch (error: any) {
-    errorLog(error);
-  }
-}
 
 export async function findUserById(id: number) {
   try {
     return await prisma.user.findUnique({
       where: {
-        UserID: id,
+        userID: id,
       },
     });
   } catch (error) {
@@ -33,7 +18,7 @@ export async function findUserByEmail(email: string) {
   try {
     return await prisma.user.findUnique({
       where: {
-        Email: email,
+        email: email,
       },
     });
   } catch (error) {
@@ -53,10 +38,10 @@ export async function deleteUser(id: number) {
   try {
     return await prisma.user.update({
       where: {
-        UserID: id,
+        userID: id,
       },
       data: {
-        DeletedAt: new Date(),
+        deletedAt: new Date(),
       },
     });
   } catch (error) {

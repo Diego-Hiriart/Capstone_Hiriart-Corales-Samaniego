@@ -1,7 +1,7 @@
 import cors from "cors";
 import express, { Request, Response } from "express";
 
-import { healthCheck } from "./data/user";
+import { healthCheck } from "./data/database";
 import router from "./routes";
 import { debugLog, serverLog } from "./utils/logs";
 
@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Root URL is /api
 app.use("/api", router);
 
 // If route not found

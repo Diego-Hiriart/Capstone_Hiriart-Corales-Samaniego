@@ -11,19 +11,19 @@ datasource db {
 }
 
 model User {
-  UserID        Int             @id @default(autoincrement())
-  Email         String          @unique
-  Password      String
-  Names         String
-  LastNames     String
-  CreatedAt     DateTime        @default(now())
-  UpdatedAt     DateTime        @updatedAt
-  DeletedAt     DateTime?
-  Administrator Administrator[]
+  userID        Int             @id @default(autoincrement())
+  email         String          @unique
+  password      String
+  names         String
+  lastNames     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  deletedAt     DateTime?
+  administrator Administrator[]
 }
 
 model Administrator {
-  AdministratorID Int  @id @default(autoincrement())
-  User            User @relation(fields: [UserID], references: [UserID])
-  UserID          Int
+  administratorID Int  @id @default(autoincrement())
+  user            User @relation(fields: [userID], references: [userID])
+  userID          Int
 }
