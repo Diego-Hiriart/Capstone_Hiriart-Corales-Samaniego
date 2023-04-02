@@ -1,13 +1,27 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express, { Request, Response } from "express";
-import { serverLog } from "./utils/logs";
+
+import { healthCheck } from "./data/database";
+import router from "./routes";
+import { debugLog, serverLog } from "./utils/logs";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Request" + req.body);
+app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
+
+// Root URL is /api
+app.use("/api", router);
+
+// If route not found
+app.use((req: Request, res: Response) => {
+  return res.sendStatus(404);
 });
 
-app.listen(port, () => {
-  serverLog(`Running on https://localhost:${port}`);
+app.listen(port, async () => {
+  serverLog(`Running on: http://localhost:${port}`);
+  debugLog(`Database check: ${await healthCheck()}`);
 });
