@@ -11,22 +11,20 @@ const prisma = new PrismaClient();
 /** To POST login route */
 export async function login(req: Request, res: Response) {
   try {
-    if (!req.body.user) throw new Error("User does not exist");
+    if (!req.body.user) throw new Error("Login attempt - User does not exist");
 
     if (await argon2.verify(req.body.user.password, req.body.password)) {
-      req.headers.authorization =
-        "Bearer " + generateToken(req.body.user, jwtSecret);
+      req.headers.authorization = generateToken(req.body.user, jwtSecret);
     } else {
-      throw new Error("User info does not match");
+      throw new Error("Login attempt - User info does not match");
     }
 
     return res
       .cookie("token", req.headers.authorization, {
         httpOnly: true,
         secure: true,
-        signed: true,
       })
-      .status(201);
+      .sendStatus(200);
   } catch (error) {
     errorLog(error);
     return res.sendStatus(401);
@@ -36,7 +34,7 @@ export async function login(req: Request, res: Response) {
 /** To POST signup route */
 export async function signup(req: Request, res: Response) {
   try {
-    if (req.body.user) throw new Error("User already exists");
+    if (req.body.user) throw new Error("Signup attempt - User already exists");
 
     const hash = await argon2.hash(req.body.password, {
       type: argon2.argon2id,

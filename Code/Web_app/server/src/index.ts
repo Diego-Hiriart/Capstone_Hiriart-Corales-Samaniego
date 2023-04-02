@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
 
@@ -10,6 +11,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // Root URL is /api
 app.use("/api", router);
@@ -20,6 +22,6 @@ app.use((req: Request, res: Response) => {
 });
 
 app.listen(port, async () => {
-  serverLog(`Running on: https://localhost:${port}`);
+  serverLog(`Running on: http://localhost:${port}`);
   debugLog(`Database check: ${await healthCheck()}`);
 });
