@@ -1,16 +1,13 @@
-import jwt, { SignOptions } from "jsonwebtoken";
-
 import { User } from "@prisma/client";
-
-// User object to store in jwt
-export type UserJWT = Omit<User, "password">;
+import jwt, { SignOptions } from "jsonwebtoken";
+import { removePasswordInUser } from "../data/user";
 
 export const jwtSecret = process.env.JWT_SECRET || "a dumb secret";
 
 export function generateToken(
-  payload: UserJWT,
+  payload: User,
   privateKey: string,
   signOptions?: SignOptions
 ) {
-  return jwt.sign(payload, privateKey, signOptions);
+  return jwt.sign(removePasswordInUser(payload), privateKey, signOptions);
 }

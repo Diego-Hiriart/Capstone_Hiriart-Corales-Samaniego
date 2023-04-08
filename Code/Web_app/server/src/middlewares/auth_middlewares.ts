@@ -49,14 +49,3 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
     return res.sendStatus(401);
   }
 }
-
-// Verify the user is admin
-// TO DO: Complete
-export function verifyAdmin(req: Request, res: Response, next: NextFunction) {
-  try {
-    next();
-  } catch (error) {
-    errorLog(error);
-    return res.sendStatus(401);
-  }
-}
