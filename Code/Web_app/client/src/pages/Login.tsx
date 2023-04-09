@@ -1,4 +1,3 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {Link as RouterLink} from "react-router-dom";
@@ -8,7 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-export default function SignIn() {
+export default function LogIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

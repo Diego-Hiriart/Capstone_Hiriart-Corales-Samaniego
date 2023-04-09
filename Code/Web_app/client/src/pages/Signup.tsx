@@ -1,10 +1,9 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import {Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
@@ -31,51 +30,55 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Registro
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                autoComplete="given-name"
-                name="names"
-                required
-                fullWidth
-                id="names"
-                label="Nombres"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="lastNames"
-                label="Apellidos"
-                name="lastNames"
-                autoComplete="family-name"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Contraseña"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-              />
-            </Grid>
-          </Grid>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            autoComplete="given-name"
+            name="names"
+            id="names"
+            label="Nombres"
+            autoFocus
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="lastNames"
+            label="Apellidos"
+            name="lastNames"
+            autoComplete="family-name"
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            name="password"
+            label="Contraseña"
+            type="password"
+            id="password"
+            autoComplete="new-password"
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            name="confirmPassword"
+            label="Confirmar Contraseña"
+            type="password"
+            id="confirm-password"
+            autoComplete="confirm-password"
+          />
           <Button
             type="submit"
             fullWidth
