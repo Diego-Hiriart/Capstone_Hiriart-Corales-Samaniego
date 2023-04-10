@@ -12,7 +12,7 @@ export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    axios.post('http://localhost:3000/api/auth/signup', {
+    axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
       names: data.get("names"),
       lastNames: data.get("lastNames"),
       email: data.get("email"),

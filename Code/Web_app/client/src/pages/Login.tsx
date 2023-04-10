@@ -12,7 +12,7 @@ export default function LogIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    axios.post('http://localhost:3000/api/auth/login', {
+    axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
       email: data.get("email"),
       password: data.get("password"),
     })
