@@ -6,15 +6,18 @@ import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import axios from 'axios';
 
 export default function SignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    axios.post('http://localhost:3000/api/auth/signup', {
+      names: data.get("names"),
+      lastNames: data.get("lastNames"),
       email: data.get("email"),
       password: data.get("password"),
-    });
+    })
   };
 
   return (
