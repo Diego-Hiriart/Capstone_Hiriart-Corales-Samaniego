@@ -6,18 +6,27 @@ import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from 'axios';
+import axios from "axios";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+interface IFormInputs {
+  names: string;
+  lastNames: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>();
+
+  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
-      names: data.get("names"),
-      lastNames: data.get("lastNames"),
-      email: data.get("email"),
-      password: data.get("password"),
-    })
+      names: data.names,
+      lastNames: data.lastNames,
+      email: data.email,
+      password: data.password,
+    });
   };
 
   return (
@@ -33,25 +42,30 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Registro
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 1 }}
+        >
           <TextField
-            required
             fullWidth
             margin="normal"
-            autoComplete="given-name"
-            name="names"
             id="names"
             label="Nombres"
             autoFocus
+            {...register("names", { required: "Campo requerido" })}
+            error={!!errors.names}
+            helperText={errors.names?.message}
           />
           <TextField
-            required
             fullWidth
             margin="normal"
             id="lastNames"
             label="Apellidos"
-            name="lastNames"
-            autoComplete="family-name"
+            {...register("lastNames", { required: "Campo requerido" })}
+            error={!!errors.lastNames}
+            helperText={errors.lastNames?.message}
           />
           <TextField
             required
@@ -59,28 +73,36 @@ export default function SignUp() {
             margin="normal"
             id="email"
             label="Email"
-            name="email"
-            autoComplete="email"
+            {...register("email", { required: "Campo requerido" })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
           <TextField
             required
             fullWidth
             margin="normal"
-            name="password"
             label="Contraseña"
             type="password"
             id="password"
-            autoComplete="new-password"
+            {...register("password", {
+              required: "Campo requerido",
+              minLength: 8,
+              maxLength: 20,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, // 1 mayúscula, 1 minúscula, 1 número, mínimo 8 caracteres
+            })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
           <TextField
             required
             fullWidth
             margin="normal"
-            name="confirmPassword"
             label="Confirmar Contraseña"
             type="password"
             id="confirm-password"
-            autoComplete="confirm-password"
+            {...register("confirmPassword", { required: "Campo requerido" })}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword?.message}
           />
           <Button
             type="submit"
