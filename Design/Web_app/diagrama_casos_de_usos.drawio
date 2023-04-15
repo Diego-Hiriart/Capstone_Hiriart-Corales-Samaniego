@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-15T01:25:58.725Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="u6J7iOJkB8ePo9bWktNJ" version="21.1.8" type="device">
+<mxfile host="app.diagrams.net" modified="2023-04-15T01:57:55.733Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="NtD3iuxWgU7yHVrKbhDU" version="21.1.8" type="device">
   <diagram name="Page-1" id="K6UgD4kqSmbPpRhTwACa">
-    <mxGraphModel dx="2478" dy="753" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2421" dy="1373" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -33,7 +33,7 @@
         <mxCell id="auHC2lMCmRA8J_y3KW6C-16" value="Visualizar &lt;br&gt;planificación de entrenamiento" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="auHC2lMCmRA8J_y3KW6C-5">
           <mxGeometry x="185" y="414.75" width="130" height="43.5" as="geometry" />
         </mxCell>
-        <mxCell id="auHC2lMCmRA8J_y3KW6C-17" value="Entrenar con&lt;br&gt;modulo IA" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="auHC2lMCmRA8J_y3KW6C-5">
+        <mxCell id="auHC2lMCmRA8J_y3KW6C-17" value="Entrenar con&lt;br&gt;módulo IA" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="auHC2lMCmRA8J_y3KW6C-5">
           <mxGeometry x="430" y="413" width="130" height="43.5" as="geometry" />
         </mxCell>
         <mxCell id="auHC2lMCmRA8J_y3KW6C-19" value="Visualizar dashboard&lt;br&gt;de entrenamientos" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="auHC2lMCmRA8J_y3KW6C-5">
@@ -153,7 +153,7 @@
             <mxPoint x="460" y="313" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="auHC2lMCmRA8J_y3KW6C-10" value="Insertar datos&lt;br&gt;de perfil" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="1">
+        <mxCell id="auHC2lMCmRA8J_y3KW6C-10" value="Gestionar datos&lt;br&gt;de perfil" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="1">
           <mxGeometry x="150" y="420" width="130" height="43.5" as="geometry" />
         </mxCell>
         <mxCell id="auHC2lMCmRA8J_y3KW6C-18" value="Generar feedback" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="1">
