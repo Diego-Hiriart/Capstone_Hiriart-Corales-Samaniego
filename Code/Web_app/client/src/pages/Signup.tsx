@@ -17,8 +17,13 @@ interface IFormInputs {
   confirmPassword: string;
 }
 
-export default function SignUp() {
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInputs>();
+export default function Signup() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<IFormInputs>();
 
   const onSubmit: SubmitHandler<IFormInputs> = (data) => {
     axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
@@ -71,9 +76,16 @@ export default function SignUp() {
             required
             fullWidth
             margin="normal"
+            type="email"
             id="email"
             label="Email"
-            {...register("email", { required: "Campo requerido" })}
+            {...register("email", {
+              required: "Campo requerido",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Email inválido",
+              },
+            })}
             error={!!errors.email}
             helperText={errors.email?.message}
           />
@@ -100,7 +112,14 @@ export default function SignUp() {
             label="Confirmar Contraseña"
             type="password"
             id="confirm-password"
-            {...register("confirmPassword", { required: "Campo requerido" })}
+            {...register("confirmPassword", {
+              required: "Campo requerido",
+              validate: (val: string) => {
+                if (watch("password") != val) {
+                  return "Las contraseñas no coinciden";
+                }
+              },
+            })}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
           />
