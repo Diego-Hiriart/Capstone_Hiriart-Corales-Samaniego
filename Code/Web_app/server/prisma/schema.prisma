@@ -12,19 +12,286 @@ datasource db {
 
 model User {
   userID        Int             @id @default(autoincrement())
-  email         String          @unique
+  email         String          @unique @db.VarChar(320)
   password      String
-  names         String
-  lastNames     String
+  names         String          @db.VarChar(100)
+  lastNames     String          @db.VarChar(100)
   roles         String[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   deletedAt     DateTime?
   administrator Administrator[]
+  trainer       Trainer[]
+  fencer        Fencer[]
 }
 
 model Administrator {
   administratorID Int  @id @default(autoincrement())
   user            User @relation(fields: [userID], references: [userID])
   userID          Int
+}
+
+model Trainer {
+  trainerID      Int              @id @default(autoincrement())
+  user           User             @relation(fields: [userID], references: [userID])
+  userID         Int
+  experience     String           @db.Text
+  weapon         String           @db.VarChar(25)
+  pictureURL     String?          @db.VarChar(255)
+  weeklyReport   WeeklyReport[]
+  singleFeedback SingleFeedback[]
+  cycleGoal      CycleGoal[]
+  cycleFeedback  CycleFeedback[]
+  mesoCycle      MesoCycle[]
+  macroCycle     MacroCycle[]
+  physicalTest   PhysicalTest[]
+  AITraining     AITraining[]
+}
+
+model Fencer {
+  fencerID                   Int                @id @default(autoincrement())
+  user                       User               @relation(fields: [userID], references: [userID])
+  userID                     Int
+  trainingGroup              TrainingGroup      @relation(fields: [trainingGroupID], references: [trainingGroupID])
+  trainingGroupID            Int
+  idNumber                   String             @db.VarChar(15)
+  emergencyPhone             String             @db.VarChar(15)
+  birthDate                  DateTime
+  bloodType                  String             @db.VarChar(3)
+  sex                        String             @db.Char(1)
+  laterality                 String             @db.Char(1)
+  phone                      String             @db.VarChar(15)
+  insurance                  String             @db.VarChar(250)
+  inscriptionDate            DateTime
+  startDate                  DateTime
+  occupation                 String             @db.VarChar(50)
+  schedule                   String             @db.VarChar(40)
+  legalGuardian              String             @db.VarChar(50)
+  leadSource                 String             @db.Text
+  inscriptionReason          String
+  height                     Float              @db.Real
+  weight                     Float              @db.Real
+  physicalActivity           String             @db.VarChar(250)
+  medicalFamily              String             @db.Text
+  medicalPersonal            String             @db.Text
+  personalMedicalDetails     String             @db.Text
+  weapon                     String             @db.VarChar(25)
+  pictureURL                 String             @db.VarChar(255)
+  weeklyReport               WeeklyReport[]
+  singleFeedback             SingleFeedback[]
+  cycleGoal                  CycleGoal[]
+  cycleFeedback              CycleFeedback[]
+  macroCycle                 MacroCycle[]
+  physicalTest               PhysicalTest[]
+  attendance                 Attendance[]
+  AITraining                 AITraining[]
+  registrationLink           RegistrationLink[]
+  trainingCombatFencer1      TrainingCombat[]   @relation("fencer1")
+  trainingCombatFencer2      TrainingCombat[]   @relation("fencer2")
+  trainingCombatWinnerFencer TrainingCombat[]   @relation("winnerFencer")
+}
+
+model WeeklyReport {
+  weeklyReportID Int      @id @default(autoincrement())
+  fencer         Fencer   @relation(fields: [fencerID], references: [fencerID])
+  fencerID       Int
+  trainer        Trainer  @relation(fields: [trainerID], references: [trainerID])
+  trainerID      Int
+  date           DateTime
+  content        String   @db.Text
+}
+
+model SingleFeedback {
+  singleFeedbackID Int      @id @default(autoincrement())
+  fencer           Fencer   @relation(fields: [fencerID], references: [fencerID])
+  fencerID         Int
+  trainer          Trainer  @relation(fields: [trainerID], references: [trainerID])
+  trainerID        Int
+  date             DateTime
+  content          String   @db.Text
+}
+
+model TrainingGroup {
+  trainingGroupID Int         @id @default(autoincrement())
+  name            String      @db.VarChar(25)
+  weapon          String      @db.VarChar(25)
+  fencer          Fencer[]
+  MesoCycle       MesoCycle[]
+}
+
+model CycleGoal {
+  cycleGoalID Int       @id @default(autoincrement())
+  trainer     Trainer   @relation(fields: [trainerID], references: [trainerID])
+  trainerID   Int
+  fencer      Fencer    @relation(fields: [fencerID], references: [fencerID])
+  fencerID    Int
+  mesoCycle   MesoCycle @relation(fields: [mesoCycleID], references: [mesoCycleID])
+  mesoCycleID Int
+  content     String    @db.Text
+  date        DateTime
+}
+
+model CycleFeedback {
+  cycleFeedbackID Int       @id @default(autoincrement())
+  trainer         Trainer   @relation(fields: [trainerID], references: [trainerID])
+  trainerID       Int
+  fencer          Fencer    @relation(fields: [fencerID], references: [fencerID])
+  fencerID        Int
+  mesoCycle       MesoCycle @relation(fields: [mesoCycleID], references: [mesoCycleID])
+  mesoCycleID     Int
+  content         String    @db.Text
+  date            DateTime
+}
+
+model MesoCycle {
+  mesoCycleID     Int             @id @default(autoincrement())
+  trainingGroup   TrainingGroup   @relation(fields: [trainingGroupID], references: [trainingGroupID])
+  trainingGroupID Int
+  trainer         Trainer         @relation(fields: [trainerID], references: [trainerID])
+  trainerID       Int
+  name            String          @db.VarChar(50)
+  startDate       DateTime
+  endDate         DateTime
+  period          String          @db.VarChar(50)
+  stage           String          @db.VarChar(100)
+  physicalScore   Int             @db.SmallInt
+  technicalScore  Int             @db.SmallInt
+  tacticalScore   Int             @db.SmallInt
+  cycleGoal       CycleGoal[]
+  cycleFeedback   CycleFeedback[]
+  microCycle      MicroCycle[]
+}
+
+model MicroCycle {
+  microCycleID             Int         @id @default(autoincrement())
+  mesoCycle                MesoCycle   @relation(fields: [mesoCycleID], references: [mesoCycleID])
+  mesoCycleID              Int
+  startDate                DateTime
+  speed                    Int?        @db.SmallInt
+  coordination             Int?        @db.SmallInt
+  resistance               Int?        @db.SmallInt
+  strength                 Int?        @db.SmallInt
+  individualLessons        Int?        @db.SmallInt
+  groupLessons             Int?        @db.SmallInt
+  pairWork                 Int?        @db.SmallInt
+  individualWork           Int?        @db.SmallInt
+  technicalBasedCombats    Int?        @db.SmallInt
+  trainingTournament       Int?        @db.SmallInt
+  freeCombat               Int?        @db.SmallInt
+  tacticalIndividualLesson Int?        @db.SmallInt
+  competitionAnalysis      Int?        @db.SmallInt
+  dailyPlan                DailyPlan[]
+}
+
+model DailyPlan {
+  dailyPlanID       Int                 @id @default(autoincrement())
+  microCycle        MicroCycle          @relation(fields: [microCycleID], references: [microCycleID])
+  microCycleID      Int
+  date              DateTime
+  activityType      ActivityType        @relation(fields: [activityTypeID], references: [activityTypeID])
+  activityTypeID    Int
+  dailyPlanActivity DailyPlanActivity[]
+}
+
+model ActivityType {
+  activityTypeID Int         @id @default(autoincrement())
+  name           String
+  dailyPlan      DailyPlan[]
+  activity       Activity[]
+}
+
+model DailyPlanActivity {
+  dailyPlanActivityID Int       @id @default(autoincrement())
+  dailyPlan           DailyPlan @relation(fields: [dailyPlanID], references: [dailyPlanID])
+  dailyPlanID         Int
+  activity            Activity  @relation(fields: [activityID], references: [activityID])
+  activityID          Int
+}
+
+model Activity {
+  activityID        Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(25)
+  description       String              @db.VarChar(150)
+  duration          DateTime
+  activityType      ActivityType        @relation(fields: [activityTypeID], references: [activityTypeID])
+  activityTypeID    Int
+  dailyPlanActivity DailyPlanActivity[]
+}
+
+model MacroCycle {
+  macroCycleID Int      @id @default(autoincrement())
+  fencer       Fencer   @relation(fields: [fencerID], references: [fencerID])
+  fencerID     Int
+  trainer      Trainer  @relation(fields: [trainerID], references: [trainerID])
+  trainerID    Int
+  date         DateTime
+  results      String   @db.Text
+  feedback     String   @db.Text
+}
+
+model PhysicalTest {
+  physicalTestID Int     @id @default(autoincrement())
+  fencer         Fencer  @relation(fields: [fencerID], references: [fencerID])
+  fencerID       Int
+  trainer        Trainer @relation(fields: [trainerID], references: [trainerID])
+  trainerID      Int
+  results        String  @db.Text
+  feedback       String  @db.Text
+}
+
+model TrainingCombat {
+  trainingCombatID Int      @id @default(autoincrement())
+  fencer1          Fencer   @relation("fencer1", fields: [fencer1ID], references: [fencerID])
+  fencer1ID        Int
+  fencer2          Fencer   @relation("fencer2", fields: [fencer2ID], references: [fencerID])
+  fencer2ID        Int
+  fencer1Score     Int      @db.SmallInt
+  fencer2Score     Int      @db.SmallInt
+  dateTime         DateTime @db.Timestamp()
+  winnerFencer     Fencer   @relation("winnerFencer", fields: [winnerFencerID], references: [fencerID])
+  winnerFencerID   Int
+}
+
+model Attendance {
+  attendanceID Int      @id @default(autoincrement())
+  fencer       Fencer   @relation(fields: [fencerID], references: [fencerID])
+  fencerID     Int
+  date         DateTime
+  attended     Boolean
+}
+
+model AITraining {
+  AITraining    Int             @id @default(autoincrement())
+  fencer        Fencer          @relation(fields: [fencerID], references: [fencerID])
+  fencerID      Int
+  date          DateTime
+  duration      DateTime
+  feedback      String          @db.Text
+  trainer       Trainer         @relation(fields: [trainerID], references: [trainerID])
+  trainerID     Int
+  trainingError TrainingError[]
+}
+
+model RegistrationLink {
+  registrationLinkID Int      @id @default(autoincrement())
+  fencer             Fencer   @relation(fields: [fencerID], references: [fencerID])
+  fencerID           Int
+  expirationDate     DateTime
+  valid              Boolean
+}
+
+model TrainingError {
+  trainingErrorID Int        @id @default(autoincrement())
+  AITraining      AITraining @relation(fields: [AITrainingID], references: [AITraining])
+  AITrainingID    Int
+  error           Error      @relation(fields: [errorID], references: [errorID])
+  errorID         Int
+  poseData        String     @db.Text
+}
+
+model Error {
+  errorID       Int             @id @default(autoincrement())
+  name          String          @db.VarChar(100)
+  description   String          @db.Text
+  trainingError TrainingError[]
 }
