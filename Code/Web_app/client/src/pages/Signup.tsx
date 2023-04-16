@@ -6,16 +6,9 @@ import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
-
-interface IFormInputs {
-  names: string;
-  lastNames: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+import { SignupFormInputs } from "../types";
+import { login } from "../services/AuthService";
 
 export default function Signup() {
   const {
@@ -23,15 +16,10 @@ export default function Signup() {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<IFormInputs>();
+  } = useForm<SignupFormInputs>();
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, {
-      names: data.names,
-      lastNames: data.lastNames,
-      email: data.email,
-      password: data.password,
-    });
+  const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
+    await login(data);
   };
 
   return (
