@@ -24,7 +24,10 @@ export async function login(req: Request, res: Response) {
         httpOnly: true,
         secure: true,
       })
-      .sendStatus(200);
+      .status(200)
+      .json({
+        user: req.body.user
+      });
   } catch (error) {
     errorLog(error);
     return res.sendStatus(401);
