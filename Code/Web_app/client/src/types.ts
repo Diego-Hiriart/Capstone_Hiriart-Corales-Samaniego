@@ -10,3 +10,13 @@ export interface SignupFormInputs {
   password: string;
   confirmPassword: string;
 }
+
+export interface User {
+  userID: number;
+  names: string;
+  lastNames: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

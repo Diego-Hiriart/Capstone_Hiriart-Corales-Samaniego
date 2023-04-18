@@ -8,17 +8,30 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { LoginFormInputs } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { login } from "../services/AuthService";
+import { useContext } from "react";
+import AuthContext from "../contexts/AuthContext";
+import axios from "../services/axios";
 
 export default function Login() {
+  const { setUser } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    await login(data);
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (formData) => {
+    try {
+      const { email, password } = formData;
+      const response = await axios.post("/auth/login", {
+        email,
+        password,
+      });
+      setUser(response.data.user)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

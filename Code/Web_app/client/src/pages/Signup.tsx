@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignupFormInputs } from "../types";
-import { login } from "../services/AuthService";
+import axios from "../services/axios";
 
 export default function Signup() {
   const {
@@ -18,8 +18,18 @@ export default function Signup() {
     watch,
   } = useForm<SignupFormInputs>();
 
-  const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
-    await login(data);
+  const onSubmit: SubmitHandler<SignupFormInputs> = async (formData) => {
+    try {
+      const { names, lastNames, email, password } = formData;
+      const response = await axios.post("/auth/signup", {
+        names,
+        lastNames,
+        email,
+        password,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -86,9 +96,19 @@ export default function Signup() {
             id="password"
             {...register("password", {
               required: "Campo requerido",
-              minLength: 8,
-              maxLength: 20,
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, // 1 mayúscula, 1 minúscula, 1 número, mínimo 8 caracteres
+              minLength: {
+                value: 8,
+                message: "Contraseña debe tener mínimo 8 caracteres",
+              },
+              maxLength: {
+                value: 20,
+                message: "Contraseña debe tener máximo 20 caracteres",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]$/, // 1 mayúscula, 1 minúscula, 1 número, mínimo 8 caracteres
+                message:
+                  "La contraseña debe contener 1 mayúscula, 1 minúscula y 1 número",
+              },
             })}
             error={!!errors.password}
             helperText={errors.password?.message}
