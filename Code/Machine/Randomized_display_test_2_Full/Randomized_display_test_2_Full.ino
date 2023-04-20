@@ -77,24 +77,25 @@ void setup() {
   timerDisplay.setIntensity(15);//Set display intensity
   timerDisplay.displayClear(0);//Clear the display
   timerDisplay.setTextAlignment(PA_CENTER);
-  //Left score double height display
+  //Left double height
   leftDisplay.begin(numZones);//Initialise the LED display
   leftDisplay.setCharSpacing(0); // spacing is built into the font definition
   leftDisplay.setInvert(false);
-  leftDisplay.setIntensity(2);
+  leftDisplay.setIntensity(1);
   leftDisplay.setZone(0, 0, zoneSize-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
   leftDisplay.setZone(1, zoneSize, maxDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
   leftDisplay.setFont(0, Width8NumsLower);
   leftDisplay.setFont(1, Width8NumsUpper);
-  //Right score double height display
+  //Right double height
   rightDisplay.begin(numZones);//Initialise the LED display
   rightDisplay.setCharSpacing(0); // spacing is built into the font definition
   rightDisplay.setInvert(false);
-  rightDisplay.setIntensity(2);
+  rightDisplay.setIntensity(1);
   rightDisplay.setZone(0, 0, zoneSize-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
   rightDisplay.setZone(1, zoneSize, maxDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
   rightDisplay.setFont(0, Width8NumsLower);
   rightDisplay.setFont(1, Width8NumsUpper);
+
   //Invert if hardware is generic (otherwise they dont fit together because of MAX7219 IC)
   if (invertLowerZone)
   {
@@ -103,14 +104,15 @@ void setup() {
     rightDisplay.setZoneEffect(0, true, PA_FLIP_UD);
     rightDisplay.setZoneEffect(0, true, PA_FLIP_LR);
   }
+  Serial.println("setup done");
 }
 
 void loop() {
   Serial.println("loop start");
   // put your main code here, to run repeatedly:
+  elapsedTime=millis();
   leftDisplay.displayAnimate();//Always run the display animation
   rightDisplay.displayAnimate();//Always run the display animation
-  elapsedTime=millis();
   scoresDisplay();
   periodTimeDisplay();
   periodDisplay();
@@ -122,16 +124,17 @@ void loop() {
 }
 
 void scoresDisplay(){
-  //Ints can't be printed directly in double height
-  char scoreString[3]="0";
-  itoa(leftScore, scoreString, 10);
-  leftDisplay.displayZoneText(0, scoreString, PA_CENTER, leftDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
-  leftDisplay.displayZoneText(1, scoreString, PA_CENTER, leftDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
-  itoa(rightScore, scoreString, 10);
-  rightDisplay.displayZoneText(0, scoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
-  rightDisplay.displayZoneText(1, scoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
-  leftScore = leftScore == 45 ? 0 : leftScore+1;
-  rightScore = rightScore == 0 ? 45 : rightScore-1;
+  //Ints cannot be printed directly, must use char array
+  char leftScoreString[3]="0";
+  itoa(leftScore, leftScoreString, 10);
+  leftDisplay.displayZoneText(0, leftScoreString, PA_CENTER, leftDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  leftDisplay.displayZoneText(1, leftScoreString, PA_CENTER, leftDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  char rightScoreString[3]="0";
+  itoa(rightScore, rightScoreString, 10);
+  rightDisplay.displayZoneText(0, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  rightDisplay.displayZoneText(1, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  leftScore = leftScore == 45 ? 0 : leftScore+=1;
+  rightScore = rightScore == 0 ? 45 : rightScore-=1;
 }
 
 void periodTimeDisplay(){
