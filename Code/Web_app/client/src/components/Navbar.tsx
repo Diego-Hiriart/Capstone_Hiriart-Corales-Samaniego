@@ -2,7 +2,10 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import { Outlet, Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useContext } from 'react'
+import AuthContext from '../contexts/AuthContext';
+import { Button } from '@mui/material';
 
 const NavBar = () => (
   <>
@@ -17,33 +20,56 @@ const NavBar = () => (
           Company name
         </Typography>
         <nav>
-          <Link
-            component={RouterLink}
-            to="login"
-            variant="button"
-            color="text.primary"
-            href="#"
-            sx={{ my: 1, mx: 1.5 }}
-          >
-            Login
-          </Link>
-          <Link
-            component={RouterLink}
-            to="signup"
-            variant="button"
-            color="text.primary"
-            href="#"
-            sx={{ my: 1, mx: 1.5 }}
-          >
-            Signup
-          </Link>
+          <AuthStatus />
         </nav>
       </Toolbar>
     </AppBar>
-    <div>
-      <Outlet />
-    </div>
   </>
 )
+
+export const AuthStatus = () => {
+  const auth = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    await auth.logout();
+  }
+
+  if (!auth.user) {
+    return (
+      <>
+        <Link
+          component={RouterLink}
+          to="login"
+          variant="button"
+          color="text.primary"
+          href="#"
+          sx={{ my: 1, mx: 1.5 }}
+        >
+          Login
+        </Link>
+        <Link
+          component={RouterLink}
+          to="signup"
+          variant="button"
+          color="text.primary"
+          href="#"
+          sx={{ my: 1, mx: 1.5 }}
+        >
+          Signup
+        </Link>
+      </>
+    )
+  }
+  return (
+    <>
+      <Button
+        onClick={handleLogout}
+      >
+        Logout
+      </Button>
+    </>
+  )
+}
+
 
 export default NavBar
