@@ -8,9 +8,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignupFormInputs } from "../types";
-import axios from "../services/axios";
+import { useContext } from "react";
+import AuthContext from "../contexts/AuthContext";
 
 export default function Signup() {
+  const { signup } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -19,19 +22,10 @@ export default function Signup() {
   } = useForm<SignupFormInputs>();
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (formData) => {
-    try {
-      const { names, lastNames, email, password } = formData;
-      const response = await axios.post("/auth/signup", {
-        names,
-        lastNames,
-        email,
-        password,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await signup(formData);
   };
 
+  //TODO: redirect to home when user is already logged in
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -103,11 +97,6 @@ export default function Signup() {
               maxLength: {
                 value: 20,
                 message: "Contraseña debe tener máximo 20 caracteres",
-              },
-              pattern: {
-                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]$/, // 1 mayúscula, 1 minúscula, 1 número, mínimo 8 caracteres
-                message:
-                  "La contraseña debe contener 1 mayúscula, 1 minúscula y 1 número",
               },
             })}
             error={!!errors.password}

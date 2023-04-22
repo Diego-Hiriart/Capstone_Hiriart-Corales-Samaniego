@@ -10,10 +10,9 @@ import { LoginFormInputs } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
-import axios from "../services/axios";
 
 export default function Login() {
-  const { setUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const {
     register,
@@ -22,18 +21,11 @@ export default function Login() {
   } = useForm<LoginFormInputs>();
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (formData) => {
-    try {
-      const { email, password } = formData;
-      const response = await axios.post("/auth/login", {
-        email,
-        password,
-      });
-      setUser(response.data.user)
-    } catch (error) {
-      console.error(error);
-    }
+    //TODO: pass login error to the form
+    await login(formData)
   };
 
+  //TODO: redirect to home when user is already logged in
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -47,7 +39,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required

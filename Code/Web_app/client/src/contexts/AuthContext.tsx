@@ -2,19 +2,18 @@ import React, {
   Dispatch,
   SetStateAction,
   createContext,
-  useEffect,
   useState,
 } from "react";
-import { User } from "../types";
+import { LoginFormInputs, SignupFormInputs, User } from "../types";
 import { useNavigate } from "react-router-dom";
 import axios from "../services/axios";
 
 interface AuthContext {
   user: User | null;
   setUser: Dispatch<SetStateAction<User>>;
-  login: (user: User) => Promise<void>;
+  login: (user: LoginFormInputs) => Promise<void>;
   logout: () => Promise<void>;
-  signup: (user: User) => Promise<void>;
+  signup: (user: SignupFormInputs) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContext>({
@@ -26,28 +25,17 @@ const AuthContext = createContext<AuthContext>({
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User>(null!);
+  const [user, setUser] = useState<User>(() => {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  });
+
   const navigate = useNavigate();
 
-  const isAuthenticated = async () => {
-    try {
-      const response = await axios.get("/dashboard/user/me");
-      const user = response.data.user;
-      if (!user) {
-        setUser(null!);
-        navigate("/login");
-        return;
-      }
-      setUser(user);
-      return;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const login = async (user: User) => {
+  const login = async (user: LoginFormInputs) => {
     try {
       const response = await axios.post("/auth/login", user);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       setUser(response.data.user);
       navigate("/");
     } catch (error) {
@@ -58,6 +46,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     try {
       await axios.post("/auth/logout");
+      localStorage.removeItem("user");
       setUser(null!);
       navigate("/");
     } catch (error) {
@@ -65,10 +54,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (user: User) => {
+  const signup = async (user: SignupFormInputs) => {
     try {
-      const response = await axios.post("/auth/signup", user);
-      setUser(response.data.user);
+      await axios.post("/auth/signup", user);
       navigate("/login");
     } catch (error) {
       console.error(error);

@@ -1,5 +1,4 @@
-
-import { createBrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Login from "./pages/Login";
 import "dayjs/locale/es";
