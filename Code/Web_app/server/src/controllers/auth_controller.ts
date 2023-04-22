@@ -30,7 +30,11 @@ export async function login(req: Request, res: Response) {
       });
   } catch (error) {
     errorLog(error);
-    return res.sendStatus(401);
+    if (error instanceof Error) {
+      return res.status(401).json({
+        message: error.message,
+      });
+    }
   }
 }
 
@@ -63,7 +67,7 @@ export async function signup(req: Request, res: Response) {
 /** To POST logout route */
 export async function logout(req: Request, res: Response) {
   try {
-    return res.clearCookie("token").status(201);
+    return res.clearCookie("token").status(201).send();
   } catch (error) {
     errorLog(error);
     return res.sendStatus(401);
