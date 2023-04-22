@@ -1,27 +1,19 @@
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Login from "./pages/Login";
 import "dayjs/locale/es";
 import Signup from "./pages/Signup";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <NavBar />,
-    children: [
-      {
-        path: "signup",
-        element: <Signup />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-    ],
-  },
-]);
+import Home from "./pages/Home";
 
 export const App = () => (
-  <RouterProvider router={router} />
+  <div>
+    <NavBar />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="signup" element={<Signup />} />
+      <Route path="login" element={<Login />} />
+      <Route path="*" element={<h1>Not found</h1>} />
+    </Routes>
+  </div>
 );
