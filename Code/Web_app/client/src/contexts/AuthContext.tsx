@@ -33,14 +33,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   const login = async (user: LoginFormInputs) => {
-    try {
-      const response = await axios.post("/auth/login", user);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      setUser(response.data.user);
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await axios.post("/auth/login", user);
+    localStorage.setItem("user", JSON.stringify(response.data.user));
+    setUser(response.data.user);
+    navigate("/");
   };
 
   const logout = async () => {

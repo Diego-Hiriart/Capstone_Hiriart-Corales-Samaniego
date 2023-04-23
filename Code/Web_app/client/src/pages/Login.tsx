@@ -10,6 +10,7 @@ import { LoginFormInputs } from "../types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { Alert } from "@mui/material";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -17,12 +18,19 @@ export default function Login() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (formData) => {
-    //TODO: pass login error to the form
-    await login(formData)
+    try {
+      await login(formData)
+    } catch (error) {
+      setError("root", {
+        type: "manual",
+        message: "Email o contraseña incorrectos",
+      });
+    }
   };
 
   //TODO: redirect to home when user is already logged in
@@ -39,7 +47,10 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+          {errors.root?.message && 
+            <Alert severity="error">{errors.root?.message}</Alert>
+          }
           <TextField
             margin="normal"
             required
