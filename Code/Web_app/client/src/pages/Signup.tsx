@@ -27,6 +27,7 @@ export default function Signup() {
       await signup(formData);
       //TODO: show success message
     } catch (error) {
+      //TODO: handle other possible errors
       setError("email", {
         type: "manual",
         message: "Email ya registrado",
@@ -34,7 +35,6 @@ export default function Signup() {
     }
   };
 
-  //TODO: redirect to home when user is already logged in
   return (
     <Container component="main" maxWidth="xs">
       <Box

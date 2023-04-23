@@ -33,7 +33,6 @@ export default function Login() {
     }
   };
 
-  //TODO: redirect to home when user is already logged in
   return (
     <Container component="main" maxWidth="xs">
       <Box
