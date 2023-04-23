@@ -1,7 +1,7 @@
-import { useContext, useEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
-import AuthContext from '../contexts/AuthContext';
-import axios from '../services/axios';
+import { useContext, useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext";
+import axios from "../services/axios";
 
 const ProtectedRoute = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -24,6 +24,6 @@ const ProtectedRoute = () => {
   }, []);
 
   return user ? <Outlet /> : <Navigate to="/login" replace />;
-}
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;

@@ -10,13 +10,21 @@ import AuthContext from "./contexts/AuthContext";
 export const App = () => {
   const { user } = useContext(AuthContext);
 
-  return <div>
-    <NavBar />
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="signup" element={user ? <Navigate to="/" replace /> :  <Signup />} />
-      <Route path="login" element={user ? <Navigate to="/" replace /> :  <Login />} />
-      <Route path="*" element={<h1>Not found</h1>} />
-    </Routes>
-  </div>
+  return (
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="signup"
+          element={user ? <Navigate to="/" replace /> : <Signup />}
+        />
+        <Route
+          path="login"
+          element={user ? <Navigate to="/" replace /> : <Login />}
+        />
+        <Route path="*" element={<h1>Not found</h1>} />
+      </Routes>
+    </div>
+  );
 };

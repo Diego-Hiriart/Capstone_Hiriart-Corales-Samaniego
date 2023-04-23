@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import {Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -24,7 +24,7 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (formData) => {
     try {
-      await login(formData)
+      await login(formData);
     } catch (error) {
       setError("root", {
         type: "manual",
@@ -46,10 +46,15 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
-          {errors.root?.message && 
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{ mt: 1 }}
+        >
+          {errors.root?.message && (
             <Alert severity="error">{errors.root?.message}</Alert>
-          }
+          )}
           <TextField
             margin="normal"
             required
@@ -82,7 +87,12 @@ export default function Login() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link component={RouterLink} to="/signup" href="#" variant="body2">
+              <Link
+                component={RouterLink}
+                to="/signup"
+                href="#"
+                variant="body2"
+              >
                 No estas registrado? Registrate
               </Link>
             </Grid>

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Navigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
