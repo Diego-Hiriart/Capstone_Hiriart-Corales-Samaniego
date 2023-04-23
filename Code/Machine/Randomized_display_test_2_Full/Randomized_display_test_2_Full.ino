@@ -1,6 +1,7 @@
 #include <MD_Parola.h>
 #include <MD_MAX72xx.h>
 #include <SPI.h>
+#include "HCS_Font_Data.h"
 
 const uint8_t ic4511A=2;
 const uint8_t ic4511B=3;
@@ -17,24 +18,29 @@ const uint8_t rightPriority=A5;
 const uint8_t cs1=10;//CPI CS for matrix 1
 const uint8_t cs2=9;//CS for matrix 2
 const uint8_t cs3=8;//CS for matrix 3
-const uint8_t maxGenericDevices=2;//Number of MAX7219 ICs for generic displays
 const uint8_t maxFC16Devices=4;//Number of MAX7219 ICs in an FC16 module
-const MD_MAX72XX::moduleType_t FC16_HARDWARE = MD_MAX72XX::FC16_HW;//Generic hardware type for score display
-const MD_MAX72XX::moduleType_t GENERIC_HARDWARE = MD_MAX72XX::GENERIC_HW;//FC16 hardware for time
+const uint8_t numZones = 2;
+const uint8_t zoneSize = 2;
+const uint8_t maxDevices = (numZones * zoneSize);
+const MD_MAX72XX::moduleType_t timerHardware = MD_MAX72XX::FC16_HW;//Generic hardware type for score display
+const MD_MAX72XX::moduleType_t scoreHardware = MD_MAX72XX::GENERIC_HW;//FC16 hardware for time
+const bool invertLowerZone = (scoreHardware == MD_MAX72XX::GENERIC_HW || scoreHardware == MD_MAX72XX::PAROLA_HW);
 
 //MD_Parola instances to communicate with matrixes through SPI
-MD_Parola timerDisplay = MD_Parola(FC16_HARDWARE, cs1, maxFC16Devices);
-MD_Parola leftDisplay = MD_Parola(GENERIC_HARDWARE, cs2, maxGenericDevices);
-MD_Parola rightDisplay = MD_Parola(GENERIC_HARDWARE, cs3, maxGenericDevices);
+MD_Parola timerDisplay = MD_Parola(timerHardware, cs1, maxFC16Devices);
+MD_Parola leftDisplay = MD_Parola(scoreHardware, cs2, maxDevices);
+MD_Parola rightDisplay = MD_Parola(scoreHardware, cs3, maxDevices);
 
 //Scores, period and time to display
 uint8_t leftScore=0;
-uint8_t rightScore=15;
+uint8_t rightScore=45;
 uint8_t period=1;
 unsigned long elapsedTime=0;
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
+  Serial.println("setup start");
   //Set pinmodes
   //HC45 binary data pins
   pinMode(ic4511A, OUTPUT);
@@ -66,23 +72,47 @@ void setup() {
   digitalWrite(leftPriority, LOW);
   digitalWrite(rightPriority, LOW);
   //Initialice MAX7219 displays
+  //Timer display
   timerDisplay.begin();//Initialice display
   timerDisplay.setIntensity(15);//Set display intensity
   timerDisplay.displayClear(0);//Clear the display
-  leftDisplay.begin();//Initialice display
-  leftDisplay.setIntensity(10);//Set display intensity
-  leftDisplay.displayClear(0);//Clear the display
-  rightDisplay.begin();//Initialice display
-  rightDisplay.setIntensity(5);//Set display intensity
-  rightDisplay.displayClear(0);//Clear the display
   timerDisplay.setTextAlignment(PA_CENTER);
-  leftDisplay.setTextAlignment(PA_CENTER);
-  rightDisplay.setTextAlignment(PA_CENTER);
+  //Left double height
+  leftDisplay.begin(numZones);//Initialise the LED display
+  leftDisplay.setCharSpacing(0); // spacing is built into the font definition
+  leftDisplay.setInvert(false);
+  leftDisplay.setIntensity(1);
+  leftDisplay.setZone(0, 0, zoneSize-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
+  leftDisplay.setZone(1, zoneSize, maxDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
+  leftDisplay.setFont(0, Width8NumsLower);
+  leftDisplay.setFont(1, Width8NumsUpper);
+  //Right double height
+  rightDisplay.begin(numZones);//Initialise the LED display
+  rightDisplay.setCharSpacing(0); // spacing is built into the font definition
+  rightDisplay.setInvert(false);
+  rightDisplay.setIntensity(1);
+  rightDisplay.setZone(0, 0, zoneSize-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
+  rightDisplay.setZone(1, zoneSize, maxDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
+  rightDisplay.setFont(0, Width8NumsLower);
+  rightDisplay.setFont(1, Width8NumsUpper);
+
+  //Invert if hardware is generic (otherwise they dont fit together because of MAX7219 IC)
+  if (invertLowerZone)
+  {
+    leftDisplay.setZoneEffect(0, true, PA_FLIP_UD);
+    leftDisplay.setZoneEffect(0, true, PA_FLIP_LR);
+    rightDisplay.setZoneEffect(0, true, PA_FLIP_UD);
+    rightDisplay.setZoneEffect(0, true, PA_FLIP_LR);
+  }
+  Serial.println("setup done");
 }
 
 void loop() {
+  Serial.println("loop start");
   // put your main code here, to run repeatedly:
   elapsedTime=millis();
+  leftDisplay.displayAnimate();//Always run the display animation
+  rightDisplay.displayAnimate();//Always run the display animation
   scoresDisplay();
   periodTimeDisplay();
   periodDisplay();
@@ -90,20 +120,26 @@ void loop() {
   priorityDisplay();
   autoPointsDisplay();
   blockedDisplay();
-  delay(5000);//Wait 10 seconds to give time for users to view demo
+  delay(5000);//Wait 5 seconds to give time for users to view demo
 }
 
 void scoresDisplay(){
-  //Ints can be printed directly
-  leftDisplay.print(leftScore);
-  rightDisplay.print(rightScore);
-  leftScore = leftScore == 15 ? 0 : leftScore+1;
-  rightScore = rightScore == 0 ? 15 : rightScore-1;
+  //Ints cannot be printed directly, must use char array
+  char leftScoreString[3]="0";
+  itoa(leftScore, leftScoreString, 10);
+  leftDisplay.displayZoneText(0, leftScoreString, PA_CENTER, leftDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  leftDisplay.displayZoneText(1, leftScoreString, PA_CENTER, leftDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  char rightScoreString[3]="0";
+  itoa(rightScore, rightScoreString, 10);
+  rightDisplay.displayZoneText(0, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  rightDisplay.displayZoneText(1, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
+  leftScore = leftScore == 45 ? 0 : leftScore+=1;
+  rightScore = rightScore == 0 ? 45 : rightScore-=1;
 }
 
 void periodTimeDisplay(){
-  uint8_t timerMinutes = elapsedTime/60000;
-  uint8_t timerSeconds = elapsedTime%60000/1000;
+  int timerMinutes = elapsedTime/60000;
+  int timerSeconds = elapsedTime%60000/1000;
   String displayTime = String(timerMinutes)+":"+String(timerSeconds);
   timerDisplay.print(displayTime);
 }
