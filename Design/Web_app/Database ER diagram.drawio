@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-04-20T23:59:54.598Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48" etag="j47FwRvc_Pv2DDQxlQPr" version="21.2.1" type="device">
+<mxfile host="app.diagrams.net" modified="2023-04-23T00:10:12.450Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48" etag="qr6tfVZJRmsDpbTOlbEM" version="21.2.1" type="device">
   <diagram name="Page-1" id="XKIzt4uo4NDRFWb2ScrJ">
-    <mxGraphModel dx="3137" dy="2456" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2647" dy="2166" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -359,16 +359,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="qtP-qt-HRn7Zov_XZxOU-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="t40m8YcGtgmPC_NL-_yT-1" target="qtP-qt-HRn7Zov_XZxOU-1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="70" y="85" />
-              <mxPoint x="70" y="160" />
-              <mxPoint x="-406" y="160" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="qtP-qt-HRn7Zov_XZxOU-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="t40m8YcGtgmPC_NL-_yT-1" target="qtP-qt-HRn7Zov_XZxOU-2">
+        <mxCell id="qtP-qt-HRn7Zov_XZxOU-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="t40m8YcGtgmPC_NL-_yT-1" target="qtP-qt-HRn7Zov_XZxOU-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="70" y="85" />
@@ -3691,11 +3682,8 @@
         <mxCell id="JyHa8k5BMzSw3drxls1X-2" value="Roles" style="ellipse;whiteSpace=wrap;html=1;align=center;fontStyle=0" parent="1" vertex="1">
           <mxGeometry x="926.32" y="210" width="64" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="qtP-qt-HRn7Zov_XZxOU-1" value="IsGuest" style="ellipse;whiteSpace=wrap;html=1;align=center;fontStyle=0" vertex="1" parent="1">
-          <mxGeometry x="-435.62" y="175" width="58.5" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="qtP-qt-HRn7Zov_XZxOU-2" value="GuestName" style="ellipse;whiteSpace=wrap;html=1;align=center;fontStyle=0" vertex="1" parent="1">
-          <mxGeometry x="-513.25" y="150" width="75.25" height="20" as="geometry" />
+        <mxCell id="qtP-qt-HRn7Zov_XZxOU-2" value="GuestName" style="ellipse;whiteSpace=wrap;html=1;align=center;fontStyle=0" parent="1" vertex="1">
+          <mxGeometry x="-422.25" y="150" width="75.25" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
