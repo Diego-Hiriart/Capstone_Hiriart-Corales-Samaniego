@@ -55,12 +55,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signup = async (user: SignupFormInputs) => {
-    try {
-      await axios.post("/auth/signup", user);
-      navigate("/login");
-    } catch (error) {
-      console.error(error);
-    }
+    await axios.post("/auth/signup", user);
+    navigate("/login");
   };
 
   return (

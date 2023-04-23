@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Link as RouterLink } from "react-router-dom";
+import { Navigate, Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -17,12 +17,21 @@ export default function Signup() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
     watch,
   } = useForm<SignupFormInputs>();
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (formData) => {
-    await signup(formData);
+    try {
+      await signup(formData);
+      //TODO: show success message
+    } catch (error) {
+      setError("email", {
+        type: "manual",
+        message: "Email ya registrado",
+      });
+    }
   };
 
   //TODO: redirect to home when user is already logged in
@@ -98,6 +107,7 @@ export default function Signup() {
                 value: 20,
                 message: "Contraseña debe tener máximo 20 caracteres",
               },
+              // TODO: add regex for password strength
             })}
             error={!!errors.password}
             helperText={errors.password?.message}
