@@ -60,8 +60,8 @@ void loop() {
   leftDisplay.displayAnimate();//Always run the display animation
   rightDisplay.displayAnimate();//Always run the display animation
   scoresDisplay();
-  delay(5000);//Wait 10 seconds to give time for users to view demo
   Serial.println("loop end");
+  delay(5000);//Wait 10 seconds to give time for users to view demo
 }
 
 void scoresDisplay(){

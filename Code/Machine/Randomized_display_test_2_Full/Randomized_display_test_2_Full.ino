@@ -21,15 +21,15 @@ const uint8_t cs3=8;//CS for matrix 3
 const uint8_t maxFC16Devices=4;//Number of MAX7219 ICs in an FC16 module
 const uint8_t numZones = 2;
 const uint8_t zoneSize = 2;
-const uint8_t maxDevices = (numZones * zoneSize);
+const uint8_t maxGenDevices = (numZones * zoneSize);
 const MD_MAX72XX::moduleType_t timerHardware = MD_MAX72XX::FC16_HW;//Generic hardware type for score display
 const MD_MAX72XX::moduleType_t scoreHardware = MD_MAX72XX::GENERIC_HW;//FC16 hardware for time
 const bool invertLowerZone = (scoreHardware == MD_MAX72XX::GENERIC_HW || scoreHardware == MD_MAX72XX::PAROLA_HW);
 
 //MD_Parola instances to communicate with matrixes through SPI
 MD_Parola timerDisplay = MD_Parola(timerHardware, cs1, maxFC16Devices);
-MD_Parola leftDisplay = MD_Parola(scoreHardware, cs2, maxDevices);
-MD_Parola rightDisplay = MD_Parola(scoreHardware, cs3, maxDevices);
+MD_Parola leftDisplay = MD_Parola(scoreHardware, cs2, maxGenDevices);
+MD_Parola rightDisplay = MD_Parola(scoreHardware, cs3, maxGenDevices);
 
 //Scores, period and time to display
 uint8_t leftScore=0;
@@ -83,7 +83,7 @@ void setup() {
   leftDisplay.setInvert(false);
   leftDisplay.setIntensity(1);
   leftDisplay.setZone(0, 0, zoneSize-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
-  leftDisplay.setZone(1, zoneSize, maxDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
+  leftDisplay.setZone(1, zoneSize, maxGenDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
   leftDisplay.setFont(0, Width8NumsLower);
   leftDisplay.setFont(1, Width8NumsUpper);
   //Right double height
@@ -92,7 +92,7 @@ void setup() {
   rightDisplay.setInvert(false);
   rightDisplay.setIntensity(1);
   rightDisplay.setZone(0, 0, zoneSize-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
-  rightDisplay.setZone(1, zoneSize, maxDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
+  rightDisplay.setZone(1, zoneSize, maxGenDevices-1);//Set second zone(1), in a 4x4 it is modules 1 and 3
   rightDisplay.setFont(0, Width8NumsLower);
   rightDisplay.setFont(1, Width8NumsUpper);
 
@@ -120,6 +120,7 @@ void loop() {
   priorityDisplay();
   autoPointsDisplay();
   blockedDisplay();
+  Serial.println("loop end");
   delay(5000);//Wait 5 seconds to give time for users to view demo
 }
 
