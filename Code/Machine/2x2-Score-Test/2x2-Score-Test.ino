@@ -3,7 +3,7 @@
 #include <SPI.h>
 #include "HCS_Font_Data.h"
 
-const int cs1=53;//CPI CS for matrix 1
+const int cs1=10;//CPI CS for matrix 1
 const MD_MAX72XX::moduleType_t HARDWARE_TYPE = MD_MAX72XX::GENERIC_HW;//For generic single modules
 const int NUM_ZONES = 2;
 const int ZONE_SIZE = 2;
