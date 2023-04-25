@@ -3,13 +3,16 @@
 #include <SPI.h>
 #include "HCS_Font_Data.h"
 
-const uint8_t cs1=53;//CPI CS for matrix 1
-const uint8_t cs2=49;//CPI CS for matrix 2
+const uint8_t cs1=10;//CPI CS for matrix 1
+const uint8_t cs2=9;//CPI CS for matrix 2
 const MD_MAX72XX::moduleType_t hardwareType = MD_MAX72XX::GENERIC_HW;//For generic single modules
 const uint8_t numZones = 2;
 const uint8_t zoneSize = 2;
 const uint8_t maxDevices = (numZones * zoneSize);
 const bool invertLowerZone = (hardwareType == MD_MAX72XX::GENERIC_HW || hardwareType == MD_MAX72XX::PAROLA_HW);
+const String messageStartDelimiter = "s";
+const String messageEndDelimiter = "e\n";
+const uint8_t messageLength = 10;
 
 //MD_Parola instances to communicate with matrixes through SPI
 MD_Parola leftDisplay = MD_Parola(hardwareType, cs1, maxDevices);
@@ -18,7 +21,7 @@ MD_Parola rightDisplay = MD_Parola(hardwareType, cs2, maxDevices);
 
 //Scores, period and time to display
 uint8_t leftScore=0;
-uint8_t rightScore=45;
+uint8_t rightScore=0;
 
 void setup() {
   //Initialice MAX7219 displays
@@ -59,9 +62,30 @@ void loop() {
   Serial.println("loop start");
   leftDisplay.displayAnimate();//Always run the display animation
   rightDisplay.displayAnimate();//Always run the display animation
+  serialReceive();
   scoresDisplay();
   Serial.println("loop end");
-  delay(5000);//Wait 10 seconds to give time for users to view demo
+  delay(1000);
+}
+
+void serialReceive(){
+  //Read string like start;left;right;end e.g. s;0;1;e
+  if(Serial.available() >= messageLength){
+    String esp32Message = "";
+    while(!esp32Message.endsWith(messageEndDelimiter)){
+      esp32Message += (char)Serial.read();
+    }
+    Serial.write(esp32Message.c_str());
+    if(esp32Message.startsWith(messageStartDelimiter) && esp32Message.endsWith(messageEndDelimiter) 
+    && esp32Message.length() == messageLength){
+      String leftValue = esp32Message.substring(2, 4);
+      String rightValue = esp32Message.substring(5, 7);
+      leftScore=leftValue.toInt();
+      rightScore=rightValue.toInt();
+      String readValues = "left: "+String(leftScore)+", right: "+String(rightScore)+"\n";
+      Serial.write(readValues.c_str());
+    }
+  }
 }
 
 void scoresDisplay(){
@@ -74,6 +98,4 @@ void scoresDisplay(){
   itoa(rightScore, rightScoreString, 10);
   rightDisplay.displayZoneText(0, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
   rightDisplay.displayZoneText(1, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
-  leftScore = leftScore == 45 ? 0 : leftScore+=1;
-  rightScore = rightScore == 0 ? 45 : rightScore-=1;
 }
