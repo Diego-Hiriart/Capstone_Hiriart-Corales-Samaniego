@@ -20,7 +20,7 @@ void setup() {
   doubleScoreDisplay.begin(NUM_ZONES);//Initialise the LED display
   doubleScoreDisplay.setCharSpacing(0); // spacing is built into the font definition
   doubleScoreDisplay.setInvert(false);
-  doubleScoreDisplay.setIntensity(2);
+  doubleScoreDisplay.setIntensity(1);
 
   doubleScoreDisplay.setZone(0, 0, ZONE_SIZE-1);//Set first zone(0), in a 4x4 it is modules 0 and 1
   doubleScoreDisplay.setZone(1, ZONE_SIZE, MAX_DEVICES-1);//Set second zone(1), in a 4x4 it is modules 1 and 3

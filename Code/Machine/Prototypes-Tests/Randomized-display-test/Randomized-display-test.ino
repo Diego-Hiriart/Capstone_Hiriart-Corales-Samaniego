@@ -2,24 +2,25 @@
 #include <MD_MAX72xx.h>
 #include <SPI.h>
 
-const int ic4511A=2;
-const int ic4511B=3;
-const int ic4511C=4;
-const int ic4511D=5;
-const int autoPointsLED=6;
-const int leftYellow=A0;
-const int leftRed=A1;
-const int rightYellow=A2;
-const int rightRed=A3;
-const int leftPriority=A4;
-const int rightPriority=A5;
-const int cs1=10;//CPI CS for matrix 1
-const int cs2=9;//CS for matrix 2
-const int cs3=8;//CS for matrix 3
-const int maxGenericDevices=2;//Number of MAX7219 ICs for generic displays
-const int maxFC16Devices=4;//Number of MAX7219 ICs in an FC16 module
-#define FC16_HARDWARE MD_MAX72XX::FC16_HW//Generic hardware type for score display
-#define GENERIC_HARDWARE MD_MAX72XX::GENERIC_HW//FC16 hardware for time
+const uint8_t ic4511A=2;
+const uint8_t ic4511B=3;
+const uint8_t ic4511C=4;
+const uint8_t ic4511D=5;
+const uint8_t autoPointsLED=6;
+const uint8_t blockedLED=7;
+const uint8_t leftYellow=A0;
+const uint8_t leftRed=A1;
+const uint8_t rightYellow=A2;
+const uint8_t rightRed=A3;
+const uint8_t leftPriority=A4;
+const uint8_t rightPriority=A5;
+const uint8_t cs1=10;//CPI CS for matrix 1
+const uint8_t cs2=9;//CS for matrix 2
+const uint8_t cs3=8;//CS for matrix 3
+const uint8_t maxGenericDevices=2;//Number of MAX7219 ICs for generic displays
+const uint8_t maxFC16Devices=4;//Number of MAX7219 ICs in an FC16 module
+const MD_MAX72XX::moduleType_t FC16_HARDWARE = MD_MAX72XX::FC16_HW;//Generic hardware type for score display
+const MD_MAX72XX::moduleType_t GENERIC_HARDWARE = MD_MAX72XX::GENERIC_HW;//FC16 hardware for time
 
 //MD_Parola instances to communicate with matrixes through SPI
 MD_Parola timerDisplay = MD_Parola(FC16_HARDWARE, cs1, maxFC16Devices);
@@ -27,9 +28,9 @@ MD_Parola leftDisplay = MD_Parola(GENERIC_HARDWARE, cs2, maxGenericDevices);
 MD_Parola rightDisplay = MD_Parola(GENERIC_HARDWARE, cs3, maxGenericDevices);
 
 //Scores, period and time to display
-short leftScore=0;
-short rightScore=15;
-short period=1;
+uint8_t leftScore=0;
+uint8_t rightScore=15;
+uint8_t period=1;
 unsigned long elapsedTime=0;
 
 void setup() {
@@ -42,6 +43,7 @@ void setup() {
   pinMode(ic4511D, OUTPUT);
   //LED pins
   pinMode(autoPointsLED, OUTPUT);
+  pinMode(blockedLED, OUTPUT);
   pinMode(leftYellow, OUTPUT);
   pinMode(leftRed, OUTPUT);
   pinMode(rightYellow, OUTPUT);
@@ -56,6 +58,7 @@ void setup() {
   digitalWrite(ic4511D, LOW);
   //LEDs off
   digitalWrite(autoPointsLED, LOW);
+  digitalWrite(blockedLED, LOW);
   digitalWrite(leftYellow, LOW);
   digitalWrite(leftRed, LOW);
   digitalWrite(rightYellow, LOW);
@@ -86,7 +89,8 @@ void loop() {
   cardsDisplay();
   priorityDisplay();
   autoPointsDisplay();
-  delay(10000);//Wait 10 seconds to give time for users to view demo
+  blockedDisplay();
+  delay(5000);//Wait 10 seconds to give time for users to view demo
 }
 
 void scoresDisplay(){
@@ -98,8 +102,8 @@ void scoresDisplay(){
 }
 
 void periodTimeDisplay(){
-  int timerMinutes = elapsedTime/60000;
-  int timerSeconds = elapsedTime%60000/1000;
+  uint8_t timerMinutes = elapsedTime/60000;
+  uint8_t timerSeconds = elapsedTime%60000/1000;
   String displayTime = String(timerMinutes)+":"+String(timerSeconds);
   timerDisplay.print(displayTime);
 }
@@ -112,7 +116,7 @@ void periodDisplay(){
     binaryPeriod="0"+binaryPeriod;
   }
   //Check each bit and write to the 4511 IC
-  int ledStatus = binaryPeriod.charAt(3)=='1'?1:0;
+  uint8_t ledStatus = binaryPeriod.charAt(3)=='1'?1:0;
   digitalWrite(ic4511A, ledStatus);
   ledStatus = binaryPeriod.charAt(2)=='1'?1:0;
   digitalWrite(ic4511B, ledStatus);
@@ -124,7 +128,7 @@ void periodDisplay(){
 }
 
 void cardsDisplay(){
-  int randOnOff = random(0,2);
+  uint8_t randOnOff = random(0,2);
   digitalWrite(leftYellow, randOnOff ? HIGH : LOW);
   randOnOff = random(0,2);
   digitalWrite(leftRed, randOnOff ? HIGH : LOW);
@@ -135,13 +139,18 @@ void cardsDisplay(){
 }
 
 void priorityDisplay(){
-  int randOnOff = random(0,2);
+  uint8_t randOnOff = random(0,2);
   digitalWrite(leftPriority, randOnOff ? HIGH : LOW);
   randOnOff = random(0,2);
   digitalWrite(rightPriority, randOnOff ? HIGH : LOW);
 }
 
 void autoPointsDisplay(){
-  int randOnOff = random(0,2);
+  uint8_t randOnOff = random(0,2);
   digitalWrite(autoPointsLED, randOnOff ? HIGH : LOW);
+}
+
+void blockedDisplay(){
+  uint8_t randOnOff = random(0,2);
+  digitalWrite(blockedLED, randOnOff ? HIGH : LOW);
 }
