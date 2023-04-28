@@ -24,10 +24,17 @@ export async function login(req: Request, res: Response) {
         httpOnly: true,
         secure: true,
       })
-      .sendStatus(200);
+      .status(200)
+      .json({
+        user: req.body.user
+      });
   } catch (error) {
     errorLog(error);
-    return res.sendStatus(401);
+    if (error instanceof Error) {
+      return res.status(401).json({
+        message: error.message,
+      });
+    }
   }
 }
 
@@ -60,7 +67,7 @@ export async function signup(req: Request, res: Response) {
 /** To POST logout route */
 export async function logout(req: Request, res: Response) {
   try {
-    return res.clearCookie("token").status(201);
+    return res.clearCookie("token").status(201).send();
   } catch (error) {
     errorLog(error);
     return res.sendStatus(401);

@@ -1,34 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { Navigate, Route, Routes } from "react-router-dom";
+import NavBar from "./components/Navbar";
+import Login from "./pages/Login";
+import "dayjs/locale/es";
+import Signup from "./pages/Signup";
+import Home from "./pages/Home";
+import { useContext } from "react";
+import AuthContext from "./contexts/AuthContext";
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App = () => {
+  const { user } = useContext(AuthContext);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="signup"
+          element={user ? <Navigate to="/" replace /> : <Signup />}
+        />
+        <Route
+          path="login"
+          element={user ? <Navigate to="/" replace /> : <Login />}
+        />
+        <Route path="*" element={<h1>Not found</h1>} />
+      </Routes>
     </div>
-  )
-}
-
-export default App
+  );
+};
