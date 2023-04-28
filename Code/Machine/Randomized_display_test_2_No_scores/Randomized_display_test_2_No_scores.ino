@@ -27,6 +27,8 @@ unsigned long elapsedTime=0;
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(9600);
+  Serial.println("setup start");
   //Set pinmodes
   //HC45 binary data pins
   pinMode(ic4511A, OUTPUT);
@@ -62,10 +64,12 @@ void setup() {
   timerDisplay.setIntensity(15);//Set display intensity
   timerDisplay.displayClear(0);//Clear the display
   timerDisplay.setTextAlignment(PA_CENTER);
+  Serial.println("setup done");
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  Serial.println("loop start");
   elapsedTime=millis();
   periodTimeDisplay();
   periodDisplay();
@@ -73,6 +77,7 @@ void loop() {
   priorityDisplay();
   autoPointsDisplay();
   blockedDisplay();
+  Serial.println("loop end");
   delay(5000);//Wait 10 seconds to give time for users to view demo
 }
 

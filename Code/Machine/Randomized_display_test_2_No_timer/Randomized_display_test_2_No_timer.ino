@@ -15,27 +15,23 @@ const uint8_t rightYellow=A2;
 const uint8_t rightRed=A3;
 const uint8_t leftPriority=A4;
 const uint8_t rightPriority=A5;
-const uint8_t cs1=10;//CPI CS for matrix 1
-const uint8_t cs2=9;//CS for matrix 2
-const uint8_t cs3=8;//CS for matrix 3
-const uint8_t maxFC16Devices=4;//Number of MAX7219 ICs in an FC16 module
+//On Arduino Mega SPI SCK, MOSI, MISO adn CS are 52, 51, 50 and 53. Pinout documentation is wrong on their page
+const uint8_t cs1=53;//CS for matrix 1
+const uint8_t cs2=49;//CS for matrix 2
 const uint8_t numZones = 2;
 const uint8_t zoneSize = 2;
 const uint8_t maxGenDevices = (numZones * zoneSize);
-const MD_MAX72XX::moduleType_t timerHardware = MD_MAX72XX::FC16_HW;//Generic hardware type for score display
-const MD_MAX72XX::moduleType_t scoreHardware = MD_MAX72XX::GENERIC_HW;//FC16 hardware for time
+const MD_MAX72XX::moduleType_t scoreHardware = MD_MAX72XX::GENERIC_HW;//Generic hardware for scores
 const bool invertLowerZone = (scoreHardware == MD_MAX72XX::GENERIC_HW || scoreHardware == MD_MAX72XX::PAROLA_HW);
 
 //MD_Parola instances to communicate with matrixes through SPI
-MD_Parola timerDisplay = MD_Parola(timerHardware, cs1, maxFC16Devices);
-MD_Parola leftDisplay = MD_Parola(scoreHardware, cs2, maxGenDevices);
-MD_Parola rightDisplay = MD_Parola(scoreHardware, cs3, maxGenDevices);
+MD_Parola leftDisplay = MD_Parola(scoreHardware, cs1, maxGenDevices);
+MD_Parola rightDisplay = MD_Parola(scoreHardware, cs2, maxGenDevices);
 
 //Scores, period and time to display
 uint8_t leftScore=0;
 uint8_t rightScore=45;
 uint8_t period=1;
-unsigned long elapsedTime=0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -72,11 +68,6 @@ void setup() {
   digitalWrite(leftPriority, LOW);
   digitalWrite(rightPriority, LOW);
   //Initialice MAX7219 displays
-  //Timer display
-  timerDisplay.begin();//Initialice display
-  timerDisplay.setIntensity(15);//Set display intensity
-  timerDisplay.displayClear(0);//Clear the display
-  timerDisplay.setTextAlignment(PA_CENTER);
   //Left double height
   leftDisplay.begin(numZones);//Initialise the LED display
   leftDisplay.setCharSpacing(0); // spacing is built into the font definition
@@ -110,11 +101,9 @@ void setup() {
 void loop() {
   Serial.println("loop start");
   // put your main code here, to run repeatedly:
-  elapsedTime=millis();
   leftDisplay.displayAnimate();//Always run the display animation
   rightDisplay.displayAnimate();//Always run the display animation
   scoresDisplay();
-  periodTimeDisplay();
   periodDisplay();
   cardsDisplay();
   priorityDisplay();
@@ -136,13 +125,6 @@ void scoresDisplay(){
   rightDisplay.displayZoneText(1, rightScoreString, PA_CENTER, rightDisplay.getSpeed(), 0, PA_PRINT, PA_NO_EFFECT);
   leftScore = leftScore == 45 ? 0 : leftScore+=1;
   rightScore = rightScore == 0 ? 45 : rightScore-=1;
-}
-
-void periodTimeDisplay(){
-  int timerMinutes = elapsedTime/60000;
-  int timerSeconds = elapsedTime%60000/1000;
-  String displayTime = String(timerMinutes)+":"+String(timerSeconds);
-  timerDisplay.print(displayTime);
 }
 
 void periodDisplay(){
