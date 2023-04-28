@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Home from "./pages/Home";
 import { useContext } from "react";
 import AuthContext from "./contexts/AuthContext";
+import Snackbar from "./components/Snackbar";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -13,6 +14,7 @@ export const App = () => {
   return (
     <div>
       <NavBar />
+      <Snackbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route

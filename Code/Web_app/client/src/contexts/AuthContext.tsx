@@ -16,6 +16,7 @@ interface AuthContext {
   signup: (user: SignupFormInputs) => Promise<void>;
 }
 
+//TODO: create a custom hook to use this context
 const AuthContext = createContext<AuthContext>({
   user: null,
   setUser: () => {},

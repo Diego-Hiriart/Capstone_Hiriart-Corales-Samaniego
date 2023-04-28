@@ -7,14 +7,17 @@ import "dayjs/locale/es";
 import { App } from "./App";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter } from "react-router-dom";
+import { AlertProvider } from "./contexts/AlertContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
-          <CssBaseline />
-          <App />
+          <AlertProvider>
+            <CssBaseline />
+            <App />
+          </AlertProvider>
         </LocalizationProvider>
       </AuthProvider>
     </BrowserRouter>

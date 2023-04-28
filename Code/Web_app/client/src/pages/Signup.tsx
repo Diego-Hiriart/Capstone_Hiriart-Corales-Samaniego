@@ -10,9 +10,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { SignupFormInputs } from "../types";
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { useAlert } from "../hooks/useAlert";
 
 export default function Signup() {
   const { signup } = useContext(AuthContext);
+  const { showSuccess } = useAlert();
 
   const {
     register,
@@ -25,7 +27,7 @@ export default function Signup() {
   const onSubmit: SubmitHandler<SignupFormInputs> = async (formData) => {
     try {
       await signup(formData);
-      //TODO: show success message
+      showSuccess("Usuario creado exitosamente");
     } catch (error) {
       //TODO: handle other possible errors
       setError("email", {
