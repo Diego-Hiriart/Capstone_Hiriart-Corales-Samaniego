@@ -1,10 +1,12 @@
 import { useContext, useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import axios from "../services/axios";
 
 const ProtectedRoute = () => {
   const { user, setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
     //check if token is valid and set user
     //TODO: move to AuthContext
@@ -15,8 +17,8 @@ const ProtectedRoute = () => {
         localStorage.setItem("user", JSON.stringify(response.data));
         return;
       } catch (error) {
-        setUser(null!);
-        localStorage.removeItem("user");
+        console.error(error);
+        navigate("/");
         return;
       }
     };
