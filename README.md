@@ -1,2 +1,2 @@
 # Capstone_Hiriart-Corales-Samaniego
-Diego Hiriart's, Luis Corales' and Christian Samaniego's capstone project por Software Engineering - UDLA
+Diego Hiriart, Luis Corales and Christian Samaniego's capstone project for Software Engineering - UDLA
