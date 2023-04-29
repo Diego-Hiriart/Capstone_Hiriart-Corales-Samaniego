@@ -30,6 +30,10 @@
     "build": "npx tsc",
     "dev": "nodemon src/index.ts",
     "migrate": "prisma migrate dev",
-    "test": "jest"
+    "test": "jest",
+    "migrate": "prisma migrate dev"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
