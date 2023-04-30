@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
+import { errorLog } from "./logs";
 
 const prisma = new PrismaClient();
 
