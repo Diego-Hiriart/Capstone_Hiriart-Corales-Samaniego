@@ -42,3 +42,19 @@ export async function createAdmin(data: Administrator) {
   }
 }
 
+export async function updateAdminById(id: number, data: Administrator) {
+  try {
+    const admin = await prisma.administrator.update({
+      where: {
+        administratorID: id,
+      },
+      data: {
+        userID: data.userID,
+      },
+    });
+    return admin;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
