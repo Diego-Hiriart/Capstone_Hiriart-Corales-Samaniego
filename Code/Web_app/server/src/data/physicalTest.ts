@@ -45,7 +45,7 @@ export async function createPhysicalTest(data: PhysicalTest) {
   }
 }
 
-export async function updateMacroCycleById(id: number, data: PhysicalTest) {
+export async function updatePhysicalTestById(id: number, data: PhysicalTest) {
   try {
     const physicalTest = await prisma.physicalTest.update({
       where: {

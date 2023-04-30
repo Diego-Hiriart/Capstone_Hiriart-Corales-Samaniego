@@ -66,7 +66,7 @@ export async function createFencer(data: Fencer) {
   }
 }
 
-export async function updateUserById(id: number, data: Fencer) {
+export async function updateFencerById(id: number, data: Fencer) {
   try {
     const fencer = await prisma.fencer.update({
       where: {
