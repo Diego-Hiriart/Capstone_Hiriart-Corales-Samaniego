@@ -28,7 +28,27 @@ export async function findAllSingleFeedback() {
   }
 }
 
-export async function updateUserById(id: number, data: SingleFeedback) {
+export async function createSingleFeedback(data: SingleFeedback) {
+  try {
+    const singleFeedback = await prisma.singleFeedback.create({
+      data: {
+        fencerID: data.fencerID,
+        trainerID: data.trainerID,
+        date: data.date,
+        content: data.content,
+      },
+    });
+    return singleFeedback;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
+
+export async function updateSingleFeedbackById(
+  id: number,
+  data: SingleFeedback
+) {
   try {
     const singleFeedback = await prisma.singleFeedback.update({
       where: {

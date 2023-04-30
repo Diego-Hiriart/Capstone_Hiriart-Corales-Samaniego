@@ -48,6 +48,24 @@ export async function findAllUsers() {
   }
 }
 
+export async function createUser(data: User) {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        names: data.names,
+        lastNames: data.lastNames,
+        roles: data.roles,
+      },
+    });
+    return user;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
+
 export async function softDeleteUserById(id: number) {
   try {
     const user = await prisma.user.update({

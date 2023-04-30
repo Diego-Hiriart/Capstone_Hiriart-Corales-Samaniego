@@ -28,7 +28,25 @@ export async function findAllTrainer() {
   }
 }
 
-export async function updateUserById(id: number, data: Trainer) {
+export async function createTrainer(data: Trainer) {
+  try {
+    const trainer = await prisma.trainer.create({
+      data: {
+        userID: data.userID,
+        experience: data.experience,
+        weapon: data.weapon,
+        pictureURL: data.pictureURL,
+        guestName: data.guestName,
+      },
+    });
+    return trainer;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
+
+export async function updateTrainerById(id: number, data: Trainer) {
   try {
     const trainer = await prisma.trainer.update({
       where: {

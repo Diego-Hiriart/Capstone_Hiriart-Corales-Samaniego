@@ -1,78 +1,80 @@
-import { PrismaClient, WeeklyReport } from "@prisma/client";
+import { PrismaClient, CycleGoal } from "@prisma/client";
 
 import { errorLog } from "../utils/logs";
 
 const prisma = new PrismaClient();
 
-export async function findWeeklyReportById(id: number) {
+export async function findCycleGoalById(id: number) {
   try {
-    const weeklyReport = await prisma.weeklyReport.findUnique({
+    const cycleGoal = await prisma.cycleGoal.findUnique({
       where: {
-        weeklyReportID: id,
+        cycleGoalID: id,
       },
     });
-    return weeklyReport;
+    return cycleGoal;
   } catch (error) {
     errorLog(error);
     return undefined;
   }
 }
 
-export async function findAllWeeklyReport() {
+export async function findAllCycleGoal() {
   try {
-    const weeklyReport = await prisma.weeklyReport.findMany();
-    return weeklyReport;
+    const cycleGoal = await prisma.cycleGoal.findMany();
+    return cycleGoal;
   } catch (error) {
     errorLog(error);
     return [];
   }
 }
 
-export async function createWeeklyReport(data: WeeklyReport) {
+export async function createCycleGoal(data: CycleGoal) {
   try {
-    const weeklyReport = await prisma.weeklyReport.create({
+    const cycleGoal = await prisma.cycleGoal.create({
       data: {
         fencerID: data.fencerID,
         trainerID: data.trainerID,
+        mesoCycleID: data.mesoCycleID,
         date: data.date,
         content: data.content,
       },
     });
-    return weeklyReport;
+    return cycleGoal;
   } catch (error) {
     errorLog(error);
     return undefined;
   }
 }
 
-export async function updateWeeklyReportById(id: number, data: WeeklyReport) {
+export async function updateCycleGoalById(id: number, data: CycleGoal) {
   try {
-    const weeklyReport = await prisma.weeklyReport.update({
+    const cycleGoal = await prisma.cycleGoal.update({
       where: {
-        weeklyReportID: id,
+        cycleGoalID: id,
       },
       data: {
         fencerID: data.fencerID || undefined,
         trainerID: data.trainerID || undefined,
+        mesoCycleID: data.mesoCycleID || undefined,
         date: data.date || undefined,
         content: data.content || undefined,
       },
     });
-    return weeklyReport;
+    return cycleGoal;
   } catch (error) {
     errorLog(error);
     return undefined;
   }
 }
 
-export async function deleteWeeklyReportById(id: number) {
+export async function deleteCycleGoalById(id: number) {
   try {
-    const weeklyReport = await prisma.weeklyReport.delete({
+    const cycleGoal = await prisma.cycleGoal.delete({
       where: {
-        weeklyReportID: id,
+        cycleGoalID: id,
       },
     });
-    return weeklyReport;
+    return cycleGoal;
   } catch (error) {
     errorLog(error);
     return undefined;

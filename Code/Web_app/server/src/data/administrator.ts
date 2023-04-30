@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { Administrator, PrismaClient } from "@prisma/client";
 
 import { errorLog } from "../utils/logs";
 
@@ -27,3 +27,18 @@ export async function findAllAdmin() {
     return [];
   }
 }
+
+export async function createAdmin(data: Administrator) {
+  try {
+    const admin = await prisma.administrator.create({
+      data: {
+        userID: data.userID,
+      },
+    });
+    return admin;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
+

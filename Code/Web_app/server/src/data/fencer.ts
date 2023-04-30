@@ -28,6 +28,44 @@ export async function findAllFencer() {
   }
 }
 
+export async function createFencer(data: Fencer) {
+  try {
+    const fencer = await prisma.fencer.create({
+      data: {
+        userID: data.userID,
+        trainingGroupID: data.trainingGroupID,
+        idNumber: data.idNumber,
+        emergencyPhone: data.emergencyPhone,
+        birthDate: data.birthDate,
+        bloodType: data.bloodType,
+        sex: data.sex,
+        laterality: data.laterality,
+        phone: data.phone,
+        insurance: data.insurance,
+        inscriptionDate: data.inscriptionDate,
+        startDate: data.startDate,
+        occupation: data.occupation,
+        schedule: data.schedule,
+        legalGuardian: data.legalGuardian,
+        leadSource: data.leadSource,
+        inscriptionReason: data.inscriptionReason,
+        height: data.height,
+        weight: data.weight,
+        physicalActivity: data.physicalActivity,
+        medicalFamily: data.medicalFamily,
+        medicalPersonal: data.medicalPersonal,
+        personalMedicalDetails: data.personalMedicalDetails,
+        weapon: data.weapon,
+        pictureURL: data.pictureURL,
+      },
+    });
+    return fencer;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
+
 export async function updateUserById(id: number, data: Fencer) {
   try {
     const fencer = await prisma.fencer.update({

@@ -28,6 +28,21 @@ export async function findAllTrainingGroup() {
   }
 }
 
+export async function createTrainingGroup(data: TrainingGroup) {
+  try {
+    const trainingGroup = await prisma.trainingGroup.create({
+      data: {
+        name: data.name,
+        weapon: data.weapon,
+      },
+    });
+    return trainingGroup;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
+
 export async function updateTrainingGroupById(id: number, data: TrainingGroup) {
   try {
     const trainingGroup = await prisma.trainingGroup.update({
