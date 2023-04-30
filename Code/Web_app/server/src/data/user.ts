@@ -64,3 +64,24 @@ export async function softDeleteUserById(id: number) {
     return undefined;
   }
 }
+
+export async function updateUserById(id: number, data: User) {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        userID: id,
+      },
+      data: {
+        email: data.email || undefined,
+        password: data.password || undefined,
+        names: data.names || undefined,
+        lastNames: data.lastNames || undefined,
+        roles: data.roles || undefined,
+      },
+    });
+    return user ? removePasswordInUser(user) : user;
+  } catch (error) {
+    errorLog(error);
+    return undefined;
+  }
+}
