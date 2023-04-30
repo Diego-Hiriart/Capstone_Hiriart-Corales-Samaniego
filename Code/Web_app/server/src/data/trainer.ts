@@ -1,4 +1,4 @@
-import { PrismaClient, Trainer, User } from "@prisma/client";
+import { PrismaClient, Trainer } from "@prisma/client";
 
 import { errorLog } from "../utils/logs";
 
