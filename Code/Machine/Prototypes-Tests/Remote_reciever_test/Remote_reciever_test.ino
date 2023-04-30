@@ -14,15 +14,12 @@ void setup()
 
 void loop()
 {
-  uint8_t buf[14];
-  uint8_t buflen = sizeof(buf);
-  if (receiver.recv(buf, &buflen)) // Non-blocking
+  uint8_t message[13];
+  uint8_t messLen = sizeof(message);
+  if (receiver.recv(message, &messLen)) // Non-blocking
   {
     // Message with a good checksum received, dump it.
     Serial.print("Message: ");
-    Serial.print(buf[0]);
-    Serial.print(buf[1]);
-    Serial.print(buf[2]);
-    Serial.println(buf[3]);
+    Serial.println((char*)message);
   }
 }
