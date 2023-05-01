@@ -2,8 +2,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
 
-import { healthCheck } from "./data/database";
 import router from "./routes";
+import { healthCheck } from "./utils/database";
 import { debugLog, serverLog } from "./utils/logs";
 
 const app = express();
