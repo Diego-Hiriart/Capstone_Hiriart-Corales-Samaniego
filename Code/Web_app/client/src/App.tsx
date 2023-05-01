@@ -1,3 +1,4 @@
+import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import Login from "./pages/Login";
@@ -12,6 +13,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminHome from "./pages/admin/AdminHome";
 import StudentHome from "./pages/student/StudentHome";
 import TrainerHome from "./pages/trainer/TrainerHome";
+import Trainers from "./pages/admin/Trainers";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -32,6 +34,7 @@ export const App = () => {
         />
         <Route element={<ProtectedRoute allowedRoles={["admin"]}/>}>
           <Route path="admin" element={<AdminHome />} />
+          <Route path="trainers" element={<Trainers />}/>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["trainer"]}/>}>
           <Route path="trainer" element={<TrainerHome />} />

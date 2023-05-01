@@ -19,5 +19,5 @@ export interface User {
   roles: string[];
   password: string;
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt: Date | null;
 }
