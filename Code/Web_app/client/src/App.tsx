@@ -7,6 +7,11 @@ import Home from "./pages/Home";
 import { useContext } from "react";
 import AuthContext from "./contexts/AuthContext";
 import Snackbar from "./components/Snackbar";
+import Unauthorized from "./pages/Unauthorized";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminHome from "./pages/admin/AdminHome";
+import StudentHome from "./pages/student/StudentHome";
+import TrainerHome from "./pages/trainer/TrainerHome";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -24,6 +29,19 @@ export const App = () => {
         <Route
           path="login"
           element={user ? <Navigate to="/" replace /> : <Login />}
+        />
+        <Route element={<ProtectedRoute allowedRoles={["admin"]}/>}>
+          <Route path="admin" element={<AdminHome />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={["trainer"]}/>}>
+          <Route path="trainer" element={<TrainerHome />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={["student"]}/>}>
+          <Route path="student" element={<StudentHome />} />
+        </Route>
+        <Route 
+          path="unauthorized" 
+          element={<Unauthorized />}
         />
         <Route path="*" element={<h1>Not found</h1>} />
       </Routes>

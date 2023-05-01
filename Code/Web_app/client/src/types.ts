@@ -16,6 +16,7 @@ export interface User {
   names: string;
   lastNames: string;
   email: string;
+  roles: string[];
   password: string;
   createdAt: Date;
   updatedAt: Date;

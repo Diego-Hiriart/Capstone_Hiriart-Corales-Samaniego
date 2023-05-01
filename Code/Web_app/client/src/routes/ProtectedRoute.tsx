@@ -1,31 +1,43 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import axios from "../services/axios";
+import { User } from "../types";
 
-const ProtectedRoute = () => {
+interface ProtectedRouteProps {
+  allowedRoles: string[];
+}
+
+const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   const { user, setUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [isAllowed, setIsAllowed] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    //check if token is valid and set user
     //TODO: move to AuthContext
     const checkToken = async () => {
       try {
-        const response = await axios.get("/dashboard/user/me");
-        setUser(response.data);
-        localStorage.setItem("user", JSON.stringify(response.data));
-        return;
+        //validate token and get user
+        const { data } = await axios.get("/dashboard/user/me");
+        const user = data.data as User;
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        const roles = user.roles;
+        if(allowedRoles.some((role) => roles.includes(role))) {
+          setIsAllowed(true);
+        }
       } catch (error) {
+        //if token is invalid, navigate to unauthorized page
         console.error(error);
-        navigate("/");
-        return;
+        setIsAllowed(false);
       }
     };
-    checkToken();
+    checkToken().finally(() => setIsLoading(false));
   }, []);
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  if (isLoading) return <h1>Loading...</h1>;
+  return isAllowed ? <Outlet /> : <Navigate to="/unauthorized" replace />;
 };
 
 export default ProtectedRoute;

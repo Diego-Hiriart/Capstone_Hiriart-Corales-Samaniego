@@ -26,6 +26,7 @@ export default function Signup() {
 
   const onSubmit: SubmitHandler<SignupFormInputs> = async (formData) => {
     try {
+      //TODO: add role to form data
       await signup(formData);
       showSuccess("Usuario creado exitosamente");
     } catch (error) {
