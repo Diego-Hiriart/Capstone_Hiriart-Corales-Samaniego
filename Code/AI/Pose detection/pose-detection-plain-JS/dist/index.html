@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="" />
+    <link rel="stylesheet" href="./index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HCS AECQ - Pose detection</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Require the peer dependencies of pose-detection. -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+
+    <!-- You must explicitly require a TF.js backend if you're not using the TF.js union bundle. -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    <div className="App">
+      <h1>AECQ - entrenamiento individual</h1>
+      <p>Usando BlazePose "full"</p>
+      <div class="container">
+        <div class="canvas-wrapper">
+          <video autoplay playsinline class='output-canvas webcam-pane' id="video"></video>
+          <canvas class='output-canvas render-pane' id="output"></canvas>
+        </div>
+        <div id="scatter-gl-container"></div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="./src/index.js"></script>
+  <script src="bundle.js"></script>
+</html>
