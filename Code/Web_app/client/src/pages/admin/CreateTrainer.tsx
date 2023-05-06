@@ -1,19 +1,16 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { SignupForm } from "../types";
-import { useContext } from "react";
-import AuthContext from "../contexts/AuthContext";
-import { useAlert } from "../hooks/useAlert";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { RegisterTrainerForm } from "../../types";
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { AxiosError } from "axios";
 
-export default function Signup() {
-  const { signup } = useContext(AuthContext);
+export default function CreateTrainer() {
   const { showSuccess } = useAlert();
 
   const {
@@ -22,35 +19,47 @@ export default function Signup() {
     setError,
     formState: { errors },
     watch,
-  } = useForm<SignupForm>();
+    control,
+  } = useForm<RegisterTrainerForm>();
 
-  const onSubmit: SubmitHandler<SignupForm> = async (formData) => {
+  // TODO: add zod validation
+
+  const onSubmit: SubmitHandler<RegisterTrainerForm> = async (formData) => {
     try {
-      formData.roles = ["fencer"];
-      await signup(formData);
-      showSuccess("Usuario creado exitosamente");
+      console.log(formData);
+      formData.roles = ["trainer"];
+      await axios.post("/dashboard/trainers", formData);
+      showSuccess("Entrenador creado exitosamente");
     } catch (error) {
-      //TODO: handle other possible errors
-      // TODO: check against 409 status code for already existing email
-      setError("email", {
-        type: "manual",
-        message: "Email ya registrado",
-      });
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          setError("email", {
+            type: "manual",
+            message: "El email ingresado ya está en uso",
+          });
+        } else {
+          setError("root", {
+            type: "manual",
+            message: "Ha ocurrido un error al crear el entrenador",
+          });
+        }
+      }
     }
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
+        mt={ {xs: 4, sm: 8} }
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
-          Registro
+        {/* TODO: add back button */}
+        {/* TODO: add iamge field */}
+        <Typography variant="h1" alignSelf="start">
+          Nuevo Entrenador
         </Typography>
         <Box
           component="form"
@@ -59,6 +68,7 @@ export default function Signup() {
           sx={{ mt: 1 }}
         >
           <TextField
+            required
             fullWidth
             margin="normal"
             id="names"
@@ -69,6 +79,7 @@ export default function Signup() {
             helperText={errors.names?.message}
           />
           <TextField
+            required
             fullWidth
             margin="normal"
             id="lastNames"
@@ -134,6 +145,36 @@ export default function Signup() {
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
           />
+          <TextField 
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+            label="Trayectoria"
+            id="trayectoria"
+            defaultValue={""}
+            {...register("experience")}
+          />
+          <Controller 
+            name="weapon"
+            defaultValue="espada"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <FormLabel>Arma</FormLabel>
+                <RadioGroup
+                  {...field}
+                  row
+                  onChange={(e) => field.onChange(e.target.value)}
+                  value={field.value}
+                >
+                  <FormControlLabel value="espada" control={<Radio />} label="Espada" />
+                  <FormControlLabel value="sable" control={<Radio />} label="Sable" />
+                  <FormControlLabel value="florete" control={<Radio />} label="Florete" />
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
           <Button
             type="submit"
             fullWidth
@@ -142,13 +183,6 @@ export default function Signup() {
           >
             Registrarse
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link component={RouterLink} to="/login" href="#" variant="body2">
-                Ya tienes cuenta? Log in
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>

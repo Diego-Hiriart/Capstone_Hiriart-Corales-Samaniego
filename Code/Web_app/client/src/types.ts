@@ -3,12 +3,13 @@ export interface LoginFormInputs {
   password: string;
 }
 
-export interface SignupFormInputs {
+export interface SignupForm {
   names: string;
   lastNames: string;
   email: string;
   password: string;
   confirmPassword: string;
+  roles: string[];
 }
 
 export interface User {
@@ -20,4 +21,16 @@ export interface User {
   password: string;
   createdAt: Date;
   updatedAt: Date | null;
+}
+
+export interface RegisterTrainerForm {
+  names: string;
+  lastNames: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  roles: string[];
+  experience?: string;
+  weapon?: string;
+  pictureURL?: string;
 }

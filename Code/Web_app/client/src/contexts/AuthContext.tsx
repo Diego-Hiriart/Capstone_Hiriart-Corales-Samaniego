@@ -4,7 +4,7 @@ import React, {
   createContext,
   useState,
 } from "react";
-import { LoginFormInputs, SignupFormInputs, User } from "../types";
+import { LoginFormInputs, SignupForm, User } from "../types";
 import { useNavigate } from "react-router-dom";
 import axios from "../services/axios";
 
@@ -13,7 +13,7 @@ interface AuthContext {
   setUser: Dispatch<SetStateAction<User>>;
   login: (user: LoginFormInputs) => Promise<void>;
   logout: () => Promise<void>;
-  signup: (user: SignupFormInputs) => Promise<void>;
+  signup: (user: SignupForm) => Promise<void>;
 }
 
 //TODO: create a custom hook to use this context
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const signup = async (user: SignupFormInputs) => {
+  const signup = async (user: SignupForm) => {
     await axios.post("/auth/signup", user);
     navigate("/login");
   };
