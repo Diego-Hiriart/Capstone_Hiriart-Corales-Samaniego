@@ -11,7 +11,7 @@ import Snackbar from "./components/Snackbar";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminHome from "./pages/admin/AdminHome";
-import StudentHome from "./pages/student/StudentHome";
+import FencerHome from "./pages/fencer/FencerHome";
 import TrainerHome from "./pages/trainer/TrainerHome";
 import Trainers from "./pages/admin/Trainers";
 import CreateTrainer from "./pages/admin/CreateTrainer";
@@ -43,8 +43,8 @@ export const App = () => {
         <Route element={<ProtectedRoute allowedRoles={["trainer"]}/>}>
           <Route path="trainer" element={<TrainerHome />} />
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["student"]}/>}>
-          <Route path="student" element={<StudentHome />} />
+        <Route element={<ProtectedRoute allowedRoles={["fencer"]}/>}>
+          <Route path="fencer" element={<FencerHome />} />
         </Route>
         <Route 
           path="unauthorized" 
