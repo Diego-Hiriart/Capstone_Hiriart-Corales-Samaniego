@@ -7,18 +7,13 @@ import {
   postActivity,
   updateActivity,
 } from "../../controllers/activity_controller";
-import { verifyRole } from "../../middlewares/roles_middlewares";
 
 const router = Router();
 
 router.get("/activity/:id", getActivityById);
-router.get("/activity/", verifyRole(["admin", "trainer"]), getAllActivity);
-router.post("/acitivity/", verifyRole(["admin", "trainer"]), postActivity);
-router.put("/acitivity/", verifyRole(["admin", "trainer"]), updateActivity);
-router.delete(
-  "/acitivity/:id",
-  verifyRole(["admin", "trainer"]),
-  deleteActivity
-);
+router.get("/activity/", getAllActivity);
+router.post("/acitivity/", postActivity);
+router.put("/acitivity/:id", updateActivity);
+router.delete("/acitivity/:id", deleteActivity);
 
 export default router;
