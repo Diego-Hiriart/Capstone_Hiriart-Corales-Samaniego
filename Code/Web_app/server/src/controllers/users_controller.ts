@@ -48,7 +48,7 @@ export async function getUserById(req: Request, res: Response) {
 export async function getUserByEmail(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await findUserByEmail(req.body.email),
+      data: await findUserByEmail(req.params.email),
     });
   } catch (error) {
     errorLog(error);
