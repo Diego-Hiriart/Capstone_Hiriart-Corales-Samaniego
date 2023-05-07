@@ -10,8 +10,6 @@ import {
 
 const router = Router();
 
-router.get("/registration_link");
-
 router.get("/registration_link/:id", getRegistrationLinkById);
 router.get("/registration_link/", getAllRegistrationLink);
 router.post("/registration_link/", postRegistrationLink);
