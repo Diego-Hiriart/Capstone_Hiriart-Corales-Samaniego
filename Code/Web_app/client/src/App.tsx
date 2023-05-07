@@ -1,6 +1,6 @@
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import NavBar from "./components/Navbar";
+import NavBar from "./components/Navbar/Navbar";
 import Login from "./pages/Login";
 import "dayjs/locale/es";
 import Signup from "./pages/Signup";
@@ -15,6 +15,7 @@ import StudentHome from "./pages/student/StudentHome";
 import TrainerHome from "./pages/trainer/TrainerHome";
 import Trainers from "./pages/admin/Trainers";
 import CreateTrainer from "./pages/admin/CreateTrainer";
+import { Toolbar } from "@mui/material";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -23,6 +24,7 @@ export const App = () => {
     <div>
       <NavBar />
       <Snackbar />
+      <Toolbar /> {/* <--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
