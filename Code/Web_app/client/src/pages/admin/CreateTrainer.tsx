@@ -4,29 +4,52 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { RegisterTrainerForm } from "../../types";
 import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 import { AxiosError } from "axios";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z
+  .object({
+    names: z.string().nonempty({ message: "Campo requerido" }),
+    lastNames: z.string().nonempty({ message: "Campo requerido" }),
+    email: z.string().email({ message: "Email inválido" }),
+    password: z.string().min(8, { message: "Mínimo 8 caracteres" }),
+    confirmPassword: z.string().nonempty({ message: "Campo requerido" }),
+    roles: z.array(z.string()).optional(),
+    experience: z.string().optional(),
+    weapon: z.string().optional(),
+    // pictureURL: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
+
+type RegisterTrainerForm = z.infer<typeof schema>;
 
 export default function CreateTrainer() {
   const { showSuccess } = useAlert();
-
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
-    watch,
     control,
-  } = useForm<RegisterTrainerForm>();
-
-  // TODO: add zod validation
+  } = useForm<RegisterTrainerForm>({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit: SubmitHandler<RegisterTrainerForm> = async (formData) => {
     try {
-      console.log(formData);
       formData.roles = ["trainer"];
       await axios.post("/dashboard/trainers", formData);
       showSuccess("Entrenador creado exitosamente");
@@ -50,7 +73,7 @@ export default function CreateTrainer() {
   return (
     <Container component="main" maxWidth="xs">
       <Box
-        mt={ {xs: 4, sm: 8} }
+        mt={{ xs: 4, sm: 8 }}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -74,7 +97,7 @@ export default function CreateTrainer() {
             id="names"
             label="Nombres"
             autoFocus
-            {...register("names", { required: "Campo requerido" })}
+            {...register("names")}
             error={!!errors.names}
             helperText={errors.names?.message}
           />
@@ -84,7 +107,7 @@ export default function CreateTrainer() {
             margin="normal"
             id="lastNames"
             label="Apellidos"
-            {...register("lastNames", { required: "Campo requerido" })}
+            {...register("lastNames")}
             error={!!errors.lastNames}
             helperText={errors.lastNames?.message}
           />
@@ -95,13 +118,7 @@ export default function CreateTrainer() {
             type="email"
             id="email"
             label="Email"
-            {...register("email", {
-              required: "Campo requerido",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "Email inválido",
-              },
-            })}
+            {...register("email")}
             error={!!errors.email}
             helperText={errors.email?.message}
           />
@@ -112,18 +129,7 @@ export default function CreateTrainer() {
             label="Contraseña"
             type="password"
             id="password"
-            {...register("password", {
-              required: "Campo requerido",
-              minLength: {
-                value: 8,
-                message: "Contraseña debe tener mínimo 8 caracteres",
-              },
-              maxLength: {
-                value: 20,
-                message: "Contraseña debe tener máximo 20 caracteres",
-              },
-              // TODO: add regex for password strength
-            })}
+            {...register("password")}
             error={!!errors.password}
             helperText={errors.password?.message}
           />
@@ -134,18 +140,11 @@ export default function CreateTrainer() {
             label="Confirmar Contraseña"
             type="password"
             id="confirm-password"
-            {...register("confirmPassword", {
-              required: "Campo requerido",
-              validate: (val: string) => {
-                if (watch("password") != val) {
-                  return "Las contraseñas no coinciden";
-                }
-              },
-            })}
+            {...register("confirmPassword")}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
           />
-          <TextField 
+          <TextField
             fullWidth
             margin="normal"
             multiline
@@ -155,7 +154,7 @@ export default function CreateTrainer() {
             defaultValue={""}
             {...register("experience")}
           />
-          <Controller 
+          <Controller
             name="weapon"
             defaultValue="espada"
             control={control}
@@ -168,9 +167,21 @@ export default function CreateTrainer() {
                   onChange={(e) => field.onChange(e.target.value)}
                   value={field.value}
                 >
-                  <FormControlLabel value="espada" control={<Radio />} label="Espada" />
-                  <FormControlLabel value="sable" control={<Radio />} label="Sable" />
-                  <FormControlLabel value="florete" control={<Radio />} label="Florete" />
+                  <FormControlLabel
+                    value="espada"
+                    control={<Radio />}
+                    label="Espada"
+                  />
+                  <FormControlLabel
+                    value="sable"
+                    control={<Radio />}
+                    label="Sable"
+                  />
+                  <FormControlLabel
+                    value="florete"
+                    control={<Radio />}
+                    label="Florete"
+                  />
                 </RadioGroup>
               </FormControl>
             )}
