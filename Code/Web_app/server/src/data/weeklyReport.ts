@@ -14,7 +14,7 @@ export async function findWeeklyReportById(id: number) {
     return weeklyReport;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllWeeklyReport() {
     return weeklyReport;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -41,7 +41,7 @@ export async function createWeeklyReport(data: WeeklyReport) {
     return weeklyReport;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -61,7 +61,7 @@ export async function updateWeeklyReportById(id: number, data: WeeklyReport) {
     return weeklyReport;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -75,6 +75,6 @@ export async function deleteWeeklyReportById(id: number) {
     return weeklyReport;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

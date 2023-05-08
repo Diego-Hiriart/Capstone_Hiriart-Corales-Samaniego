@@ -14,7 +14,7 @@ export async function findCycleFeedbackById(id: number) {
     return cycleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllCycleFeedback() {
     return cycleFeedback;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -42,7 +42,7 @@ export async function createCycleFeedback(data: CycleFeedback) {
     return cycleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -63,7 +63,7 @@ export async function updateCycleFeedbackById(id: number, data: CycleFeedback) {
     return cycleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -77,6 +77,6 @@ export async function deleteCycleFeedbackById(id: number) {
     return cycleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

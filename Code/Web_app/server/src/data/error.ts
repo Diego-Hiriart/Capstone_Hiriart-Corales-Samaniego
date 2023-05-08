@@ -14,7 +14,7 @@ export async function findErrorById(id: number) {
     return error;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllError() {
     return error;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -39,7 +39,7 @@ export async function createError(data: Error) {
     return error;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -57,7 +57,7 @@ export async function updateErrorById(id: number, data: Error) {
     return error;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -71,6 +71,6 @@ export async function deleteErrorById(id: number) {
     return error;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

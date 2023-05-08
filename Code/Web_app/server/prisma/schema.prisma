@@ -16,7 +16,7 @@ model User {
   password      String
   names         String         @db.VarChar(100)
   lastNames     String         @db.VarChar(100)
-  roles         String[]
+  roles         String[]       @default(["fencer"])
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   deletedAt     DateTime?

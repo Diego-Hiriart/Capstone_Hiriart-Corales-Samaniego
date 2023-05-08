@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "@prisma/client";
+import { Fencer, PrismaClient, Trainer, User } from "@prisma/client";
 
 import { errorLog } from "../utils/logs";
 
@@ -20,7 +20,7 @@ export async function findUserById(id: number) {
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -34,7 +34,7 @@ export async function findUserByEmail(email: string) {
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -44,7 +44,7 @@ export async function findAllUsers() {
     return users.map((user) => removePasswordInUser(user));
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -62,7 +62,102 @@ export async function createUser(data: User) {
     return user;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
+  }
+}
+
+export async function createUserAdmin(data: User) {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        names: data.names,
+        lastNames: data.lastNames,
+        roles: ["admin"],
+
+        administrator: {
+          create: {},
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    errorLog(error);
+    throw undefined;
+  }
+}
+
+export async function createUserTrainer(data: User & Trainer) {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        names: data.names,
+        lastNames: data.lastNames,
+        roles: ["trainer"],
+
+        trainer: {
+          create: {
+            experience: data.experience,
+            weapon: data.weapon,
+            pictureURL: data.pictureURL,
+          },
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    errorLog(error);
+    throw undefined;
+  }
+}
+
+export async function createUserFencer(data: User & Fencer) {
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        names: data.names,
+        lastNames: data.lastNames,
+        roles: ["fencer"],
+        fencer: {
+          create: {
+            trainingGroupID: data.trainingGroupID,
+            idNumber: data.idNumber,
+            emergencyPhone: data.emergencyPhone,
+            birthDate: data.birthDate,
+            bloodType: data.bloodType,
+            sex: data.sex,
+            laterality: data.laterality,
+            phone: data.phone,
+            insurance: data.insurance,
+            inscriptionDate: data.inscriptionDate,
+            startDate: data.startDate,
+            occupation: data.occupation,
+            schedule: data.schedule,
+            legalGuardian: data.legalGuardian,
+            leadSource: data.leadSource,
+            inscriptionReason: data.inscriptionReason,
+            height: data.height,
+            weight: data.weight,
+            physicalActivity: data.physicalActivity,
+            medicalFamily: data.medicalFamily,
+            medicalPersonal: data.medicalPersonal,
+            personalMedicalDetails: data.personalMedicalDetails,
+            weapon: data.weapon,
+            pictureURL: data.pictureURL,
+            guestName: data.guestName,
+          },
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    errorLog(error);
+    throw undefined;
   }
 }
 
@@ -79,7 +174,7 @@ export async function softDeleteUserById(id: number) {
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -100,6 +195,6 @@ export async function updateUserById(id: number, data: User) {
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

@@ -14,7 +14,7 @@ export async function findDailyPlanActivityById(id: number) {
     return dailyPlanActivity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllDailyPlanActivity() {
     return dailyPlanActivity;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -39,7 +39,7 @@ export async function createDailyPlanActivity(data: DailyPlanActivity) {
     return dailyPlanActivity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -60,7 +60,7 @@ export async function updateDailyPlanActivityById(
     return dailyPlanActivity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -74,6 +74,6 @@ export async function deleteDailyPlanActivityById(id: number) {
     return dailyPlanActivity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

@@ -14,7 +14,7 @@ export async function findSingleFeedbackById(id: number) {
     return singleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllSingleFeedback() {
     return singleFeedbacks;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -41,7 +41,7 @@ export async function createSingleFeedback(data: SingleFeedback) {
     return singleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -64,7 +64,7 @@ export async function updateSingleFeedbackById(
     return singleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -78,6 +78,6 @@ export async function deleteSingleFeedbackById(id: number) {
     return singleFeedback;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

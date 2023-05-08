@@ -14,7 +14,7 @@ export async function findDailyPlanById(id: number) {
     return dailyPlan;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllDailyPlan() {
     return dailyPlans;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -40,7 +40,7 @@ export async function createDailyPlan(data: DailyPlan) {
     return dailyPlan;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -59,7 +59,7 @@ export async function updateDailyPlanById(id: number, data: DailyPlan) {
     return dailyPlan;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -73,6 +73,6 @@ export async function deleteDailyPlanById(id: number) {
     return dailyPlan;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

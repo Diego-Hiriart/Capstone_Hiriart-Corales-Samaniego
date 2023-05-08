@@ -14,7 +14,7 @@ export async function findCycleGoalById(id: number) {
     return cycleGoal;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllCycleGoal() {
     return cycleGoal;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -42,7 +42,7 @@ export async function createCycleGoal(data: CycleGoal) {
     return cycleGoal;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -63,7 +63,7 @@ export async function updateCycleGoalById(id: number, data: CycleGoal) {
     return cycleGoal;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -77,6 +77,6 @@ export async function deleteCycleGoalById(id: number) {
     return cycleGoal;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

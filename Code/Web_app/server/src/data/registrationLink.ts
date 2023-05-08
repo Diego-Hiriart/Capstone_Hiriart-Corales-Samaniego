@@ -14,7 +14,7 @@ export async function findRegistrationLinkById(id: number) {
     return registrationLink;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllRegistrationLink() {
     return registrationLink;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -40,7 +40,7 @@ export async function createRegistrationLink(data: RegistrationLink) {
     return registrationLink;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -62,7 +62,7 @@ export async function updateRegistrationLinkById(
     return registrationLink;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -76,6 +76,6 @@ export async function deleteRegistrationLinkById(id: number) {
     return registrationLink;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

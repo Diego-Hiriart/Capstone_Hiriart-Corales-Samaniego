@@ -14,7 +14,7 @@ export async function findAITrainingById(id: number) {
     return aITraining;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllAITraining() {
     return aITraining;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -42,7 +42,7 @@ export async function createAITraining(data: AITraining) {
     return aITraining;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -63,7 +63,7 @@ export async function updateAITrainingById(id: number, data: AITraining) {
     return aITraining;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -77,6 +77,6 @@ export async function deleteAITrainingById(id: number) {
     return aITraining;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

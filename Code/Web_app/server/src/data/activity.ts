@@ -14,7 +14,7 @@ export async function findActivityById(id: number) {
     return activity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllActivity() {
     return activity;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -41,7 +41,7 @@ export async function createActivity(data: Activity) {
     return activity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -61,7 +61,7 @@ export async function updateActivityById(id: number, data: Activity) {
     return activity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -75,6 +75,6 @@ export async function deleteActivityById(id: number) {
     return activity;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

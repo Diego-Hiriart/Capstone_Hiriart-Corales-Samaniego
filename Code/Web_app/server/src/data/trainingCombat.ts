@@ -14,7 +14,7 @@ export async function findTrainingCombatById(id: number) {
     return trainingCombat;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllTrainingCombat() {
     return trainingCombat;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -43,7 +43,7 @@ export async function createTrainingCombat(data: TrainingCombat) {
     return trainingCombat;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -68,7 +68,7 @@ export async function updateTrainingCombatById(
     return trainingCombat;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -82,6 +82,6 @@ export async function deleteTrainingCombatById(id: number) {
     return trainingCombat;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
