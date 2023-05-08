@@ -24,7 +24,6 @@ const schema = z
     email: z.string().email({ message: "Email inválido" }),
     password: z.string().min(8, { message: "Mínimo 8 caracteres" }),
     confirmPassword: z.string().nonempty({ message: "Campo requerido" }),
-    roles: z.array(z.string()).optional(),
     experience: z.string().optional(),
     weapon: z.string().optional(),
     // pictureURL: z.string().optional(),
@@ -50,8 +49,7 @@ export default function CreateTrainer() {
 
   const onSubmit: SubmitHandler<RegisterTrainerForm> = async (formData) => {
     try {
-      formData.roles = ["trainer"];
-      await axios.post("/dashboard/trainers", formData);
+      await axios.post("/dashboard/user/trainer", {data: formData});
       showSuccess("Entrenador creado exitosamente");
     } catch (error) {
       if (error instanceof AxiosError) {

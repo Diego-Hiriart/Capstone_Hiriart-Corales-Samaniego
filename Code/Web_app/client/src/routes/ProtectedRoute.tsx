@@ -36,6 +36,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     checkToken().finally(() => setIsLoading(false));
   }, []);
 
+  // TODO: fix page flicker
   if (isLoading) return <h1>Loading...</h1>;
   return isAllowed ? <Outlet /> : <Navigate to="/unauthorized" replace />;
 };
