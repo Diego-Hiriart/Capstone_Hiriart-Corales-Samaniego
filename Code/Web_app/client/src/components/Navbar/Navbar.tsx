@@ -80,7 +80,7 @@ const NavBar = () => {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" }, mx: 2 }}>
             {Object.keys(navLinks).map((link) => (
-              <Button component={RouterLink} to={navLinks[link]}>
+              <Button key={link} component={RouterLink} to={navLinks[link]}>
                 {link}
               </Button>
             ))}
