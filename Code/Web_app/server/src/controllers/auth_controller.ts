@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { generateToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
+import { createUser } from "../data/user";
 
 const prisma = new PrismaClient();
 
@@ -26,7 +27,7 @@ export async function login(req: Request, res: Response) {
       })
       .status(200)
       .json({
-        user: req.body.user
+        user: req.body.user,
       });
   } catch (error) {
     errorLog(error);
@@ -54,6 +55,7 @@ export async function signup(req: Request, res: Response) {
         lastNames: req.body.lastNames,
         email: req.body.email,
         password: hash,
+        roles: ["fencer"],
       },
     });
 
