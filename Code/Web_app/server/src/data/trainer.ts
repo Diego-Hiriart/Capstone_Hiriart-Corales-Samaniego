@@ -17,7 +17,11 @@ export async function findTrainerById(id: number) {
 
 export async function findAllTrainer() {
   try {
-    const trainers = await prisma.trainer.findMany();
+    const trainers = await prisma.trainer.findMany({
+      include: {
+        user: true,
+      }
+    });
     return trainers;
   } catch (error) {
     throw error;

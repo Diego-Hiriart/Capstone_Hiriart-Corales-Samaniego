@@ -13,9 +13,10 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminHome from "./pages/admin/AdminHome";
 import FencerHome from "./pages/fencer/FencerHome";
 import TrainerHome from "./pages/trainer/TrainerHome";
-import Trainers from "./pages/admin/Trainers";
 import CreateTrainer from "./pages/admin/CreateTrainer";
 import { Toolbar } from "@mui/material";
+import TrainerList from "./pages/admin/TrainerList";
+import TrainerProfile from "./pages/trainer/TrainerProfile";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -37,8 +38,11 @@ export const App = () => {
         />
         <Route element={<ProtectedRoute allowedRoles={["admin"]}/>}>
           <Route path="admin" element={<AdminHome />} />
-          <Route path="trainers" element={<Trainers />}/>
-          <Route path="trainers/create" element={<CreateTrainer />} />
+          <Route path="trainer" element={<TrainerList />}/>
+          <Route path="trainer/create" element={<CreateTrainer />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]}/>}>
+          <Route path="trainer/:id" element={<TrainerProfile />}/>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["trainer"]}/>}>
           <Route path="trainer" element={<TrainerHome />} />
