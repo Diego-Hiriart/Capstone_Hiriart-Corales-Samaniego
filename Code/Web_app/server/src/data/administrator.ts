@@ -1,7 +1,5 @@
 import { Administrator, PrismaClient } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findAdminById(id: number) {
@@ -13,8 +11,7 @@ export async function findAdminById(id: number) {
     });
     return administrator;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllAdmin() {
     const administrator = await prisma.administrator.findMany();
     return administrator;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -37,8 +33,7 @@ export async function createAdmin(data: Administrator) {
     });
     return admin;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -54,7 +49,6 @@ export async function updateAdminById(id: number, data: Administrator) {
     });
     return admin;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

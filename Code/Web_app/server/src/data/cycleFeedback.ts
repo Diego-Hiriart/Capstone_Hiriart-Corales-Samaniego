@@ -1,7 +1,5 @@
 import { PrismaClient, CycleFeedback } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findCycleFeedbackById(id: number) {
@@ -13,8 +11,7 @@ export async function findCycleFeedbackById(id: number) {
     });
     return cycleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllCycleFeedback() {
     const cycleFeedback = await prisma.cycleFeedback.findMany();
     return cycleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -41,8 +37,7 @@ export async function createCycleFeedback(data: CycleFeedback) {
     });
     return cycleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -62,8 +57,7 @@ export async function updateCycleFeedbackById(id: number, data: CycleFeedback) {
     });
     return cycleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -76,7 +70,6 @@ export async function deleteCycleFeedbackById(id: number) {
     });
     return cycleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

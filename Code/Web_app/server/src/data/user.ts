@@ -1,7 +1,5 @@
 import { Fencer, PrismaClient, Trainer, User } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export function removePasswordInUser(user: User) {
@@ -19,8 +17,7 @@ export async function findUserById(id: number) {
     });
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -33,8 +30,7 @@ export async function findUserByEmail(email: string) {
     });
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -43,8 +39,7 @@ export async function findAllUsers() {
     const users = await prisma.user.findMany();
     return users.map((user) => removePasswordInUser(user));
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -61,8 +56,7 @@ export async function createUser(data: User) {
     });
     return user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -83,8 +77,7 @@ export async function createUserAdmin(data: User) {
     });
     return user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -109,8 +102,7 @@ export async function createUserTrainer(data: User & Trainer) {
     });
     return user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -156,8 +148,7 @@ export async function createUserFencer(data: User & Fencer) {
     });
     return user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -173,8 +164,7 @@ export async function softDeleteUserById(id: number) {
     });
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -194,7 +184,6 @@ export async function updateUserById(id: number, data: User) {
     });
     return user ? removePasswordInUser(user) : user;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

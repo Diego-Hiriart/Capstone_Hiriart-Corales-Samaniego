@@ -1,7 +1,5 @@
 import { PrismaClient, SingleFeedback } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findSingleFeedbackById(id: number) {
@@ -13,8 +11,7 @@ export async function findSingleFeedbackById(id: number) {
     });
     return singleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllSingleFeedback() {
     const singleFeedbacks = await prisma.singleFeedback.findMany();
     return singleFeedbacks;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -40,8 +36,7 @@ export async function createSingleFeedback(data: SingleFeedback) {
     });
     return singleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -63,8 +58,7 @@ export async function updateSingleFeedbackById(
     });
     return singleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -77,7 +71,6 @@ export async function deleteSingleFeedbackById(id: number) {
     });
     return singleFeedback;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

@@ -1,7 +1,5 @@
 import { PrismaClient, TrainingGroup } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findTrainingGroupById(id: number) {
@@ -13,8 +11,7 @@ export async function findTrainingGroupById(id: number) {
     });
     return trainingGroup;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllTrainingGroup() {
     const trainingGroups = await prisma.trainingGroup.findMany();
     return trainingGroups;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -38,8 +34,7 @@ export async function createTrainingGroup(data: TrainingGroup) {
     });
     return trainingGroup;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -56,8 +51,7 @@ export async function updateTrainingGroupById(id: number, data: TrainingGroup) {
     });
     return trainingGroup;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -70,7 +64,6 @@ export async function deleteTrainingGroupById(id: number) {
     });
     return trainingGroup;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

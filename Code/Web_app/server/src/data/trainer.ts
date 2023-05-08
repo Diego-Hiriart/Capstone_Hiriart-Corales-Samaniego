@@ -1,7 +1,5 @@
 import { PrismaClient, Trainer } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findTrainerById(id: number) {
@@ -13,8 +11,7 @@ export async function findTrainerById(id: number) {
     });
     return trainer;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllTrainer() {
     const trainers = await prisma.trainer.findMany();
     return trainers;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -40,8 +36,7 @@ export async function createTrainer(data: Trainer) {
     });
     return trainer;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -60,7 +55,6 @@ export async function updateTrainerById(id: number, data: Trainer) {
     });
     return trainer;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

@@ -1,7 +1,5 @@
 import { PrismaClient, ActivityType } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findActivityTypeById(id: number) {
@@ -13,8 +11,7 @@ export async function findActivityTypeById(id: number) {
     });
     return activityType;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllActivityType() {
     const activityType = await prisma.activity.findMany();
     return activityType;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -37,8 +33,7 @@ export async function createActivityType(data: ActivityType) {
     });
     return activityType;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -54,8 +49,7 @@ export async function updateActivityTypeById(id: number, data: ActivityType) {
     });
     return activityType;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -68,7 +62,6 @@ export async function deleteActivityTypeById(id: number) {
     });
     return activityType;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

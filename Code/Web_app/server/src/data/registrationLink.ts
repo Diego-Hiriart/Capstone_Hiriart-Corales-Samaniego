@@ -1,7 +1,5 @@
 import { PrismaClient, RegistrationLink } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findRegistrationLinkById(id: number) {
@@ -13,8 +11,7 @@ export async function findRegistrationLinkById(id: number) {
     });
     return registrationLink;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllRegistrationLink() {
     const registrationLink = await prisma.registrationLink.findMany();
     return registrationLink;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -39,8 +35,7 @@ export async function createRegistrationLink(data: RegistrationLink) {
     });
     return registrationLink;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -61,8 +56,7 @@ export async function updateRegistrationLinkById(
     });
     return registrationLink;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -75,7 +69,6 @@ export async function deleteRegistrationLinkById(id: number) {
     });
     return registrationLink;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

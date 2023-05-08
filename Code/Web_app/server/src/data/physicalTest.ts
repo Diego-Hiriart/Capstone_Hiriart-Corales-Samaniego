@@ -1,7 +1,5 @@
 import { PrismaClient, PhysicalTest } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findPhysicalTestById(id: number) {
@@ -13,8 +11,7 @@ export async function findPhysicalTestById(id: number) {
     });
     return physicalTest;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllPhysicalTest() {
     const physicalTest = await prisma.physicalTest.findMany();
     return physicalTest;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -40,8 +36,7 @@ export async function createPhysicalTest(data: PhysicalTest) {
     });
     return physicalTest;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -60,8 +55,7 @@ export async function updatePhysicalTestById(id: number, data: PhysicalTest) {
     });
     return physicalTest;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -74,7 +68,6 @@ export async function deletePhysicalTestById(id: number) {
     });
     return physicalTest;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
