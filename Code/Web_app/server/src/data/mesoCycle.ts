@@ -14,7 +14,7 @@ export async function findMesoCycleById(id: number) {
     return mesoCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllMesoCycle() {
     return mesoCycle;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -47,7 +47,7 @@ export async function createMesoCycle(data: MesoCycle) {
     return mesoCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -73,7 +73,7 @@ export async function updateMesoCycleById(id: number, data: MesoCycle) {
     return mesoCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -87,6 +87,6 @@ export async function deleteMesoCycleById(id: number) {
     return mesoCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

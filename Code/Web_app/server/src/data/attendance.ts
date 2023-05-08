@@ -14,7 +14,7 @@ export async function findAttendanceById(id: number) {
     return attendance;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllAttendance() {
     return attendance;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -40,7 +40,7 @@ export async function createAttendance(data: Attendance) {
     return attendance;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -59,7 +59,7 @@ export async function updateAttendanceById(id: number, data: Attendance) {
     return attendance;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -73,6 +73,6 @@ export async function deleteAttendanceById(id: number) {
     return attendance;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

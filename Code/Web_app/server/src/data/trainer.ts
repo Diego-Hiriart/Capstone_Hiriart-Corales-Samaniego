@@ -14,7 +14,7 @@ export async function findTrainerById(id: number) {
     return trainer;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllTrainer() {
     return trainers;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -36,13 +36,12 @@ export async function createTrainer(data: Trainer) {
         experience: data.experience,
         weapon: data.weapon,
         pictureURL: data.pictureURL,
-        guestName: data.guestName,
       },
     });
     return trainer;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -57,12 +56,11 @@ export async function updateTrainerById(id: number, data: Trainer) {
         experience: data.experience || undefined,
         weapon: data.weapon || undefined,
         pictureURL: data.pictureURL || undefined,
-        guestName: data.guestName || undefined,
       },
     });
     return trainer;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

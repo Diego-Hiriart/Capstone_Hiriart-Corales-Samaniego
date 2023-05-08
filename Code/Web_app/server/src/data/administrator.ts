@@ -14,7 +14,7 @@ export async function findAdminById(id: number) {
     return administrator;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllAdmin() {
     return administrator;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -38,7 +38,7 @@ export async function createAdmin(data: Administrator) {
     return admin;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -55,6 +55,6 @@ export async function updateAdminById(id: number, data: Administrator) {
     return admin;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

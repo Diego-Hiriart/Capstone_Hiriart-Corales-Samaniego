@@ -14,7 +14,7 @@ export async function findFencerById(id: number) {
     return fencer;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllFencer() {
     return fencers;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -62,7 +62,7 @@ export async function createFencer(data: Fencer) {
     return fencer;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -103,6 +103,6 @@ export async function updateFencerById(id: number, data: Fencer) {
     return fencer;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

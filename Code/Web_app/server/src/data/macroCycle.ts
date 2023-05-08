@@ -14,7 +14,7 @@ export async function findMacroCycleById(id: number) {
     return macroCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllMacroCycle() {
     return macroCycle;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -42,7 +42,7 @@ export async function createMacroCycle(data: MacroCycle) {
     return macroCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -63,7 +63,7 @@ export async function updateMacroCycleById(id: number, data: MacroCycle) {
     return macroCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -77,6 +77,6 @@ export async function deleteMacroCycleById(id: number) {
     return macroCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

@@ -14,7 +14,7 @@ export async function findTrainingErrorById(id: number) {
     return trainingError;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllTrainingError() {
     return trainingError;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -40,7 +40,7 @@ export async function createTrainingError(data: TrainingError) {
     return trainingError;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -59,7 +59,7 @@ export async function updateTrainingErrorById(id: number, data: TrainingError) {
     return trainingError;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -73,6 +73,6 @@ export async function deleteTrainingErrorById(id: number) {
     return trainingError;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

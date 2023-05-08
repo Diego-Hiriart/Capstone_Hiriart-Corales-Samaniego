@@ -14,7 +14,7 @@ export async function findPhysicalTestById(id: number) {
     return physicalTest;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllPhysicalTest() {
     return physicalTest;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -41,7 +41,7 @@ export async function createPhysicalTest(data: PhysicalTest) {
     return physicalTest;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -61,7 +61,7 @@ export async function updatePhysicalTestById(id: number, data: PhysicalTest) {
     return physicalTest;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -75,6 +75,6 @@ export async function deletePhysicalTestById(id: number) {
     return physicalTest;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

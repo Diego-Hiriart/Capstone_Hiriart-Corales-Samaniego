@@ -14,7 +14,7 @@ export async function findMicroCycleById(id: number) {
     return microCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllMicroCycle() {
     return microCycles;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -52,7 +52,7 @@ export async function createMicroCycle(data: MicroCycle) {
     return microCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -83,7 +83,7 @@ export async function updateMicroCycleById(id: number, data: MicroCycle) {
     return microCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -97,6 +97,6 @@ export async function deleteMicroCycleById(id: number) {
     return microCycle;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }

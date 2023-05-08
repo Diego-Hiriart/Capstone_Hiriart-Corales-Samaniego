@@ -14,7 +14,7 @@ export async function findTrainingGroupById(id: number) {
     return trainingGroup;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -24,7 +24,7 @@ export async function findAllTrainingGroup() {
     return trainingGroups;
   } catch (error) {
     errorLog(error);
-    return [];
+    throw [];
   }
 }
 
@@ -39,7 +39,7 @@ export async function createTrainingGroup(data: TrainingGroup) {
     return trainingGroup;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -57,7 +57,7 @@ export async function updateTrainingGroupById(id: number, data: TrainingGroup) {
     return trainingGroup;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
 
@@ -71,6 +71,6 @@ export async function deleteTrainingGroupById(id: number) {
     return trainingGroup;
   } catch (error) {
     errorLog(error);
-    return undefined;
+    throw undefined;
   }
 }
