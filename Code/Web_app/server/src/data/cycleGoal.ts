@@ -1,7 +1,5 @@
 import { PrismaClient, CycleGoal } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findCycleGoalById(id: number) {
@@ -13,8 +11,7 @@ export async function findCycleGoalById(id: number) {
     });
     return cycleGoal;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllCycleGoal() {
     const cycleGoal = await prisma.cycleGoal.findMany();
     return cycleGoal;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -41,8 +37,7 @@ export async function createCycleGoal(data: CycleGoal) {
     });
     return cycleGoal;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -62,8 +57,7 @@ export async function updateCycleGoalById(id: number, data: CycleGoal) {
     });
     return cycleGoal;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -76,7 +70,6 @@ export async function deleteCycleGoalById(id: number) {
     });
     return cycleGoal;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

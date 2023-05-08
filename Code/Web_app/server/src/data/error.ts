@@ -1,7 +1,5 @@
 import { PrismaClient, Error } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findErrorById(id: number) {
@@ -13,8 +11,7 @@ export async function findErrorById(id: number) {
     });
     return error;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllError() {
     const error = await prisma.error.findMany();
     return error;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -38,8 +34,7 @@ export async function createError(data: Error) {
     });
     return error;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -56,8 +51,7 @@ export async function updateErrorById(id: number, data: Error) {
     });
     return error;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -70,7 +64,6 @@ export async function deleteErrorById(id: number) {
     });
     return error;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

@@ -1,7 +1,5 @@
 import { PrismaClient, Fencer } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findFencerById(id: number) {
@@ -13,8 +11,7 @@ export async function findFencerById(id: number) {
     });
     return fencer;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllFencer() {
     const fencers = await prisma.fencer.findMany();
     return fencers;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -61,8 +57,7 @@ export async function createFencer(data: Fencer) {
     });
     return fencer;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -102,7 +97,6 @@ export async function updateFencerById(id: number, data: Fencer) {
     });
     return fencer;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

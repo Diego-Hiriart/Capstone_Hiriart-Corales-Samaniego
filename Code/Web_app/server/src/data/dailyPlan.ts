@@ -1,7 +1,5 @@
 import { PrismaClient, DailyPlan } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findDailyPlanById(id: number) {
@@ -13,8 +11,7 @@ export async function findDailyPlanById(id: number) {
     });
     return dailyPlan;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllDailyPlan() {
     const dailyPlans = await prisma.dailyPlan.findMany();
     return dailyPlans;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -39,8 +35,7 @@ export async function createDailyPlan(data: DailyPlan) {
     });
     return dailyPlan;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -58,8 +53,7 @@ export async function updateDailyPlanById(id: number, data: DailyPlan) {
     });
     return dailyPlan;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -72,7 +66,6 @@ export async function deleteDailyPlanById(id: number) {
     });
     return dailyPlan;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

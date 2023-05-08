@@ -1,7 +1,5 @@
 import { PrismaClient, WeeklyReport } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findWeeklyReportById(id: number) {
@@ -13,8 +11,7 @@ export async function findWeeklyReportById(id: number) {
     });
     return weeklyReport;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllWeeklyReport() {
     const weeklyReport = await prisma.weeklyReport.findMany();
     return weeklyReport;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -40,8 +36,7 @@ export async function createWeeklyReport(data: WeeklyReport) {
     });
     return weeklyReport;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -60,8 +55,7 @@ export async function updateWeeklyReportById(id: number, data: WeeklyReport) {
     });
     return weeklyReport;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -74,7 +68,6 @@ export async function deleteWeeklyReportById(id: number) {
     });
     return weeklyReport;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

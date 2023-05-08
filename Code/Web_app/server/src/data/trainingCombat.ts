@@ -1,7 +1,5 @@
 import { PrismaClient, TrainingCombat } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findTrainingCombatById(id: number) {
@@ -13,8 +11,7 @@ export async function findTrainingCombatById(id: number) {
     });
     return trainingCombat;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllTrainingCombat() {
     const trainingCombat = await prisma.trainingCombat.findMany();
     return trainingCombat;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -42,8 +38,7 @@ export async function createTrainingCombat(data: TrainingCombat) {
     });
     return trainingCombat;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -67,8 +62,7 @@ export async function updateTrainingCombatById(
     });
     return trainingCombat;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -81,7 +75,6 @@ export async function deleteTrainingCombatById(id: number) {
     });
     return trainingCombat;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

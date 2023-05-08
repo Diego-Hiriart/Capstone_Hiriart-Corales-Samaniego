@@ -1,6 +1,4 @@
-import { Attendance, PrismaClient } from '@prisma/client';
-
-import { errorLog } from '../utils/logs';
+import { Attendance, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -13,8 +11,7 @@ export async function findAttendanceById(id: number) {
     });
     return attendance;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllAttendance() {
     const attendance = await prisma.attendance.findMany();
     return attendance;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -39,8 +35,7 @@ export async function createAttendance(data: Attendance) {
     });
     return attendance;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -58,8 +53,7 @@ export async function updateAttendanceById(id: number, data: Attendance) {
     });
     return attendance;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -72,7 +66,6 @@ export async function deleteAttendanceById(id: number) {
     });
     return attendance;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

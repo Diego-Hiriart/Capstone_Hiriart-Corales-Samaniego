@@ -1,7 +1,5 @@
 import { PrismaClient, MicroCycle } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findMicroCycleById(id: number) {
@@ -13,8 +11,7 @@ export async function findMicroCycleById(id: number) {
     });
     return microCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllMicroCycle() {
     const microCycles = await prisma.microCycle.findMany();
     return microCycles;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -51,8 +47,7 @@ export async function createMicroCycle(data: MicroCycle) {
     });
     return microCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -82,8 +77,7 @@ export async function updateMicroCycleById(id: number, data: MicroCycle) {
     });
     return microCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -96,7 +90,6 @@ export async function deleteMicroCycleById(id: number) {
     });
     return microCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }

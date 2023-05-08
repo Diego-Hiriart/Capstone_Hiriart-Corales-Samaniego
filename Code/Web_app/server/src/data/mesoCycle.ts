@@ -1,7 +1,5 @@
 import { PrismaClient, MesoCycle } from "@prisma/client";
 
-import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 export async function findMesoCycleById(id: number) {
@@ -13,8 +11,7 @@ export async function findMesoCycleById(id: number) {
     });
     return mesoCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -23,8 +20,7 @@ export async function findAllMesoCycle() {
     const mesoCycle = await prisma.mesoCycle.findMany();
     return mesoCycle;
   } catch (error) {
-    errorLog(error);
-    throw [];
+    throw error;
   }
 }
 
@@ -46,8 +42,7 @@ export async function createMesoCycle(data: MesoCycle) {
     });
     return mesoCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -72,8 +67,7 @@ export async function updateMesoCycleById(id: number, data: MesoCycle) {
     });
     return mesoCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
 
@@ -86,7 +80,6 @@ export async function deleteMesoCycleById(id: number) {
     });
     return mesoCycle;
   } catch (error) {
-    errorLog(error);
-    throw undefined;
+    throw error;
   }
 }
