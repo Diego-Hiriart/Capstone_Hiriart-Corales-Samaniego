@@ -1,11 +1,11 @@
 name: CI
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
 
 jobs:
-  build:
+  build_server:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,3 +23,22 @@ jobs:
     - name: Run tests
       run: yarn test
       working-directory: Code/Web_app/server
+      
+  build_client:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: install dependencies
+      run: yarn install
+      working-directory: Code/Web_app/client
+    - name: Run tests
+      run: yarn test
+      working-directory: Code/Web_app/client
