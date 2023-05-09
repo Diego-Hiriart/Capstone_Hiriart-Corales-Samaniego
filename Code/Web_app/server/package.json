@@ -38,6 +38,9 @@
     "migrate": "prisma migrate dev",
     "test": "jest",
     "lint": "eslint . --ext .ts",
-    "lint-fix": "eslint . --ext .ts --fix"
+    "lint-fix": "eslint . --ext .ts --fix",
+    "env-win": "copy .env.example .env",
+    "env-lin": "cp .env.example .env",
+    "setup": "yarn install && prisma generate && yarn migrate"
   }
 }
