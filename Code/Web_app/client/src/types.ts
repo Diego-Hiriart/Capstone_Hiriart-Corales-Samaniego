@@ -22,3 +22,12 @@ export interface User {
   createdAt: Date;
   updatedAt: Date | null;
 }
+
+export interface Trainer {
+  trainerID: number;
+  userID: number;
+  experience: string;
+  weapon: string;
+  pictureURL: string;
+  user: User;
+}

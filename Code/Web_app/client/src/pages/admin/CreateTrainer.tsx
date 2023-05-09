@@ -51,6 +51,7 @@ export default function CreateTrainer() {
     try {
       await axios.post("/dashboard/user/trainer", {data: formData});
       showSuccess("Entrenador creado exitosamente");
+      // TODO: redirect to trainers list
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
@@ -67,6 +68,8 @@ export default function CreateTrainer() {
       }
     }
   };
+
+  // TODO: add root error component
 
   return (
     <Container component="main" maxWidth="xs">

@@ -13,16 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { Link as RouterLink } from "react-router-dom";
-import { User } from "../../types";
-
-interface Trainer {
-  trainerID: number;
-  userID: number;
-  experience: string;
-  weapon: string;
-  pictureURL: string;
-  user: User;
-}
+import { Trainer } from "../../types";
 
 const TrainerList = () => {
   const [trainers, setTrainers] = useState<Trainer[]>(null!);
@@ -55,11 +46,11 @@ const TrainerList = () => {
         </Box>
         <List sx={{ mt: 1 }}>
           {trainers?.map((trainer) => (
-            <ListItem key={trainer.userID} disablePadding>
+            <ListItem key={trainer.trainerID} disablePadding>
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={String(trainer.userID)}
+                to={String(trainer.trainerID)}
               >
                 <ListItemAvatar>
                   <Avatar></Avatar>
