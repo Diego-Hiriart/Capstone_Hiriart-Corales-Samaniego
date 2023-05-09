@@ -17,8 +17,8 @@ import { verifyRole } from "../../middlewares/roles_middlewares";
 const router = Router();
 
 router.get("/user/me", getOwnUser);
-router.get("/user/:email", verifyRole(["admin", "trainer"]), getUserByEmail);
 router.get("/user/:id", verifyRole(["admin", "trainer"]), getUserById);
+router.get("/user/:email", verifyRole(["admin", "trainer"]), getUserByEmail); // TODO: this route gets shadowed by the one above
 router.get("/user/", verifyRole(["admin", "trainer"]), getAllUsers);
 
 router.put("/user/:id", verifyRole(["admin", "trainer"]), updateUser);
