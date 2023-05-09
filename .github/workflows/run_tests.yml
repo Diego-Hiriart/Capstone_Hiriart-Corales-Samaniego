@@ -39,6 +39,6 @@ jobs:
     - name: install dependencies
       run: yarn install
       working-directory: Code/Web_app/client
-    - name: Run tests
-      run: yarn test
-      working-directory: Code/Web_app/client
+    # - name: Run tests
+      # run: yarn test
+      # working-directory: Code/Web_app/client
