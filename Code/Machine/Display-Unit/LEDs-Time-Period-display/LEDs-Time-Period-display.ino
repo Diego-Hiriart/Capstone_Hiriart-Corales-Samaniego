@@ -19,7 +19,7 @@ const uint8_t csPin = 10;          //CPI CS for matrix 1
 const uint8_t maxFC16Devices = 4;  //Number of MAX7219 ICs in an FC16 module
 const String messageStartDelimiter = "s";
 const String messageEndDelimiter = "e\n";
-const uint8_t messageLength = 39;  //38 chars and \n
+const uint8_t messageLength = 37;  //36 chars and \n
 
 const MD_MAX72XX::moduleType_t FC16Hardware = MD_MAX72XX::FC16_HW;  //Generic hardware type for score display
 
@@ -29,7 +29,6 @@ MD_Parola timerDisplay = MD_Parola(FC16Hardware, csPin, maxFC16Devices);
 //Variables for read values
 uint32_t periodTime = 0;
 uint8_t paused = 0;
-uint8_t editing = 0;
 uint8_t period = 1;
 uint8_t yelCardL = 0;
 uint8_t redCardL = 0;
@@ -83,7 +82,7 @@ void setup() {
   timerDisplay.setIntensity(12);  //Set display intensity
   timerDisplay.displayClear(0);   //Clear the display
   timerDisplay.setTextAlignment(PA_CENTER);
-  timerDisplay.print("00:00");  //Display 0 time
+  timerDisplay.print("");  //Display 0 time
 }
 
 void loop() {
@@ -100,8 +99,8 @@ void loop() {
 
 void serialReceive() {
   /*Read string like:
-  * start;time(in ms);paused;editingTime;period;leftYellow;leftRed;rightYellow;rightRed;leftPriority;rightPriority;autoPoints;machineBlocked;buzzerPattern;end\n
-  * e.g. (1.5 used minutes): s;0000090000;0;0;2;1;1;1;0;0;0;1;0;3;e\n
+  * start;time(in ms);paused;period;leftYellow;leftRed;rightYellow;rightRed;leftPriority;rightPriority;autoPoints;machineBlocked;buzzerPattern;end\n
+  * e.g. (1.5 used minutes): s;0000090000;0;2;1;1;1;0;0;0;1;0;3;e\n
   */
   if (Serial.available() >= messageLength) {
     String esp32Message = "";
@@ -115,26 +114,24 @@ void serialReceive() {
       readValue = esp32Message.substring(13, 14);
       paused = readValue.toInt();
       readValue = esp32Message.substring(15, 16);
-      editing = readValue.toInt();
-      readValue = esp32Message.substring(17, 18);
       period = readValue.toInt();
-      readValue = esp32Message.substring(19, 20);
+      readValue = esp32Message.substring(17, 18);
       yelCardL = readValue.toInt();
-      readValue = esp32Message.substring(21, 22);
+      readValue = esp32Message.substring(19, 20);
       redCardL = readValue.toInt();
-      readValue = esp32Message.substring(23, 24);
+      readValue = esp32Message.substring(21, 22);
       yelCardR = readValue.toInt();
-      readValue = esp32Message.substring(25, 26);
+      readValue = esp32Message.substring(23, 24);
       redCardR = readValue.toInt();
-      readValue = esp32Message.substring(27, 28);
+      readValue = esp32Message.substring(25, 26);
       leftPriority = readValue.toInt();
-      readValue = esp32Message.substring(29, 30);
+      readValue = esp32Message.substring(27, 28);
       rightPriority = readValue.toInt();
-      readValue = esp32Message.substring(31, 32);
+      readValue = esp32Message.substring(29, 30);
       automaticPoints = readValue.toInt();
-      readValue = esp32Message.substring(33, 34);
+      readValue = esp32Message.substring(31, 32);
       blockedMachine = readValue.toInt();
-      readValue = esp32Message.substring(35, 36);
+      readValue = esp32Message.substring(33, 34);
       buzzerPattern = readValue.toInt();
     }
   }
@@ -145,32 +142,27 @@ void periodTimeDisplay() {
   * and with hundreds of a second when paused, as per FIE Material Rules 
   * November 2022 m.51.8 https://static.fie.org/uploads/31/155253-book%20m%20ang.pdf*/
   String displayTime = "";
-  if (!editing) {
-    if (periodTime > 10000) {  //Over 10 seconds left
-      String timerMinutes = String((int)periodTime / 60000);
-      String timerSeconds = String((int)periodTime % 60000 / 1000);
-      if (timerMinutes.length() < 2) {
-        timerMinutes = "0" + timerMinutes;
-      }
-      if (timerSeconds.length() < 2) {
-        timerSeconds = "0" + timerSeconds;
-      }
-      displayTime = timerMinutes + ":" + timerSeconds;
-    } else {  //10 s or less left
-      String timerSeconds = String((int)periodTime / 1000);
-      String timerTenths = String((int)periodTime % 1000 / 100);
-      displayTime = timerSeconds + "." + timerTenths;
-      if (paused) {
-        String timerHundredths = String((int)periodTime % 1000 % 100 / 10);
-        displayTime = displayTime + timerHundredths;
-      }
+  if (periodTime > 10000) {  //Over 10 seconds left
+    String timerMinutes = String((uint32_t)periodTime / 60000);
+    String timerSeconds = String((uint32_t)periodTime % 60000 / 1000);
+    while (timerMinutes.length() < 2) {
+      timerMinutes = "0" + timerMinutes;
     }
-  } else {
-    String timerMinutes = String((int)periodTime / 60000);
-    String timerSeconds = String((int)periodTime % 60000 / 1000);
-    String timerTenths = String((int)periodTime % 1000 / 100);
-    String timerHundredths = String((int)periodTime % 1000 % 100 / 10);
-    displayTime = timerMinutes + ":" + timerSeconds + "." + timerTenths + timerHundredths;
+    while (timerSeconds.length() < 2) {
+      timerSeconds = "0" + timerSeconds;
+    }
+    displayTime = timerMinutes + ":" + timerSeconds;
+  } else {  //10 s or less left
+    String timerSeconds = String((uint32_t)periodTime / 1000);
+    String timerTenths = String((uint32_t)periodTime % 1000 / 100);
+    while (timerSeconds.length() < 2) {
+      timerSeconds = "0" + timerSeconds;
+    }
+    displayTime = timerSeconds + "." + timerTenths;
+    if (paused) {
+      String timerHundredths = String((uint32_t)periodTime % 1000 % 100 / 10);
+      displayTime = displayTime + timerHundredths;
+    }
   }
   timerDisplay.print(displayTime);
 }
