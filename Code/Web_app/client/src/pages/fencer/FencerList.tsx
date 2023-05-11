@@ -14,9 +14,19 @@ import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { Link as RouterLink } from "react-router-dom";
 import { Fencer } from "../../types";
+import FencerCreateDialog from "./FencerCreateDialog";
 
 const FencerList = () => {
   const [fencers, setFencers] = useState<Fencer[]>(null!);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchFencers = async () => {
@@ -40,7 +50,7 @@ const FencerList = () => {
           <Typography variant="h1" alignSelf="start">
             Fencers
           </Typography>
-          <Button component={RouterLink} to="create" variant="contained">
+          <Button variant="contained" onClick={handleOpen}>
             Crear nuevo
           </Button>
         </Box>
@@ -64,6 +74,7 @@ const FencerList = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
+      <FencerCreateDialog open={open} handleClose={handleClose} />
     </Container>
   );
 };
