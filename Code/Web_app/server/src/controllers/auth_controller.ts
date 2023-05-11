@@ -5,7 +5,6 @@ import { PrismaClient } from "@prisma/client";
 
 import { generateToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
-import { createUser } from "../data/user";
 
 const prisma = new PrismaClient();
 

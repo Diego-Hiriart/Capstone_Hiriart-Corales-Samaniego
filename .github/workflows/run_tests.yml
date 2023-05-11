@@ -5,12 +5,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build_server:
+  build_server_lint_test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18.x]
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
@@ -19,6 +18,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: install dependencies
       run: yarn install
+      working-directory: Code/Web_app/server
+    - name: Run linter
+      run: yarn lint
       working-directory: Code/Web_app/server
     - name: Run tests
       run: yarn test
@@ -29,7 +31,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}

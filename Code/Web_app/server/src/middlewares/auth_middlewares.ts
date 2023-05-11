@@ -38,10 +38,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
     if (token === undefined)
       throw new Error("Couldn't verify token: Token does not exist");
 
-    jwt.verify(token, jwtSecret, (error: any, user: any) => {
-      if (error) throw error;
-      req.body.user = user;
-    });
+    req.body.user = jwt.verify(token, jwtSecret);
 
     next();
   } catch (error) {

@@ -18,7 +18,7 @@ import { Prisma } from "@prisma/client";
 export async function getOwnUser(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await findUserById(Number(req.body.user.userID)), //Q: porque cambio a req.body.id?
+      data: await findUserById(Number(req.body.user.userID)),
     });
   } catch (error) {
     errorLog(error);
