@@ -2,7 +2,8 @@
 // Made with https://pjrp.github.io/MDParolaFontEditor
 // First digit is the character's width, the the hex values for the matrixes in decimal
 // Data file for numeric scoreboard fonts
-#pragma once
+#ifndef HCS_Font_Data_h
+#define HCS_Font_Data_h
 
 MD_MAX72XX::fontType_t Width8NumsLower[] PROGMEM = 
 {
@@ -33,3 +34,5 @@ MD_MAX72XX::fontType_t Width8NumsUpper[] PROGMEM =
 	8, 255, 255, 131, 131, 131, 255, 255, 0, 	// 184 - '8' upper
 	8, 255, 255, 131, 131, 131, 255, 255, 0, 	// 185 - '9' upper
 };
+
+#endif
