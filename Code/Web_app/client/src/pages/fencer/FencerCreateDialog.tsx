@@ -123,7 +123,7 @@ export default function CreateTrainerDialog({open, handleClose}: CreateTrainerDi
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Registrarse
+                Crear Esgrimista
               </Button>
               <Button fullWidth variant="outlined" onClick={handleClose}>Cancelar</Button>
             </Box>

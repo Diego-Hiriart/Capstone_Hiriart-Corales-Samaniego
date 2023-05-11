@@ -6,7 +6,7 @@ const users = [
     password: "password123",
     names: "Patricio",
     lastNames: "Estrella",
-    roles: ["student"],
+    roles: ["fencer"],
   },
   {
     email: "mscott@gmail.com",
