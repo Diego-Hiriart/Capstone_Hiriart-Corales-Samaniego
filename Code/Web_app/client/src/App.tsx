@@ -13,7 +13,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminHome from "./pages/admin/AdminHome";
 import FencerHome from "./pages/fencer/FencerHome";
 import TrainerHome from "./pages/trainer/TrainerHome";
-import CreateTrainer from "./pages/trainer/CreateTrainer";
+import CreateTrainer from "./pages/trainer/TrainerCreate";
 import { Toolbar } from "@mui/material";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
