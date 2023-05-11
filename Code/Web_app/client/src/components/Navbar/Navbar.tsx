@@ -27,9 +27,11 @@ declare module "@mui/material/AppBar" {
 const drawerWidth = 240;
 
 const navItems = (roles: string[] | undefined) => {
+  // Label: path object
   let items: Record<string, string> = {};
   if (roles?.includes("admin")) {
     items["Entrenadores"] = "trainer";
+    items["Esgrimistas"] = "fencer";
   }
   if (roles?.includes("trainer")) {
     items["Esgrimistas"] = "fencers";

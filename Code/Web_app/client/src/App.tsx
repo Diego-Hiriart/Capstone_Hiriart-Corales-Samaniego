@@ -17,6 +17,7 @@ import CreateTrainer from "./pages/trainer/CreateTrainer";
 import { Toolbar } from "@mui/material";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
+import FencerList from "./pages/fencer/FencerList";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -43,6 +44,7 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]}/>}>
           <Route path="trainer/:id" element={<TrainerProfile />}/>
+          <Route path="fencer" element={<FencerList />}/>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["trainer"]}/>}>
           <Route path="trainer" element={<TrainerHome />} />
