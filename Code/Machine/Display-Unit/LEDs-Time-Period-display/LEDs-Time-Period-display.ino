@@ -1,3 +1,4 @@
+//Hiriart Corales Samaniego
 #include <MD_Parola.h>
 #include <MD_MAX72xx.h>
 #include <SPI.h>
@@ -14,12 +15,24 @@ const uint8_t leftPriorityPin = A0;
 const uint8_t rightYellowPin = A1;
 const uint8_t rightRedPin = A2;
 const uint8_t rightPriorityPin = A3;
-const uint8_t buzzerPin = A4;
+const uint8_t buzzerPin = A4;      //Active buzzer (not passive), does not need resistor or tone()
 const uint8_t csPin = 10;          //CPI CS for matrix 1
 const uint8_t maxFC16Devices = 4;  //Number of MAX7219 ICs in an FC16 module
 const String messageStartDelimiter = "s";
 const String messageEndDelimiter = "e\n";
 const uint8_t messageLength = 37;  //36 chars and \n
+//Buzzer patterns
+const uint8_t longBeep[] = { 1, 1, 1, 1, 1, 1, 1, 1 };
+const uint8_t oneBeep[] = { 1, 1, 1, 1 };
+const uint8_t twoBeeps[] = { 1, 1, 1, 0, 1, 1, 1 };
+const uint8_t threeBeeps[] = { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1 };
+const uint8_t sixBeeps[] = { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1 };
+const uint8_t emptyPattern[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+//How many milis each buzz lasts
+const uint8_t buzzDuration = 600;
+uint32_t lastTime = 0;
+//Pattern is currently playing or not
+bool soundAlertPlaying = false;
 
 const MD_MAX72XX::moduleType_t FC16Hardware = MD_MAX72XX::FC16_HW;  //Generic hardware type for score display
 
@@ -39,6 +52,8 @@ uint8_t rightPriority = 0;
 uint8_t automaticPoints = 0;
 uint8_t blockedMachine = 0;
 uint8_t buzzerPattern = 0;
+uint8_t currentBuzzPattern[25];
+uint8_t currentPatternIndex = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -205,6 +220,55 @@ void blockedDisplay() {
   digitalWrite(blockedLEDPin, blockedMachine);
 }
 
+void setBuzzerPattern() {
+  /*Read buzzerPattern value and asign an array size, this will be used to read 
+  * the header file's arrays and make sounds*/
+  memcpy(currentBuzzPattern, emptyPattern, sizeof(emptyPattern));  //empty the array first
+  switch (buzzerPattern) {
+    case 1:
+      memcpy(currentBuzzPattern, longBeep, sizeof(longBeep));
+      break;
+    case 2:
+      memcpy(currentBuzzPattern, oneBeep, sizeof(oneBeep));
+      break;
+    case 3:
+      memcpy(currentBuzzPattern, twoBeeps, sizeof(twoBeeps));
+      break;
+    case 4:
+      memcpy(currentBuzzPattern, threeBeeps, sizeof(threeBeeps));
+      break;
+    case 5:
+      memcpy(currentBuzzPattern, sixBeeps, sizeof(sixBeeps));
+      break;
+  }
+  //Reset read pattern so that this function does not run again until a new pattern is received
+  buzzerPattern = 0;
+  //Reset index for reading pattern
+  currentPatternIndex = 0;
+  //Start playing alert
+  soundAlertPlaying = true;
+  //Start alert buzzes timing
+  lastTime = millis();
+}
+
 void buzzerAlert() {
   //According to buzzer pattern value, make sound alerts
+  //Read BuzzerPatterns.h's arrays to make sounds
+  if (buzzerPattern != 0) {
+    //Assign current pattern if a a new one was received
+    setBuzzerPattern();
+  }
+  //Make sounds according to pattern array
+  if (soundAlertPlaying) {
+    if (currentPatternIndex < sizeof(currentBuzzPattern) / sizeof(uint8_t)) {
+      digitalWrite(buzzerPin, currentBuzzPattern[currentPatternIndex]);
+      if (millis() - lastTime >= buzzDuration) {
+        currentPatternIndex++;
+        lastTime = millis();
+      }
+    } else {
+      soundAlertPlaying = false;
+      digitalWrite(buzzerPin, LOW);
+    }
+  }
 }
