@@ -31,7 +31,7 @@ type UpdateTrainerForm = z.infer<typeof schema>;
 
 const TrainerProfile = () => {
   const { id } = useParams();
-  const { showSuccess } = useAlert();
+  const { showSuccess, showError } = useAlert();
 
   const {
     register,
@@ -65,6 +65,8 @@ const TrainerProfile = () => {
         acc[key] = formData[key as keyof UpdateTrainerForm];
         return acc;
       }, {});
+      if (Object.keys(updatedData).length === 0) return;
+
       await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
       showSuccess("Entrenador actualizado exitosamente");
     } catch (error) {
@@ -75,10 +77,7 @@ const TrainerProfile = () => {
             message: "El email ingresado ya está en uso",
           });
         } else {
-          setError("root", {
-            type: "manual",
-            message: "Ha ocurrido un error al crear el entrenador",
-          });
+          showError("Ha ocurrido un error al actualizar el entrenador");
         }
       }
     }
@@ -104,6 +103,7 @@ const TrainerProfile = () => {
           sx={{ mt: 1 }}
         >
           <TextField
+            InputLabelProps={{ shrink: true }}
             required
             fullWidth
             margin="normal"
@@ -115,6 +115,7 @@ const TrainerProfile = () => {
             helperText={errors.names?.message}
           />
           <TextField
+            InputLabelProps={{ shrink: true }}
             required
             fullWidth
             margin="normal"
@@ -125,6 +126,7 @@ const TrainerProfile = () => {
             helperText={errors.lastNames?.message}
           />
           <TextField
+            InputLabelProps={{ shrink: true }}
             required
             fullWidth
             margin="normal"
@@ -136,6 +138,7 @@ const TrainerProfile = () => {
             helperText={errors.email?.message}
           />
           <TextField
+            InputLabelProps={{ shrink: true }}
             fullWidth
             margin="normal"
             multiline
