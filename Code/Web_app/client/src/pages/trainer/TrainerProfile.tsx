@@ -29,7 +29,6 @@ const schema = z.object({
   email: z.string().email({ message: "Email inválido" }),
   experience: z.string().optional(),
   weapon: z.string().optional(),
-  pictureURL: z.any(),
 });
 
 type UpdateTrainerForm = z.infer<typeof schema>;
@@ -115,7 +114,8 @@ const TrainerProfile = () => {
       // if no fields were changed, don't send the request
       if (Object.keys(updatedData).length === 0) return;
 
-      await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
+      //uncomment when backend is ready:
+      // await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
       showSuccess("Entrenador actualizado exitosamente");
       reset({}, { keepValues: true });
       setImage(null);
@@ -153,7 +153,6 @@ const TrainerProfile = () => {
               endIcon={<PhotoCameraIcon />}
             >
               <input
-                {...register("pictureURL")}
                 hidden
                 accept="image/*"
                 type="file"
