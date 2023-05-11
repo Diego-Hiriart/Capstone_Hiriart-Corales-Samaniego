@@ -89,7 +89,6 @@ const TrainerProfile = () => {
     formState: { errors, dirtyFields },
     control,
     reset,
-    getValues,
   } = useForm<UpdateTrainerForm>({
     resolver: zodResolver(schema),
   });
@@ -109,12 +108,17 @@ const TrainerProfile = () => {
         },
         {}
       );
-      if (Object.keys(updatedData).length === 0) return;
+
       // if image was changed, send it to the backend
       image && (updatedData.pictureURL = image);
 
+      // if no fields were changed, don't send the request
+      if (Object.keys(updatedData).length === 0) return;
+
       await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
       showSuccess("Entrenador actualizado exitosamente");
+      reset({}, { keepValues: true });
+      setImage(null);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
