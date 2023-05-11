@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import axios from "../../services/axios";
 import {
+  Avatar,
   Box,
   Button,
   Container,
@@ -9,6 +11,7 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,6 +20,8 @@ import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
+import { ChangeEvent, useEffect, useState } from "react";
+import { User } from "../../types";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),
@@ -24,14 +29,58 @@ const schema = z.object({
   email: z.string().email({ message: "Email inválido" }),
   experience: z.string().optional(),
   weapon: z.string().optional(),
-  // pictureURL: z.string().optional(),
+  pictureURL: z.any(),
 });
 
 type UpdateTrainerForm = z.infer<typeof schema>;
 
+type TrainerAPIResponse = {
+  experience: string;
+  weapon: string;
+  pictureURL: string | null;
+  user: Partial<User>;
+}
+
 const TrainerProfile = () => {
   const { id } = useParams();
   const { showSuccess, showError } = useAlert();
+  const [image, setImage] = useState<File | null>(null);
+  const [previewImageURL, setPreviewImageURL] = useState<string | null>(null);
+  const [trainer, setTrainer] = useState<TrainerAPIResponse | null>(null);
+
+  useEffect(() => {
+    const fetchTrainer = async () => {
+      const { data } = await axios.get(`/dashboard/trainer/${id}`);
+      setTrainer(data.data);
+      //replace when backend is ready:
+      // setPreviewImageURL(data.data.pictureURL);
+      setPreviewImageURL("https://mui.com/static/images/avatar/2.jpg");
+    }
+    fetchTrainer();
+  }, [])
+
+  useEffect(() => {
+    reset({
+      names: trainer?.user.names,
+      lastNames: trainer?.user.lastNames,
+      email: trainer?.user.email,
+      experience: trainer?.experience,
+      weapon: trainer?.weapon,
+    })
+  }, [trainer])
+
+  useEffect(() => {
+    if (!image) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onloadend = () => {
+      setPreviewImageURL(reader.result as string);
+    };
+  }, [image]);
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setImage(e.target.files?.[0] || null);
+  };
 
   const {
     register,
@@ -39,33 +88,30 @@ const TrainerProfile = () => {
     setError,
     formState: { errors, dirtyFields },
     control,
+    reset,
+    getValues,
   } = useForm<UpdateTrainerForm>({
     resolver: zodResolver(schema),
-    defaultValues: async () => {
-      const { data } = await axios.get(`/dashboard/trainer/${id}`);
-      const trainer = data.data;
-      return {
-        names: trainer.user.names,
-        lastNames: trainer.user.lastNames,
-        email: trainer.user.email,
-        experience: trainer.experience,
-        weapon: trainer.weapon,
-      };
-    },
   });
 
   interface IObjectKeys {
-    [key: string]: string | undefined;
+    [key: string]: string | undefined | File | null;
   }
 
   const onSubmit: SubmitHandler<UpdateTrainerForm> = async (formData) => {
     try {
       // TODO: extract to helper function
-      const updatedData = Object.keys(dirtyFields).reduce<IObjectKeys>((acc, key) => {
-        acc[key] = formData[key as keyof UpdateTrainerForm];
-        return acc;
-      }, {});
+      // take only the dirty/changed fields
+      const updatedData = Object.keys(dirtyFields).reduce<IObjectKeys>(
+        (acc, key) => {
+          acc[key] = formData[key as keyof UpdateTrainerForm];
+          return acc;
+        },
+        {}
+      );
       if (Object.keys(updatedData).length === 0) return;
+      // if image was changed, send it to the backend
+      image && (updatedData.pictureURL = image);
 
       await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
       showSuccess("Entrenador actualizado exitosamente");
@@ -85,14 +131,7 @@ const TrainerProfile = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Box
-        mt={{ xs: 4, sm: 8 }}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {/* TODO: add iamge field */}
+      <Box mt={{ xs: 4, sm: 8 }}>
         <Typography variant="h1" alignSelf="start">
           Perfil
         </Typography>
@@ -102,6 +141,23 @@ const TrainerProfile = () => {
           onSubmit={handleSubmit(onSubmit)}
           sx={{ mt: 1 }}
         >
+          <Stack alignItems="center" spacing={2} margin={2}>
+            <Avatar src={previewImageURL || ""} sx={{ width: 100, height: 100 }} />
+            <Button
+              variant="outlined"
+              component="label"
+              endIcon={<PhotoCameraIcon />}
+            >
+              <input
+                {...register("pictureURL")}
+                hidden
+                accept="image/*"
+                type="file"
+                onChange={handleImageChange}
+              />
+              Cambiar Foto
+            </Button>
+          </Stack>
           <TextField
             InputLabelProps={{ shrink: true }}
             required
