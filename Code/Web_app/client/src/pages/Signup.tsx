@@ -7,12 +7,14 @@ import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SignupFormInputs } from "../types";
+import { SignupForm } from "../types";
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { useAlert } from "../hooks/useAlert";
 
 export default function Signup() {
   const { signup } = useContext(AuthContext);
+  const { showSuccess } = useAlert();
 
   const {
     register,
@@ -20,14 +22,16 @@ export default function Signup() {
     setError,
     formState: { errors },
     watch,
-  } = useForm<SignupFormInputs>();
+  } = useForm<SignupForm>();
 
-  const onSubmit: SubmitHandler<SignupFormInputs> = async (formData) => {
+  const onSubmit: SubmitHandler<SignupForm> = async (formData) => {
     try {
+      formData.roles = ["fencer"];
       await signup(formData);
-      //TODO: show success message
+      showSuccess("Usuario creado exitosamente");
     } catch (error) {
       //TODO: handle other possible errors
+      // TODO: check against 409 status code for already existing email
       setError("email", {
         type: "manual",
         message: "Email ya registrado",

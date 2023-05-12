@@ -12,6 +12,7 @@ import {
   updateUserById,
 } from "../data/user";
 import { errorLog } from "../utils/logs";
+import { Prisma } from "@prisma/client";
 
 /** GET own user */
 export async function getOwnUser(req: Request, res: Response) {
@@ -113,6 +114,13 @@ export async function postUserFencer(req: Request, res: Response) {
     });
   } catch (error) {
     errorLog(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return res.status(409).json({
+          error: "El correo ingresado ya está en uso.",
+        });
+      }
+    }
     return res.sendStatus(500);
   }
 }
@@ -124,6 +132,13 @@ export async function postUserTrainer(req: Request, res: Response) {
     });
   } catch (error) {
     errorLog(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return res.status(409).json({
+          error: "El correo ingresado ya está en uso.",
+        });
+      }
+    }
     return res.sendStatus(500);
   }
 }

@@ -7,6 +7,7 @@ import {
   updateTrainerById,
 } from "../data/trainer";
 import { errorLog } from "../utils/logs";
+import { Prisma } from "@prisma/client";
 
 export async function getTrainerById(req: Request, res: Response) {
   try {
@@ -48,6 +49,13 @@ export async function updateTrainer(req: Request, res: Response) {
     });
   } catch (error) {
     errorLog(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return res.status(409).json({
+          error: "El correo ingresado ya está en uso.",
+        });
+      }
+    }
     return res.sendStatus(500);
   }
 }

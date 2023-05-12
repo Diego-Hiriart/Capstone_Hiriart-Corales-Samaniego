@@ -1,4 +1,4 @@
-import { PrismaClient, Trainer } from "@prisma/client";
+import { PrismaClient, Trainer, User } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -8,6 +8,15 @@ export async function findTrainerById(id: number) {
       where: {
         trainerID: id,
       },
+      include: {
+        user: {
+          select: {
+            names: true,
+            lastNames: true,
+            email: true,
+          }
+        }
+      }
     });
     return trainer;
   } catch (error) {
@@ -17,7 +26,17 @@ export async function findTrainerById(id: number) {
 
 export async function findAllTrainer() {
   try {
-    const trainers = await prisma.trainer.findMany();
+    const trainers = await prisma.trainer.findMany({
+      include: {
+        user: {
+          select: {
+            names: true,
+            lastNames: true,
+            email: true,
+          }
+        }
+      }
+    });
     return trainers;
   } catch (error) {
     throw error;
@@ -40,17 +59,23 @@ export async function createTrainer(data: Trainer) {
   }
 }
 
-export async function updateTrainerById(id: number, data: Trainer) {
+export async function updateTrainerById(id: number, data: (Trainer & User)) {
   try {
     const trainer = await prisma.trainer.update({
       where: {
         trainerID: id,
       },
       data: {
-        userID: data.userID || undefined,
         experience: data.experience || undefined,
         weapon: data.weapon || undefined,
         pictureURL: data.pictureURL || undefined,
+        user: {
+          update: {
+            names: data.names || undefined,
+            lastNames: data.lastNames || undefined,
+            email: data.email || undefined,
+          },
+        }
       },
     });
     return trainer;
