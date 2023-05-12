@@ -2,10 +2,10 @@
 #include <MD_MAX72xx.h>
 #include <SPI.h>
 
-const uint8_t ic4511A=2;
-const uint8_t ic4511B=3;
-const uint8_t ic4511C=4;
-const uint8_t ic4511D=5;
+const uint8_t ic4511A=1;
+const uint8_t ic4511B=2;
+const uint8_t ic4511C=3;
+const uint8_t ic4511D=4;
 const uint8_t autoPointsLED=6;
 const uint8_t blockedLED=7;
 const uint8_t leftYellow=A0;
@@ -89,6 +89,7 @@ void periodTimeDisplay(){
 }
 
 void periodDisplay(){
+  Serial.println(period);
   //Turn pwriod number into binary
   String binaryPeriod = String(period, BIN);
   //Add missing zeroes to have a 4 bit binary

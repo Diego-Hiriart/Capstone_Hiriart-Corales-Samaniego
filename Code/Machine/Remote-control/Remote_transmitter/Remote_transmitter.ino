@@ -79,6 +79,7 @@ void loop()
   pressedButton=buttonReset;//Reset press
   checkButtonPress();
   debounce();
+  delay(100);
   if(pressedButton!=buttonReset){
     transmit();
   }
