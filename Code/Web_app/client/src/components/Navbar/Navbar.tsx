@@ -28,7 +28,7 @@ const drawerWidth = 240;
 
 const navItems = (roles: string[] | undefined) => {
   // Label: path object
-  let items: Record<string, string> = {};
+  const items: Record<string, string> = {};
   if (roles?.includes("admin")) {
     items["Entrenadores"] = "trainer";
     items["Esgrimistas"] = "fencer";

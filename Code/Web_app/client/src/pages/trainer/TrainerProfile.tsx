@@ -54,9 +54,9 @@ const TrainerProfile = () => {
       //replace when backend is ready:
       // setPreviewImageURL(data.data.pictureURL);
       setPreviewImageURL("https://mui.com/static/images/avatar/2.jpg");
-    }
+    };
     fetchTrainer();
-  }, [])
+  }, []);
 
   useEffect(() => {
     reset({
@@ -65,8 +65,8 @@ const TrainerProfile = () => {
       email: trainer?.user.email,
       experience: trainer?.experience,
       weapon: trainer?.weapon,
-    })
-  }, [trainer])
+    });
+  }, [trainer]);
 
   useEffect(() => {
     if (!image) return;

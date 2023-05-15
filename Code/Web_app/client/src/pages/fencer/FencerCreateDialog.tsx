@@ -23,7 +23,7 @@ const schema = z
     lastNames: z.string().nonempty({ message: "Campo requerido" }),
     email: z.string().email({ message: "Email inválido" }),
     isGuest: z.boolean(),
-  })
+  });
 
 type RegisterFencerForm = z.infer<typeof schema>;
 
