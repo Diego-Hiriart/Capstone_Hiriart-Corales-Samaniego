@@ -1,7 +1,7 @@
 const AdminHome = () => {
   return (
     <h1>Admin home</h1>
-  )
-}
+  );
+};
 
-export default AdminHome
+export default AdminHome;
