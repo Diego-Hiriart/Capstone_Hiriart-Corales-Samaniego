@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import "dayjs/locale/es";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "./contexts/AuthContext";
 import Snackbar from "./components/Snackbar";
 import Unauthorized from "./pages/Unauthorized";
@@ -20,7 +20,11 @@ import TrainerProfile from "./pages/trainer/TrainerProfile";
 import FencerList from "./pages/fencer/FencerList";
 
 export const App = () => {
-  const { user } = useContext(AuthContext);
+  const { user, checkToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    checkToken();
+  }, [])
 
   return (
     <div>
