@@ -4,6 +4,13 @@
 
   (paper "A4")
 
+  (title_block
+    (title "Right score display unit schematic")
+    (date "2023-05-19")
+    (rev "1.0.0")
+    (comment 1 "Connection to logic unit pending")
+  )
+
   (lib_symbols
     (symbol "8x8_LED_Matrix_MAX7219_3" (in_bom yes) (on_board yes)
       (property "Reference" "M" (at 0 1.27 0)
@@ -381,7 +388,6 @@
       )
     )
   )
-
 
   (junction (at 205.74 127) (diameter 0) (color 0 0 0 0)
     (uuid 260ee743-039b-42ae-a8a9-c95b71c056f7)

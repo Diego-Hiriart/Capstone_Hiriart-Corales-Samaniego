@@ -7,7 +7,8 @@
   (title_block
     (title "Logic and display units schematis")
     (date "2023-05-19")
-    (rev "1.0")
+    (rev "0.1.0")
+    (comment 1 "Pending logic unit schematics")
   )
 
   (lib_symbols
@@ -215,7 +216,6 @@
       )
     )
   )
-
 
   (junction (at 198.12 82.55) (diameter 0) (color 0 0 0 0)
     (uuid 3ad3ecf6-b912-40af-b633-e57a87bf4c4e)
