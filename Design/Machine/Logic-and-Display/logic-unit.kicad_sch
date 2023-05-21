@@ -1,0 +1,30 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 1b9199b5-f1cd-4468-8592-f76c7214d15b)
+
+  (paper "A4")
+
+  (title_block
+    (title "Logic unit schematic")
+    (date "2023-05-19")
+    (rev "0.1.0")
+    (comment 1 "Schematic pending")
+  )
+
+  (lib_symbols
+  )
+
+
+  (hierarchical_label "ESP32-TX0" (shape output) (at 152.4 76.2 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid 68e38280-baca-4ca3-a8a6-1e54c941467c)
+  )
+  (hierarchical_label "ESP32-TX2" (shape output) (at 152.4 127 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid ca6c6d5f-1e24-4b38-8e0a-037833399193)
+  )
+  (hierarchical_label "ESP32-TX1" (shape output) (at 152.4 101.6 0) (fields_autoplaced)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid f519785f-7b12-4669-8461-1906d7b6906c)
+  )
+)
