@@ -4,6 +4,7 @@ import {
   deleteRegistrationLink,
   getAllRegistrationLink,
   getRegistrationLinkByEmail,
+  getRegistrationLinkByToken,
   postGenerateLink,
   postRegistrationLink,
   updateRegistrationLink,
@@ -11,6 +12,7 @@ import {
 
 const router = Router();
 
+router.get("/registration_link/token", getRegistrationLinkByToken);
 router.get("/registration_link/:email", getRegistrationLinkByEmail);
 router.get("/registration_link/", getAllRegistrationLink);
 router.post("/registration_link/generate", postGenerateLink);

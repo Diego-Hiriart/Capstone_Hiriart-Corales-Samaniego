@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 import {
   createRegistrationLink,
@@ -7,7 +8,24 @@ import {
   findRegistrationLinkByEmail,
   updateRegistrationLinkById,
 } from "../data/registrationLink";
+import { generateRegistrationToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
+
+export async function getRegistrationLinkByToken(req: Request, res: Response) {
+  try {
+    const token = req.query.t?.toString() ?? "";
+    const data = jwt.verify(token, jwtSecret);
+
+    req.body.data = data;
+
+    return res.status(200).json({
+      data: await findRegistrationLinkByEmail(req.body.data.email),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
 
 export async function getRegistrationLinkByEmail(req: Request, res: Response) {
   try {
@@ -74,9 +92,10 @@ export async function postGenerateLink(req: Request, res: Response) {
     }
 
     const data = await createRegistrationLink(req.body.data);
+    const token = generateRegistrationToken(data, jwtSecret);
+
     return res.status(200).json({
-      data,
-      link: `${process.env.WEB_URL}/signup?email=${data.email}`,
+      link: `${process.env.WEB_URL}/signup?t=${token}`,
     });
   } catch (error) {
     errorLog(error);
