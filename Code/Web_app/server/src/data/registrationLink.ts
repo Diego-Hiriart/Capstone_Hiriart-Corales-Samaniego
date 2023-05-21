@@ -1,12 +1,13 @@
 import { PrismaClient, RegistrationLink } from "@prisma/client";
+import { addWeeksToDate } from "../utils/dates";
 
 const prisma = new PrismaClient();
 
-export async function findRegistrationLinkById(id: number) {
+export async function findRegistrationLinkByEmail(email: string) {
   try {
-    const registrationLink = await prisma.registrationLink.findUnique({
+    const registrationLink = await prisma.registrationLink.findFirst({
       where: {
-        registrationLinkID: id,
+        email: email,
       },
     });
     return registrationLink;
@@ -28,9 +29,9 @@ export async function createRegistrationLink(data: RegistrationLink) {
   try {
     const registrationLink = await prisma.registrationLink.create({
       data: {
-        fencerID: data.fencerID,
-        expirationDate: data.expirationDate,
-        valid: data.valid,
+        expirationDate: addWeeksToDate(new Date(), 2),
+        valid: data.valid || true,
+        email: data.email,
       },
     });
     return registrationLink;
@@ -49,9 +50,9 @@ export async function updateRegistrationLinkById(
         registrationLinkID: id,
       },
       data: {
-        fencerID: data.fencerID || undefined,
         expirationDate: data.expirationDate || undefined,
         valid: data.valid || undefined,
+        email: data.email || undefined,
       },
     });
     return registrationLink;

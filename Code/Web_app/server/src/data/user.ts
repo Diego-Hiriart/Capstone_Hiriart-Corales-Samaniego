@@ -1,3 +1,4 @@
+import { argon2id, hash } from "argon2";
 import { Fencer, PrismaClient, Trainer, User } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -45,10 +46,14 @@ export async function findAllUsers() {
 
 export async function createUser(data: User) {
   try {
+    const hashedPass = await hash(data.password, {
+      type: argon2id,
+    });
+
     const user = await prisma.user.create({
       data: {
         email: data.email,
-        password: data.password,
+        password: hashedPass,
         names: data.names,
         lastNames: data.lastNames,
         roles: data.roles,
@@ -62,10 +67,14 @@ export async function createUser(data: User) {
 
 export async function createUserAdmin(data: User) {
   try {
+    const hashedPass = await hash(data.password, {
+      type: argon2id,
+    });
+
     const user = await prisma.user.create({
       data: {
         email: data.email,
-        password: data.password,
+        password: hashedPass,
         names: data.names,
         lastNames: data.lastNames,
         roles: ["admin"],
@@ -83,10 +92,14 @@ export async function createUserAdmin(data: User) {
 
 export async function createUserTrainer(data: User & Trainer) {
   try {
+    const hashedPass = await hash(data.password, {
+      type: argon2id,
+    });
+
     const user = await prisma.user.create({
       data: {
         email: data.email,
-        password: data.password, // TODO: hash password
+        password: hashedPass,
         names: data.names,
         lastNames: data.lastNames,
         roles: ["trainer"],
@@ -108,10 +121,14 @@ export async function createUserTrainer(data: User & Trainer) {
 
 export async function createUserFencer(data: User & Fencer) {
   try {
+    const hashedPass = await hash(data.password, {
+      type: argon2id,
+    });
+
     const user = await prisma.user.create({
       data: {
         email: data.email,
-        password: data.password,
+        password: hashedPass,
         names: data.names,
         lastNames: data.lastNames,
         roles: ["fencer"],
@@ -177,7 +194,11 @@ export async function updateUserById(id: number, data: User) {
       data: {
         email: data.email || undefined,
         password: data.password || undefined,
-        names: data.names || undefined,
+        names: data.names
+          ? await hash(data.password, {
+              type: argon2id,
+            })
+          : undefined,
         lastNames: data.lastNames || undefined,
         roles: data.roles || undefined,
       },

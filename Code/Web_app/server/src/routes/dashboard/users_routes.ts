@@ -22,7 +22,7 @@ router.get("/user/:email", verifyRole(["admin", "trainer"]), getUserByEmail); //
 router.get("/user/", verifyRole(["admin", "trainer"]), getAllUsers);
 
 router.put("/user/:id", verifyRole(["admin", "trainer"]), updateUser);
-router.post("/user/admin", verifyRole(["admin", "trainer"]), postUserAdmin);
+router.post("/user/admin", postUserAdmin);
 router.post("/user/trainer", verifyRole(["admin", "trainer"]), postUserTrainer);
 router.post("/user/fencer", verifyRole(["admin", "trainer"]), postUserFencer);
 router.post("/user/", verifyRole(["admin", "trainer"]), postUser);
