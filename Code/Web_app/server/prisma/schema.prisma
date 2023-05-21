@@ -49,35 +49,35 @@ model Trainer {
 }
 
 model Fencer {
-  fencerID                   Int                @id @default(autoincrement())
-  user                       User?              @relation(fields: [userID], references: [userID])
-  userID                     Int?               @unique
-  trainingGroup              TrainingGroup      @relation(fields: [trainingGroupID], references: [trainingGroupID])
+  fencerID                   Int              @id @default(autoincrement())
+  user                       User?            @relation(fields: [userID], references: [userID])
+  userID                     Int?             @unique
+  trainingGroup              TrainingGroup    @relation(fields: [trainingGroupID], references: [trainingGroupID])
   trainingGroupID            Int
-  idNumber                   String             @db.VarChar(15)
-  emergencyPhone             String             @db.VarChar(15)
+  idNumber                   String           @db.VarChar(15)
+  emergencyPhone             String           @db.VarChar(15)
   birthDate                  DateTime
-  bloodType                  String             @db.VarChar(3)
-  sex                        String             @db.Char(1)
-  laterality                 String             @db.Char(1)
-  phone                      String             @db.VarChar(15)
-  insurance                  String             @db.VarChar(250)
+  bloodType                  String           @db.VarChar(3)
+  sex                        String           @db.Char(1)
+  laterality                 String           @db.Char(1)
+  phone                      String           @db.VarChar(15)
+  insurance                  String           @db.VarChar(250)
   inscriptionDate            DateTime
   startDate                  DateTime
-  occupation                 String             @db.VarChar(50)
-  schedule                   String             @db.VarChar(40)
-  legalGuardian              String             @db.VarChar(50)
-  leadSource                 String             @db.Text
+  occupation                 String           @db.VarChar(50)
+  schedule                   String           @db.VarChar(40)
+  legalGuardian              String           @db.VarChar(50)
+  leadSource                 String           @db.Text
   inscriptionReason          String
-  height                     Float              @db.Real
-  weight                     Float              @db.Real
-  physicalActivity           String             @db.VarChar(250)
-  medicalFamily              String             @db.Text
-  medicalPersonal            String             @db.Text
-  personalMedicalDetails     String             @db.Text
-  weapon                     String             @db.VarChar(25)
-  pictureURL                 String             @db.VarChar(255)
-  guestName                  String?            @db.VarChar(200)
+  height                     Float            @db.Real
+  weight                     Float            @db.Real
+  physicalActivity           String           @db.VarChar(250)
+  medicalFamily              String           @db.Text
+  medicalPersonal            String           @db.Text
+  personalMedicalDetails     String           @db.Text
+  weapon                     String           @db.VarChar(25)
+  pictureURL                 String           @db.VarChar(255)
+  guestName                  String?          @db.VarChar(200)
   weeklyReport               WeeklyReport[]
   singleFeedback             SingleFeedback[]
   cycleGoal                  CycleGoal[]
@@ -86,10 +86,9 @@ model Fencer {
   physicalTest               PhysicalTest[]
   attendance                 Attendance[]
   AITraining                 AITraining[]
-  registrationLink           RegistrationLink[]
-  trainingCombatFencer1      TrainingCombat[]   @relation("fencer1")
-  trainingCombatFencer2      TrainingCombat[]   @relation("fencer2")
-  trainingCombatWinnerFencer TrainingCombat[]   @relation("winnerFencer")
+  trainingCombatFencer1      TrainingCombat[] @relation("fencer1")
+  trainingCombatFencer2      TrainingCombat[] @relation("fencer2")
+  trainingCombatWinnerFencer TrainingCombat[] @relation("winnerFencer")
 }
 
 model WeeklyReport {
@@ -275,10 +274,9 @@ model AITraining {
 
 model RegistrationLink {
   registrationLinkID Int      @id @default(autoincrement())
-  fencer             Fencer   @relation(fields: [fencerID], references: [fencerID])
-  fencerID           Int
   expirationDate     DateTime
   valid              Boolean
+  email              String   @unique
 }
 
 model TrainingError {
