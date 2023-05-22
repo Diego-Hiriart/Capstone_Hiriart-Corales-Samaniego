@@ -1,5 +1,5 @@
-import { argon2id, hash } from "argon2";
 import { Fencer, PrismaClient, Trainer, User } from "@prisma/client";
+import { hashPassword } from "../utils/hashPassword";
 
 const prisma = new PrismaClient();
 
@@ -46,9 +46,7 @@ export async function findAllUsers() {
 
 export async function createUser(data: User) {
   try {
-    const hashedPass = await hash(data.password, {
-      type: argon2id,
-    });
+    const hashedPass = await hashPassword(data.password);
 
     const user = await prisma.user.create({
       data: {
@@ -67,9 +65,7 @@ export async function createUser(data: User) {
 
 export async function createUserAdmin(data: User) {
   try {
-    const hashedPass = await hash(data.password, {
-      type: argon2id,
-    });
+    const hashedPass = await hashPassword(data.password);
 
     const user = await prisma.user.create({
       data: {
@@ -92,9 +88,7 @@ export async function createUserAdmin(data: User) {
 
 export async function createUserTrainer(data: User & Trainer) {
   try {
-    const hashedPass = await hash(data.password, {
-      type: argon2id,
-    });
+    const hashedPass = await hashPassword(data.password);
 
     const user = await prisma.user.create({
       data: {
@@ -121,9 +115,7 @@ export async function createUserTrainer(data: User & Trainer) {
 
 export async function createUserFencer(data: User & Fencer) {
   try {
-    const hashedPass = await hash(data.password, {
-      type: argon2id,
-    });
+    const hashedPass = await hashPassword(data.password);
 
     const user = await prisma.user.create({
       data: {
@@ -193,12 +185,8 @@ export async function updateUserById(id: number, data: User) {
       },
       data: {
         email: data.email || undefined,
-        password: data.password || undefined,
-        names: data.names
-          ? await hash(data.password, {
-              type: argon2id,
-            })
-          : undefined,
+        password: data.password ? await hashPassword(data.password) : undefined,
+        names: data.names || undefined,
         lastNames: data.lastNames || undefined,
         roles: data.roles || undefined,
       },

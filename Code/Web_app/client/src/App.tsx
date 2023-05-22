@@ -19,6 +19,7 @@ import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
 import FencerList from "./pages/fencer/FencerList";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
+import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 
 export const App = () => {
   const { user } = useContext(AuthContext);
@@ -46,7 +47,8 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
           <Route path="trainer/:id" element={<TrainerProfile />} />
-          <Route path="fencer" element={<FencerList />} />
+          <Route path="fencer" element={<TrainerViewFencers />} />
+          <Route path="fencer/list" element={<FencerList />} />
           <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>
