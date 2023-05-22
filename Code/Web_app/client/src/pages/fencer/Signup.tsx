@@ -11,10 +11,11 @@ import { SignupForm } from "../../types";
 import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import { useAlert } from "../../hooks/useAlert";
+import { AxiosError } from "axios";
 
 export default function Signup() {
   const { signup } = useContext(AuthContext);
-  const { showSuccess } = useAlert();
+  const { showSuccess, showError } = useAlert();
 
   const {
     register,
@@ -26,16 +27,19 @@ export default function Signup() {
 
   const onSubmit: SubmitHandler<SignupForm> = async (formData) => {
     try {
-      formData.roles = ["fencer"];
       await signup(formData);
       showSuccess("Usuario creado exitosamente");
     } catch (error) {
-      //TODO: handle other possible errors
-      // TODO: check against 409 status code for already existing email
-      setError("email", {
-        type: "manual",
-        message: "Email ya registrado",
-      });
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          setError("email", {
+            type: "manual",
+            message: "El email ingresado ya está en uso",
+          });
+        } else {
+          showError("Ha ocurrido un error al crear el esgrimista")
+        }
+      }
     }
   };
 
