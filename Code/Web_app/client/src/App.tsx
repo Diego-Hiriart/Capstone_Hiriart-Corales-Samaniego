@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar/Navbar";
 import Login from "./pages/Login";
 import "dayjs/locale/es";
-import Signup from "./pages/Signup";
+import Signup from "./pages/fencer/Signup";
 import Home from "./pages/Home";
 import { useContext, useEffect } from "react";
 import AuthContext from "./contexts/AuthContext";

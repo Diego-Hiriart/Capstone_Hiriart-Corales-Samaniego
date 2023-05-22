@@ -58,13 +58,13 @@ export default function FencerInvite({
   const onSubmit: SubmitHandler<FencerInviteForm> = async (formData) => {
     try {
       if (getValues("isGuest")) {
+        // TODO: make all fields optional on invited fencer creation
         await axios.post("/dashboard/user/fencer", formData);
         showSuccess("Esgrimista creado exitosamente");
         handleClose();
       } else {
-        const {data} = await axios.post("/fencer/link", formData);
-        setInviteLink(data.data);
-        setInviteLink("asdfa");
+        const {data} = await axios.post("/dashboard/registration_link/generate", {data: formData});
+        setInviteLink(data.link);
       }
     } catch (error) {
       if (error instanceof AxiosError) {
