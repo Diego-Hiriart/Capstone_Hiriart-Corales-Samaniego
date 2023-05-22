@@ -58,7 +58,10 @@ const NavBar = () => {
         component="nav"
         color="light"
         elevation={0}
-        sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+        sx={{
+          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
       >
         <Toolbar>
           {user && (

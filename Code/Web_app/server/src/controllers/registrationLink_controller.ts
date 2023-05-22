@@ -95,7 +95,7 @@ export async function postGenerateLink(req: Request, res: Response) {
     const token = generateRegistrationToken(data, jwtSecret);
 
     return res.status(200).json({
-      link: `${process.env.WEB_URL}/signup?t=${token}`,
+      link: `${process.env.CLIENT_URL}/signup?t=${token}`,
     });
   } catch (error) {
     errorLog(error);
