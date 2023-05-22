@@ -3,6 +3,9 @@ import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   List,
   ListItem,
   ListItemAvatar,
@@ -14,13 +17,16 @@ import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { Link as RouterLink } from "react-router-dom";
 import { Fencer } from "../../types";
-import FencerCreateDialog from "./FencerCreateDialog";
+import FencerInvite from "./FencerInvite";
+import LinkInvite from "./LinkInvite";
 
 const FencerList = () => {
   const [fencers, setFencers] = useState<Fencer[]>(null!);
   const [open, setOpen] = useState(false);
+  const [inviteLink, setInviteLink] = useState("");
 
   const handleOpen = () => {
+    setInviteLink("")
     setOpen(true);
   };
 
@@ -48,7 +54,7 @@ const FencerList = () => {
           }}
         >
           <Typography variant="h1" alignSelf="start">
-            Fencers
+            Esgrimistas
           </Typography>
           <Button variant="contained" onClick={handleOpen}>
             Crear nuevo
@@ -74,7 +80,19 @@ const FencerList = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
-      <FencerCreateDialog open={open} handleClose={handleClose} />
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Crear Esgrimista</DialogTitle>
+        <DialogContent>
+          {inviteLink ? (
+            <LinkInvite inviteLink={inviteLink} handleClose={handleClose} />
+          ) : (
+            <FencerInvite
+              handleClose={handleClose}
+              setInviteLink={setInviteLink}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };
