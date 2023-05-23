@@ -1,15 +1,23 @@
 import { Box, Container, TextField, Typography } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const schema = z.object({
   idNumber: z.string().nonempty({ message: "Campo requerido" }),
   phone: z.string().nonempty({ message: "Campo requerido" }),
   emergencyPhone: z.string().nonempty({ message: "Campo requerido" }),
   bloodType: z.string().nonempty({ message: "Campo requerido" }),
-  sex: z.literal("M").or(z.literal("F")).or(z.literal("O")),
+  sex: z.literal("M").or(z.literal("F")),
   occupation: z.string().nonempty({ message: "Campo requerido" }),
   birthDate: z.date(),
   school: z.string().nonempty({ message: "Campo requerido" }), // TODO: add to fencer prisma model
@@ -25,6 +33,7 @@ type SignupPersonalInfoForm = z.infer<typeof schema>;
 const SignupPersonalInfo = () => {
   const { showError } = useAlert();
   const {
+    control,
     handleSubmit,
     register,
     formState: { errors },
@@ -80,6 +89,73 @@ const SignupPersonalInfo = () => {
             error={!!errors.phone}
             helperText={errors.phone?.message}
           />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="emergencyPhone"
+            label="Teléfono de Emergencia"
+            {...register("emergencyPhone")}
+            error={!!errors.emergencyPhone}
+            helperText={errors.emergencyPhone?.message}
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="bloodType"
+            label="Tipo de Sangre"
+            {...register("bloodType")}
+            error={!!errors.bloodType}
+            helperText={errors.bloodType?.message}
+          />
+          <Controller
+            name="sex"
+            defaultValue="M"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <FormLabel>Sexo</FormLabel>
+                <RadioGroup
+                  {...field}
+                  row
+                  onChange={(e) => field.onChange(e.target.value)}
+                  value={field.value}
+                >
+                  <FormControlLabel
+                    value="M"
+                    control={<Radio />}
+                    label="Masculino"
+                  />
+                  <FormControlLabel
+                    value="F"
+                    control={<Radio />}
+                    label="Femenino"
+                  />
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="occupation"
+            label="Ocupación"
+            {...register("occupation")}
+            error={!!errors.occupation}
+            helperText={errors.occupation?.message}
+          />
+          <Controller
+            name="birthDate"
+            defaultValue={null}
+            control={control}
+            inputFormat="DD-MM-YYYY"
+            render={({ field }) => {
+              <DatePicker value={ field.value } onChange={(e) => field.onChange(e) }/>
+            }}
+          >
+          </Controller>
         </Box>
       </Box>
     </Container>
