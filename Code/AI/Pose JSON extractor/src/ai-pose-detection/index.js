@@ -17,8 +17,9 @@ let posesPacketSize,
   videoDuration,
   videoDone = false;
 let lastVideoTime = 0;
-
-let posesJSON = {};
+//To save poses JSONs in packets
+let posesJSON = [];
+let currentPosesIndex = 0;
 
 const createDetector = async () => {
   const runtime = 'mediapipe';
@@ -41,6 +42,13 @@ const savePoseData = (poseData) => {
       'Added pose data to JSON (which will be downloaded when done)',
       keypoints3DData
     );
+    //Check if the current packet in the JSON is full, create a new one if so, otherwise add pose data
+    if (posesJSON[currentPosesIndex].length == posesPacketSize) {
+      posesJSON.push(keypoints3DData);
+      currentPosesIndex++;
+    } else {
+      posesJSON[currentPosesIndex].push(keypoints3DData);
+    }
   }
 };
 
@@ -133,6 +141,10 @@ export const poseDetectionAI = async (extractionData) => {
   //Load and start video
   camera = new Context();
   detector = await createDetector();
+  //Initialice JSON
+  posesJSON.push([]);
+  //Load video in page
   await updateVideo(extractionData.videoFile);
   await startDetection();
+  return posesJSON;
 };

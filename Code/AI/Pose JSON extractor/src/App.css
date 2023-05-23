@@ -31,8 +31,7 @@
 .output-canvas {
   height: 480px;
   left: 0;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
   position: absolute;
   right: 0;
   text-align: center;
@@ -45,6 +44,7 @@
 }
 
 .render-pane {
+  margin-block: 1rem;
   z-index: 9;
 }
 
@@ -53,6 +53,13 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+.status-section {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  margin-block: 1rem;
 }
 
 .webcam-pane {
