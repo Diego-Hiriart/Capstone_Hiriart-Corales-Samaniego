@@ -1,0 +1,36 @@
+{
+  "name": "pose-json-extractor",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mediapipe/pose": "0.5.1675469404",
+    "@tensorflow-models/pose-detection": "^2.1.0",
+    "@tensorflow/tfjs-backend-wasm": "4.4.0",
+    "@tensorflow/tfjs-backend-webgl": "4.4.0",
+    "@tensorflow/tfjs-backend-webgpu": "^0.0.1-alpha.19",
+    "@tensorflow/tfjs-converter": "4.4.0",
+    "@tensorflow/tfjs-core": "4.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "scatter-gl": "^0.0.13"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.2"
+  }
+}
