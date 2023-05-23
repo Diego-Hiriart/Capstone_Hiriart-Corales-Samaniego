@@ -1,4 +1,4 @@
-import { Box, Container, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
@@ -13,19 +13,32 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 
 const schema = z.object({
-  idNumber: z.string().nonempty({ message: "Campo requerido" }),
-  phone: z.string().nonempty({ message: "Campo requerido" }),
-  emergencyPhone: z.string().nonempty({ message: "Campo requerido" }),
-  bloodType: z.string().nonempty({ message: "Campo requerido" }),
-  sex: z.literal("M").or(z.literal("F")),
-  occupation: z.string().nonempty({ message: "Campo requerido" }),
-  birthDate: z.date(),
-  school: z.string().nonempty({ message: "Campo requerido" }), // TODO: add to fencer prisma model
-  legalGuardian: z.string().nonempty({ message: "Campo requerido" }),
-  guardianPhone: z.string().nonempty({ message: "Campo requerido" }),
-  leadSource: z.string().nonempty({ message: "Campo requerido" }),
-  inscriptionReason: z.string().nonempty({ message: "Campo requerido" }),
-  insurance: z.string().nonempty({ message: "Campo requerido" }),
+  // TODO: validar cedula
+  idNumber: z
+    .string()
+    .regex(/^\d+$/, { message: "Cédula inválida" })
+    .length(10, { message: "Cédula inválida" }),
+  phone: z
+    .string()
+    .regex(/^\d+$/, { message: "Teléfono inválido" })
+    .length(10, { message: "Teléfono inválido" }),
+  emergencyPhone: z
+    .string()
+    .regex(/^\d+$/, { message: "Teléfono inválido" })
+    .length(10, { message: "Teléfono inválido" }),
+  bloodType: z.string().regex(/^(A|B|AB|O)[+-]$/),
+  sex: z.enum(["M", "F"]),
+  occupation: z.string().optional(),
+  birthDate: z.any()
+  // school: z.string().optional(),
+  // legalGuardian: z.string().nonempty({ message: "Campo requerido" }),
+  // guardianPhone: z
+  //   .string()
+  //   .regex(/^\d+$/, { message: "Teléfono inválido" })
+  //   .length(10, { message: "Teléfono inválido" }),
+  // leadSource: z.enum(["Facebook", "Instagram", "Referido", "Otro"]),
+  // inscriptionReason: z.enum(["Competencia", "Hobby", "Otro"]),
+  // insurance: z.string().optional(),
 });
 
 type SignupPersonalInfoForm = z.infer<typeof schema>;
@@ -148,14 +161,33 @@ const SignupPersonalInfo = () => {
           />
           <Controller
             name="birthDate"
-            defaultValue={null}
             control={control}
-            inputFormat="DD-MM-YYYY"
-            render={({ field }) => {
-              <DatePicker value={ field.value } onChange={(e) => field.onChange(e) }/>
-            }}
+            defaultValue={null}
+            render={({ field, fieldState: { error } }) => (
+              <DatePicker
+                {...field}
+                label="Fecha de Nacimiento"
+                value={field.value}
+                onChange={(newValue) => field.onChange(newValue)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    margin: "normal",
+                    error: !!error,
+                    helperText: error?.message,
+                  },
+                }}
+              />
+            )}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
           >
-          </Controller>
+            Submit
+          </Button>
         </Box>
       </Box>
     </Container>
