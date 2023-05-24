@@ -1,13 +1,9 @@
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-webgpu';
 
-import * as mpPose from '@mediapipe/pose';
 import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
-import * as tf from '@tensorflow/tfjs-core';
 
-tfjsWasm.setWasmPaths(
-  `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`
-);
+tfjsWasm.setWasmPaths('.node_modules/@tensorflow/tfjs-backend-wasm/dist/');
 
 import * as poseDetection from '@tensorflow-models/pose-detection';
 
@@ -19,7 +15,7 @@ let detector, camera;
 let rafId;
 let renderer = null;
 let useGpuRenderer = false;
-const detectionInterval = 83;//1/12 of a second (12 fps)
+const detectionInterval = 83; //1/12 of a second (12 fps)
 
 const createDetector = async () => {
   const runtime = 'mediapipe';
@@ -27,7 +23,7 @@ const createDetector = async () => {
   return poseDetection.createDetector(model, {
     runtime: runtime,
     modelType: 'full',
-    solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${mpPose.VERSION}`,
+    solutionPath: './node_modules/@mediapipe/pose',
   });
 };
 
