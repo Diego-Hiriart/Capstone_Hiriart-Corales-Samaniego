@@ -1,4 +1,14 @@
-import { Box, Button, Container, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
@@ -12,7 +22,17 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 
-const bloodtypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+const leadSources = [
+  { value: "Redes Sociales", label: "Redes Sociales" },
+  { value: "Referido", label: "Referido" },
+  { value: "Otro", label: "Otro" },
+] as const;
+type leadSource = typeof leadSources[number]["value"];
+const leadSourceValues: [leadSource, ...leadSource[]] = [
+  leadSources[0].value,
+  ...leadSources.slice(1).map((ls) => ls.value)
+];
 
 const schema = z.object({
   // TODO: validar cedula
@@ -28,19 +48,23 @@ const schema = z.object({
     .string()
     .regex(/^\d+$/, { message: "Teléfono inválido" })
     .length(10, { message: "Teléfono inválido" }),
-  bloodType: z.enum(bloodtypes),
+  bloodType: z.enum(bloodTypes, {
+    errorMap: () => ({
+      message: "Tipo de sangre inválido",
+    })
+  }),
   sex: z.enum(["M", "F"]),
-  occupation: z.string().optional(),
-  birthDate: z.any(),
-  school: z.string().optional(),
+  occupation: z.string().nonempty({ message: "Campo requerido" }),
+  birthDate: z.any(), //TODO validar fecha
+  school: z.string().nonempty({ message: "Campo requerido" }),
   legalGuardian: z.string().nonempty({ message: "Campo requerido" }),
   guardianPhone: z
     .string()
     .regex(/^\d+$/, { message: "Teléfono inválido" })
     .length(10, { message: "Teléfono inválido" }),
-  leadSource: z.enum(["Redes Sociales", "Referido", "Otro"]),
-  inscriptionReason: z.enum(["Competencia", "Hobby", "Otro"]),
-  insurance: z.string().optional(),
+  leadSource: z.enum(leadSourceValues),
+  // inscriptionReason: z.enum(["Competencia", "Hobby", "Otro"]),
+  // insurance: z.string().optional(),
 });
 
 type SignupPersonalInfoForm = z.infer<typeof schema>;
@@ -114,21 +138,27 @@ const SignupPersonalInfo = () => {
             error={!!errors.emergencyPhone}
             helperText={errors.emergencyPhone?.message}
           />
-          <FormControl fullWidth>
-            <InputLabel id="bloodtype-select-label">Tipo de sangre</InputLabel>
-            <Select
-              labelId="bloodtype-select-label"
-              id="bloodtype-select"
-              value=""
-              label="Tipo de sangre"
-              {...register("bloodType")}
-            >
-              {bloodtypes.map((bloodtype) => (
-                <MenuItem key={bloodtype} value={bloodtype}>
-                  {bloodtype}
-                </MenuItem>
-              ))}
-            </Select>
+          <FormControl fullWidth error={!!errors.bloodType} margin="normal">
+            <InputLabel id="bloodtype-label">Tipo de sangre</InputLabel>
+            <Controller
+              name="bloodType"
+              defaultValue={undefined}
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  labelId="bloodtype-label"
+                  label="Tipo de sangre"
+                >
+                  {bloodTypes.map((bloodtype) => (
+                    <MenuItem key={bloodtype} value={bloodtype}>
+                      {bloodtype}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.bloodType?.message}</FormHelperText>
           </FormControl>
           <Controller
             name="sex"
@@ -218,8 +248,10 @@ const SignupPersonalInfo = () => {
             error={!!errors.guardianPhone}
             helperText={errors.guardianPhone?.message}
           />
-          <FormControl fullWidth>
-            <InputLabel id="lead-select-label">Como te enteraste de la academia?</InputLabel>
+          {/* <FormControl fullWidth>
+            <InputLabel id="lead-select-label">
+              Como te enteraste de la academia?
+            </InputLabel>
             <Select
               labelId="lead-select-label"
               id="select-label"
@@ -227,12 +259,13 @@ const SignupPersonalInfo = () => {
               label="Como te enteraste de la academia?"
               {...register("leadSource")}
             >
-              <MenuItem value="">Seleccionar</MenuItem>
-              <MenuItem value="Redes Sociales">Redes Sociales</MenuItem>
-              <MenuItem value="Referidos">Referidos</MenuItem>
-              <MenuItem value="Otro">Otro</MenuItem>
+              {leadSources.map((leadSource) => (
+                <MenuItem key={leadSource.value} value={leadSource.value}>
+                  {leadSource.label}
+                </MenuItem>
+              ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
           <Button
             type="submit"
             fullWidth
