@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Box, Button, Container, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
@@ -11,6 +11,8 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+
+const bloodtypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 
 const schema = z.object({
   // TODO: validar cedula
@@ -26,19 +28,19 @@ const schema = z.object({
     .string()
     .regex(/^\d+$/, { message: "Teléfono inválido" })
     .length(10, { message: "Teléfono inválido" }),
-  bloodType: z.string().regex(/^(A|B|AB|O)[+-]$/),
+  bloodType: z.enum(bloodtypes),
   sex: z.enum(["M", "F"]),
   occupation: z.string().optional(),
-  birthDate: z.any()
-  // school: z.string().optional(),
-  // legalGuardian: z.string().nonempty({ message: "Campo requerido" }),
-  // guardianPhone: z
-  //   .string()
-  //   .regex(/^\d+$/, { message: "Teléfono inválido" })
-  //   .length(10, { message: "Teléfono inválido" }),
-  // leadSource: z.enum(["Facebook", "Instagram", "Referido", "Otro"]),
-  // inscriptionReason: z.enum(["Competencia", "Hobby", "Otro"]),
-  // insurance: z.string().optional(),
+  birthDate: z.any(),
+  school: z.string().optional(),
+  legalGuardian: z.string().nonempty({ message: "Campo requerido" }),
+  guardianPhone: z
+    .string()
+    .regex(/^\d+$/, { message: "Teléfono inválido" })
+    .length(10, { message: "Teléfono inválido" }),
+  leadSource: z.enum(["Redes Sociales", "Referido", "Otro"]),
+  inscriptionReason: z.enum(["Competencia", "Hobby", "Otro"]),
+  insurance: z.string().optional(),
 });
 
 type SignupPersonalInfoForm = z.infer<typeof schema>;
@@ -112,16 +114,22 @@ const SignupPersonalInfo = () => {
             error={!!errors.emergencyPhone}
             helperText={errors.emergencyPhone?.message}
           />
-          <TextField
-            required
-            fullWidth
-            margin="normal"
-            id="bloodType"
-            label="Tipo de Sangre"
-            {...register("bloodType")}
-            error={!!errors.bloodType}
-            helperText={errors.bloodType?.message}
-          />
+          <FormControl fullWidth>
+            <InputLabel id="bloodtype-select-label">Tipo de sangre</InputLabel>
+            <Select
+              labelId="bloodtype-select-label"
+              id="bloodtype-select"
+              value=""
+              label="Tipo de sangre"
+              {...register("bloodType")}
+            >
+              {bloodtypes.map((bloodtype) => (
+                <MenuItem key={bloodtype} value={bloodtype}>
+                  {bloodtype}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <Controller
             name="sex"
             defaultValue="M"
@@ -180,6 +188,51 @@ const SignupPersonalInfo = () => {
               />
             )}
           />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="school"
+            label="Escuela/Colegio"
+            {...register("school")}
+            error={!!errors.school}
+            helperText={errors.school?.message}
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="legalGuardian"
+            label="Representante"
+            {...register("legalGuardian")}
+            error={!!errors.legalGuardian}
+            helperText={errors.legalGuardian?.message}
+          />
+          <TextField
+            required
+            fullWidth
+            margin="normal"
+            id="guardianPhone"
+            label="Telefono del Representante"
+            {...register("guardianPhone")}
+            error={!!errors.guardianPhone}
+            helperText={errors.guardianPhone?.message}
+          />
+          <FormControl fullWidth>
+            <InputLabel id="lead-select-label">Como te enteraste de la academia?</InputLabel>
+            <Select
+              labelId="lead-select-label"
+              id="select-label"
+              value=""
+              label="Como te enteraste de la academia?"
+              {...register("leadSource")}
+            >
+              <MenuItem value="">Seleccionar</MenuItem>
+              <MenuItem value="Redes Sociales">Redes Sociales</MenuItem>
+              <MenuItem value="Referidos">Referidos</MenuItem>
+              <MenuItem value="Otro">Otro</MenuItem>
+            </Select>
+          </FormControl>
           <Button
             type="submit"
             fullWidth
