@@ -11,8 +11,6 @@ function App() {
     posesPacketSize: number;
     videoFile: File;
   }
-  //JSON to store poses
-  const [posesJSON, setPosesJSON] = useState<Array<any> | null>(null);
   //Defines the amount of keypoints to be packed together and added to the JSON
   const [extractionFormData, setExtractionFormData] =
     useState<ExtractionFormTypes>({
@@ -42,32 +40,8 @@ function App() {
       posesPacketSize: extractionFormData.posesPacketSize,
       videoFile: extractionFormData.videoFile,
     };
-    let extractedPoses = await poseDetectionAI(extractionData);
-    setPosesJSON(extractedPoses);
+    poseDetectionAI(extractionData);
   }
-
-  useEffect(() => {
-    console.log(posesJSON);
-    if (
-      posesJSON !== null &&
-      posesJSON !== undefined &&
-      posesJSON[0].length !== 0
-    ) {
-      alert('downloading poses JSON');
-      const a = document.createElement('a');
-      const file = new Blob([JSON.stringify(posesJSON)], {
-        type: 'text/plain',
-      });
-      a.href = URL.createObjectURL(file);
-      let fileName = extractionFormData.videoFile.name;
-      fileName = `${fileName.substring(
-        0,
-        fileName.lastIndexOf('.')
-      )}_poses-JSON.json`;
-      a.download = fileName;
-      a.click();
-    }
-  }, [posesJSON]);
 
   return (
     <div className='App'>
@@ -107,17 +81,7 @@ function App() {
           </form>
           <span className='status-section'>
             <label>Extraction status: </label>
-            {posesJSON == null ? (
-              <p>Extraction incomplete</p>
-            ) : (
-              <>
-                {posesJSON[0].length !== 0 ? (
-                  <p>Extraction done, downloading file</p>
-                ) : (
-                  <p>Extraction in process</p>
-                )}
-              </>
-            )}
+              <p id='extraction-status'>Extraction incomplete</p>
           </span>
           <video className='output-canvas webcam-pane' id='video'>
             <source id='currentVID' src='' type='video/mp4' />

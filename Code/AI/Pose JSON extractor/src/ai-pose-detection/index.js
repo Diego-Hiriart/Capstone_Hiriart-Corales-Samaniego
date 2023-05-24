@@ -18,8 +18,10 @@ let posesPacketSize,
   videoDone = false;
 let lastVideoTime = 0;
 //To save poses JSONs in packets
-let posesJSON = [];
+let posesJSON = [[]];
 let currentPosesIndex = 0;
+let statusP;
+let videoName;
 
 const createDetector = async () => {
   const runtime = 'mediapipe';
@@ -38,13 +40,9 @@ const savePoseData = (poseData) => {
     poseData[0] !== null
   ) {
     let keypoints3DData = poseData[0]['keypoints3D'];
-    console.log(
-      'Added pose data to JSON (which will be downloaded when done)',
-      keypoints3DData
-    );
     //Check if the current packet in the JSON is full, create a new one if so, otherwise add pose data
     if (posesJSON[currentPosesIndex].length == posesPacketSize) {
-      posesJSON.push(keypoints3DData);
+      posesJSON.push([keypoints3DData]);
       currentPosesIndex++;
     } else {
       posesJSON[currentPosesIndex].push(keypoints3DData);
@@ -69,6 +67,28 @@ const renderResult = async () => {
   savePoseData(poses);
 };
 
+const downloadPosesJSON = () => {
+  if (posesJSON !== null && posesJSON !== undefined) {
+    statusP.innerHTML = 'Extraction done, downloading';
+    if (posesJSON[posesJSON.length - 1].length < posesPacketSize) {
+      posesJSON.pop();
+    }
+    alert('downloading poses JSON');
+    const a = document.createElement('a');
+    const file = new Blob([JSON.stringify(posesJSON)], {
+      type: 'text/plain',
+    });
+    a.href = URL.createObjectURL(file);
+    let fileName = videoName;
+    fileName = `${fileName.substring(
+      0,
+      fileName.lastIndexOf('.')
+    )}_poses-JSON.json`;
+    a.download = fileName;
+    a.click();
+  }
+};
+
 const runPrediction = async () => {
   //Advance current time of video to analyze the right frames and get the specified poses per second
   if (lastVideoTime <= videoDuration) {
@@ -81,6 +101,7 @@ const runPrediction = async () => {
     // video has finished.
     camera.clearCtx();
     camera.video.style.visibility = 'visible';
+    downloadPosesJSON();
     return;
   }
   await renderResult();
@@ -136,15 +157,15 @@ const startDetection = async () => {
 };
 
 export const poseDetectionAI = async (extractionData) => {
+  statusP = document.getElementById('extraction-status');
+  statusP.innerHTML = 'Extraction in progress';
+  videoName = extractionData.videoFile.name;
   //Update poses packet size
   posesPacketSize = extractionData.posesPacketSize;
   //Load and start video
   camera = new Context();
   detector = await createDetector();
-  //Initialice JSON
-  posesJSON.push([]);
   //Load video in page
   await updateVideo(extractionData.videoFile);
   await startDetection();
-  return posesJSON;
 };
