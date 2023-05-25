@@ -1,32 +1,60 @@
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "../src/utils/hashPassword";
+
 const prisma = new PrismaClient();
-const users = [
+
+const trainingGroups = [
   {
-    email: "pestrella@gmail.com",
-    password: "$argon2id$v=19$m=65536,t=3,p=4$QlqQtAUgua3rh18ufw/CwQ$K+YgFptK2/uBuf8KIMHtt+/8bgkTW/LM9gc7otNUAu4",
-    names: "Patricio",
-    lastNames: "Estrella",
-    roles: ["fencer"],
+    name: "Grupo 1",
+    weapon: "Florete",
   },
   {
-    email: "mscott@gmail.com",
-    password: "$argon2id$v=19$m=65536,t=3,p=4$QlqQtAUgua3rh18ufw/CwQ$K+YgFptK2/uBuf8KIMHtt+/8bgkTW/LM9gc7otNUAu4",
-    names: "Michael",
-    lastNames: "Scott",
-    roles: ["trainer"],
+    name: "Grupo 2",
+    weapon: "Sable",
   },
   {
-    email: "rsanchez@gmail.com",
-    password: "$argon2id$v=19$m=65536,t=3,p=4$QlqQtAUgua3rh18ufw/CwQ$K+YgFptK2/uBuf8KIMHtt+/8bgkTW/LM9gc7otNUAu4",
-    names: "Rick",
-    lastNames: "Sanchez",
-    roles: ["admin"],
+    name: "Grupo 3",
+    weapon: "Espada",
   },
 ];
 
 async function main() {
+  const password = await hashPassword("password123");
+
   await prisma.user.createMany({
-    data: users,
+    data: [
+      {
+        email: "pestrella@gmail.com",
+        password: password,
+        names: "Patricio",
+        lastNames: "Estrella",
+        roles: ["fencer"],
+      },
+      {
+        email: "mscott@gmail.com",
+        password: password,
+        names: "Michael",
+        lastNames: "Scott",
+        roles: ["trainer"],
+      },
+      {
+        email: "rsanchez@gmail.com",
+        password: password,
+        names: "Rick",
+        lastNames: "Sanchez",
+        roles: ["admin"],
+      },
+      {
+        email: "luis@gmail.com",
+        password: await hashPassword("12345678"),
+        names: "Luis",
+        lastNames: "Corales",
+        roles: ["admin"],
+      },
+    ],
+  });
+  await prisma.trainingGroup.createMany({
+    data: trainingGroups,
   });
 }
 

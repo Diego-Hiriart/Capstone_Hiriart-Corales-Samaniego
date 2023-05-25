@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { generateToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
+import { hashPassword } from "../utils/hashPassword";
 
 const prisma = new PrismaClient();
 
@@ -43,9 +44,7 @@ export async function signup(req: Request, res: Response) {
   try {
     if (req.body.user) throw new Error("Signup attempt - User already exists");
 
-    const hash = await argon2.hash(req.body.password, {
-      type: argon2.argon2id,
-    });
+    const hash = await hashPassword(req.body.password);
 
     // Create user in DB
     await prisma.user.create({

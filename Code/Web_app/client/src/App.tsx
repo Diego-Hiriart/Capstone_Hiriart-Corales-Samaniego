@@ -18,6 +18,8 @@ import { Toolbar } from "@mui/material";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
 import FencerList from "./pages/fencer/FencerList";
+import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
+import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -30,7 +32,8 @@ export const App = () => {
     <div>
       <NavBar />
       <Snackbar />
-      <Toolbar /> {/* <--- This is to avoid the content to be hidden by the navbar */}
+      <Toolbar />
+      {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route
@@ -41,25 +44,24 @@ export const App = () => {
           path="login"
           element={user ? <Navigate to="/" replace /> : <Login />}
         />
-        <Route element={<ProtectedRoute allowedRoles={["admin"]}/>}>
+        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="admin" element={<AdminHome />} />
-          <Route path="trainer" element={<TrainerList />}/>
+          <Route path="trainer" element={<TrainerList />} />
           <Route path="trainer/create" element={<CreateTrainer />} />
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]}/>}>
-          <Route path="trainer/:id" element={<TrainerProfile />}/>
-          <Route path="fencer" element={<FencerList />}/>
+        <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
+          <Route path="trainer/:id" element={<TrainerProfile />} />
+          <Route path="fencer" element={<TrainerViewFencers />} />
+          <Route path="fencer/list" element={<FencerList />} />
+          <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["trainer"]}/>}>
+        <Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>
           <Route path="trainer" element={<TrainerHome />} />
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["fencer"]}/>}>
+        <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
           <Route path="fencer" element={<FencerHome />} />
         </Route>
-        <Route 
-          path="unauthorized" 
-          element={<Unauthorized />}
-        />
+        <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />
       </Routes>
     </div>
