@@ -14,10 +14,11 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import { AxiosError } from "axios";
+import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { useNavigate } from "react-router";
 
 const schema = z.object({
   name: z.string().nonempty({ message: "Campo requerido" }),
@@ -32,6 +33,11 @@ interface CreateGroupDialogProps {
 }
 
 const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
+  const [disableButton, setDisableButton] = useState({
+    groupName: false,
+    weapon: false,
+  });
+
   const {
     register,
     handleSubmit,
@@ -57,6 +63,7 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
       }
     }
   };
+  console.log(disableButton);
 
   // TODO: add root error component
   return (
@@ -86,6 +93,9 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
                 {...register("name")}
                 error={!!errors.name}
                 helperText={errors.name?.message}
+                onChange={() => {
+                  setDisableButton({ ...disableButton, groupName: true });
+                }}
               />
               <Controller
                 name="weapon"
@@ -97,7 +107,10 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
                     <RadioGroup
                       {...field}
                       row
-                      onChange={(e) => field.onChange(e.target.value)}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                        setDisableButton({ ...disableButton, weapon: true });
+                      }}
                       value={field.value}
                     >
                       <FormControlLabel
@@ -122,6 +135,7 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
               <Button
                 type="submit"
                 fullWidth
+                disabled={!(disableButton.groupName && disableButton.weapon)}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 onClick={() => {
