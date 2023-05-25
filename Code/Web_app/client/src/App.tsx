@@ -1,32 +1,34 @@
-import "./App.css";
-import { Navigate, Route, Routes } from "react-router-dom";
-import NavBar from "./components/Navbar/Navbar";
-import Login from "./pages/Login";
+import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
-import Signup from "./pages/fencer/Signup";
-import Home from "./pages/Home";
 import { useContext, useEffect } from "react";
-import AuthContext from "./contexts/AuthContext";
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
+import AuthContext from "./contexts/AuthContext";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import AdminHome from "./pages/admin/AdminHome";
 import FencerHome from "./pages/fencer/FencerHome";
-import TrainerHome from "./pages/trainer/TrainerHome";
+import FencerList from "./pages/fencer/FencerList";
+import Signup from "./pages/fencer/Signup";
+import GroupDetails from "./pages/group/GroupDetails";
+import GroupFencersList from "./pages/group/GroupFencersList";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
-import { Toolbar } from "@mui/material";
+import TrainerHome from "./pages/trainer/TrainerHome";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
-import FencerList from "./pages/fencer/FencerList";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
 
   useEffect(() => {
     checkToken();
-  }, [])
+  }, []);
 
   return (
     <div>
@@ -53,6 +55,8 @@ export const App = () => {
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/list" element={<FencerList />} />
+          <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
+          <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>

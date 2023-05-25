@@ -15,9 +15,55 @@ export async function findFencerById(id: number) {
   }
 }
 
+export async function findFencerByName(name: string) {
+  try {
+    const fencer = await prisma.fencer.findMany({
+      where: {
+        OR: [
+          {
+            user: {
+              names: name,
+            },
+          },
+          {
+            user: {
+              lastNames: name,
+            },
+          },
+        ],
+      },
+    });
+    return fencer;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function addFencerToGroup(data: { groupID: number; id: number }) {
+  try {
+    const fencer = await prisma.fencer.update({
+      where: {
+        fencerID: data.id,
+      },
+      data: {
+        trainingGroup: {
+          connect: { trainingGroupID: data.groupID },
+        },
+      },
+    });
+    return fencer;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function findAllFencer() {
   try {
-    const fencers = await prisma.fencer.findMany();
+    const fencers = await prisma.fencer.findMany({
+      include: {
+        user: true,
+      },
+    });
     return fencers;
   } catch (error) {
     throw error;

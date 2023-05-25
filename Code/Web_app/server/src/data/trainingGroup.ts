@@ -8,6 +8,13 @@ export async function findTrainingGroupById(id: number) {
       where: {
         trainingGroupID: id,
       },
+      include: {
+        fencer: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
     return trainingGroup;
   } catch (error) {
