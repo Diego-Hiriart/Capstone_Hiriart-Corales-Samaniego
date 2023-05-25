@@ -63,7 +63,6 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
       }
     }
   };
-  console.log(disableButton);
 
   // TODO: add root error component
   return (
