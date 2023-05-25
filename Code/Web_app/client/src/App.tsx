@@ -6,7 +6,6 @@ import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
 import AuthContext from "./contexts/AuthContext";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import AdminHome from "./pages/admin/AdminHome";
@@ -22,6 +21,7 @@ import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import SignupPersonalInfo from "./pages/fencer/SignupPersonalInfo";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -37,7 +37,7 @@ export const App = () => {
       <Toolbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<SignupPersonalInfo />} />
         <Route
           path="signup"
           element={user ? <Navigate to="/" replace /> : <Signup />}

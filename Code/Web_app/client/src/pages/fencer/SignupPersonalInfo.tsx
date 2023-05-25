@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Container,
   FormHelperText,
   InputLabel,
@@ -22,50 +23,94 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 
-const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+const bloodTypes = [
+  "",
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "AB+",
+  "AB-",
+  "O+",
+  "O-",
+] as const;
+
 const leadSources = [
+  { value: "", label: "" }, // TODO: find way to not use this
   { value: "Redes Sociales", label: "Redes Sociales" },
   { value: "Referido", label: "Referido" },
   { value: "Otro", label: "Otro" },
 ] as const;
-type leadSource = typeof leadSources[number]["value"];
+type leadSource = (typeof leadSources)[number]["value"];
 const leadSourceValues: [leadSource, ...leadSource[]] = [
   leadSources[0].value,
-  ...leadSources.slice(1).map((ls) => ls.value)
+  ...leadSources.slice(1).map((ls) => ls.value),
 ];
 
-const schema = z.object({
-  // TODO: validar cedula
-  idNumber: z
-    .string()
-    .regex(/^\d+$/, { message: "Cédula inválida" })
-    .length(10, { message: "Cédula inválida" }),
-  phone: z
-    .string()
-    .regex(/^\d+$/, { message: "Teléfono inválido" })
-    .length(10, { message: "Teléfono inválido" }),
-  emergencyPhone: z
-    .string()
-    .regex(/^\d+$/, { message: "Teléfono inválido" })
-    .length(10, { message: "Teléfono inválido" }),
-  bloodType: z.enum(bloodTypes, {
-    errorMap: () => ({
-      message: "Tipo de sangre inválido",
-    })
-  }),
-  sex: z.enum(["M", "F"]),
-  occupation: z.string().nonempty({ message: "Campo requerido" }),
-  birthDate: z.any(), //TODO validar fecha
-  school: z.string().nonempty({ message: "Campo requerido" }),
-  legalGuardian: z.string().nonempty({ message: "Campo requerido" }),
-  guardianPhone: z
-    .string()
-    .regex(/^\d+$/, { message: "Teléfono inválido" })
-    .length(10, { message: "Teléfono inválido" }),
-  leadSource: z.enum(leadSourceValues),
-  // inscriptionReason: z.enum(["Competencia", "Hobby", "Otro"]),
-  // insurance: z.string().optional(),
-});
+const inscriptionReasons = [
+  { value: "", label: "" }, // TODO: find way to not use this
+  { value: "Competencia", label: "Competencia" },
+  { value: "Hobby", label: "Hobby" },
+  { value: "Otro", label: "Otro" },
+] as const;
+type inscriptionReason = (typeof inscriptionReasons)[number]["value"];
+const inscriptionReasonValues: [inscriptionReason, ...inscriptionReason[]] = [
+  inscriptionReasons[0].value,
+  ...inscriptionReasons.slice(1).map((ir) => ir.value),
+];
+
+const schema = z
+  .object({
+    // TODO: validar cedula
+    idNumber: z
+      .string()
+      .regex(/^\d+$/, { message: "Cédula inválida" })
+      .length(10, { message: "Cédula inválida" })
+      .trim(),
+    phone: z
+      .string()
+      .regex(/^\d+$/, { message: "Teléfono inválido, debe contener 10 dígitos" })
+      .length(10, { message: "Teléfono inválido, debe contener 10 dígitos." })
+      .trim(),
+    emergencyPhone: z
+      .string()
+      .regex(/^\d+$/, { message: "Teléfono inválido" })
+      .length(10, { message: "Teléfono inválido" })
+      .trim(),
+    bloodType: z.enum(bloodTypes).refine((input) => input !== "", {
+      message: "Campo requerido",
+    }),
+    sex: z.enum(["M", "F"]),
+    occupation: z.string().trim().nonempty({ message: "Campo requerido" }),
+    // birthDate: z.any(), //TODO validar fecha
+    school: z.string().trim().nonempty({ message: "Campo requerido" }).trim(),
+    legalGuardian: z
+      .string()
+      .trim()
+      .nonempty({ message: "Campo requerido" }),
+    guardianPhone: z
+      .string()
+      .trim()
+      .regex(/^\d+$/, { message: "Teléfono inválido" })
+      .length(10, { message: "Teléfono inválido" }),
+    leadSource: z.enum(leadSourceValues).refine((input) => input !== "", {
+      message: "Campo requerido",
+    }),
+    inscriptionReason: z
+      .enum(inscriptionReasonValues)
+      .refine((ir) => ir !== "", {
+        message: "Campo requerido",
+      }),
+    hasInsurance: z.boolean(),
+    insurance: z.string().trim().optional(),
+  })
+  .refine(
+    ({hasInsurance, insurance}) => {
+      const isValid = insurance !== undefined && insurance !== "";
+      return hasInsurance ? isValid : true;
+    },
+    { message: "Campo requerido", path: ["insurance"] }
+  );
 
 type SignupPersonalInfoForm = z.infer<typeof schema>;
 
@@ -76,7 +121,11 @@ const SignupPersonalInfo = () => {
     handleSubmit,
     register,
     formState: { errors },
+    watch,
   } = useForm<SignupPersonalInfoForm>({
+    defaultValues: {
+      insurance: ""
+    },
     resolver: zodResolver(schema),
   });
 
@@ -142,7 +191,7 @@ const SignupPersonalInfo = () => {
             <InputLabel id="bloodtype-label">Tipo de sangre</InputLabel>
             <Controller
               name="bloodType"
-              defaultValue={undefined}
+              defaultValue=""
               control={control}
               render={({ field }) => (
                 <Select
@@ -197,7 +246,7 @@ const SignupPersonalInfo = () => {
             error={!!errors.occupation}
             helperText={errors.occupation?.message}
           />
-          <Controller
+          {/* <Controller
             name="birthDate"
             control={control}
             defaultValue={null}
@@ -217,7 +266,7 @@ const SignupPersonalInfo = () => {
                 }}
               />
             )}
-          />
+          /> */}
           <TextField
             required
             fullWidth
@@ -248,24 +297,77 @@ const SignupPersonalInfo = () => {
             error={!!errors.guardianPhone}
             helperText={errors.guardianPhone?.message}
           />
-          {/* <FormControl fullWidth>
-            <InputLabel id="lead-select-label">
+          <FormControl fullWidth error={!!errors.leadSource} margin="normal">
+            <InputLabel id="leadSource-label">
               Como te enteraste de la academia?
             </InputLabel>
-            <Select
-              labelId="lead-select-label"
-              id="select-label"
-              value=""
-              label="Como te enteraste de la academia?"
-              {...register("leadSource")}
-            >
-              {leadSources.map((leadSource) => (
-                <MenuItem key={leadSource.value} value={leadSource.value}>
-                  {leadSource.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
+            <Controller
+              name="leadSource"
+              defaultValue=""
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  labelId="leadSource-label"
+                  id="select-label"
+                  label="Como te enteraste de la academia?"
+                >
+                  {leadSources.map((leadSource) => (
+                    <MenuItem key={leadSource.value} value={leadSource.value}>
+                      {leadSource.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.leadSource?.message}</FormHelperText>
+          </FormControl>
+          <FormControl
+            fullWidth
+            error={!!errors.inscriptionReason}
+            margin="normal"
+          >
+            <InputLabel id="inscriptionReason-label">
+              Como te enteraste de la academia?
+            </InputLabel>
+            <Controller
+              name="inscriptionReason"
+              defaultValue=""
+              control={control}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  labelId="inscriptionReason-label"
+                  id="select-label"
+                  label="Como te enteraste de la academia?"
+                >
+                  {inscriptionReasons.map((inscriptionReason) => (
+                    <MenuItem
+                      key={inscriptionReason.value}
+                      value={inscriptionReason.value}
+                    >
+                      {inscriptionReason.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.inscriptionReason?.message}</FormHelperText>
+          </FormControl>
+          <FormControlLabel
+            control={<Checkbox {...register("hasInsurance")} />}
+            label="¿Cuenta con seguro médico?"
+          />
+          <TextField
+            disabled={Boolean(!watch("hasInsurance"))}
+            fullWidth
+            margin="normal"
+            id="insurance"
+            label="Nombre aseguradora"
+            {...register("insurance")}
+            error={!!errors.insurance && watch("hasInsurance")}
+            helperText={errors.insurance?.message}
+          />
           <Button
             type="submit"
             fullWidth
