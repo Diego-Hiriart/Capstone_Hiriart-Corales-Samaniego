@@ -7,6 +7,7 @@ import React, {
 import { LoginFormInputs, SignupForm, User } from "../types";
 import { useNavigate } from "react-router-dom";
 import axios from "../services/axios";
+import { AxiosError } from "axios";
 
 interface AuthContext {
   user: User | null;
@@ -14,6 +15,7 @@ interface AuthContext {
   login: (user: LoginFormInputs) => Promise<void>;
   logout: () => Promise<void>;
   signup: (user: SignupForm) => Promise<void>;
+  checkToken: () => Promise<void>;
 }
 
 //TODO: create a custom hook to use this context
@@ -23,6 +25,7 @@ const AuthContext = createContext<AuthContext>({
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   signup: () => Promise.resolve(),
+  checkToken: () => Promise.resolve(),
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -42,9 +45,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      await axios.post("/auth/logout");
       localStorage.removeItem("user");
       setUser(null!);
+      await axios.post("/auth/logout");
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -56,8 +59,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     navigate("/login");
   };
 
+  const checkToken = async () => {
+    try {
+      //validate token and get user
+      const { data } = await axios.get("/dashboard/user/me");
+      const user = data.data as User;
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          localStorage.removeItem("user");
+          setUser(null!);
+        }
+      }
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout, signup }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, signup, checkToken }}>
       {children}
     </AuthContext.Provider>
   );

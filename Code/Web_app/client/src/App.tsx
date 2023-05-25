@@ -3,9 +3,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import NavBar from "./components/Navbar/Navbar";
 import Login from "./pages/Login";
 import "dayjs/locale/es";
-import Signup from "./pages/Signup";
+import Signup from "./pages/fencer/Signup";
 import Home from "./pages/Home";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "./contexts/AuthContext";
 import Snackbar from "./components/Snackbar";
 import Unauthorized from "./pages/Unauthorized";
@@ -22,7 +22,11 @@ import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 
 export const App = () => {
-  const { user } = useContext(AuthContext);
+  const { user, checkToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    checkToken();
+  }, [])
 
   return (
     <div>
