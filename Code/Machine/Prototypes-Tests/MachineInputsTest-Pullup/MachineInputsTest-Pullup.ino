@@ -19,7 +19,7 @@ void setup() {
   // put your setup code here, to run once:
   //Serial ports
   Serial.begin(9600);
-  Serial1.begin(9600, SERIAL_8N1, 13, 14);  //Last 2 args are RX and TX pins
+  Serial1.begin(9600, SERIAL_8N1, 14, 13);  //Last 2 args are RX and TX pins
   Serial2.begin(9600);
   //Machine inputs
   pinMode(leftTouchPin, INPUT_PULLUP);
