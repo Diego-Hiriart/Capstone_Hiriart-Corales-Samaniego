@@ -18,6 +18,8 @@ MD_Parola scoreDisplay = MD_Parola(hardwareType, csPin, maxDevices);
 
 //Scores, period and time to display
 uint8_t score = 0;
+uint8_t newScore;
+bool initScore = true;  //Always initalize as 0
 
 void setup() {
   //Initialice MAX7219 displays
@@ -43,7 +45,15 @@ void loop() {
   // put your main code here, to run repeatedly:
   scoreDisplay.displayAnimate();  //Always run the display animation
   serialReceive();
-  displayScore();
+  //Refresh display only if score changed or when initializing
+  if (score != newScore || initScore) {
+    //Remove init flag
+    if (initScore) {
+      initScore = false;
+    }
+    score = newScore;  //Update score
+    displayScore();    //Refresh with updated score
+  }
 }
 
 void serialReceive() {
@@ -59,7 +69,7 @@ void serialReceive() {
     if (esp32Message.startsWith(messageStartDelimiter) && esp32Message.endsWith(messageEndDelimiter)
         && esp32Message.length() == messageLength) {
       String scoreValue = esp32Message.substring(2, 4);
-      score = scoreValue.toInt();
+      newScore = scoreValue.toInt();
     } else {
       //Clear malformed messages
       Serial.flush();
