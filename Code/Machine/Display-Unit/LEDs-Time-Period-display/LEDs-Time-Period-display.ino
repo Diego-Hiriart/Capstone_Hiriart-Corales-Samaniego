@@ -119,7 +119,10 @@ void serialReceive() {
   */
   if (Serial.available() >= messageLength) {
     String esp32Message = "";
-    while (!esp32Message.endsWith(messageEndDelimiter)) {
+    //Read until the delimiter is found or the message is the same length as the desired message
+    /*If malformed messages are received, they will be read until conditions are met, but are not 
+    * processed, if a malformed message is received the buffer is flushed to clear the remaining garbage*/
+    while (!esp32Message.endsWith(messageEndDelimiter) && esp32Message.length() <= messageLength) {
       esp32Message += (char)Serial.read();
     }
     if (esp32Message.startsWith(messageStartDelimiter) && esp32Message.endsWith(messageEndDelimiter)
@@ -148,6 +151,9 @@ void serialReceive() {
       blockedMachine = readValue.toInt();
       readValue = esp32Message.substring(33, 34);
       buzzerPattern = readValue.toInt();
+    } else {
+      //Clear malformed messages
+      Serial.flush();
     }
   }
 }
