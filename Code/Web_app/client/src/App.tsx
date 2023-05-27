@@ -21,7 +21,6 @@ import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import SignupFencerInfo from "./pages/fencer/SignupFencerInfo";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -37,7 +36,7 @@ export const App = () => {
       <Toolbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
-        <Route path="/" element={<SignupFencerInfo />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="signup"
           element={user ? <Navigate to="/" replace /> : <Signup />}
