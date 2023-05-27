@@ -37,7 +37,7 @@ export const App = () => {
       <Toolbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<SignupPersonalInfo />} />
         <Route
           path="signup"
           element={user ? <Navigate to="/" replace /> : <Signup />}

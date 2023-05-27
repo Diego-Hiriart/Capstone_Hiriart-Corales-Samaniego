@@ -82,7 +82,9 @@ const schema = z
     }),
     sex: z.enum(["M", "F"]),
     occupation: z.string().trim().nonempty({ message: "Campo requerido" }),
-    // birthDate: z.any(), //TODO validar fecha
+    birthDate: z.any().refine((input) => input !== null, {
+      message: "Campo requerido",
+    }), //TODO validar fecha
     school: z.string().trim().nonempty({ message: "Campo requerido" }).trim(),
     legalGuardian: z
       .string()
@@ -246,13 +248,14 @@ const SignupPersonalInfo = () => {
             error={!!errors.occupation}
             helperText={errors.occupation?.message}
           />
-          {/* <Controller
+          <Controller
             name="birthDate"
             control={control}
             defaultValue={null}
             render={({ field, fieldState: { error } }) => (
               <DatePicker
                 {...field}
+                disableFuture
                 label="Fecha de Nacimiento"
                 value={field.value}
                 onChange={(newValue) => field.onChange(newValue)}
@@ -266,7 +269,7 @@ const SignupPersonalInfo = () => {
                 }}
               />
             )}
-          /> */}
+          />
           <TextField
             required
             fullWidth
