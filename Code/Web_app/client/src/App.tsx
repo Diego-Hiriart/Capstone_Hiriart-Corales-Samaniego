@@ -3,12 +3,11 @@ import "dayjs/locale/es";
 import SignupForm from "./pages/fencer/SignupForm";
 import Home from "./pages/Home";
 import { useContext, useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
 import AuthContext from "./contexts/AuthContext";
-import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
 import AdminHome from "./pages/admin/AdminHome";
 import FencerHome from "./pages/fencer/FencerHome";
@@ -24,7 +23,7 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
-import { MultiStepFormProvider } from "./contexts/MultiStepFormContext";
+import SignupContextRoute from "./routes/FormContextRoute";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -41,19 +40,13 @@ export const App = () => {
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <MultiStepFormProvider>
-          <Route
-            path="signup"
-            element={user ? <Navigate to="/" replace /> : <SignupForm />}
-          >
-            <Route path="personal" element={ <SignupPersonalForm />}/>
-            <Route path="fencer" element={ <SignupFencerForm />}/>
+        <Route element={<SignupContextRoute/>}>
+          <Route path="/signup">
+            <Route index element={<SignupForm />} />
+            <Route path="personal" element={<SignupPersonalForm />} />
+            <Route path="fencer" element={<SignupFencerForm />} />
           </Route>
-        </MultiStepFormProvider>
-        <Route
-          path="login"
-          element={user ? <Navigate to="/" replace /> : <Login />}
-        />
+        </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="admin" element={<AdminHome />} />
           <Route path="trainer" element={<TrainerList />} />
