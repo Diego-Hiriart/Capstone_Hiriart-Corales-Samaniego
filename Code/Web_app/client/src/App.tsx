@@ -24,6 +24,7 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
+import { MultiStepFormProvider } from "./contexts/MultiStepFormContext";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -40,13 +41,15 @@ export const App = () => {
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="signup"
-          element={user ? <Navigate to="/" replace /> : <SignupForm />}
-        >
-          <Route path="personal" element={ <SignupPersonalForm />}/>
-          <Route path="fencer" element={ <SignupFencerForm />}/>
-        </Route>
+        <MultiStepFormProvider>
+          <Route
+            path="signup"
+            element={user ? <Navigate to="/" replace /> : <SignupForm />}
+          >
+            <Route path="personal" element={ <SignupPersonalForm />}/>
+            <Route path="fencer" element={ <SignupFencerForm />}/>
+          </Route>
+        </MultiStepFormProvider>
         <Route
           path="login"
           element={user ? <Navigate to="/" replace /> : <Login />}
