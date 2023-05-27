@@ -1,14 +1,22 @@
 //Hiriart Corales Samaniego
+#include <RH_ASK.h>
+#include <SPI.h>  // Not used but needed to compile
 //Touches input pins
 const uint8_t leftTouchPin = 19;
 const uint8_t rightTouchPin = 23;
-const uint8_t invalidRightPin = 18;  //Invalid target or antiblocking (self-tough) pin
-const uint8_t invalidLeftPin = 4;  //Invalid target or antiblocking (self-tough) pin
+const uint8_t invalidRightPin = 18;  //Invalid target or antiblocking (self-touch) pins
+const uint8_t invalidLeftPin = 4;
+//Buttons pins
+const uint8_t toggleAutoPointsPin = 32;
+const uint8_t resetPin = 33;
+//RF receiver pins
+const uint8_t BTTXPin = 26;  //TX not used but has to be overridden
+const uint8_t BTRXPin = 5;   //To override default RX pin
 //Data variables
 uint8_t leftScore = 0;
 uint8_t rightScore = 0;
 uint8_t paused = 0;
-uint32_t setTime = 0;       //Time wich has been set in the machine
+uint32_t setTime = 180000;  //Time wich has been set in the machine
 uint32_t startTime = 0;     //When timer started to countdown
 uint32_t elapsedTime = 0;   //To know how much time has passed
 bool pointsIncAuto = true;  //Points increase automatic or not
@@ -26,6 +34,9 @@ void setup() {
   pinMode(rightTouchPin, INPUT_PULLUP);
   pinMode(invalidRightPin, INPUT_PULLUP);
   pinMode(invalidLeftPin, INPUT_PULLUP);
+  //Buttons
+  pinMode(toggleAutoPointsPin, INPUT_PULLDOWN);
+  pinMode(resetPin, INPUT_PULLDOWN);
 }
 
 void loop() {
@@ -39,11 +50,26 @@ void loop() {
   sendLEDsTimerPeriod();
   //Send score to score display units
   sendScores();
-  Serial.println(digitalRead(leftTouchPin));
-  Serial.println(digitalRead(rightTouchPin));
-  Serial.println(digitalRead(invalidRightPin));
-  Serial.println(digitalRead(invalidLeftPin));
-  delay(2500);
+  //Check on board buttons presses
+  onBoardButtons();
+}
+
+void onBoardButtons() {
+  uint8_t autoTogglePress = digitalRead(toggleAutoPointsPin);
+  uint8_t resetPress = digitalRead(resetPin);
+  //Check that there is still a press after delay time, if so do what is needed
+  delay(debounceDelay);
+  uint8_t autoToggleDebounce = digitalRead(toggleAutoPointsPin);
+  uint8_t resetDebounce = digitalRead(resetPin);
+  if (autoTogglePress == autoToggleDebounce && autoToggleDebounce == HIGH) {
+    pointsIncAuto = !pointsIncAuto;
+  }
+  if (resetPress == resetDebounce && resetDebounce == HIGH) {
+    leftScore = 0;
+    rightScore = 0;
+    paused = 1;
+    elapsedTime = 0;
+  }
 }
 
 void checkTouches() {
@@ -85,7 +111,7 @@ void sendLEDsTimerPeriod() {
   * e.g. (1.5 used minutes): s;0000090000;0;2;1;1;1;0;0;0;1;0;3;e\n
   */
   uint32_t timerTime = setTime - elapsedTime;
-  String message = "s;" + String(timerTime) + ";" + String(paused) + ";" + String(leftScore) + ";" + String(rightScore) + ";e\n";
+  String message = "s;" + String(timerTime) + ";" + String(paused) + ";" + String(leftScore) + ";" + String(rightScore) + ";" + String(pointsIncAuto) + ";e\n";
   int charMessageLength = message.length() + 1;
   char serialMessage[charMessageLength];
   message.toCharArray(serialMessage, charMessageLength);
