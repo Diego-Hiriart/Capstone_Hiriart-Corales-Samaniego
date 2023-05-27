@@ -1,5 +1,7 @@
 import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
+import SignupForm from "./pages/fencer/SignupForm";
+import Home from "./pages/Home";
 import { useContext, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -11,7 +13,6 @@ import Unauthorized from "./pages/Unauthorized";
 import AdminHome from "./pages/admin/AdminHome";
 import FencerHome from "./pages/fencer/FencerHome";
 import FencerList from "./pages/fencer/FencerList";
-import Signup from "./pages/fencer/Signup";
 import GroupDetails from "./pages/group/GroupDetails";
 import GroupFencersList from "./pages/group/GroupFencersList";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
@@ -21,6 +22,8 @@ import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
+import SignupFencerForm from "./pages/fencer/SignupFencerForm";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -39,8 +42,11 @@ export const App = () => {
         <Route path="/" element={<Home />} />
         <Route
           path="signup"
-          element={user ? <Navigate to="/" replace /> : <Signup />}
-        />
+          element={user ? <Navigate to="/" replace /> : <SignupForm />}
+        >
+          <Route path="personal" element={ <SignupPersonalForm />}/>
+          <Route path="fencer" element={ <SignupFencerForm />}/>
+        </Route>
         <Route
           path="login"
           element={user ? <Navigate to="/" replace /> : <Login />}

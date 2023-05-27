@@ -40,20 +40,20 @@ const schema = z.object({
     }),
 });
 
-type SignupFencerInfoForm = z.infer<typeof schema>;
+type SignupFencerFormType = z.infer<typeof schema>;
 
-const SignupFencerInfo = () => {
+const SignupFencerForm = () => {
   const { showError } = useAlert();
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFencerInfoForm>({
+  } = useForm<SignupFencerFormType>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<SignupFencerInfoForm> = async (formData) => {
+  const onSubmit: SubmitHandler<SignupFencerFormType> = async (formData) => {
     try {
       console.log(formData);
     } catch (error) {
@@ -158,4 +158,4 @@ const SignupFencerInfo = () => {
   );
 };
 
-export default SignupFencerInfo;
+export default SignupFencerForm;

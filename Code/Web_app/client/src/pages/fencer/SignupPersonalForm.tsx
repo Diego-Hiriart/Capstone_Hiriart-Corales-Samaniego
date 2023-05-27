@@ -119,9 +119,9 @@ const schema = z
     { message: "Campo requerido", path: ["insurance"] }
   );
 
-type SignupPersonalInfoForm = z.infer<typeof schema>;
+type SignupPersonalFormType = z.infer<typeof schema>;
 
-const SignupPersonalInfo = () => {
+const SignupPersonalForm = () => {
   const { showError } = useAlert();
   const {
     control,
@@ -129,14 +129,14 @@ const SignupPersonalInfo = () => {
     register,
     formState: { errors },
     watch,
-  } = useForm<SignupPersonalInfoForm>({
+  } = useForm<SignupPersonalFormType>({
     defaultValues: {
       insurance: "",
     },
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<SignupPersonalInfoForm> = async (formData) => {
+  const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
       console.log(formData);
     } catch (error) {
@@ -390,4 +390,4 @@ const SignupPersonalInfo = () => {
   );
 };
 
-export default SignupPersonalInfo;
+export default SignupPersonalForm;

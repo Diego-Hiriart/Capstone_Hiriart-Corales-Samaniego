@@ -13,7 +13,7 @@ import AuthContext from "../../contexts/AuthContext";
 import { useAlert } from "../../hooks/useAlert";
 import { AxiosError } from "axios";
 
-export default function Signup() {
+export default function SignupForm() {
   const { signup } = useContext(AuthContext);
   const { showSuccess, showError } = useAlert();
 
