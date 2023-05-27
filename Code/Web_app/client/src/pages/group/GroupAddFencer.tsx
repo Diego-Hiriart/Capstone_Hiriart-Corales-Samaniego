@@ -10,11 +10,12 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { TrainingGroupWithFencers } from "../../types";
+import { Fencer, TrainingGroupWithFencers } from "../../types";
 
 const schema = z.object({
   fencer: z.string().nonempty({ message: "Campo requerido" }),
@@ -29,6 +30,17 @@ interface GroupAddFencerProps {
 }
 
 const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
+  const [fencers, setFencers] = useState<Fencer[]>(null!);
+
+  useEffect(() => {
+    const fetchFencers = async () => {
+      const { data } = await axios.get("/dashboard/fencer/");
+      setFencers(data.data);
+    };
+
+    fetchFencers();
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -42,7 +54,7 @@ const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
 
   const onSubmit: SubmitHandler<GroupAddFencerForm> = async (formData) => {
     try {
-      const fencer = group.fencer.find(
+      const fencer = fencers.find(
         (fencer) =>
           fencer.user.names + " " + fencer.user.lastNames === formData.fencer
       );
@@ -82,9 +94,17 @@ const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
               <Autocomplete
                 disablePortal
                 id="fencer"
-                options={group?.fencer?.map(
-                  (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                )}
+                options={fencers
+                  ?.filter(
+                    (fencer) =>
+                      !group?.fencer.find(
+                        (groupFencer) =>
+                          groupFencer.fencerID === fencer.fencerID
+                      )
+                  )
+                  .map(
+                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
+                  )}
                 sx={{ width: 300 }}
                 renderInput={(params) => (
                   <TextField
