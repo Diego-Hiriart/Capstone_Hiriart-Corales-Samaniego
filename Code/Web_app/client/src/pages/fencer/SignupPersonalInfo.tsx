@@ -48,6 +48,7 @@ const inscriptionReasonValues: [inscriptionReason, ...inscriptionReason[]] = [
   ...inscriptionReasons.slice(1).map((ir) => ir.value),
 ];
 
+// TODO: move schema to utils folder
 const schema = z
   .object({
     // TODO: validar cedula
@@ -146,8 +147,8 @@ const SignupPersonalInfo = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
+        mt={{ xs: 3, sm: 8 }}
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -381,7 +382,7 @@ const SignupPersonalInfo = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Submit
+            Continuar
           </Button>
         </Box>
       </Box>
