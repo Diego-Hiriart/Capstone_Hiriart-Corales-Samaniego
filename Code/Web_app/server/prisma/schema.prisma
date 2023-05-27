@@ -52,32 +52,32 @@ model Fencer {
   fencerID                   Int              @id @default(autoincrement())
   user                       User?            @relation(fields: [userID], references: [userID])
   userID                     Int?             @unique
-  trainingGroup              TrainingGroup    @relation(fields: [trainingGroupID], references: [trainingGroupID])
-  trainingGroupID            Int
-  idNumber                   String           @db.VarChar(15)
-  emergencyPhone             String           @db.VarChar(15)
+  trainingGroup              TrainingGroup?   @relation(fields: [trainingGroupID], references: [trainingGroupID])
+  trainingGroupID            Int?
+  idNumber                   String           @db.Text
+  emergencyPhone             String           @db.Text
   birthDate                  DateTime
-  bloodType                  String           @db.VarChar(3)
-  sex                        String           @db.Char(1)
-  laterality                 String           @db.Char(1)
-  phone                      String           @db.VarChar(15)
-  insurance                  String           @db.VarChar(250)
+  bloodType                  String           @db.Text
+  sex                        String           @db.Text
+  laterality                 String           @db.Text
+  phone                      String           @db.Text
+  insurance                  String           @db.Text
   inscriptionDate            DateTime
   startDate                  DateTime
-  occupation                 String           @db.VarChar(50)
-  schedule                   String           @db.VarChar(40)
-  legalGuardian              String           @db.VarChar(50)
+  occupation                 String           @db.Text
+  schedule                   String           @db.Text
+  legalGuardian              String           @db.Text
   leadSource                 String           @db.Text
   inscriptionReason          String
-  height                     Float            @db.Real
-  weight                     Float            @db.Real
-  physicalActivity           String           @db.VarChar(250)
+  height                     Float
+  weight                     Float
+  physicalActivity           String           @db.Text
   medicalFamily              String           @db.Text
   medicalPersonal            String           @db.Text
   personalMedicalDetails     String           @db.Text
-  weapon                     String           @db.VarChar(25)
-  pictureURL                 String           @db.VarChar(255)
-  guestName                  String?          @db.VarChar(200)
+  weapon                     String           @db.Text
+  pictureURL                 String           @db.Text
+  guestName                  String?          @db.Text
   weeklyReport               WeeklyReport[]
   singleFeedback             SingleFeedback[]
   cycleGoal                  CycleGoal[]
