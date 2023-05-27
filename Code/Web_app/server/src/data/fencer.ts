@@ -54,6 +54,24 @@ export async function addFencerToGroup(id: number, groupID: number) {
   }
 }
 
+export async function removeFencerFromGroup(id: number) {
+  try {
+    const fencer = await prisma.fencer.update({
+      where: {
+        fencerID: id,
+      },
+      data: {
+        trainingGroup: {
+          disconnect: true,
+        },
+      },
+    });
+    return fencer;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function findAllFencer() {
   try {
     const fencers = await prisma.fencer.findMany({
@@ -112,6 +130,8 @@ export async function createFencer(data: Fencer) {
 
 export async function updateFencerById(id: number, data: Fencer) {
   try {
+    console.log(data);
+
     const fencer = await prisma.fencer.update({
       where: {
         fencerID: id,

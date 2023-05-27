@@ -60,7 +60,7 @@ export type Trainer = {
 export type Fencer = {
   fencerID: number;
   userID: number | null;
-  trainingGroupID: number;
+  trainingGroupID: number | null;
   idNumber: string;
   emergencyPhone: string;
   birthDate: Date;

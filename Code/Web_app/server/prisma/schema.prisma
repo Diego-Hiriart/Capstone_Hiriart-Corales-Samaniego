@@ -52,8 +52,8 @@ model Fencer {
   fencerID                   Int              @id @default(autoincrement())
   user                       User?            @relation(fields: [userID], references: [userID])
   userID                     Int?             @unique
-  trainingGroup              TrainingGroup    @relation(fields: [trainingGroupID], references: [trainingGroupID])
-  trainingGroupID            Int
+  trainingGroup              TrainingGroup?   @relation(fields: [trainingGroupID], references: [trainingGroupID])
+  trainingGroupID            Int?
   idNumber                   String           @db.Text
   emergencyPhone             String           @db.Text
   birthDate                  DateTime

@@ -1,11 +1,9 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Avatar,
   Box,
   Button,
   Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   List,
   ListItem,
   ListItemAvatar,
@@ -16,17 +14,16 @@ import {
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import axios from "../../services/axios";
-import { Fencer, TrainingGroup } from "../../types";
+import { Fencer, TrainingGroupWithFencers } from "../../types";
 import GroupAddFencer from "./GroupAddFencer";
-
-interface TrainingGroupWithFencers extends TrainingGroup {
-  fencer: Fencer[];
-}
+import GroupRemoveFencer from "./GroupRemoveFencer";
 
 const GroupFencersList = () => {
   const { id } = useParams();
   const [group, setGroup] = useState<TrainingGroupWithFencers>(null!);
   const [open, setOpen] = useState(false);
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [selectedFencer, setSelectedFencer] = useState<Fencer>(null!);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -44,6 +41,15 @@ const GroupFencersList = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleRemoveClose = () => {
+    setRemoveDialogOpen(false);
+  };
+
+  const handleRemoveOpen = (fencer: Fencer) => {
+    setSelectedFencer(fencer);
+    setRemoveDialogOpen(true);
   };
 
   return (
@@ -79,12 +85,21 @@ const GroupFencersList = () => {
                   primary={`${fencer.user.names} ${fencer.user.lastNames}`}
                 />
               </ListItemButton>
+              <Button variant="text" onClick={() => handleRemoveOpen(fencer)}>
+                <DeleteIcon />
+              </Button>
             </ListItem>
           ))}
         </List>
         {/* TODO: Add pagination */}
       </Box>
       <GroupAddFencer group={group} handleClose={handleClose} open={open} />
+      <GroupRemoveFencer
+        group={group}
+        fencer={selectedFencer}
+        handleClose={handleRemoveClose}
+        open={removeDialogOpen}
+      />
     </Container>
   );
 };

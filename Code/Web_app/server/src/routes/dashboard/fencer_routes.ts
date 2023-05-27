@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+  deleteFencerFromGruop,
   getAllFencer,
   getFencerById,
   getFencerByWithParams,
@@ -15,6 +16,7 @@ router.get("/fencer/search", getFencerByWithParams);
 router.get("/fencer/:id", getFencerById);
 router.get("/fencer/", getAllFencer);
 router.post("/fencer/", postFencer);
+router.put("/fencer/group/:id", deleteFencerFromGruop);
 router.put("/fencer/:id", updateFencer);
 router.put("/fencer/", updateFencerToGroup);
 
