@@ -3,7 +3,8 @@ export interface LoginFormInputs {
   password: string;
 }
 
-export interface SignupForm {
+// TODO: remove when zod validation is implemented
+export interface SignupFormType {
   names: string;
   lastNames: string;
   email: string;

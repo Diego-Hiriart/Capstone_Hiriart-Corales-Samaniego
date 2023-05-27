@@ -7,15 +7,14 @@ import { Link as RouterLink } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SignupForm } from "../../types";
-import { useContext } from "react";
-import AuthContext from "../../contexts/AuthContext";
 import { useAlert } from "../../hooks/useAlert";
 import { AxiosError } from "axios";
+import useMultiStepForm from "../../hooks/useMultiStepForm";
+import { SignupFormType } from "../../types";
 
 export default function SignupForm() {
-  const { signup } = useContext(AuthContext);
-  const { showSuccess, showError } = useAlert();
+  const { formState, setFormState } = useMultiStepForm();
+  const { showError } = useAlert();
 
   const {
     register,
@@ -23,12 +22,13 @@ export default function SignupForm() {
     setError,
     formState: { errors },
     watch,
-  } = useForm<SignupForm>();
+  } = useForm<SignupFormType>( {
+    defaultValues: formState,
+  });
 
-  const onSubmit: SubmitHandler<SignupForm> = async (formData) => {
+  const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
-      await signup(formData);
-      showSuccess("Usuario creado exitosamente");
+      setFormState({...formState, formData});
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
