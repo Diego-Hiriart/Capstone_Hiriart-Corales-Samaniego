@@ -22,21 +22,11 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { Dayjs } from "dayjs";
 
-const bloodTypes = [
-  "",
-  "A+",
-  "A-",
-  "B+",
-  "B-",
-  "AB+",
-  "AB-",
-  "O+",
-  "O-",
-] as const;
+const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 
 const leadSources = [
-  { value: "", label: "" }, // TODO: find way to not use this
   { value: "Redes Sociales", label: "Redes Sociales" },
   { value: "Referido", label: "Referido" },
   { value: "Otro", label: "Otro" },
@@ -48,7 +38,6 @@ const leadSourceValues: [leadSource, ...leadSource[]] = [
 ];
 
 const inscriptionReasons = [
-  { value: "", label: "" }, // TODO: find way to not use this
   { value: "Competencia", label: "Competencia" },
   { value: "Hobby", label: "Hobby" },
   { value: "Otro", label: "Otro" },
@@ -69,7 +58,9 @@ const schema = z
       .trim(),
     phone: z
       .string()
-      .regex(/^\d+$/, { message: "Teléfono inválido, debe contener 10 dígitos" })
+      .regex(/^\d+$/, {
+        message: "Teléfono inválido, debe contener 10 dígitos",
+      })
       .length(10, { message: "Teléfono inválido, debe contener 10 dígitos." })
       .trim(),
     emergencyPhone: z
@@ -77,37 +68,50 @@ const schema = z
       .regex(/^\d+$/, { message: "Teléfono inválido" })
       .length(10, { message: "Teléfono inválido" })
       .trim(),
-    bloodType: z.enum(bloodTypes).refine((input) => input !== "", {
-      message: "Campo requerido",
-    }),
+    bloodType: z
+      .enum(bloodTypes)
+      .or(z.literal(""))
+      .refine((input) => input !== "", {
+        message: "Campo requerido",
+      }),
     sex: z.enum(["M", "F"]),
     occupation: z.string().trim().nonempty({ message: "Campo requerido" }),
-    birthDate: z.any().refine((input) => input !== null, {
-      message: "Campo requerido",
-    }), //TODO validar fecha
+    birthDate: z
+      .preprocess(
+        (input) => input !== null && (input as Dayjs).toDate(),
+        z
+          .date()
+          .min(new Date("1900-01-01"), { message: "Fecha no válida" })
+          .max(new Date(), { message: "Fecha no válida" })
+          .or(z.null())
+      )
+      .refine((input) => input !== null, {
+        message: "Campo requerido",
+      }),
     school: z.string().trim().nonempty({ message: "Campo requerido" }).trim(),
-    legalGuardian: z
-      .string()
-      .trim()
-      .nonempty({ message: "Campo requerido" }),
+    legalGuardian: z.string().trim().nonempty({ message: "Campo requerido" }),
     guardianPhone: z
       .string()
       .trim()
       .regex(/^\d+$/, { message: "Teléfono inválido" })
       .length(10, { message: "Teléfono inválido" }),
-    leadSource: z.enum(leadSourceValues).refine((input) => input !== "", {
-      message: "Campo requerido",
-    }),
+    leadSource: z
+      .enum(leadSourceValues)
+      .or(z.literal(""))
+      .refine((input) => input !== "", {
+        message: "Campo requerido",
+      }),
     inscriptionReason: z
       .enum(inscriptionReasonValues)
-      .refine((ir) => ir !== "", {
+      .or(z.literal(""))
+      .refine((input) => input !== "", {
         message: "Campo requerido",
       }),
     hasInsurance: z.boolean(),
     insurance: z.string().trim().optional(),
   })
   .refine(
-    ({hasInsurance, insurance}) => {
+    ({ hasInsurance, insurance }) => {
       const isValid = insurance !== undefined && insurance !== "";
       return hasInsurance ? isValid : true;
     },
@@ -126,7 +130,7 @@ const SignupPersonalInfo = () => {
     watch,
   } = useForm<SignupPersonalInfoForm>({
     defaultValues: {
-      insurance: ""
+      insurance: "",
     },
     resolver: zodResolver(schema),
   });
