@@ -1,25 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Autocomplete,
   Dialog,
   DialogContent,
   DialogTitle,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import { AxiosError } from "axios";
-import { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { Fencer } from "../../types";
+import { TrainingGroupWithFencers } from "../../types";
 
 const schema = z.object({
   fencer: z.string().nonempty({ message: "Campo requerido" }),
@@ -28,21 +23,17 @@ const schema = z.object({
 type GroupAddFencerForm = z.infer<typeof schema>;
 
 interface GroupAddFencerProps {
-  groupID: number;
+  group: TrainingGroupWithFencers;
   handleClose: () => void;
   open: boolean;
 }
 
-const GroupAddFencer = ({ open, handleClose }: GroupAddFencerProps) => {
-  const [disableButton, setDisableButton] = useState<boolean>(true);
-  const [fencers, setFencers] = useState<Fencer[]>(null!);
-
+const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors },
-    control,
   } = useForm<GroupAddFencerForm>({
     resolver: zodResolver(schema),
   });
@@ -51,21 +42,26 @@ const GroupAddFencer = ({ open, handleClose }: GroupAddFencerProps) => {
 
   const onSubmit: SubmitHandler<GroupAddFencerForm> = async (formData) => {
     try {
-      const { data } = await axios.get("/dashboard/fencer/search/" + formData);
-      setFencers(data.data);
-      await axios.put("/dashboard/fencer/", { data: formData });
-      // TODO: redirect to groups list
+      const fencer = group.fencer.find(
+        (fencer) =>
+          fencer.user.names + " " + fencer.user.lastNames === formData.fencer
+      );
+
+      await axios.put("/dashboard/fencer/", {
+        id: fencer?.fencerID,
+        groupID: group.trainingGroupID,
+      });
+      navigate(0);
     } catch (error) {
       if (error instanceof AxiosError) {
         setError("root", {
           type: "manual",
-          message: "Ha ocurrido un error al crear el grupo",
+          message: "Ha ocurrido un error al añadir integrante",
         });
       }
     }
   };
 
-  // TODO: add root error component
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Añadir Integrante</DialogTitle>
@@ -83,31 +79,32 @@ const GroupAddFencer = ({ open, handleClose }: GroupAddFencerProps) => {
               onSubmit={handleSubmit(onSubmit)}
               sx={{ mt: 1 }}
             >
-              <TextField
-                required
-                fullWidth
-                margin="normal"
+              <Autocomplete
+                disablePortal
                 id="fencer"
-                label="Nombre del integrante"
-                autoFocus
-                {...register("fencer")}
-                error={!!errors.fencer}
-                helperText={errors.fencer?.message}
-                onChange={() => {
-                  setDisableButton(false);
-                }}
+                options={group?.fencer?.map(
+                  (fencer) => fencer.user.names + " " + fencer.user.lastNames
+                )}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField
+                    margin="normal"
+                    label="Nombre del integrante"
+                    autoFocus
+                    {...register("fencer")}
+                    error={!!errors.fencer}
+                    helperText={errors.fencer?.message}
+                    {...params}
+                  />
+                )}
               />
               <Button
                 type="submit"
                 fullWidth
-                disabled={disableButton}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                  // navigate(0);
-                }}
               >
-                Crear Grupo
+                Añadir
               </Button>
               <Button fullWidth variant="outlined" onClick={handleClose}>
                 Cancelar

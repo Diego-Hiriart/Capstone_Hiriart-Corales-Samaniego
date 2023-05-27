@@ -84,11 +84,7 @@ const GroupFencersList = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
-      <GroupAddFencer
-        groupID={Number(id)}
-        handleClose={handleClose}
-        open={open}
-      />
+      <GroupAddFencer group={group} handleClose={handleClose} open={open} />
     </Container>
   );
 };

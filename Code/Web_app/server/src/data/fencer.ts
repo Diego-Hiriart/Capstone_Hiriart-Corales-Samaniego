@@ -2,6 +2,27 @@ import { PrismaClient, Fencer } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+type FencerWithUser = Fencer & {
+  user: {
+    names: string;
+    lastNames: string;
+    email: string;
+  } | null;
+};
+
+export const filterFencersByName = (
+  name: string,
+  fencers: FencerWithUser[]
+) => {
+  const searchName = name.toLowerCase();
+  const filtered = fencers.filter(
+    (fencer) =>
+      fencer.user?.lastNames.toLowerCase().startsWith(searchName) ||
+      fencer.user?.names.toLowerCase().startsWith(searchName)
+  );
+  return filtered;
+};
+
 export async function findFencerById(id: number) {
   try {
     const fencer = await prisma.fencer.findUnique({
@@ -15,39 +36,15 @@ export async function findFencerById(id: number) {
   }
 }
 
-export async function findFencerByName(name: string) {
-  try {
-    const fencer = await prisma.fencer.findMany({
-      where: {
-        OR: [
-          {
-            user: {
-              names: name,
-            },
-          },
-          {
-            user: {
-              lastNames: name,
-            },
-          },
-        ],
-      },
-    });
-    return fencer;
-  } catch (error) {
-    throw error;
-  }
-}
-
-export async function addFencerToGroup(data: { groupID: number; id: number }) {
+export async function addFencerToGroup(id: number, groupID: number) {
   try {
     const fencer = await prisma.fencer.update({
       where: {
-        fencerID: data.id,
+        fencerID: id,
       },
       data: {
         trainingGroup: {
-          connect: { trainingGroupID: data.groupID },
+          connect: { trainingGroupID: groupID },
         },
       },
     });
@@ -61,7 +58,13 @@ export async function findAllFencer() {
   try {
     const fencers = await prisma.fencer.findMany({
       include: {
-        user: true,
+        user: {
+          select: {
+            names: true,
+            lastNames: true,
+            email: true,
+          },
+        },
       },
     });
     return fencers;

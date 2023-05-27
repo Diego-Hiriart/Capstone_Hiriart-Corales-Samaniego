@@ -16,7 +16,7 @@ export async function findUserById(id: number) {
         userID: id,
       },
     });
-    return user ? removePasswordInUser(user) : user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -29,7 +29,7 @@ export async function findUserByEmail(email: string) {
         email: email,
       },
     });
-    return user ? removePasswordInUser(user) : user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -57,7 +57,7 @@ export async function createUser(data: User) {
         roles: data.roles,
       },
     });
-    return user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -80,7 +80,7 @@ export async function createUserAdmin(data: User) {
         },
       },
     });
-    return user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -107,7 +107,7 @@ export async function createUserTrainer(data: User & Trainer) {
         },
       },
     });
-    return user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -155,7 +155,7 @@ export async function createUserFencer(data: User & Fencer) {
         },
       },
     });
-    return user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -171,7 +171,7 @@ export async function softDeleteUserById(id: number) {
         deletedAt: new Date(),
       },
     });
-    return user ? removePasswordInUser(user) : user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }
@@ -191,7 +191,7 @@ export async function updateUserById(id: number, data: User) {
         roles: data.roles || undefined,
       },
     });
-    return user ? removePasswordInUser(user) : user;
+    return user && removePasswordInUser(user);
   } catch (error) {
     throw error;
   }

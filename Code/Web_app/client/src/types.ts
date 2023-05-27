@@ -12,6 +12,10 @@ export interface SignupForm {
   roles: string[];
 }
 
+export interface TrainingGroupWithFencers extends TrainingGroup {
+  fencer: Fencer[];
+}
+
 /**
  * Model User
  *

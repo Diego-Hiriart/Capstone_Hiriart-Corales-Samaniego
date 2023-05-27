@@ -3,9 +3,9 @@ import { Request, Response } from "express";
 import {
   addFencerToGroup,
   createFencer,
+  filterFencersByName,
   findAllFencer,
   findFencerById,
-  findFencerByName,
   updateFencerById,
 } from "../data/fencer";
 import { errorLog } from "../utils/logs";
@@ -21,11 +21,16 @@ export async function getFencerById(req: Request, res: Response) {
   }
 }
 
-export async function getFencerByName(req: Request, res: Response) {
+export async function getFencerByWithParams(req: Request, res: Response) {
   try {
-    return res.status(200).json({
-      data: await findFencerByName(req.params.name),
-    });
+    if (req.query.name) {
+      const fencers = await findAllFencer();
+
+      return res.status(200).json({
+        data: filterFencersByName(req.query.name.toString(), fencers),
+      });
+    }
+    return res.sendStatus(200);
   } catch (error) {
     errorLog(error);
     return res.sendStatus(500);
@@ -68,7 +73,7 @@ export async function updateFencer(req: Request, res: Response) {
 export async function updateFencerToGroup(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await addFencerToGroup(req.body.data),
+      data: await addFencerToGroup(req.body.id, req.body.groupID),
     });
   } catch (error) {
     errorLog(error);

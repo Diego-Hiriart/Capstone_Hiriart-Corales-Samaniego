@@ -3,7 +3,7 @@ import { Router } from "express";
 import {
   getAllFencer,
   getFencerById,
-  getFencerByName,
+  getFencerByWithParams,
   postFencer,
   updateFencer,
   updateFencerToGroup,
@@ -11,8 +11,8 @@ import {
 
 const router = Router();
 
+router.get("/fencer/search", getFencerByWithParams);
 router.get("/fencer/:id", getFencerById);
-router.get("/fencer/search/:names", getFencerByName);
 router.get("/fencer/", getAllFencer);
 router.post("/fencer/", postFencer);
 router.put("/fencer/:id", updateFencer);
