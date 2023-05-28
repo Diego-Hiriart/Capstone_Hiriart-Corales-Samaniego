@@ -26,9 +26,10 @@ import {
 const SignupFencerForm = () => {
   const navigate = useNavigate();
   const { showError } = useAlert();
-  const { formState, setFormState } = useMultiStepForm();
+  const { multiFormState, setMultiFormState } = useMultiStepForm();
   const {
     control,
+    getValues,
     register,
     handleSubmit,
     formState: { errors },
@@ -36,9 +37,14 @@ const SignupFencerForm = () => {
     resolver: zodResolver(schema),
   });
 
+  const handleBack = () => {
+    setMultiFormState({ ...multiFormState, ...getValues() });
+    navigate("/signup/personal");
+  }
+
   const onSubmit: SubmitHandler<SignupFencerFormType> = async (formData) => {
     try {
-      setFormState({ ...formState, ...formData });
+      setMultiFormState({ ...multiFormState, ...formData });
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
     }
@@ -131,7 +137,7 @@ const SignupFencerForm = () => {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => navigate("/signup/personal")}
+              onClick={handleBack}
             >
               Atrás
             </Button>

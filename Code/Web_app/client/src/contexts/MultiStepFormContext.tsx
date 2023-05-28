@@ -3,19 +3,19 @@ import { ReactNode, createContext, useState } from "react";
 type FormType = Record<string, unknown>;
 
 interface MultiStepFormContextType {
-  formState: FormType;
-  setFormState: (formState: FormType) => void;
+  multiFormState: FormType;
+  setMultiFormState: (formState: FormType) => void;
 }
 
 const MultiStepFormContext = createContext<MultiStepFormContextType>({
-  formState: {},
-  setFormState: () => {},
+  multiFormState: {},
+  setMultiFormState: () => {},
 });
 
 export const MultiStepFormProvider = ({ children }: { children: ReactNode }) => {
-  const [formState, setFormState] = useState<FormType>({});
+  const [multiFormState, setMultiFormState] = useState<FormType>({});
   return (
-    <MultiStepFormContext.Provider value={{ formState, setFormState }}>
+    <MultiStepFormContext.Provider value={{ multiFormState: multiFormState, setMultiFormState }}>
       {children}
     </MultiStepFormContext.Provider>
   );

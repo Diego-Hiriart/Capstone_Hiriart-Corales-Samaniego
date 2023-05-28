@@ -35,22 +35,28 @@ import {
 
 const SignupPersonalForm = () => {
   const navigate = useNavigate();
-  const { formState, setFormState } = useMultiStepForm();
+  const { multiFormState, setMultiFormState } = useMultiStepForm();
   const { showError } = useAlert();
   const {
     control,
+    getValues,
     handleSubmit,
     register,
     formState: { errors },
     watch,
   } = useForm<SignupPersonalFormType>({
     defaultValues: {
-      ...formState,
+      ...multiFormState,
       birthDate:
-        formState.birthDate instanceof Date ? dayjs(formState.birthDate) : null,
+        multiFormState.birthDate instanceof Date ? dayjs(multiFormState.birthDate) : null,
     },
     resolver: zodResolver(schema),
   });
+
+  const handleBack = () => {
+    setMultiFormState({ ...multiFormState, ...getValues() });
+    navigate("/signup");
+  };
 
   const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
@@ -58,7 +64,7 @@ const SignupPersonalForm = () => {
         ...formData,
         insurance: formData.hasInsurance ? formData.insurance : undefined,
       };
-      setFormState({ ...formState, ...data });
+      setMultiFormState({ ...multiFormState, ...data });
       navigate("/signup/fencer");
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
@@ -314,7 +320,7 @@ const SignupPersonalForm = () => {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => navigate("/signup")}
+              onClick={handleBack}
             >
               Atrás
             </Button>

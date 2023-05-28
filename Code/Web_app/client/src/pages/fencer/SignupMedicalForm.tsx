@@ -1,5 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Container, Box, Typography, TextField, Stack, Button } from "@mui/material";
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Stack,
+  Button,
+} from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   SignupMedicalFormType,
@@ -13,22 +20,28 @@ import { useNavigate } from "react-router-dom";
 const SignupMedicalForm = () => {
   const navigate = useNavigate();
   const { showError } = useAlert();
-  const { formState, setFormState } = useMultiStepForm();
+  const { multiFormState, setMultiFormState } = useMultiStepForm();
   const {
     control,
+    getValues,
     handleSubmit,
     register,
     formState: { errors },
     watch,
   } = useForm<SignupMedicalFormType>({
-    defaultValues: { ...formState },
+    defaultValues: { ...multiFormState },
     resolver: zodResolver(schema),
   });
+
+  const handleBack = () => {
+    setMultiFormState({ ...multiFormState, ...getValues() })
+    navigate("/signup/fencer");
+  }
 
   const onSubmit: SubmitHandler<SignupMedicalFormType> = async (formData) => {
     try {
       console.log(formData);
-      setFormState({ ...formState, ...formData });
+      setMultiFormState({ ...multiFormState, ...formData });
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
     }
@@ -58,13 +71,13 @@ const SignupMedicalForm = () => {
             margin="normal"
             multiline
             rows={4}
-            label="Actividad Física"
+            label="Realizas algún tipo de actividad física?"
             id="physicalActivity"
             defaultValue={""}
             {...register("physicalActivity")}
           />
           <Typography mt={3} variant="h6">
-            Antecedentes medicos familiares
+            Antecedentes medicos personales
           </Typography>
           <Stack>
             <ControlledCheckbox
@@ -103,105 +116,109 @@ const SignupMedicalForm = () => {
               control={control}
               defaultValue={false}
             />
-          <Typography mt={3} variant="h6">Antecedentes medicos familiares</Typography>
-          <ControlledCheckbox
-            label="Problemas de articulaciones o huesos"
-            name="familyBoneDisease"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Alergias"
-            name="familyAllergies"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Asma"
-            name="familyAsthma"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Embarazo"
-            name="familyPregnancy"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Hospitalización en los últimos 2 meses"
-            name="familyHospitalization"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Medicamentos que toma de forma regular"
-            name="familyDrugs"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Hipertensión"
-            name="familyHypertension"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Hipotensión"
-            name="familyHypotension"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Apoyo psicológico"
-            name="familyPsychological"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox
-            label="Otro"
-            name="familyOther"
-            control={control}
-            defaultValue={false}
-          />
-          <TextField
-            disabled={!watch("familyOther")}
-            fullWidth
-            margin="normal"
-            multiline
-            rows={4}
-            label="Especificar otro"
-            id="medicalFamilyOther"
-            defaultValue={""}
-            {...register("medicalFamilyOther")}
-            error={!!errors.medicalFamilyOther}
-            helperText={errors.medicalFamilyOther?.message}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            multiline
-            rows={4}
-            // TODO: Change label
-            label="Si respondiste que si a alguna condicion por favor especificar"
-            id="personalMedicalDetails"
-            defaultValue={""}
-            {...register("personalMedicalDetails")}
-            error={!!errors.personalMedicalDetails}
-            helperText={errors.personalMedicalDetails?.message}
-          />
-          <Stack direction="row" spacing={2} mt={3}>
-            <Button
+            <Typography mt={3} variant="h6">
+              Antecedentes medicos familiares
+            </Typography>
+            <ControlledCheckbox
+              label="Problemas de articulaciones o huesos"
+              name="familyBoneDisease"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Alergias"
+              name="familyAllergies"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Asma"
+              name="familyAsthma"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Embarazo"
+              name="familyPregnancy"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hospitalización en los últimos 2 meses"
+              name="familyHospitalization"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Medicamentos que toma de forma regular"
+              name="familyDrugs"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hipertensión"
+              name="familyHypertension"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hipotensión"
+              name="familyHypotension"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Apoyo psicológico"
+              name="familyPsychological"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Otro"
+              name="familyOther"
+              control={control}
+              defaultValue={false}
+            />
+            <TextField
+              disabled={!watch("familyOther")}
               fullWidth
-              variant="outlined"
-              onClick={() => navigate("/signup/fencer")}
-            >
-              Atrás
-            </Button>
-            <Button type="submit" fullWidth variant="contained">
-              Registrarse
-            </Button>
-          </Stack>
+              margin="normal"
+              multiline
+              rows={4}
+              label="Especificar otro"
+              id="medicalFamilyOther"
+              defaultValue={""}
+              {...register("medicalFamilyOther")}
+              error={!!errors.medicalFamilyOther}
+              helperText={errors.medicalFamilyOther?.message}
+            />
+            <Typography>
+              Si marcaste alguna condicion anterior por favor especificar
+            </Typography>
+            <TextField
+              fullWidth
+              margin="normal"
+              multiline
+              rows={4}
+              // TODO: Change label
+              id="personalMedicalDetails"
+              defaultValue={""}
+              {...register("personalMedicalDetails")}
+              error={!!errors.personalMedicalDetails}
+              helperText={errors.personalMedicalDetails?.message}
+            />
+            <Stack direction="row" spacing={2} mt={3}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={handleBack}
+              >
+                Atrás
+              </Button>
+              <Button type="submit" fullWidth variant="contained">
+                Registrarse
+              </Button>
+            </Stack>
           </Stack>
         </Box>
       </Box>

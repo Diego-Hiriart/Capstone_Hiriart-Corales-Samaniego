@@ -14,7 +14,7 @@ import { SignupFormType, schema } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SignupForm() {
-  const { formState, setFormState } = useMultiStepForm();
+  const { multiFormState, setMultiFormState } = useMultiStepForm();
   const { showError } = useAlert();
   const navigate = useNavigate();
 
@@ -24,14 +24,14 @@ export default function SignupForm() {
     setError,
     formState: { errors },
   } = useForm<SignupFormType>({
-    defaultValues: { ...formState },
+    defaultValues: { ...multiFormState },
     resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
       // TODO: make request to verify email
-      setFormState({ ...formState, ...formData });
+      setMultiFormState({ ...multiFormState, ...formData });
       navigate("/signup/personal");
     } catch (error) {
       if (error instanceof AxiosError) {
