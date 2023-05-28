@@ -24,6 +24,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
 import SignupContextRoute from "./routes/FormContextRoute";
+import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -45,6 +46,7 @@ export const App = () => {
             <Route index element={<SignupForm />} />
             <Route path="personal" element={<SignupPersonalForm />} />
             <Route path="fencer" element={<SignupFencerForm />} />
+            <Route path="medical" element={<SignupMedicalForm />} />
           </Route>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
