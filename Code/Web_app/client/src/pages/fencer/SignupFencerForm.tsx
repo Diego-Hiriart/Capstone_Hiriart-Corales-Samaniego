@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
+import useMultiStepForm from "../../hooks/useMultiStepForm";
 
 const MAX_SCHEDULE_LENGTH = 40;
 const MAX_WEIGHT = 200;
@@ -47,6 +48,7 @@ type SignupFencerFormType = z.infer<typeof schema>;
 const SignupFencerForm = () => {
   const navigate = useNavigate();
   const { showError } = useAlert();
+  const { formState, setFormState } = useMultiStepForm();
   const {
     control,
     register,
@@ -58,7 +60,7 @@ const SignupFencerForm = () => {
 
   const onSubmit: SubmitHandler<SignupFencerFormType> = async (formData) => {
     try {
-      console.log(formData);
+      setFormState({ ...formState, ...formData });
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
     }
