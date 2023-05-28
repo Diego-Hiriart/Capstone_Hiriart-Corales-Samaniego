@@ -16,6 +16,7 @@ import { useAlert } from "../../hooks/useAlert";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
 import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
 import { useNavigate } from "react-router-dom";
+import axios from "../../services/axios";
 
 const SignupMedicalForm = () => {
   const navigate = useNavigate();
@@ -29,19 +30,53 @@ const SignupMedicalForm = () => {
     formState: { errors },
     watch,
   } = useForm<SignupMedicalFormType>({
-    defaultValues: { ...multiFormState },
+    defaultValues: multiFormState,
     resolver: zodResolver(schema),
   });
 
   const handleBack = () => {
-    setMultiFormState({ ...multiFormState, ...getValues() })
+    setMultiFormState({ ...multiFormState, ...getValues() });
+    console.log({ ...multiFormState, ...getValues() });
     navigate("/signup/fencer");
-  }
+  };
 
   const onSubmit: SubmitHandler<SignupMedicalFormType> = async (formData) => {
     try {
-      console.log(formData);
       setMultiFormState({ ...multiFormState, ...formData });
+      const medicalPersonal = {
+        personalHeartDisease: formData.personalHeartDisease,
+        personalHeartAttack: formData.personalHeartAttack,
+        personalDiabetes: formData.personalDiabetes,
+        personalCholesterol: formData.personalCholesterol,
+        personalHypertension: formData.personalHypertension,
+        personalHypotension: formData.personalHypotension,
+      };
+      const medicalFamily = {
+        familyBoneDisease: formData.familyBoneDisease,
+        familyAllergies: formData.familyAllergies,
+        familyAsthma: formData.familyAsthma,
+        familyPregnancy: formData.familyPregnancy,
+        familyHospitalization: formData.familyHospitalization,
+        familyDrugs: formData.familyDrugs,
+        familyHypertension: formData.familyHypertension,
+        familyHypotension: formData.familyHypotension,
+        familyPsychological: formData.familyPsychological,
+        familyOther: formData.familyOther,
+      };
+      const body = {
+        ...multiFormState,
+        ...formData,
+        medicalPersonal: JSON.stringify(medicalPersonal),
+        medicalFamily: JSON.stringify(medicalFamily),
+      };
+      Object.keys(medicalPersonal).forEach((key) => {
+        delete body[key as keyof SignupMedicalFormType];
+      });
+      Object.keys(medicalFamily).forEach((key) => {
+        delete body[key as keyof SignupMedicalFormType];
+      });
+      console.log(body);
+      // await axios.post("/user/fencer", multiFormState);
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
     }
@@ -208,11 +243,7 @@ const SignupMedicalForm = () => {
               helperText={errors.personalMedicalDetails?.message}
             />
             <Stack direction="row" spacing={2} mt={3}>
-              <Button
-                fullWidth
-                variant="outlined"
-                onClick={handleBack}
-              >
+              <Button fullWidth variant="outlined" onClick={handleBack}>
                 Atrás
               </Button>
               <Button type="submit" fullWidth variant="contained">

@@ -48,17 +48,22 @@ const SignupPersonalForm = () => {
     defaultValues: {
       ...multiFormState,
       birthDate:
-        multiFormState.birthDate instanceof Date ? dayjs(multiFormState.birthDate) : null,
+        multiFormState.birthDate instanceof Date
+          ? dayjs(multiFormState.birthDate)
+          : multiFormState.birthDate
+          ? multiFormState.birthDate
+          : null,
     },
     resolver: zodResolver(schema),
   });
 
   const handleBack = () => {
+    console.log(getValues());
     setMultiFormState({ ...multiFormState, ...getValues() });
     navigate("/signup");
   };
 
-  const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
+  const onSubmit: SubmitHandler<SignupPersonalFormType> = (formData) => {
     try {
       const data = {
         ...formData,
@@ -182,8 +187,8 @@ const SignupPersonalForm = () => {
           />
           <Controller
             name="birthDate"
-            control={control}
             defaultValue={null}
+            control={control}
             render={({ field, fieldState: { error } }) => (
               <DatePicker
                 {...field}
@@ -317,11 +322,7 @@ const SignupPersonalForm = () => {
             helperText={errors.insurance?.message}
           />
           <Stack direction="row" spacing={2}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={handleBack}
-            >
+            <Button fullWidth variant="outlined" onClick={handleBack}>
               Atrás
             </Button>
             <Button type="submit" fullWidth variant="contained">

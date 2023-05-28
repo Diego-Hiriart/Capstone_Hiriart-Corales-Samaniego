@@ -24,7 +24,7 @@ export default function SignupForm() {
     setError,
     formState: { errors },
   } = useForm<SignupFormType>({
-    defaultValues: { ...multiFormState },
+    defaultValues: multiFormState,
     resolver: zodResolver(schema),
   });
 
