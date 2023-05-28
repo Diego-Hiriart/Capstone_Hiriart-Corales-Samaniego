@@ -136,7 +136,7 @@ const SignupFencerForm = () => {
               Atrás
             </Button>
             <Button type="submit" fullWidth variant="contained">
-              Registrarse
+              Siguiente
             </Button>
           </Stack>
         </Box>

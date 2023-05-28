@@ -1,10 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-} from "@mui/material";
+import { Container, Box, Typography, TextField, Stack, Button } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   SignupMedicalFormType,
@@ -13,8 +8,10 @@ import {
 import { useAlert } from "../../hooks/useAlert";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
 import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
+import { useNavigate } from "react-router-dom";
 
 const SignupMedicalForm = () => {
+  const navigate = useNavigate();
   const { showError } = useAlert();
   const { formState, setFormState } = useMultiStepForm();
   const {
@@ -22,6 +19,7 @@ const SignupMedicalForm = () => {
     handleSubmit,
     register,
     formState: { errors },
+    watch,
   } = useForm<SignupMedicalFormType>({
     defaultValues: { ...formState },
     resolver: zodResolver(schema),
@@ -46,7 +44,7 @@ const SignupMedicalForm = () => {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h4">
           Información Personal
         </Typography>
         <Box
@@ -65,103 +63,109 @@ const SignupMedicalForm = () => {
             defaultValue={""}
             {...register("physicalActivity")}
           />
-          <ControlledCheckbox 
-            label="Enfermedad cardiaca" 
-            name="heartDisease"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox 
-            label="Infarto" 
-            name="heartAttack"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox 
-            label="Diabetes" 
-            name="personalDiabetes"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox 
-            label="Problemas de colesterol" 
-            name="personalCholesterol"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox 
-            label="Hipertensión" 
-            name="personalHypertension"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox 
-            label="Hipotensión" 
-            name="personalHypotension"
-            control={control}
-            defaultValue={false}
-          />
-          <ControlledCheckbox 
-            label="Problemas de articulaciones o huesos" 
+          <Typography mt={3} variant="h6">
+            Antecedentes medicos familiares
+          </Typography>
+          <Stack>
+            <ControlledCheckbox
+              label="Enfermedad cardiaca"
+              name="personalHeartDisease"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Infarto"
+              name="personalHeartAttack"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Diabetes"
+              name="personalDiabetes"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Problemas de colesterol"
+              name="personalCholesterol"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hipertensión"
+              name="personalHypertension"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hipotensión"
+              name="personalHypotension"
+              control={control}
+              defaultValue={false}
+            />
+          <Typography mt={3} variant="h6">Antecedentes medicos familiares</Typography>
+          <ControlledCheckbox
+            label="Problemas de articulaciones o huesos"
             name="familyBoneDisease"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Alergias" 
+          <ControlledCheckbox
+            label="Alergias"
             name="familyAllergies"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Asma" 
+          <ControlledCheckbox
+            label="Asma"
             name="familyAsthma"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Embarazo" 
+          <ControlledCheckbox
+            label="Embarazo"
             name="familyPregnancy"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Hospitalización en los últimos 2 meses" 
+          <ControlledCheckbox
+            label="Hospitalización en los últimos 2 meses"
             name="familyHospitalization"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Medicamentos que toma de forma regular" 
+          <ControlledCheckbox
+            label="Medicamentos que toma de forma regular"
             name="familyDrugs"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Hipertensión" 
+          <ControlledCheckbox
+            label="Hipertensión"
             name="familyHypertension"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Hipotensión" 
+          <ControlledCheckbox
+            label="Hipotensión"
             name="familyHypotension"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Apoyo psicológico" 
+          <ControlledCheckbox
+            label="Apoyo psicológico"
             name="familyPsychological"
             control={control}
             defaultValue={false}
           />
-          <ControlledCheckbox 
-            label="Otro" 
+          <ControlledCheckbox
+            label="Otro"
             name="familyOther"
             control={control}
             defaultValue={false}
           />
           <TextField
+            disabled={!watch("familyOther")}
             fullWidth
             margin="normal"
             multiline
@@ -178,6 +182,7 @@ const SignupMedicalForm = () => {
             margin="normal"
             multiline
             rows={4}
+            // TODO: Change label
             label="Si respondiste que si a alguna condicion por favor especificar"
             id="personalMedicalDetails"
             defaultValue={""}
@@ -185,6 +190,19 @@ const SignupMedicalForm = () => {
             error={!!errors.personalMedicalDetails}
             helperText={errors.personalMedicalDetails?.message}
           />
+          <Stack direction="row" spacing={2} mt={3}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={() => navigate("/signup/fencer")}
+            >
+              Atrás
+            </Button>
+            <Button type="submit" fullWidth variant="contained">
+              Registrarse
+            </Button>
+          </Stack>
+          </Stack>
         </Box>
       </Box>
     </Container>
