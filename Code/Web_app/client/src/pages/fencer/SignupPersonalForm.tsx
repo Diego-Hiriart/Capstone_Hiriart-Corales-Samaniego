@@ -7,6 +7,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,7 +23,9 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs, isDayjs } from "dayjs";
+import { useNavigate } from "react-router-dom";
+import useMultiStepForm from "../../hooks/useMultiStepForm";
 
 const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 
@@ -79,12 +82,13 @@ const schema = z
     occupation: z.string().trim().nonempty({ message: "Campo requerido" }),
     birthDate: z
       .preprocess(
-        (input) => input !== null && (input as Dayjs).toDate(),
+        (input) => (isDayjs(input) ? input.toDate() : null),
         z
           .date()
           .min(new Date("1900-01-01"), { message: "Fecha no válida" })
           .max(new Date(), { message: "Fecha no válida" })
           .or(z.null())
+          .or(z.instanceof(dayjs as unknown as typeof Dayjs))
       )
       .refine((input) => input !== null, {
         message: "Campo requerido",
@@ -122,6 +126,8 @@ const schema = z
 type SignupPersonalFormType = z.infer<typeof schema>;
 
 const SignupPersonalForm = () => {
+  const navigate = useNavigate();
+  const { formState, setFormState } = useMultiStepForm();
   const { showError } = useAlert();
   const {
     control,
@@ -131,14 +137,17 @@ const SignupPersonalForm = () => {
     watch,
   } = useForm<SignupPersonalFormType>({
     defaultValues: {
-      insurance: "",
+      ...formState,
+      birthDate:
+        formState.birthDate instanceof Date ? dayjs(formState.birthDate) : null,
     },
     resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
-      console.log(formData);
+      setFormState({ ...formState, ...formData });
+      navigate("/signup/fencer");
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
     }
@@ -147,7 +156,7 @@ const SignupPersonalForm = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
-        mt={{ xs: 3, sm: 8 }}
+        my={{ xs: 3, sm: 8 }}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -376,14 +385,18 @@ const SignupPersonalForm = () => {
             error={!!errors.insurance && watch("hasInsurance")}
             helperText={errors.insurance?.message}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Continuar
-          </Button>
+          <Stack direction="row" spacing={2}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={() => navigate("/signup")}
+            >
+              Atrás
+            </Button>
+            <Button type="submit" fullWidth variant="contained">
+              Continuar
+            </Button>
+          </Stack>
         </Box>
       </Box>
     </Container>

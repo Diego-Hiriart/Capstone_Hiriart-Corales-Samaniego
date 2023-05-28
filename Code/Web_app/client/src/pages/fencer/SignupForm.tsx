@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ import { SignupFormType } from "../../types";
 export default function SignupForm() {
   const { formState, setFormState } = useMultiStepForm();
   const { showError } = useAlert();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -22,13 +23,15 @@ export default function SignupForm() {
     setError,
     formState: { errors },
     watch,
-  } = useForm<SignupFormType>( {
-    defaultValues: formState,
+  } = useForm<SignupFormType>({
+    defaultValues: { ...formState },
   });
 
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
-      setFormState({...formState, formData});
+      // TODO: make request to verify email
+      setFormState({ ...formState, ...formData });
+      navigate("/signup/personal");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
@@ -37,7 +40,7 @@ export default function SignupForm() {
             message: "El email ingresado ya está en uso",
           });
         } else {
-          showError("Ha ocurrido un error al crear el esgrimista")
+          showError("Ha ocurrido un error al crear el esgrimista");
         }
       }
     }
@@ -46,8 +49,8 @@ export default function SignupForm() {
   return (
     <Container component="main" maxWidth="xs">
       <Box
+        my={{ xs: 3, sm: 8 }}
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -144,7 +147,7 @@ export default function SignupForm() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Registrarse
+            Siguiente
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>

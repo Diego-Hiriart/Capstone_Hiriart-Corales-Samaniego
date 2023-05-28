@@ -10,12 +10,14 @@ import {
   TextField,
   InputAdornment,
   Button,
+  Stack,
 } from "@mui/material";
 import { useAlert } from "../../hooks/useAlert";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 
 const MAX_SCHEDULE_LENGTH = 40;
 const MAX_WEIGHT = 200;
@@ -23,12 +25,12 @@ const MAX_HEIGHT = 300;
 
 const schema = z.object({
   laterality: z.enum(["D", "I"]),
-  weight: z
-    .coerce.number()
+  weight: z.coerce
+    .number()
     .gt(0, { message: "Peso inválido" })
     .lt(MAX_WEIGHT, { message: "Peso inválido" }),
-  height: z
-    .coerce.number()
+  height: z.coerce
+    .number()
     .gt(0, { message: "Altura inválida" })
     .lt(MAX_HEIGHT, { message: "Altura inválida" }),
   schedule: z
@@ -43,6 +45,7 @@ const schema = z.object({
 type SignupFencerFormType = z.infer<typeof schema>;
 
 const SignupFencerForm = () => {
+  const navigate = useNavigate();
   const { showError } = useAlert();
   const {
     control,
@@ -63,7 +66,7 @@ const SignupFencerForm = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Box
-        mt={{ xs: 3, sm: 8 }}
+        my={{ xs: 3, sm: 8 }}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -144,14 +147,18 @@ const SignupFencerForm = () => {
             error={!!errors.schedule}
             helperText={errors.schedule?.message}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Finalizar
-          </Button>
+          <Stack direction="row" spacing={2}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={() => navigate("/signup/personal")}
+            >
+              Atrás
+            </Button>
+            <Button type="submit" fullWidth variant="contained">
+              Registrarse
+            </Button>
+          </Stack>
         </Box>
       </Box>
     </Container>
