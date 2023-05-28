@@ -1,50 +1,51 @@
 //Hiriart Corales Samaniego
-#include <SoftwareSerial.h>  //For HC-05
-
+#include <SPI.h>  //For nRF24L01
+#include <nRF24L01.h>
+#include <RF24.h>
 //Declare input pins for buttons
-const uint8_t block = 1;
-const uint8_t pAuto = 0;
-const uint8_t yCardL = 2;
-const uint8_t rCardL = 3;
-const uint8_t decLeft = 4;
-const uint8_t incLeft = 5;
-const uint8_t oneMin = 6;
-const uint8_t incTime = 7;
-const uint8_t resetMch = 8;
-const uint8_t switchScores = 9;
-const uint8_t pManual = 10;
-const uint8_t yCardR = 11;
-const uint8_t rCardR = 12;
-const uint8_t incPeriod = 13;
-const uint8_t decRight = A0;
-const uint8_t incRight = A1;
-const uint8_t threeMin = A2;
-const uint8_t decTime = A3;
-const uint8_t cyleTime = A4;
-const uint8_t pauseRes = A6;  //Will be read as analog
-const uint8_t upload = A7;    //Will be read as analog
-//Declare TX pin for BT
-const uint8_t BTTransmitterPin = A5;  //Digital
+const uint8_t block = 22;
+const uint8_t pAuto = 23;
+const uint8_t yCardL = 24;
+const uint8_t rCardL = 25;
+const uint8_t decLeft = 26;
+const uint8_t incLeft = 27;
+const uint8_t oneMin = 28;
+const uint8_t prevUnit = 29;
+const uint8_t resetMch = 30;
+const uint8_t switchScores = 31;
+const uint8_t upload = 32;
+const uint8_t incPeriod = 33;
+const uint8_t decTime = 34;
+const uint8_t editTimeToggle = 35;
+const uint8_t incTime = 36;
+const uint8_t syncMachine = 37;
+const uint8_t pManual = 38;
+const uint8_t yCardR = 39;
+const uint8_t rCardR = 40;
+const uint8_t decRight = 41;
+const uint8_t incRight = 42;
+const uint8_t threeMin = 43;
+const uint8_t nextUnit = 44;
+const uint8_t pauseRes = 45;
 //Controller's ID
 const uint32_t remoteId = 1;  //Must be diferent for every controller
+//RF SPI pins
+const uint8_t rfCEPin = 7;   //CS pin
+const uint8_t rfCSNPin = 8;  //CS Not pin
 //To store which button was just pressed
-int8_t buttonReset = -1;  //-1 because 0 is for pin 0
+int8_t buttonReset = 0;
 int8_t pressedButton = buttonReset;
-//Analog HIGH voltage
-uint16_t analogLow = 614;
 //Time for debounce check
 uint8_t debounceDelay = 50;
 //Last status for debounce check
 uint8_t lastPinStatus = LOW;
 
-
-//Create BT transmitter instance
-SoftwareSerial HC05(99, BTTransmitterPin);  //Use a non existing pin for RX (not used)
+//Radio transmitter instance and channel
+RF24 radioTX(rfCEPin, rfCSNPin);  // CE, CSN
+const byte address[6] = "46920";  //Same for all remotes and machines, ID will be checked
 
 void setup() {
-  //Start BT serial
-  HC05.begin(9600);
-  //Set button pins for input
+  //Set button pins for input pullup
   pinMode(block, INPUT_PULLUP);
   pinMode(pAuto, INPUT_PULLUP);
   pinMode(yCardL, INPUT_PULLUP);
@@ -52,20 +53,30 @@ void setup() {
   pinMode(decLeft, INPUT_PULLUP);
   pinMode(incLeft, INPUT_PULLUP);
   pinMode(oneMin, INPUT_PULLUP);
-  pinMode(incTime, INPUT_PULLUP);
+  pinMode(prevUnit, INPUT_PULLUP);
   pinMode(resetMch, INPUT_PULLUP);
   pinMode(switchScores, INPUT_PULLUP);
+  pinMode(upload, INPUT_PULLUP);
+  pinMode(incPeriod, INPUT_PULLUP);
+  pinMode(decTime, INPUT_PULLUP);
+  pinMode(editTimeToggle, INPUT_PULLUP);
+  pinMode(incTime, INPUT_PULLUP);
+  pinMode(syncMachine, INPUT_PULLUP);
   pinMode(pManual, INPUT_PULLUP);
   pinMode(yCardR, INPUT_PULLUP);
   pinMode(rCardR, INPUT_PULLUP);
-  //Since it is connected to the builtin LED, pin 13 must be used as INPUT with a pull down resistor
-  pinMode(incPeriod, INPUT);
   pinMode(decRight, INPUT_PULLUP);
   pinMode(incRight, INPUT_PULLUP);
   pinMode(threeMin, INPUT_PULLUP);
-  pinMode(decTime, INPUT_PULLUP);
-  pinMode(cyleTime, INPUT_PULLUP);
-  //Pints A6 and A7 are read as analog
+  pinMode(nextUnit, INPUT_PULLUP);
+  pinMode(pauseRes, INPUT_PULLUP);
+  //Radio init
+  radioTX.begin();
+  radioTX.openWritingPipe(address);
+  radioTX.setDataRate(RF24_1MBPS);
+  radioTX.setPALevel(RF24_PA_HIGH);  //-6dBM power amplifier
+  radioTX.setAutoAck(0, false);      //Disable message ACK so it can broadcast and just the id gets checked
+  radioTX.stopListening();
 }
 
 void loop() {
@@ -97,17 +108,32 @@ void checkButtonPress() {
   if (digitalRead(incLeft) == LOW) {
     updateButtonStatuses(incLeft, LOW);
   }
-  if (digitalRead(oneMin) == LOW) {
-    updateButtonStatuses(oneMin, LOW);
-  }
-  if (digitalRead(incTime) == LOW) {
-    updateButtonStatuses(incTime, LOW);
+  if (digitalRead(prevUnit) == LOW) {
+    updateButtonStatuses(prevUnit, LOW);
   }
   if (digitalRead(resetMch) == LOW) {
     updateButtonStatuses(resetMch, LOW);
   }
   if (digitalRead(switchScores) == LOW) {
     updateButtonStatuses(switchScores, LOW);
+  }
+  if (analogRead(upload) <= LOW) {
+    updateButtonStatuses(upload, LOW);
+  }
+  if (digitalRead(incPeriod) == HIGH) {  //High since it is pin 13
+    updateButtonStatuses(incPeriod, HIGH);
+  }
+  if (digitalRead(decTime) == LOW) {
+    updateButtonStatuses(decTime, LOW);
+  }
+  if (digitalRead(editTimeToggle) == HIGH) {  //High since it is pin 13
+    updateButtonStatuses(editTimeToggle, HIGH);
+  }
+  if (digitalRead(incTime) == LOW) {
+    updateButtonStatuses(incTime, LOW);
+  }
+  if (digitalRead(syncMachine) == LOW) {
+    updateButtonStatuses(syncMachine, LOW);
   }
   if (digitalRead(pManual) == LOW) {
     updateButtonStatuses(pManual, LOW);
@@ -118,9 +144,6 @@ void checkButtonPress() {
   if (digitalRead(rCardR) == LOW) {
     updateButtonStatuses(rCardR, LOW);
   }
-  if (digitalRead(incPeriod) == HIGH) {  //High since it is pin 13
-    updateButtonStatuses(incPeriod, HIGH);
-  }
   if (digitalRead(decRight) == LOW) {
     updateButtonStatuses(decRight, LOW);
   }
@@ -130,17 +153,11 @@ void checkButtonPress() {
   if (digitalRead(threeMin) == LOW) {
     updateButtonStatuses(threeMin, LOW);
   }
-  if (digitalRead(decTime) == LOW) {
-    updateButtonStatuses(decTime, LOW);
+  if (digitalRead(nextUnit) == LOW) {
+    updateButtonStatuses(nextUnit, LOW);
   }
-  if (digitalRead(cyleTime) == LOW) {
-    updateButtonStatuses(cyleTime, LOW);
-  }
-  if (analogRead(pauseRes) <= analogLow) {  //Check if analog reading indicates voltage close to LOW
-    updateButtonStatuses(pauseRes, analogLow);
-  }
-  if (analogRead(upload) <= analogLow) {
-    updateButtonStatuses(upload, analogLow);
+  if (analogRead(pauseRes) == LOW) {  //Check if analog reading indicates voltage close to LOW
+    updateButtonStatuses(pauseRes, LOW);
   }
 }
 
@@ -175,7 +192,8 @@ void transmit() {
     buttonStr = "0" + buttonStr;
   }
   String message = "s;" + idStr + ';' + buttonStr + ";e\n";
-  const char *msg = message.c_str();
-  //Send data through BT
-  HC05.write(msg);
+  uint8_t msgLen = message.length() + 1;
+  char msg[msgLen];
+  message.toCharArray(msg, msgLen);
+  radioTX.write(&msg, sizeof(msg));
 }
