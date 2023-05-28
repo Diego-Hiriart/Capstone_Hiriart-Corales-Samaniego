@@ -146,7 +146,11 @@ const SignupPersonalForm = () => {
 
   const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
-      setFormState({ ...formState, ...formData });
+      const data = {
+        ...formData,
+        insurance: formData.hasInsurance ? formData.insurance : undefined,
+      };
+      setFormState({ ...formState, ...data });
       navigate("/signup/fencer");
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
@@ -372,8 +376,21 @@ const SignupPersonalForm = () => {
             <FormHelperText>{errors.inscriptionReason?.message}</FormHelperText>
           </FormControl>
           <FormControlLabel
-            control={<Checkbox {...register("hasInsurance")} />}
             label="¿Cuenta con seguro médico?"
+            control={
+              <Controller
+                name="hasInsurance"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                  />
+                )}
+              />
+            }
           />
           <TextField
             disabled={Boolean(!watch("hasInsurance"))}
