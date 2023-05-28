@@ -4,7 +4,8 @@ import React, {
   createContext,
   useState,
 } from "react";
-import { LoginFormInputs, SignupFormType, User } from "../types";
+import { LoginFormInputs, User } from "../types";
+import { SignupFormType } from "../pages/fencer/validations/SignupFormValidation";
 import { useNavigate } from "react-router-dom";
 import axios from "../services/axios";
 import { AxiosError } from "axios";
