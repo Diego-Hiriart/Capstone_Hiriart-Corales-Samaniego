@@ -10,7 +10,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useAlert } from "../../hooks/useAlert";
 import { AxiosError } from "axios";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
-import { SignupFormType } from "../../types";
+import { SignupFormType, schema } from "./validations/SignupFormValidation";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SignupForm() {
   const { formState, setFormState } = useMultiStepForm();
@@ -22,9 +23,9 @@ export default function SignupForm() {
     handleSubmit,
     setError,
     formState: { errors },
-    watch,
   } = useForm<SignupFormType>({
     defaultValues: { ...formState },
+    resolver: zodResolver(schema),
   });
 
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
@@ -71,7 +72,7 @@ export default function SignupForm() {
             id="names"
             label="Nombres"
             autoFocus
-            {...register("names", { required: "Campo requerido" })}
+            {...register("names")}
             error={!!errors.names}
             helperText={errors.names?.message}
           />
@@ -80,7 +81,7 @@ export default function SignupForm() {
             margin="normal"
             id="lastNames"
             label="Apellidos"
-            {...register("lastNames", { required: "Campo requerido" })}
+            {...register("lastNames")}
             error={!!errors.lastNames}
             helperText={errors.lastNames?.message}
           />
@@ -91,13 +92,7 @@ export default function SignupForm() {
             type="email"
             id="email"
             label="Email"
-            {...register("email", {
-              required: "Campo requerido",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "Email inválido",
-              },
-            })}
+            {...register("email")}
             error={!!errors.email}
             helperText={errors.email?.message}
           />
@@ -108,18 +103,7 @@ export default function SignupForm() {
             label="Contraseña"
             type="password"
             id="password"
-            {...register("password", {
-              required: "Campo requerido",
-              minLength: {
-                value: 8,
-                message: "Contraseña debe tener mínimo 8 caracteres",
-              },
-              maxLength: {
-                value: 20,
-                message: "Contraseña debe tener máximo 20 caracteres",
-              },
-              // TODO: add regex for password strength
-            })}
+            {...register("password")}
             error={!!errors.password}
             helperText={errors.password?.message}
           />
@@ -130,14 +114,7 @@ export default function SignupForm() {
             label="Confirmar Contraseña"
             type="password"
             id="confirm-password"
-            {...register("confirmPassword", {
-              required: "Campo requerido",
-              validate: (val: string) => {
-                if (watch("password") != val) {
-                  return "Las contraseñas no coinciden";
-                }
-              },
-            })}
+            {...register("confirmPassword")}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
           />

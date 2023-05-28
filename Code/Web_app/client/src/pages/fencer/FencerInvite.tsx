@@ -5,35 +5,10 @@ import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Checkbox, DialogActions, FormControlLabel } from "@mui/material";
 import { AxiosError } from "axios";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
-
-const baseSchema = z.object({
-  names: z.string().nonempty({ message: "Campo requerido" }),
-  lastNames: z.string().nonempty({ message: "Campo requerido" }),
-});
-
-const schema = z
-  .discriminatedUnion("isGuest", [
-    z.object({
-      isGuest: z.literal(true),
-      email: z
-        .string()
-        .email({ message: "Email inválido" })
-        .optional()
-        .or(z.literal("")),
-    }),
-    z.object({
-      isGuest: z.literal(false),
-      email: z.string().email({ message: "Email inválido" }),
-    }),
-  ])
-  .and(baseSchema);
-
-type FencerInviteForm = z.infer<typeof schema>;
-
+import { FencerInviteForm, schema } from "./validations/FencerInviteValidation";
 interface FencerCreateProps {
   handleClose: () => void;
   setInviteLink: (link: string) => void;
@@ -63,7 +38,10 @@ export default function FencerInvite({
         showSuccess("Esgrimista creado exitosamente");
         handleClose();
       } else {
-        const {data} = await axios.post("/dashboard/registration_link/generate", {data: formData});
+        const { data } = await axios.post(
+          "/dashboard/registration_link/generate",
+          { data: formData }
+        );
         setInviteLink(data.link);
       }
     } catch (error) {

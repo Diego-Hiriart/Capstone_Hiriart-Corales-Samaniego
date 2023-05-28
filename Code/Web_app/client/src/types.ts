@@ -3,16 +3,6 @@ export interface LoginFormInputs {
   password: string;
 }
 
-// TODO: remove when zod validation is implemented
-export interface SignupFormType {
-  names: string;
-  lastNames: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  roles: string[];
-}
-
 export interface TrainingGroupWithFencers extends TrainingGroup {
   fencer: Fencer[];
 }

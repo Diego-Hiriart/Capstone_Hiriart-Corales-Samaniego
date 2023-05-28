@@ -16,34 +16,12 @@ import { useAlert } from "../../hooks/useAlert";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
-
-const MAX_SCHEDULE_LENGTH = 40;
-const MAX_WEIGHT = 200;
-const MAX_HEIGHT = 300;
-
-const schema = z.object({
-  laterality: z.enum(["D", "I"]),
-  weight: z.coerce
-    .number()
-    .gt(0, { message: "Peso inválido" })
-    .lt(MAX_WEIGHT, { message: "Peso inválido" }),
-  height: z.coerce
-    .number()
-    .gt(0, { message: "Altura inválida" })
-    .lt(MAX_HEIGHT, { message: "Altura inválida" }),
-  schedule: z
-    .string()
-    .trim()
-    .min(1, { message: "Campo requerido" })
-    .max(MAX_SCHEDULE_LENGTH, {
-      message: `El horario debe tener menos de ${MAX_SCHEDULE_LENGTH} caracteres`,
-    }),
-});
-
-type SignupFencerFormType = z.infer<typeof schema>;
+import {
+  SignupFencerFormType,
+  schema,
+} from "./validations/SignupFencerFormValidation";
 
 const SignupFencerForm = () => {
   const navigate = useNavigate();
