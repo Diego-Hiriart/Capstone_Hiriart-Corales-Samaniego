@@ -14,13 +14,13 @@ import {
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import axios from "../../services/axios";
-import { Fencer, TrainingGroupWithFencers } from "../../types";
+import { Fencer, TrainingGroupFull } from "../../types";
 import GroupAddFencer from "./GroupAddFencer";
 import GroupRemoveFencer from "./GroupRemoveFencer";
 
 const GroupFencersList = () => {
   const { id } = useParams();
-  const [group, setGroup] = useState<TrainingGroupWithFencers>(null!);
+  const [group, setGroup] = useState<TrainingGroupFull>(null!);
   const [open, setOpen] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [selectedFencer, setSelectedFencer] = useState<Fencer>(null!);

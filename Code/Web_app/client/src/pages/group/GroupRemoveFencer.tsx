@@ -9,11 +9,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { Fencer, TrainingGroupWithFencers } from "../../types";
+import { Fencer, TrainingGroupFull } from "../../types";
 
 interface GroupRemoveFencer {
   fencer: Fencer;
-  group: TrainingGroupWithFencers;
+  group: TrainingGroupFull;
   handleClose: () => void;
   open: boolean;
 }
