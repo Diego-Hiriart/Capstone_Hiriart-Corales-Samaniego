@@ -154,7 +154,7 @@ export default function CreateTrainer() {
           />
           <Controller
             name="weapon"
-            defaultValue="espada"
+            defaultValue="Espada"
             control={control}
             render={({ field }) => (
               <FormControl>
@@ -166,17 +166,17 @@ export default function CreateTrainer() {
                   value={field.value}
                 >
                   <FormControlLabel
-                    value="espada"
+                    value="Espada"
                     control={<Radio />}
                     label="Espada"
                   />
                   <FormControlLabel
-                    value="sable"
+                    value="Sable"
                     control={<Radio />}
                     label="Sable"
                   />
                   <FormControlLabel
-                    value="florete"
+                    value="Florete"
                     control={<Radio />}
                     label="Florete"
                   />

@@ -97,6 +97,38 @@ const SignupFencerForm = () => {
               </FormControl>
             )}
           />
+          <Controller
+            name="weapon"
+            defaultValue="Espada"
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <FormLabel>Arma</FormLabel>
+                <RadioGroup
+                  {...field}
+                  row
+                  onChange={(e) => field.onChange(e.target.value)}
+                  value={field.value}
+                >
+                  <FormControlLabel
+                    value="Espada"
+                    control={<Radio />}
+                    label="Espada"
+                  />
+                  <FormControlLabel
+                    value="Sable"
+                    control={<Radio />}
+                    label="Sable"
+                  />
+                  <FormControlLabel
+                    value="Florete"
+                    control={<Radio />}
+                    label="Florete"
+                  />
+                </RadioGroup>
+              </FormControl>
+            )}
+          />
           <TextField
             required
             fullWidth

@@ -6,6 +6,7 @@ const MAX_HEIGHT = 300;
 
 export const schema = z.object({
   laterality: z.enum(["D", "I"]),
+  weapon: z.enum(["Espada", "Florete", "Sable"]),
   weight: z.coerce
     .number()
     .gt(0, { message: "Peso inválido" })
