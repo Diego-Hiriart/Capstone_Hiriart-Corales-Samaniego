@@ -25,6 +25,7 @@ import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
 import SignupContextRoute from "./routes/FormContextRoute";
 import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
+import Login from "./pages/Login";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -41,6 +42,7 @@ export const App = () => {
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route element={<SignupContextRoute/>}>
           <Route path="/signup">
             <Route index element={<SignupForm />} />
