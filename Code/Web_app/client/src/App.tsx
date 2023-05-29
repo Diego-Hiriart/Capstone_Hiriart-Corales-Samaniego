@@ -23,7 +23,7 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
-import SignupContextRoute from "./routes/FormContextRoute";
+import SignupContextRoute from "./routes/SignupContextRoute";
 import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
 import Login from "./pages/Login";
 
@@ -46,6 +46,7 @@ export const App = () => {
         <Route element={<SignupContextRoute/>}>
           <Route path="/signup">
             <Route index element={<SignupForm />} />
+            {/* TODO: make this routes innaccesible from the url */}
             <Route path="personal" element={<SignupPersonalForm />} />
             <Route path="fencer" element={<SignupFencerForm />} />
             <Route path="medical" element={<SignupMedicalForm />} />

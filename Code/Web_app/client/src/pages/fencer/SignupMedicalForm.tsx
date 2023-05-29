@@ -76,7 +76,6 @@ const SignupMedicalForm = () => {
       Object.keys(medicalFamily).forEach((key) => {
         delete data[key as keyof SignupMedicalFormType];
       });
-      console.log(data)
       await axios.post("auth/user/fencer", { data });
       showSuccess("Esgrimista creado exitosamente");
       navigate("/login");
