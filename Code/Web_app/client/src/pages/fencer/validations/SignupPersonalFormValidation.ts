@@ -15,26 +15,16 @@ export const bloodTypes = [
 ] as const;
 
 export const leadSources = [
-  { value: "Redes Sociales", label: "Redes Sociales" },
-  { value: "Referido", label: "Referido" },
-  { value: "Otro", label: "Otro" },
+  "Redes Sociales",
+  "Referido",
+  "Otro",
 ] as const;
-type leadSource = (typeof leadSources)[number]["value"];
-const leadSourceValues: [leadSource, ...leadSource[]] = [
-  leadSources[0].value,
-  ...leadSources.slice(1).map((ls) => ls.value),
-];
 
 export const inscriptionReasons = [
-  { value: "Competencia", label: "Competencia" },
-  { value: "Hobby", label: "Hobby" },
-  { value: "Otro", label: "Otro" },
+  "Competencia",
+  "Hobby",
+  "Otro",
 ] as const;
-type inscriptionReason = (typeof inscriptionReasons)[number]["value"];
-const inscriptionReasonValues: [inscriptionReason, ...inscriptionReason[]] = [
-  inscriptionReasons[0].value,
-  ...inscriptionReasons.slice(1).map((ir) => ir.value),
-];
 
 export const schema = z
   .object({
@@ -85,13 +75,13 @@ export const schema = z
       .regex(/^\d+$/, { message: "Teléfono inválido" })
       .length(10, { message: "Teléfono inválido" }),
     leadSource: z
-      .enum(leadSourceValues)
+      .enum(leadSources)
       .or(z.literal(""))
       .refine((input) => input !== "", {
         message: "Campo requerido",
       }),
     inscriptionReason: z
-      .enum(inscriptionReasonValues)
+      .enum(inscriptionReasons)
       .or(z.literal(""))
       .refine((input) => input !== "", {
         message: "Campo requerido",

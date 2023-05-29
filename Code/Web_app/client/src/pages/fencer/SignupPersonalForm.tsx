@@ -249,8 +249,8 @@ const SignupPersonalForm = () => {
                   label="Como te enteraste de la academia?"
                 >
                   {leadSources.map((leadSource) => (
-                    <MenuItem key={leadSource.value} value={leadSource.value}>
-                      {leadSource.label}
+                    <MenuItem key={leadSource} value={leadSource}>
+                      {leadSource}
                     </MenuItem>
                   ))}
                 </Select>
@@ -279,10 +279,10 @@ const SignupPersonalForm = () => {
                 >
                   {inscriptionReasons.map((inscriptionReason) => (
                     <MenuItem
-                      key={inscriptionReason.value}
-                      value={inscriptionReason.value}
+                      key={inscriptionReason}
+                      value={inscriptionReason}
                     >
-                      {inscriptionReason.label}
+                      {inscriptionReason}
                     </MenuItem>
                   ))}
                 </Select>
