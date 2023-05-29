@@ -2930,7 +2930,7 @@
     (property "Value" "NRF24L01_Breakout" (at 32.004 178.435 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "RF_Module:nRF24L01_Breakout" (at 38.1 191.77 0)
+    (property "Footprint" "" (at 38.1 191.77 0)
       (effects (font (size 1.27 1.27) italic) (justify left) hide)
     )
     (property "Datasheet" "http://www.nordicsemi.com/eng/content/download/2730/34105/file/nRF24L01_Product_Specification_v2_0.pdf" (at 41.91 173.99 0)
