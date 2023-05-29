@@ -65,11 +65,7 @@ const SignupPersonalForm = () => {
 
   const onSubmit: SubmitHandler<SignupPersonalFormType> = (formData) => {
     try {
-      const data = {
-        ...formData,
-        insurance: formData.hasInsurance ? formData.insurance : undefined,
-      };
-      setMultiFormState({ ...multiFormState, ...data });
+      setMultiFormState({ ...multiFormState, ...formData });
       navigate("/signup/fencer");
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");

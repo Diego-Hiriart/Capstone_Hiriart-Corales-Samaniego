@@ -1,6 +1,8 @@
 import { z } from "zod";
 import dayjs, { Dayjs, isDayjs } from "dayjs";
 
+const INSURANCE_MAX_LENGTH = 100;
+
 export const bloodTypes = [
   "A+",
   "A-",
@@ -95,14 +97,23 @@ export const schema = z
         message: "Campo requerido",
       }),
     hasInsurance: z.boolean(),
-    insurance: z.string().trim().optional(),
+    insurance: z
+      .string()
+      .trim()
+      .max(INSURANCE_MAX_LENGTH, {
+        message: `La longitud del texto debe ser menor a ${INSURANCE_MAX_LENGTH} caracteres`,
+      })
+      .nullish()
   })
   .refine(
     ({ hasInsurance, insurance }) => {
-      const isValid = insurance !== undefined && insurance !== "";
-      return hasInsurance ? isValid : true;
+      return hasInsurance && !insurance ? false : true;
     },
     { message: "Campo requerido", path: ["insurance"] }
-  );
+  )
+  .transform((data) => {
+    data.insurance = data.insurance || null;
+    return data;
+  })
 
 export type SignupPersonalFormType = z.infer<typeof schema>;

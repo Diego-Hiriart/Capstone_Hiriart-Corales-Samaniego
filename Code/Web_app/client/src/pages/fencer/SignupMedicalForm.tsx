@@ -62,23 +62,23 @@ const SignupMedicalForm = () => {
         familyHypotension: formData.familyHypotension,
         familyPsychological: formData.familyPsychological,
         familyOther: formData.familyOther,
+        familyOtherDetail: formData.familyOtherDetail,
       };
-      const body = {
+      const data = {
         ...multiFormState,
         ...formData,
         medicalPersonal: JSON.stringify(medicalPersonal),
         medicalFamily: JSON.stringify(medicalFamily),
       };
       Object.keys(medicalPersonal).forEach((key) => {
-        delete body[key as keyof SignupMedicalFormType];
+        delete data[key as keyof SignupMedicalFormType];
       });
       Object.keys(medicalFamily).forEach((key) => {
-        delete body[key as keyof SignupMedicalFormType];
+        delete data[key as keyof SignupMedicalFormType];
       });
-      console.log(body);
-      // await axios.post("/user/fencer", multiFormState);
+      await axios.post("auth/user/fencer", { data });
     } catch (error) {
-      showError("Ha ocurrido un error al crear el entrenador");
+      showError("Ha ocurrido un error al crear el esgrimista");
     }
   };
 
@@ -93,7 +93,7 @@ const SignupMedicalForm = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Información Personal
+          Información Medica
         </Typography>
         <Box
           component="form"
@@ -108,7 +108,6 @@ const SignupMedicalForm = () => {
             rows={4}
             label="Realizas algún tipo de actividad física?"
             id="physicalActivity"
-            defaultValue={""}
             {...register("physicalActivity")}
           />
           <Typography mt={3} variant="h6">
@@ -221,11 +220,10 @@ const SignupMedicalForm = () => {
               multiline
               rows={4}
               label="Especificar otro"
-              id="medicalFamilyOther"
-              defaultValue={""}
-              {...register("medicalFamilyOther")}
-              error={!!errors.medicalFamilyOther}
-              helperText={errors.medicalFamilyOther?.message}
+              id="familyOtherDetail"
+              {...register("familyOtherDetail")}
+              error={!!errors.familyOtherDetail}
+              helperText={errors.familyOtherDetail?.message}
             />
             <Typography>
               Si marcaste alguna condicion anterior por favor especificar
@@ -237,10 +235,9 @@ const SignupMedicalForm = () => {
               rows={4}
               // TODO: Change label
               id="personalMedicalDetails"
-              defaultValue={""}
-              {...register("personalMedicalDetails")}
-              error={!!errors.personalMedicalDetails}
-              helperText={errors.personalMedicalDetails?.message}
+              {...register("personalMedicalDetail")}
+              error={!!errors.personalMedicalDetail}
+              helperText={errors.personalMedicalDetail?.message}
             />
             <Stack direction="row" spacing={2} mt={3}>
               <Button fullWidth variant="outlined" onClick={handleBack}>
