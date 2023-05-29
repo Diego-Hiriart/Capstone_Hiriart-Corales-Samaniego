@@ -12,10 +12,8 @@ import { Link as RouterLink } from "react-router-dom";
 const drawerWidth = 240;
 
 interface Props {
-  listItems: item[];
+  listItems: { itemName: string; ref: string }[];
 }
-
-type item = { itemName: string; ref: string };
 
 export default function SideBarList(props: PropsWithChildren<Props>) {
   const [mobileOpen, setMobileOpen] = React.useState(false);

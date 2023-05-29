@@ -12,8 +12,9 @@ export interface SignupForm {
   roles: string[];
 }
 
-export interface TrainingGroupWithFencers extends TrainingGroup {
+export interface TrainingGroupFull extends TrainingGroup {
   fencer: Fencer[];
+  mesoCycle: MesoCycle[];
 }
 
 /**

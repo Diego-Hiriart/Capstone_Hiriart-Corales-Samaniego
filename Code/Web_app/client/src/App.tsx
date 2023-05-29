@@ -22,6 +22,7 @@ import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import GroupMesoCycle from "./pages/group/GroupMesoCycle";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -55,6 +56,7 @@ export const App = () => {
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/list" element={<FencerList />} />
+          <Route path="fencer/groups/:id/cycles" element={<GroupMesoCycle />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
