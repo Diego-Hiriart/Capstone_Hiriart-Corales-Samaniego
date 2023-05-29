@@ -12,6 +12,7 @@ import { AxiosError } from "axios";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
 import { SignupFormType, schema } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "../../services/axios";
 
 export default function SignupForm() {
   const { multiFormState, setMultiFormState } = useMultiStepForm();
@@ -30,7 +31,7 @@ export default function SignupForm() {
 
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
-      // TODO: make request to verify email
+      await axios.post("auth/verifyEmail", { email: formData.email });
       setMultiFormState({ ...multiFormState, ...formData });
       navigate("/signup/personal");
     } catch (error) {

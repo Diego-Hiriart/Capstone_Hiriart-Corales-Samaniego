@@ -20,7 +20,7 @@ import axios from "../../services/axios";
 
 const SignupMedicalForm = () => {
   const navigate = useNavigate();
-  const { showError } = useAlert();
+  const { showError, showSuccess } = useAlert();
   const { multiFormState, setMultiFormState } = useMultiStepForm();
   const {
     control,
@@ -78,6 +78,8 @@ const SignupMedicalForm = () => {
       });
       console.log(data)
       await axios.post("auth/user/fencer", { data });
+      showSuccess("Esgrimista creado exitosamente");
+      navigate("/login");
     } catch (error) {
       showError("Ha ocurrido un error al crear el esgrimista");
     }

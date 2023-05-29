@@ -25,7 +25,7 @@ export async function verifyIfUserExists(
     next();
   } catch (error) {
     errorLog(error);
-    return res.sendStatus(403);
+    return res.sendStatus(409);
   }
 }
 
