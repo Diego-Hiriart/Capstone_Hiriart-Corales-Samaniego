@@ -60,6 +60,14 @@ const fencers = [
   },
 ];
 
+const trainers = [
+  {
+    userID: 2,
+    experience: "Too much",
+    weapon: "Sable",
+  },
+];
+
 const trainingGroups = [
   {
     name: "Grupo 1",
@@ -72,6 +80,22 @@ const trainingGroups = [
   {
     name: "Grupo 3",
     weapon: "Espada",
+  },
+];
+
+const mesoCycles = [
+  {
+    endDate: "1970-01-01T00:00:00.000Z",
+    mesoCycleID: 1,
+    name: "Test",
+    startDate: "1970-05-01T00:00:00.000Z",
+    trainerID: 1,
+    trainingGroupID: 1,
+    period: "1",
+    stage: "1",
+    physicalScore: 1,
+    technicalScore: 1,
+    tacticalScore: 1,
   },
 ];
 
@@ -122,6 +146,12 @@ async function main() {
   });
   await prisma.fencer.createMany({
     data: fencers,
+  });
+  await prisma.trainer.createMany({
+    data: trainers,
+  });
+  await prisma.mesoCycle.createMany({
+    data: mesoCycles,
   });
 }
 

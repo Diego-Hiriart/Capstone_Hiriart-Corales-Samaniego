@@ -116,7 +116,7 @@ model TrainingGroup {
   name            String      @db.VarChar(25)
   weapon          String      @db.VarChar(25)
   fencer          Fencer[]
-  MesoCycle       MesoCycle[]
+  mesoCycle       MesoCycle[]
 }
 
 model CycleGoal {
