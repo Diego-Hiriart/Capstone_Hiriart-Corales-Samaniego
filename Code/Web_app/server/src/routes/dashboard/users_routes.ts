@@ -8,7 +8,6 @@ import {
   getUserById,
   postUser,
   postUserAdmin,
-  postUserFencer,
   postUserTrainer,
   updateUser,
 } from "../../controllers/users_controller";
@@ -24,7 +23,6 @@ router.get("/user/", verifyRole(["admin", "trainer"]), getAllUsers);
 router.put("/user/:id", verifyRole(["admin", "trainer"]), updateUser);
 router.post("/user/admin", postUserAdmin);
 router.post("/user/trainer", verifyRole(["admin", "trainer"]), postUserTrainer);
-router.post("/user/fencer", verifyRole(["admin", "trainer"]), postUserFencer);
 router.post("/user/", verifyRole(["admin", "trainer"]), postUser);
 
 router.delete("/user/:id", verifyRole(["admin"]), deleteUserById);
