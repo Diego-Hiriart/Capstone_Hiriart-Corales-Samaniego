@@ -6,6 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import { generateToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
 import { hashPassword } from "../utils/hashPassword";
+import { findUserByEmail } from "../data/user";
 
 const prisma = new PrismaClient();
 
@@ -71,5 +72,14 @@ export async function logout(req: Request, res: Response) {
   } catch (error) {
     errorLog(error);
     return res.sendStatus(401);
+  }
+}
+
+export async function verifyEmailExists(req: Request, res: Response) {
+  const user = await findUserByEmail(req.body.email);
+  if (user) {
+    return res.sendStatus(409);
+  } else {
+    return res.sendStatus(200);
   }
 }

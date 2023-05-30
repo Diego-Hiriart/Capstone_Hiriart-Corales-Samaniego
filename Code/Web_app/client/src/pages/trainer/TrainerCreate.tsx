@@ -16,6 +16,7 @@ import {
 import { AxiosError } from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
 const schema = z
   .object({
@@ -36,7 +37,8 @@ const schema = z
 type RegisterTrainerForm = z.infer<typeof schema>;
 
 export default function CreateTrainer() {
-  const { showSuccess } = useAlert();
+  const navigate = useNavigate();
+  const { showSuccess, showError } = useAlert();
   const {
     register,
     handleSubmit,
@@ -51,7 +53,7 @@ export default function CreateTrainer() {
     try {
       await axios.post("/dashboard/user/trainer", {data: formData});
       showSuccess("Entrenador creado exitosamente");
-      // TODO: redirect to trainers list
+      navigate("/trainer");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
@@ -60,16 +62,11 @@ export default function CreateTrainer() {
             message: "El email ingresado ya está en uso",
           });
         } else {
-          setError("root", {
-            type: "manual",
-            message: "Ha ocurrido un error al crear el entrenador",
-          });
+          showError("Ha ocurrido un error al crear el entrenador")
         }
       }
     }
   };
-
-  // TODO: add root error component
 
   return (
     <Container component="main" maxWidth="xs">
@@ -157,7 +154,7 @@ export default function CreateTrainer() {
           />
           <Controller
             name="weapon"
-            defaultValue="espada"
+            defaultValue="Espada"
             control={control}
             render={({ field }) => (
               <FormControl>
@@ -169,17 +166,17 @@ export default function CreateTrainer() {
                   value={field.value}
                 >
                   <FormControlLabel
-                    value="espada"
+                    value="Espada"
                     control={<Radio />}
                     label="Espada"
                   />
                   <FormControlLabel
-                    value="sable"
+                    value="Sable"
                     control={<Radio />}
                     label="Sable"
                   />
                   <FormControlLabel
-                    value="florete"
+                    value="Florete"
                     control={<Radio />}
                     label="Florete"
                   />

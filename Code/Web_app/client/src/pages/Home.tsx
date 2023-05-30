@@ -1,6 +1,25 @@
-const Home = () => {
-  // TODO: redirect to different home depending on role (AdminHome, TrainerHome, FencerHome)
-  return <div>Home</div>;
-};
+import { useContext } from "react"
+import { Navigate } from "react-router-dom"
+import AuthContext from "../contexts/AuthContext"
+import AdminHome from "./admin/AdminHome"
+import FencerHome from "./fencer/FencerHome"
+import TrainerHome from "./trainer/TrainerHome"
 
-export default Home;
+const Home = () => {
+  const {user} = useContext(AuthContext)
+
+  if (user?.roles.includes("admin")) {
+    return (<AdminHome />)
+  }
+  if (user?.roles.includes("trainer")) {
+    return (<TrainerHome />)
+  }
+  if (user?.roles.includes("fencer")) {
+    return (<FencerHome />)
+  }
+  return (
+    <Navigate to="/login" replace />
+  )
+}
+
+export default Home

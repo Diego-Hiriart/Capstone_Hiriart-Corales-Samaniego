@@ -11,6 +11,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { Alert } from "@mui/material";
+import logoUrl from "/static/images/logo.png";
+import styled from "@emotion/styled";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -36,13 +38,14 @@ export default function Login() {
   return (
     <Container component="main" maxWidth="xs">
       <Box
+        my={{ xs: 3, sm: 8 }}
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
+        <StyledImg src={logoUrl} alt="logo-CAECQ" />
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
@@ -102,3 +105,7 @@ export default function Login() {
     </Container>
   );
 }
+
+const StyledImg = styled.img`
+  max-width: 80%;
+`

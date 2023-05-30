@@ -3,15 +3,6 @@ export interface LoginFormInputs {
   password: string;
 }
 
-export interface SignupForm {
-  names: string;
-  lastNames: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  roles: string[];
-}
-
 export interface TrainingGroupWithFencers extends TrainingGroup {
   fencer: Fencer[];
 }

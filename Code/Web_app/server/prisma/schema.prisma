@@ -61,9 +61,9 @@ model Fencer {
   sex                        String           @db.Text
   laterality                 String           @db.Text
   phone                      String           @db.Text
-  insurance                  String           @db.Text
+  insurance                  String?          @db.Text
   inscriptionDate            DateTime
-  startDate                  DateTime
+  startDate                  DateTime?
   occupation                 String           @db.Text
   schedule                   String           @db.Text
   legalGuardian              String           @db.Text
@@ -71,12 +71,12 @@ model Fencer {
   inscriptionReason          String
   height                     Float
   weight                     Float
-  physicalActivity           String           @db.Text
+  physicalActivity           String?          @db.Text
   medicalFamily              String           @db.Text
   medicalPersonal            String           @db.Text
-  personalMedicalDetails     String           @db.Text
+  personalMedicalDetails     String?          @db.Text
   weapon                     String           @db.Text
-  pictureURL                 String           @db.Text
+  pictureURL                 String?          @db.Text
   guestName                  String?          @db.Text
   weeklyReport               WeeklyReport[]
   singleFeedback             SingleFeedback[]

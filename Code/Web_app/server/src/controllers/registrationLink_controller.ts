@@ -105,3 +105,14 @@ export async function postGenerateLink(req: Request, res: Response) {
       .json({ message: "This email was already registered" });
   }
 }
+
+export async function checkTokenValid(req: Request, res: Response) {
+  try {
+    const token = req.query.t?.toString() ?? "";
+    jwt.verify(token, jwtSecret);
+    return res.sendStatus(200);
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
