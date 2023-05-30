@@ -74,3 +74,12 @@ export async function deleteSingleFeedbackById(id: number) {
     throw error;
   }
 }
+
+export async function findFeedbacksByFencerId(id: number) {
+  const feedbacks = await prisma.singleFeedback.findMany({
+    where: {
+      fencerID: id,
+    },
+  });
+  return feedbacks;
+}

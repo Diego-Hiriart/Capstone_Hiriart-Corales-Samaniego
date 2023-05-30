@@ -4,6 +4,7 @@ import {
   createSingleFeedback,
   deleteSingleFeedbackById,
   findAllSingleFeedback,
+  findFeedbacksByFencerId,
   findSingleFeedbackById,
   updateSingleFeedbackById,
 } from "../data/singleFeedback";
@@ -60,6 +61,17 @@ export async function deleteSingleFeedback(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await deleteSingleFeedbackById(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getSingleFeedbacksByFencerId(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await findFeedbacksByFencerId(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);
