@@ -1,9 +1,8 @@
 import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
 import SignupForm from "./pages/fencer/SignupForm";
-import Home from "./pages/Home";
 import { useContext, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
@@ -26,6 +25,7 @@ import SignupFencerForm from "./pages/fencer/SignupFencerForm";
 import SignupContextRoute from "./routes/SignupContextRoute";
 import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);

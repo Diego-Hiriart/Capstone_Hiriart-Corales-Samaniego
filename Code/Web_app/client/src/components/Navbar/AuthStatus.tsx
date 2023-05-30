@@ -52,13 +52,7 @@ const AuthStatus = () => {
       </Box>
     );
   }
-  return (
-    <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "end" }}>
-      <Button component={RouterLink} to="login">
-        Login
-      </Button>
-    </Box>
-  );
+  return null;
 };
 
 export default AuthStatus;
