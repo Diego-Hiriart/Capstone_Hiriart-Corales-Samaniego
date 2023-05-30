@@ -34,7 +34,7 @@ const navItems = (roles: string[] | undefined) => {
     items["Esgrimistas"] = "fencer";
   }
   if (roles?.includes("trainer")) {
-    items["Esgrimistas"] = "fencers";
+    items["Esgrimistas"] = "fencer";
   }
   if (roles?.includes("fencer")) {
     items["Grupos"] = "groups";

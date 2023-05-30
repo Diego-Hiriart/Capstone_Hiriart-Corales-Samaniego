@@ -2,18 +2,22 @@ import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SingleFeedback } from "../../types";
 import axios from "../../services/axios";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { Link as RouterLink } from "react-router-dom";
+import AddFeedback from "./AddFeedback";
 
 const FencerFeedback = () => {
   const { id } = useParams();
@@ -28,15 +32,17 @@ const FencerFeedback = () => {
     setOpen(false);
   };
 
-  useEffect(() => {
-    const fetchFeedbacks = async () => {
-      const { data } = await axios.get(
-        `/dashboard/fencer_single_feedback/${id}`
-      );
-      setFeedbacks(data.data);
-    };
-    fetchFeedbacks();
+  const fetchFeedbacks = useCallback(async () => {
+    const { data } = await axios.get(`/dashboard/fencer_single_feedback/${id}`);
+    setFeedbacks(data.data);
   }, []);
+
+  useEffect(() => {
+    fetchFeedbacks().catch((error) => {
+      console.error(error);
+      showError("Hubo un error al cargar los feedbacks");
+    });
+  }, [fetchFeedbacks]);
 
   return (
     <Container component="main" maxWidth="sm">
@@ -58,11 +64,16 @@ const FencerFeedback = () => {
         </Box>
         <List>
           {feedbacks?.map((feedback) => (
-            <ListItem key={feedback.singleFeedbackID} alignItems="flex-start" divider disablePadding>
+            <ListItem
+              key={feedback.singleFeedbackID}
+              alignItems="flex-start"
+              divider
+              disablePadding
+            >
               <ListItemButton
                 sx={{ px: 1 }}
-                component={RouterLink}
-                to={String(feedback.singleFeedbackID)}
+                // component={RouterLink}
+                // to={String(feedback.singleFeedbackID)}
               >
                 <ListItemText
                   primary={dayjs(feedback.date).format("DD MMMM YYYY")}
@@ -83,8 +94,20 @@ const FencerFeedback = () => {
         </List>
         {/* TODO: add pagination */}
       </Box>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Agregar Feedback</DialogTitle>
+        <DialogContent>
+          <AddFeedback
+            handleClose={handleClose}
+            fetchFeedbacks={fetchFeedbacks}
+          />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };
 
 export default FencerFeedback;
+function showError(arg0: string) {
+  throw new Error("Function not implemented.");
+}

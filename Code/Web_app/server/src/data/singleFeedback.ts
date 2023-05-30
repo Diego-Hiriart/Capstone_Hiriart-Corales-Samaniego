@@ -28,8 +28,8 @@ export async function createSingleFeedback(data: SingleFeedback) {
   try {
     const singleFeedback = await prisma.singleFeedback.create({
       data: {
-        fencerID: data.fencerID,
-        trainerID: data.trainerID,
+        fencerID: Number(data.fencerID),
+        trainerID: Number(data.trainerID),
         date: data.date,
         content: data.content,
       },

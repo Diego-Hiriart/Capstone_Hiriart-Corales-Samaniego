@@ -5,6 +5,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
+import { getConstantValue } from "typescript";
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,10 @@ export async function verifyIfUserExists(
       where: {
         email: req.body.email,
       },
+      include: {
+        fencer: true,
+        trainer: true,
+      }
     });
 
     next();

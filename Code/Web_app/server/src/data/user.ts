@@ -15,6 +15,10 @@ export async function findUserById(id: number) {
       where: {
         userID: id,
       },
+      include: {
+        trainer: true,
+        fencer: true,
+      },
     });
     return user && removePasswordInUser(user);
   } catch (error) {

@@ -21,6 +21,8 @@ export type User = {
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
+  trainer?: Trainer;
+  fencer?: Fencer;
 };
 
 /**
