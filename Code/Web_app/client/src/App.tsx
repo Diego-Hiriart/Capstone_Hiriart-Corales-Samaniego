@@ -65,7 +65,6 @@ export const App = () => {
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/:id" element={<FencerDetail />} />
-          <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
           <Route path="fencer/list" element={<FencerList />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
@@ -76,6 +75,9 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
           <Route path="fencer" element={<FencerHome />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={["fencer", "trainer", "admin"]} />}>
+          <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />

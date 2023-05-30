@@ -11,18 +11,20 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { SingleFeedback } from "../../types";
 import axios from "../../services/axios";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { Link as RouterLink } from "react-router-dom";
 import AddFeedback from "./AddFeedback";
+import AuthContext from "../../contexts/AuthContext";
 
 const FencerFeedback = () => {
   const { id } = useParams();
   const [open, setOpen] = useState(false);
   const [feedbacks, setFeedbacks] = useState<SingleFeedback[]>([]);
+  const { user } = useContext(AuthContext);
 
   const handleOpen = () => {
     setOpen(true);
@@ -58,9 +60,11 @@ const FencerFeedback = () => {
           <Typography sx={{ flexGrow: 1 }} variant="h1">
             Feedback
           </Typography>
-          <Button variant="contained" onClick={handleOpen}>
-            Crear nuevo
-          </Button>
+          {user?.roles.includes("trainer") && (
+            <Button variant="contained" onClick={handleOpen}>
+              Crear nuevo
+            </Button>
+          )}
         </Box>
         <List>
           {feedbacks?.map((feedback) => (
