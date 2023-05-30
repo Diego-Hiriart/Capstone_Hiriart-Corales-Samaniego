@@ -53,7 +53,7 @@ export default function CreateTrainer() {
     try {
       await axios.post("/dashboard/user/trainer", {data: formData});
       showSuccess("Entrenador creado exitosamente");
-      navigate("/dashboard/trainers");
+      navigate("/trainer");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
