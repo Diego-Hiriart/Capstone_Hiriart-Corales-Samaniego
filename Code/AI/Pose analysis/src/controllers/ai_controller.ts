@@ -6,17 +6,9 @@ import {
   checkModelDataExists,
   loadModel,
   runModel,
-  createAndTrainModel,
 } from '../errors_AI/errorAnalysisModel';
 
 let errorsModel: LayersModel;
-
-/*To train model*/
-export async function trainModel(req: Request, res: Response) {
-  //To be used only for training
-  createAndTrainModel();
-  return res.status(200).json({ message: 'ok' });
-}
 
 /* To POST poses to be analyzed */
 export async function poseAnalysis(req: Request, res: Response) {
