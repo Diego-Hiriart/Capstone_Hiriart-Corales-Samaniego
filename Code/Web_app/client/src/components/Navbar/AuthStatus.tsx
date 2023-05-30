@@ -57,9 +57,6 @@ const AuthStatus = () => {
       <Button component={RouterLink} to="login">
         Login
       </Button>
-      <Button component={RouterLink} to="signup">
-        Signup
-      </Button>
     </Box>
   );
 };
