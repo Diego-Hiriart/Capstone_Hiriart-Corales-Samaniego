@@ -107,7 +107,7 @@ const trainers = [
     weapon: "123",
     pictureURL: "123",
   },
-]
+];
 
 const trainingGroups = [
   {

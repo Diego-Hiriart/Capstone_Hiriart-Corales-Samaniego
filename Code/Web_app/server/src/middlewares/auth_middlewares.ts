@@ -5,8 +5,6 @@ import { PrismaClient } from "@prisma/client";
 
 import { jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
-import { getConstantValue } from "typescript";
-
 const prisma = new PrismaClient();
 
 // Verify if the user already exists
