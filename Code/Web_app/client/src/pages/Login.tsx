@@ -88,18 +88,6 @@ export default function Login() {
           >
             Log In
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link
-                component={RouterLink}
-                to="/signup"
-                href="#"
-                variant="body2"
-              >
-                No estas registrado? Registrate
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Container>

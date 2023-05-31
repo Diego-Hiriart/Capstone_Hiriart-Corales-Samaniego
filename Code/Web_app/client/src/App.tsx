@@ -26,11 +26,15 @@ import SignupContextRoute from "./routes/SignupContextRoute";
 import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import FencerDetail from "./pages/fencer/FencerDetail";
+import FencerFeedback from "./pages/fencer/FencerFeedback";
+import dayjs from "dayjs";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
 
   useEffect(() => {
+    dayjs.locale("es");
     checkToken();
   }, []);
 
@@ -60,6 +64,7 @@ export const App = () => {
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
+          <Route path="fencer/:id" element={<FencerDetail />} />
           <Route path="fencer/list" element={<FencerList />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
@@ -70,6 +75,9 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
           <Route path="fencer" element={<FencerHome />} />
+        </Route>
+        <Route element={<ProtectedRoute allowedRoles={["fencer", "trainer", "admin"]} />}>
+          <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />

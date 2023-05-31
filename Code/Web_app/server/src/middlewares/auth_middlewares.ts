@@ -5,7 +5,6 @@ import { PrismaClient } from "@prisma/client";
 
 import { jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
-
 const prisma = new PrismaClient();
 
 // Verify if the user already exists
@@ -20,6 +19,10 @@ export async function verifyIfUserExists(
       where: {
         email: req.body.email,
       },
+      include: {
+        fencer: true,
+        trainer: true,
+      }
     });
 
     next();

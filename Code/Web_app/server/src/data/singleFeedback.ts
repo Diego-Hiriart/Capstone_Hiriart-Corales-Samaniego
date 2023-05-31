@@ -28,8 +28,8 @@ export async function createSingleFeedback(data: SingleFeedback) {
   try {
     const singleFeedback = await prisma.singleFeedback.create({
       data: {
-        fencerID: data.fencerID,
-        trainerID: data.trainerID,
+        fencerID: Number(data.fencerID),
+        trainerID: Number(data.trainerID),
         date: data.date,
         content: data.content,
       },
@@ -73,4 +73,25 @@ export async function deleteSingleFeedbackById(id: number) {
   } catch (error) {
     throw error;
   }
+}
+
+export async function findFeedbacksByFencerId(id: number) {
+  const feedbacks = await prisma.singleFeedback.findMany({
+    where: {
+      fencerID: id,
+    },
+    include: {
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return feedbacks;
 }
