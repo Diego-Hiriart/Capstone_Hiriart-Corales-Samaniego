@@ -1,4 +1,12 @@
-import { Box, Button, DialogActions, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import { useAlert } from "../../hooks/useAlert";
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import axios from "../../services/axios";
@@ -6,11 +14,12 @@ import { useParams } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 
 interface Props {
+  open: boolean;
   handleClose: () => void;
   fetchFeedbacks: () => void;
 }
 
-const AddFeedback = ({ handleClose, fetchFeedbacks }: Props) => {
+const AddFeedbackDialog = ({ open, handleClose, fetchFeedbacks }: Props) => {
   const { showError, showSuccess } = useAlert();
   const [feedback, setFeedback] = useState("");
   const { user } = useContext(AuthContext);
@@ -40,27 +49,32 @@ const AddFeedback = ({ handleClose, fetchFeedbacks }: Props) => {
   };
 
   return (
-    <Box component="form" noValidate onSubmit={handleSubmit}>
-      <TextField
-        fullWidth
-        margin="normal"
-        multiline
-        rows={4}
-        label="Retroalimentación"
-        id="feedback"
-        name="feedback"
-        onChange={handleChange}
-      />
-      <DialogActions sx={{ mt: 3 }}>
-        <Button fullWidth variant="outlined" onClick={handleClose}>
-          Cancelar
-        </Button>
-        <Button type="submit" fullWidth variant="contained">
-          Confirmar
-        </Button>
-      </DialogActions>
-    </Box>
+    <Dialog open={open} onClose={handleClose} fullWidth>
+      <DialogTitle>Agregar Feedback</DialogTitle>
+      <DialogContent>
+        <Box component="form" noValidate onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            margin="normal"
+            multiline
+            rows={4}
+            label="Retroalimentación"
+            id="feedback"
+            name="feedback"
+            onChange={handleChange}
+          />
+          <DialogActions sx={{ mt: 3 }}>
+            <Button fullWidth variant="outlined" onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button type="submit" fullWidth variant="contained">
+              Confirmar
+            </Button>
+          </DialogActions>
+        </Box>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default AddFeedback;
+export default AddFeedbackDialog;

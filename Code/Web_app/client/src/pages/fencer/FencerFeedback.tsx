@@ -2,9 +2,6 @@ import {
   Box,
   Button,
   Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   List,
   ListItem,
   ListItemButton,
@@ -16,22 +13,31 @@ import { SingleFeedback } from "../../types";
 import axios from "../../services/axios";
 import { useParams } from "react-router-dom";
 import dayjs from "dayjs";
-import { Link as RouterLink } from "react-router-dom";
-import AddFeedback from "./AddFeedback";
+import AddFeedbackDialog from "./AddFeedbackDialog";
 import AuthContext from "../../contexts/AuthContext";
+import { useAlert } from "../../hooks/useAlert";
+import FeedbackDialog from "./FeedbackDialog";
 
 const FencerFeedback = () => {
   const { id } = useParams();
-  const [open, setOpen] = useState(false);
+  const [showAddFeedbackDialog, setShowAddFeedbackDialog] = useState(false);
   const [feedbacks, setFeedbacks] = useState<SingleFeedback[]>([]);
   const { user } = useContext(AuthContext);
+  const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
+  const { showError } = useAlert();
+  const [selectedFeedback, setSelectedFeedback] = useState<SingleFeedback | null>(null);
 
-  const handleOpen = () => {
-    setOpen(true);
+  const handleAddFeedbackDialogOpen = () => {
+    setShowAddFeedbackDialog(true);
+  };
+  const handleFeedbackDialogOpen = (feedback: SingleFeedback | null) => {
+    setShowFeedbackDialog(true);
+    setSelectedFeedback(feedback)
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setShowAddFeedbackDialog(false);
+    setShowFeedbackDialog(false);
   };
 
   const fetchFeedbacks = useCallback(async () => {
@@ -61,7 +67,7 @@ const FencerFeedback = () => {
             Feedback
           </Typography>
           {user?.roles.includes("trainer") && (
-            <Button variant="contained" onClick={handleOpen}>
+            <Button variant="contained" onClick={handleAddFeedbackDialogOpen}>
               Crear nuevo
             </Button>
           )}
@@ -74,11 +80,7 @@ const FencerFeedback = () => {
               divider
               disablePadding
             >
-              <ListItemButton
-                sx={{ px: 1 }}
-                // component={RouterLink}
-                // to={String(feedback.singleFeedbackID)}
-              >
+              <ListItemButton sx={{ px: 1 }} onClick={() => handleFeedbackDialogOpen(feedback)}>
                 <ListItemText
                   primary={dayjs(feedback.date).format("DD MMMM YYYY")}
                   secondary={
@@ -98,20 +100,14 @@ const FencerFeedback = () => {
         </List>
         {/* TODO: add pagination */}
       </Box>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Agregar Feedback</DialogTitle>
-        <DialogContent>
-          <AddFeedback
-            handleClose={handleClose}
-            fetchFeedbacks={fetchFeedbacks}
-          />
-        </DialogContent>
-      </Dialog>
+      <AddFeedbackDialog
+        open={showAddFeedbackDialog}
+        handleClose={handleClose}
+        fetchFeedbacks={fetchFeedbacks}
+      />
+      <FeedbackDialog open={showFeedbackDialog} handleClose={handleClose} feedback={selectedFeedback}/>
     </Container>
   );
 };
 
 export default FencerFeedback;
-function showError(arg0: string) {
-  throw new Error("Function not implemented.");
-}

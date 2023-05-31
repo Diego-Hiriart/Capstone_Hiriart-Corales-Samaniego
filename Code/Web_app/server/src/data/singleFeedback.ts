@@ -80,6 +80,18 @@ export async function findFeedbacksByFencerId(id: number) {
     where: {
       fencerID: id,
     },
+    include: {
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            },
+          },
+        },
+      },
+    },
   });
   return feedbacks;
 }
