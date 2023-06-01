@@ -9,6 +9,7 @@ import {
   updateSingleFeedbackById,
 } from "../data/singleFeedback";
 import { errorLog } from "../utils/logs";
+import { constants } from "../constants";
 
 export async function getSingleFeedbackById(req: Request, res: Response) {
   try {
@@ -68,11 +69,20 @@ export async function deleteSingleFeedback(req: Request, res: Response) {
   }
 }
 
-export async function getSingleFeedbacksByFencerId(req: Request, res: Response) {
+export async function getSingleFeedbacksByFencerId(
+  req: Request,
+  res: Response
+) {
   try {
-    return res.status(200).json({
-      data: await findFeedbacksByFencerId(Number(req.params.id)),
-    });
+    const take = req.query.take ?? constants.resultsPerPage;
+    const page = req.query.page ?? 1;
+
+    const data = await findFeedbacksByFencerId(
+      Number(req.params.id),
+      Number(take),
+      Number(page)
+    );
+    return res.status(200).json(data);
   } catch (error) {
     errorLog(error);
     return res.sendStatus(500);

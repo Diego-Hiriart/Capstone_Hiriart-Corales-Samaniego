@@ -75,8 +75,14 @@ export async function deleteSingleFeedbackById(id: number) {
   }
 }
 
-export async function findFeedbacksByFencerId(id: number) {
-  const feedbacks = await prisma.singleFeedback.findMany({
+export async function findFeedbacksByFencerId(
+  id: number,
+  take: number,
+  page: number
+) {
+  const data = await prisma.singleFeedback.findMany({
+    skip: take * (page - 1),
+    take: take,
     where: {
       fencerID: id,
     },
@@ -92,6 +98,14 @@ export async function findFeedbacksByFencerId(id: number) {
         },
       },
     },
+    orderBy: {
+      date: "desc",
+    },
   });
-  return feedbacks;
+  const count = await prisma.singleFeedback.count({
+    where: {
+      fencerID: id,
+    },
+  });
+  return { data, count };
 }
