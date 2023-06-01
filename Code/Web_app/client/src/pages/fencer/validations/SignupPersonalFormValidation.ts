@@ -1,7 +1,7 @@
 import { z } from "zod";
 import dayjs, { Dayjs, isDayjs } from "dayjs";
 
-const INSURANCE_MAX_LENGTH = 100;
+const insuranceMaxLength = 100;
 
 export const bloodTypes = [
   "A+",
@@ -90,8 +90,8 @@ export const schema = z
     insurance: z
       .string()
       .trim()
-      .max(INSURANCE_MAX_LENGTH, {
-        message: `La longitud del texto debe ser menor a ${INSURANCE_MAX_LENGTH} caracteres`,
+      .max(insuranceMaxLength, {
+        message: `La longitud del texto debe ser menor a ${insuranceMaxLength} caracteres`,
       })
       .nullish()
   })

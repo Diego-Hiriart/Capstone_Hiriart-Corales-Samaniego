@@ -2,7 +2,7 @@ import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
 import SignupForm from "./pages/fencer/SignupForm";
 import { useContext, useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
@@ -32,6 +32,7 @@ import dayjs from "dayjs";
 import FencerProfile from "./pages/fencer/FencerProfile";
 import FencerProfilePersonal from "./pages/fencer/FencerProfilePersonal";
 import FencerProfileFencer from "./pages/fencer/FencerProfileFencer";
+import FencerProfileMedical from "./pages/fencer/FencerProfileMedical";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -82,6 +83,7 @@ export const App = () => {
             <Route index element={<FencerProfile />}></Route>
             <Route path="personal" element={<FencerProfilePersonal />} />
             <Route path="fencer" element={<FencerProfileFencer />} />
+            <Route path="medical" element={<FencerProfileMedical />} />
           </Route>
         </Route>
         <Route
