@@ -28,7 +28,7 @@ export const inscriptionReasons = [
 
 export const schema = z
   .object({
-    // TODO: validar cedula
+    // TODO: validar cedula (con algoritmo y en base de datos)
     idNumber: z
       .string()
       .regex(/^\d+$/, { message: "Cédula inválida" })

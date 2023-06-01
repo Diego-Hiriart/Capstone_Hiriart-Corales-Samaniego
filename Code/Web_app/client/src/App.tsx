@@ -30,6 +30,7 @@ import FencerProfilePersonal from "./pages/fencer/FencerProfilePersonal";
 import FencerProfileFencer from "./pages/fencer/FencerProfileFencer";
 import FencerProfileMedical from "./pages/fencer/FencerProfileMedical";
 import Profile from "./pages/Profile";
+import FencerProfileUser from "./pages/fencer/FencerProfileUser";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -76,6 +77,7 @@ export const App = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
+          <Route path="profile/user" element={<FencerProfileUser />} />
           <Route path="profile/personal" element={<FencerProfilePersonal />} />
           <Route path="profile/fencer" element={<FencerProfileFencer />} />
           <Route path="profile/medical" element={<FencerProfileMedical />} />
