@@ -31,8 +31,8 @@ const NavBar = () => {
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
   const navItems = (roles: string[] | undefined) => {
-    // Label: path object
     const items: Record<string, string> = {};
+    // Label: path
     if (roles?.includes("admin")) {
       items["Entrenadores"] = "trainer";
       items["Esgrimistas"] = "fencer";

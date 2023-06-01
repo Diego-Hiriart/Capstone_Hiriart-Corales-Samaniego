@@ -8,13 +8,10 @@ import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
 import AuthContext from "./contexts/AuthContext";
 import Unauthorized from "./pages/Unauthorized";
-import AdminHome from "./pages/admin/AdminHome";
-import FencerHome from "./pages/fencer/FencerHome";
 import FencerList from "./pages/fencer/FencerList";
 import GroupDetails from "./pages/group/GroupDetails";
 import GroupFencersList from "./pages/group/GroupFencersList";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
-import TrainerHome from "./pages/trainer/TrainerHome";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
@@ -29,13 +26,13 @@ import Home from "./pages/Home";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
 import dayjs from "dayjs";
-import FencerProfile from "./pages/fencer/FencerProfile";
 import FencerProfilePersonal from "./pages/fencer/FencerProfilePersonal";
 import FencerProfileFencer from "./pages/fencer/FencerProfileFencer";
 import FencerProfileMedical from "./pages/fencer/FencerProfileMedical";
+import Profile from "./pages/Profile";
 
 export const App = () => {
-  const { user, checkToken } = useContext(AuthContext);
+  const { checkToken } = useContext(AuthContext);
 
   useEffect(() => {
     dayjs.locale("es");
@@ -61,7 +58,6 @@ export const App = () => {
           </Route>
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-          <Route path="admin" element={<AdminHome />} />
           <Route path="trainer" element={<TrainerList />} />
           <Route path="trainer/create" element={<CreateTrainer />} />
         </Route>
@@ -74,17 +70,15 @@ export const App = () => {
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["trainer"]} />}>
-          <Route path="trainer" element={<TrainerHome />} />
+        <Route
+          element={<ProtectedRoute allowedRoles={["fencer", "trainer"]} />}
+        >
+          <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
-          <Route path="fencer" element={<FencerHome />} />
-          <Route path="profile">
-            <Route index element={<FencerProfile />}></Route>
-            <Route path="personal" element={<FencerProfilePersonal />} />
-            <Route path="fencer" element={<FencerProfileFencer />} />
-            <Route path="medical" element={<FencerProfileMedical />} />
-          </Route>
+          <Route path="profile/personal" element={<FencerProfilePersonal />} />
+          <Route path="profile/fencer" element={<FencerProfileFencer />} />
+          <Route path="profile/medical" element={<FencerProfileMedical />} />
         </Route>
         <Route
           element={
