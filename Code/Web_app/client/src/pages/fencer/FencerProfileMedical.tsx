@@ -250,7 +250,7 @@ const SignupMedicalForm = () => {
               <Button fullWidth variant="outlined" onClick={handleBack}>
                 Cancelar
               </Button>
-              <Button type="submit" fullWidth variant="contained">
+              <Button type="submit" fullWidth variant="contained" disabled={!isDirty}>
                 Guardar Cambios
               </Button>
             </Stack>
