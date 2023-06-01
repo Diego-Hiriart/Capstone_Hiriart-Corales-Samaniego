@@ -14,7 +14,7 @@ import {
 } from "../data/user";
 import { errorLog } from "../utils/logs";
 import { Prisma, RegistrationLink } from "@prisma/client";
-import { deleteRegistrationLinkById, findRegistrationLinkByEmail } from "../data/registrationLink";
+import { deleteRegistrationLinkById } from "../data/registrationLink";
 import { jwtSecret } from "../utils/jwt";
 
 /** GET own user */
