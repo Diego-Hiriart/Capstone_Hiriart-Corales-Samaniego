@@ -30,7 +30,7 @@ import {
   inscriptionReasons,
   bloodTypes,
 } from "./validations/SignupPersonalFormValidation";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import dayjs from "dayjs";
@@ -43,31 +43,32 @@ const FencerProfilePersonal = () => {
     control,
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
   } = useForm<SignupPersonalFormType>({
     defaultValues: {
-          ...user?.fencer,
-          bloodType: user?.fencer
-            ?.bloodType as SignupPersonalFormType["bloodType"],
-          sex: user?.fencer?.sex as SignupPersonalFormType["sex"],
-          birthDate: dayjs(user?.fencer?.birthDate),
-          leadSource: user?.fencer
-            ?.leadSource as SignupPersonalFormType["leadSource"],
-          inscriptionReason: user?.fencer
-            ?.inscriptionReason as SignupPersonalFormType["inscriptionReason"],
-          hasInsurance: user?.fencer?.insurance ? true : false,
-        },
+      ...user?.fencer,
+      bloodType: user?.fencer?.bloodType as SignupPersonalFormType["bloodType"],
+      sex: user?.fencer?.sex as SignupPersonalFormType["sex"],
+      birthDate: dayjs(user?.fencer?.birthDate),
+      leadSource: user?.fencer
+        ?.leadSource as SignupPersonalFormType["leadSource"],
+      inscriptionReason: user?.fencer
+        ?.inscriptionReason as SignupPersonalFormType["inscriptionReason"],
+      hasInsurance: user?.fencer?.insurance ? true : false,
+    },
     resolver: zodResolver(schema),
   });
 
   const handleBack = () => {
     navigate("/profile");
-  }
+  };
 
   const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
-      await axios.put(`/dashboard/fencer/${user?.fencer?.fencerID}`, {data: formData});
+      await axios.put(`/dashboard/fencer/${user?.fencer?.fencerID}`, {
+        data: formData,
+      });
       showSuccess("Información personal actualizada con éxito");
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
@@ -320,7 +321,12 @@ const FencerProfilePersonal = () => {
             <Button fullWidth variant="outlined" onClick={handleBack}>
               Cancelar
             </Button>
-            <Button type="submit" fullWidth variant="contained">
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={!isDirty}
+            >
               Guardar Cambios
             </Button>
           </Stack>

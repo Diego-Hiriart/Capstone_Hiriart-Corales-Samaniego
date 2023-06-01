@@ -31,6 +31,7 @@ import FencerFeedback from "./pages/fencer/FencerFeedback";
 import dayjs from "dayjs";
 import FencerProfile from "./pages/fencer/FencerProfile";
 import FencerProfilePersonal from "./pages/fencer/FencerProfilePersonal";
+import FencerProfileFencer from "./pages/fencer/FencerProfileFencer";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -80,6 +81,7 @@ export const App = () => {
           <Route path="profile">
             <Route index element={<FencerProfile />}></Route>
             <Route path="personal" element={<FencerProfilePersonal />} />
+            <Route path="fencer" element={<FencerProfileFencer />} />
           </Route>
         </Route>
         <Route
