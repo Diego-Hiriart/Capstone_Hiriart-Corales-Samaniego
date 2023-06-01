@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { LayersModel } from '@tensorflow/tfjs';
 
-import { errorLog } from '../utils/logs';
+import { debugLog, errorLog } from '../utils/logs';
 import {
   checkModelDataExists,
   loadModel,
@@ -10,7 +10,9 @@ import {
 
 let errorsModel: LayersModel;
 
-/* To POST poses to be analyzed */
+/* To POST poses to be analyzed
+ * needs a list of x poses, e.g. 10 lists, each of 33 keypoints with x, y, and z
+ */
 export async function poseAnalysis(req: Request, res: Response) {
   try {
     if (!errorsModel) {
