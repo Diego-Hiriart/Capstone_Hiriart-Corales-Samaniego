@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-const MAX_SCHEDULE_LENGTH = 40;
-const MAX_WEIGHT = 200;
-const MAX_HEIGHT = 300;
+const scheduleMaxLength = 40;
+const maxWeight = 200;
+const maxHeight = 300;
 
 export const schema = z.object({
   laterality: z.enum(["D", "I"]),
@@ -10,17 +10,17 @@ export const schema = z.object({
   weight: z.coerce
     .number()
     .gt(0, { message: "Peso inválido" })
-    .lt(MAX_WEIGHT, { message: "Peso inválido" }),
+    .lt(maxWeight, { message: "Peso inválido" }),
   height: z.coerce
     .number()
     .gt(0, { message: "Altura inválida" })
-    .lt(MAX_HEIGHT, { message: "Altura inválida" }),
+    .lt(maxHeight, { message: "Altura inválida" }),
   schedule: z
     .string()
     .trim()
     .min(1, { message: "Campo requerido" })
-    .max(MAX_SCHEDULE_LENGTH, {
-      message: `El horario debe tener menos de ${MAX_SCHEDULE_LENGTH} caracteres`,
+    .max(scheduleMaxLength, {
+      message: `El horario debe tener menos de ${scheduleMaxLength} caracteres`,
     }),
 });
 

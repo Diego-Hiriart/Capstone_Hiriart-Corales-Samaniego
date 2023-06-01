@@ -59,6 +59,7 @@ model Fencer {
   birthDate                  DateTime
   bloodType                  String           @db.Text
   sex                        String           @db.Text
+  school                     String?          @db.Text
   laterality                 String           @db.Text
   phone                      String           @db.Text
   insurance                  String?          @db.Text
@@ -66,7 +67,8 @@ model Fencer {
   startDate                  DateTime?
   occupation                 String           @db.Text
   schedule                   String           @db.Text
-  legalGuardian              String           @db.Text
+  legalGuardian              String?          @db.Text
+  legalGuardianPhone         String?          @db.Text
   leadSource                 String           @db.Text
   inscriptionReason          String
   height                     Float

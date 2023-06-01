@@ -1,7 +1,7 @@
 import { z } from "zod";
 import dayjs, { Dayjs, isDayjs } from "dayjs";
 
-const INSURANCE_MAX_LENGTH = 100;
+const insuranceMaxLength = 100;
 
 export const bloodTypes = [
   "A+",
@@ -28,7 +28,7 @@ export const inscriptionReasons = [
 
 export const schema = z
   .object({
-    // TODO: validar cedula
+    // TODO: validar cedula (con algoritmo y en base de datos)
     idNumber: z
       .string()
       .regex(/^\d+$/, { message: "Cédula inválida" })
@@ -69,7 +69,7 @@ export const schema = z
       }),
     school: z.string().trim().nonempty({ message: "Campo requerido" }).trim(),
     legalGuardian: z.string().trim().nonempty({ message: "Campo requerido" }),
-    guardianPhone: z
+    legalGuardianPhone: z
       .string()
       .trim()
       .regex(/^\d+$/, { message: "Teléfono inválido" })
@@ -86,12 +86,12 @@ export const schema = z
       .refine((input) => input !== "", {
         message: "Campo requerido",
       }),
-    hasInsurance: z.boolean(),
+    hasInsurance: z.boolean().optional(),
     insurance: z
       .string()
       .trim()
-      .max(INSURANCE_MAX_LENGTH, {
-        message: `La longitud del texto debe ser menor a ${INSURANCE_MAX_LENGTH} caracteres`,
+      .max(insuranceMaxLength, {
+        message: `La longitud del texto debe ser menor a ${insuranceMaxLength} caracteres`,
       })
       .nullish()
   })
@@ -102,7 +102,12 @@ export const schema = z
     { message: "Campo requerido", path: ["insurance"] }
   )
   .transform((data) => {
-    data.insurance = data.insurance || null;
+    if (!data.hasInsurance) {
+      data.insurance = null;
+    } else {
+      data.insurance = data.insurance || null;
+    }
+    delete data.hasInsurance;
     return data;
   })
 

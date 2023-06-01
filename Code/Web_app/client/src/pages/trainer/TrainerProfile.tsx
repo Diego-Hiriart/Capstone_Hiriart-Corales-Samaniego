@@ -1,8 +1,6 @@
-import { useParams } from "react-router-dom";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "../../services/axios";
 import {
-  Avatar,
   Box,
   Button,
   Container,
@@ -11,7 +9,6 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,8 +17,9 @@ import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { User } from "../../types";
+import AuthContext from "../../contexts/AuthContext";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),
@@ -38,7 +36,7 @@ type TrainerAPIResponse = {
   weapon: string;
   pictureURL: string | null;
   user: Partial<User>;
-}
+};
 
 const TrainerProfile = () => {
   const { id } = useParams();
@@ -46,10 +44,13 @@ const TrainerProfile = () => {
   // const [image, setImage] = useState<File | null>(null);
   // const [previewImageURL, setPreviewImageURL] = useState<string | null>(null);
   const [trainer, setTrainer] = useState<TrainerAPIResponse | null>(null);
+  const { pathname } = useLocation();
+  const { user } = useContext(AuthContext);
+  let trainerID = pathname === "/profile" ? user?.trainer?.trainerID : id;
 
   useEffect(() => {
     const fetchTrainer = async () => {
-      const { data } = await axios.get(`/dashboard/trainer/${id}`);
+      const { data } = await axios.get(`/dashboard/trainer/${trainerID}`);
       setTrainer(data.data);
       //replace when backend is ready:
       // setPreviewImageURL(data.data.pictureURL);
@@ -58,13 +59,23 @@ const TrainerProfile = () => {
   }, []);
 
   useEffect(() => {
-    reset({
-      names: trainer?.user.names,
-      lastNames: trainer?.user.lastNames,
-      email: trainer?.user.email,
-      experience: trainer?.experience,
-      weapon: trainer?.weapon,
-    });
+    if (pathname === "/profile") {
+      reset({
+        names: user?.names,
+        lastNames: user?.lastNames,
+        email: user?.email,
+        experience: user?.trainer?.experience,
+        weapon: user?.trainer?.weapon,
+      });
+    } else {
+      reset({
+        names: trainer?.user.names,
+        lastNames: trainer?.user.lastNames,
+        email: trainer?.user.email,
+        experience: trainer?.experience,
+        weapon: trainer?.weapon,
+      });
+    }
   }, [trainer]);
 
   // useEffect(() => {
@@ -113,7 +124,7 @@ const TrainerProfile = () => {
       // if no fields were changed, don't send the request
       if (Object.keys(updatedData).length === 0) return;
 
-      await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
+      await axios.put(`/dashboard/trainer/${trainerID}`, { data: updatedData });
       showSuccess("Entrenador actualizado exitosamente");
       reset({}, { keepValues: true });
       // setImage(null);
@@ -241,6 +252,7 @@ const TrainerProfile = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={!!dirtyFields && Object.keys(dirtyFields).length === 0}
           >
             Guardar Cambios
           </Button>

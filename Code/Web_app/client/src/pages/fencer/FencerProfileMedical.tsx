@@ -13,36 +13,41 @@ import {
   schema,
 } from "./validations/SignupMedicalFormValidation";
 import { useAlert } from "../../hooks/useAlert";
-import useMultiStepForm from "../../hooks/useMultiStepForm";
 import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
 import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
 
 const SignupMedicalForm = () => {
   const navigate = useNavigate();
   const { showError, showSuccess } = useAlert();
-  const { multiFormState, setMultiFormState, registrationToken } =
-    useMultiStepForm();
+  const { user } = useContext(AuthContext);
+
+  const medicalPersonal = JSON.parse(user!.fencer!.medicalPersonal);
+  const medicalFamily = JSON.parse(user!.fencer!.medicalFamily);
   const {
     control,
-    getValues,
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
   } = useForm<SignupMedicalFormType>({
-    defaultValues: multiFormState,
+    defaultValues: {
+      physicalActivity: user!.fencer!.physicalActivity,
+      ...medicalPersonal,
+      ...medicalFamily,
+      personalMedicalDetails: user!.fencer!.personalMedicalDetails,
+    },
     resolver: zodResolver(schema),
   });
 
   const handleBack = () => {
-    setMultiFormState({ ...multiFormState, ...getValues() });
-    navigate("/signup/fencer");
+    navigate("/profile");
   };
 
   const onSubmit: SubmitHandler<SignupMedicalFormType> = async (formData) => {
     try {
-      setMultiFormState({ ...multiFormState, ...formData });
       const medicalPersonal = {
         personalHeartDisease: formData.personalHeartDisease,
         personalHeartAttack: formData.personalHeartAttack,
@@ -65,7 +70,6 @@ const SignupMedicalForm = () => {
         familyOtherDetails: formData.familyOtherDetails,
       };
       const data = {
-        ...multiFormState,
         ...formData,
         medicalPersonal: JSON.stringify(medicalPersonal),
         medicalFamily: JSON.stringify(medicalFamily),
@@ -76,9 +80,8 @@ const SignupMedicalForm = () => {
       Object.keys(medicalFamily).forEach((key) => {
         delete data[key as keyof SignupMedicalFormType];
       });
-      await axios.post("auth/user/fencer", { data, token: registrationToken });
-      showSuccess("Esgrimista creado exitosamente");
-      navigate("/login");
+      await axios.put(`/dashboard/fencer/${user?.fencer?.fencerID}`, { data: data });
+      showSuccess("Perfil actualizado correctamente");
     } catch (error) {
       showError("Ha ocurrido un error al crear el esgrimista");
     }
@@ -245,10 +248,10 @@ const SignupMedicalForm = () => {
             />
             <Stack direction="row" spacing={2} mt={3}>
               <Button fullWidth variant="outlined" onClick={handleBack}>
-                Atrás
+                Cancelar
               </Button>
-              <Button type="submit" fullWidth variant="contained">
-                Registrarse
+              <Button type="submit" fullWidth variant="contained" disabled={!isDirty}>
+                Guardar Cambios
               </Button>
             </Stack>
           </Stack>

@@ -60,6 +60,7 @@ export type Fencer = {
   birthDate: Date;
   bloodType: string;
   sex: string;
+  school: string;
   laterality: string;
   phone: string;
   insurance: string;
@@ -68,6 +69,7 @@ export type Fencer = {
   occupation: string;
   schedule: string;
   legalGuardian: string;
+  legalGuardianPhone: string;
   leadSource: string;
   inscriptionReason: string;
   height: number;

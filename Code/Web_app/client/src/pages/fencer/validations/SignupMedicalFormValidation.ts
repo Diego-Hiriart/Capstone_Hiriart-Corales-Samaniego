@@ -1,17 +1,18 @@
 import { z } from "zod";
 
-const PHYSICAL_ACTIVITY_MAX_LENGTH = 100;
-const PERSONAL_MEDICAL_DETAILS_MAX_LENGTH = 100;
+const physicalActivityMaxLength = 100;
+const personalMedicalDetailsMaxLength = 100;
+const familyOtherDetailsMaxLength = 100;
 
 export const schema = z
   .object({
     physicalActivity: z
       .string()
       .trim()
-      .max(PHYSICAL_ACTIVITY_MAX_LENGTH, {
-        message: `La longitud del texto debe ser menor a ${PHYSICAL_ACTIVITY_MAX_LENGTH}`,
+      .max(physicalActivityMaxLength, {
+        message: `La longitud del texto debe ser menor a ${physicalActivityMaxLength}`,
       })
-      .optional()
+      .nullish()
       .transform((data) => (data === "" ? null : data)),
     personalHeartDisease: z.boolean(),
     personalHeartAttack: z.boolean(),
@@ -29,25 +30,35 @@ export const schema = z
     familyHypotension: z.boolean(),
     familyPsychological: z.boolean(),
     familyOther: z.boolean(),
-    familyOtherDetail: z
+    familyOtherDetails: z
       .string()
       .trim()
-      .optional()
-      .transform((data) => (data ? data : "")),
-    personalMedicalDetail: z
-      .string()
-      .trim()
-      .max(PERSONAL_MEDICAL_DETAILS_MAX_LENGTH, {
-        message: `La longitud del texto debe ser menor a ${PERSONAL_MEDICAL_DETAILS_MAX_LENGTH} caracteres`,
+      .max(familyOtherDetailsMaxLength, {
+        message: `La longitud del texto debe ser menor a ${familyOtherDetailsMaxLength} caracteres`,
       })
-      .optional()
+      .nullish(),
+    personalMedicalDetails: z
+      .string()
+      .trim()
+      .max(personalMedicalDetailsMaxLength, {
+        message: `La longitud del texto debe ser menor a ${personalMedicalDetailsMaxLength} caracteres`,
+      })
+      .nullish()
       .transform((data) => (data === "" ? null : data)),
   })
   .refine(
     (data) => {
-      return data.familyOther && !data.familyOtherDetail ? false : true;
+      return data.familyOther && !data.familyOtherDetails ? false : true;
     },
-    { message: "Campo requerido", path: ["familyOtherDetail"] }
-  );
+    { message: "Campo requerido", path: ["familyOtherDetails"] }
+  )
+  .transform((data) => {
+    if (!data.familyOther) {
+      data.familyOtherDetails = null;
+    } else {
+      data.familyOtherDetails = data.familyOtherDetails || null;
+    }
+    return data;
+  });
 
 export type SignupMedicalFormType = z.infer<typeof schema>;

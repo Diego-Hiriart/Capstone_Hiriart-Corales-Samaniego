@@ -10,6 +10,7 @@ import {
 } from "../data/registrationLink";
 import { generateRegistrationToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
+import { RegistrationLink } from "@prisma/client";
 
 export async function getRegistrationLinkByToken(req: Request, res: Response) {
   try {
@@ -109,7 +110,12 @@ export async function postGenerateLink(req: Request, res: Response) {
 export async function checkTokenValid(req: Request, res: Response) {
   try {
     const token = req.query.t?.toString() ?? "";
-    jwt.verify(token, jwtSecret);
+    const tokenData = jwt.verify(token, jwtSecret) as RegistrationLink;
+    const link = await findRegistrationLinkByEmail(tokenData.email);
+    console.log(link);
+    if (!link) {
+      throw new Error("Token invalid");
+    }
     return res.sendStatus(200);
   } catch (error) {
     errorLog(error);

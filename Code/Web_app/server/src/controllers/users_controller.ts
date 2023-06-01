@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 import {
   createUser,
@@ -12,7 +13,9 @@ import {
   updateUserById,
 } from "../data/user";
 import { errorLog } from "../utils/logs";
-import { Prisma } from "@prisma/client";
+import { Prisma, RegistrationLink } from "@prisma/client";
+import { deleteRegistrationLinkById } from "../data/registrationLink";
+import { jwtSecret } from "../utils/jwt";
 
 /** GET own user */
 export async function getOwnUser(req: Request, res: Response) {
@@ -77,10 +80,17 @@ export async function deleteUserById(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await updateUserById(Number(req.body.userID), req.body.data),
+      data: await updateUserById(Number(req.params.id), req.body.data),
     });
   } catch (error) {
     errorLog(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return res.status(409).json({
+          error: "El correo ingresado ya está en uso.",
+        });
+      }
+    }
     return res.sendStatus(500);
   }
 }
@@ -109,6 +119,10 @@ export async function postUserAdmin(req: Request, res: Response) {
 
 export async function postUserFencer(req: Request, res: Response) {
   try {
+    const token = req.body.token;
+    const tokenData = jwt.verify(token, jwtSecret) as RegistrationLink;
+    await deleteRegistrationLinkById(tokenData.registrationLinkID);
+
     return res.status(200).json({
       data: await createUserFencer(req.body.data),
     });

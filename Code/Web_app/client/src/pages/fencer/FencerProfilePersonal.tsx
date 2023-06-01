@@ -22,9 +22,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-import useMultiStepForm from "../../hooks/useMultiStepForm";
 import {
   SignupPersonalFormType,
   schema,
@@ -32,40 +30,46 @@ import {
   inscriptionReasons,
   bloodTypes,
 } from "./validations/SignupPersonalFormValidation";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
+import axios from "../../services/axios";
+import dayjs from "dayjs";
 
-const SignupPersonalForm = () => {
+const FencerProfilePersonal = () => {
   const navigate = useNavigate();
-  const { multiFormState, setMultiFormState } = useMultiStepForm();
-  const { showError } = useAlert();
+  const { showError, showSuccess } = useAlert();
+  const { user } = useContext(AuthContext);
   const {
     control,
-    getValues,
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isDirty },
     watch,
   } = useForm<SignupPersonalFormType>({
     defaultValues: {
-      ...multiFormState,
-      birthDate:
-        multiFormState.birthDate instanceof Date
-          ? dayjs(multiFormState.birthDate)
-          : multiFormState.birthDate
-          ? multiFormState.birthDate
-          : null,
+      ...user?.fencer,
+      bloodType: user?.fencer?.bloodType as SignupPersonalFormType["bloodType"],
+      sex: user?.fencer?.sex as SignupPersonalFormType["sex"],
+      birthDate: dayjs(user?.fencer?.birthDate),
+      leadSource: user?.fencer
+        ?.leadSource as SignupPersonalFormType["leadSource"],
+      inscriptionReason: user?.fencer
+        ?.inscriptionReason as SignupPersonalFormType["inscriptionReason"],
+      hasInsurance: user?.fencer?.insurance ? true : false,
     },
     resolver: zodResolver(schema),
   });
 
   const handleBack = () => {
-    setMultiFormState({ ...multiFormState, ...getValues() });
-    navigate("/signup");
+    navigate("/profile");
   };
 
-  const onSubmit: SubmitHandler<SignupPersonalFormType> = (formData) => {
+  const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
-      setMultiFormState({ ...multiFormState, ...formData });
-      navigate("/signup/fencer");
+      await axios.put(`/dashboard/fencer/${user?.fencer?.fencerID}`, {
+        data: formData,
+      });
+      showSuccess("Información personal actualizada con éxito");
     } catch (error) {
       showError("Ha ocurrido un error al crear el entrenador");
     }
@@ -226,7 +230,7 @@ const SignupPersonalForm = () => {
             required
             fullWidth
             margin="normal"
-            id="guardianPhone"
+            id="legalGuardianPhone"
             label="Telefono del Representante"
             {...register("legalGuardianPhone")}
             error={!!errors.legalGuardianPhone}
@@ -277,10 +281,7 @@ const SignupPersonalForm = () => {
                   label="Como te enteraste de la academia?"
                 >
                   {inscriptionReasons.map((inscriptionReason) => (
-                    <MenuItem
-                      key={inscriptionReason}
-                      value={inscriptionReason}
-                    >
+                    <MenuItem key={inscriptionReason} value={inscriptionReason}>
                       {inscriptionReason}
                     </MenuItem>
                   ))}
@@ -318,10 +319,15 @@ const SignupPersonalForm = () => {
           />
           <Stack direction="row" spacing={2}>
             <Button fullWidth variant="outlined" onClick={handleBack}>
-              Atrás
+              Cancelar
             </Button>
-            <Button type="submit" fullWidth variant="contained">
-              Continuar
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={!isDirty}
+            >
+              Guardar Cambios
             </Button>
           </Stack>
         </Box>
@@ -330,4 +336,4 @@ const SignupPersonalForm = () => {
   );
 };
 
-export default SignupPersonalForm;
+export default FencerProfilePersonal;

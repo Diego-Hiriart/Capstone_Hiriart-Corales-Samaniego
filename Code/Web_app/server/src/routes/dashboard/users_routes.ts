@@ -20,7 +20,7 @@ router.get("/user/:id", verifyRole(["admin", "trainer"]), getUserById);
 router.get("/user/:email", verifyRole(["admin", "trainer"]), getUserByEmail); // TODO: this route gets shadowed by the one above
 router.get("/user/", verifyRole(["admin", "trainer"]), getAllUsers);
 
-router.put("/user/:id", verifyRole(["admin", "trainer"]), updateUser);
+router.put("/user/:id", verifyRole(["admin", "trainer", "fencer"]), updateUser);
 router.post("/user/admin", postUserAdmin);
 router.post("/user/trainer", verifyRole(["admin", "trainer"]), postUserTrainer);
 router.post("/user/", verifyRole(["admin", "trainer"]), postUser);

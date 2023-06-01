@@ -1,52 +1,64 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import {
-  Link as RouterLink,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAlert } from "../../hooks/useAlert";
 import { AxiosError } from "axios";
-import useMultiStepForm from "../../hooks/useMultiStepForm";
-import { SignupFormType, schema } from "./validations/SignupFormValidation";
+import { SignupFormType } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../../services/axios";
-import { useEffect } from "react";
+import { useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
+import { Stack } from "@mui/material";
+import { z } from "zod";
 
-export default function SignupForm() {
-  const { multiFormState, setMultiFormState, setRegistrationToken } =
-    useMultiStepForm();
-  const { showError } = useAlert();
+const schema = z.object({
+  names: z.string().nonempty({ message: "Campo requerido" }),
+  lastNames: z.string().nonempty({ message: "Campo requerido" }),
+  email: z.string().email({ message: "Email inválido" }),
+});
+
+export default function FencerProfileUser() {
+  const { showError, showSuccess } = useAlert();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { user } = useContext(AuthContext);
+
+  const handleBack = () => {
+    navigate("/profile");
+  };
 
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<SignupFormType>({
-    defaultValues: multiFormState,
+    defaultValues: { ...user },
     resolver: zodResolver(schema),
   });
 
-  // TODO: move this logic to SignupContextRoute
-  useEffect(() => {
-    if (!searchParams.has("t")) return;
-    setRegistrationToken(searchParams.get("t"));
-  }, []);
+  interface IObjectKeys {
+    [key: string]: string | undefined | null;
+  }
 
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
-      await axios.post("auth/verifyEmail", { email: formData.email });
-      setMultiFormState({ ...multiFormState, ...formData });
-      navigate("/signup/personal");
+      const updatedData = Object.keys(dirtyFields).reduce<IObjectKeys>(
+        (acc, key) => {
+          acc[key] = formData[key as keyof SignupFormType];
+          return acc;
+        },
+        {}
+      );
+
+      // if no fields were changed, don't send the request
+      if (Object.keys(updatedData).length === 0) return;
+
+      await axios.put(`/dashboard/user/${user?.userID}`, { data: updatedData });
+      showSuccess("Perfil actualizado correctamente");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
@@ -110,43 +122,19 @@ export default function SignupForm() {
             error={!!errors.email}
             helperText={errors.email?.message}
           />
-          <TextField
-            required
-            fullWidth
-            margin="normal"
-            label="Contraseña"
-            type="password"
-            id="password"
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-          />
-          <TextField
-            required
-            fullWidth
-            margin="normal"
-            label="Confirmar Contraseña"
-            type="password"
-            id="confirm-password"
-            {...register("confirmPassword")}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword?.message}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Siguiente
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link component={RouterLink} to="/login" href="#" variant="body2">
-                Ya tienes cuenta? Log in
-              </Link>
-            </Grid>
-          </Grid>
+          <Stack direction="row" spacing={2}>
+            <Button fullWidth variant="outlined" onClick={handleBack}>
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={!!dirtyFields && Object.keys(dirtyFields).length === 0}
+            >
+              Guardar Cambios
+            </Button>
+          </Stack>
         </Box>
       </Box>
     </Container>

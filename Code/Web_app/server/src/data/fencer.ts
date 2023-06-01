@@ -102,6 +102,7 @@ export async function createFencer(data: Fencer) {
         birthDate: data.birthDate,
         bloodType: data.bloodType,
         sex: data.sex,
+        school: data.school,
         laterality: data.laterality,
         phone: data.phone,
         insurance: data.insurance,
@@ -110,6 +111,7 @@ export async function createFencer(data: Fencer) {
         occupation: data.occupation,
         schedule: data.schedule,
         legalGuardian: data.legalGuardian,
+        legalGuardianPhone: data.legalGuardianPhone,
         leadSource: data.leadSource,
         inscriptionReason: data.inscriptionReason,
         height: data.height,
@@ -130,39 +132,11 @@ export async function createFencer(data: Fencer) {
 
 export async function updateFencerById(id: number, data: Fencer) {
   try {
-    console.log(data);
-
     const fencer = await prisma.fencer.update({
       where: {
         fencerID: id,
       },
-      data: {
-        userID: data.userID || undefined,
-        trainingGroupID: data.trainingGroupID || undefined,
-        idNumber: data.idNumber || undefined,
-        emergencyPhone: data.emergencyPhone || undefined,
-        birthDate: data.birthDate || undefined,
-        bloodType: data.bloodType || undefined,
-        sex: data.sex || undefined,
-        laterality: data.laterality || undefined,
-        phone: data.phone || undefined,
-        insurance: data.insurance || undefined,
-        inscriptionDate: data.inscriptionDate || undefined,
-        startDate: data.startDate || undefined,
-        occupation: data.occupation || undefined,
-        schedule: data.schedule || undefined,
-        legalGuardian: data.legalGuardian || undefined,
-        leadSource: data.leadSource || undefined,
-        inscriptionReason: data.inscriptionReason || undefined,
-        height: data.height || undefined,
-        weight: data.weight || undefined,
-        physicalActivity: data.physicalActivity || undefined,
-        medicalFamily: data.medicalFamily || undefined,
-        medicalPersonal: data.medicalPersonal || undefined,
-        personalMedicalDetails: data.personalMedicalDetails || undefined,
-        weapon: data.weapon || undefined,
-        pictureURL: data.pictureURL || undefined,
-      },
+      data,
     });
     return fencer;
   } catch (error) {
