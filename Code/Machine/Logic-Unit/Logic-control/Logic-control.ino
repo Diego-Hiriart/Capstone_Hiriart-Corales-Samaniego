@@ -6,8 +6,8 @@
 //For data persistance
 #include <EEPROM.h>
 //Touches input pins
-const uint8_t leftTouchPin = 27;
-const uint8_t rightTouchPin = 15;
+const uint8_t leftTouchPin = 25;
+const uint8_t rightTouchPin = 26;
 const uint8_t invalidLeftPin = 22;  //Invalid target or antiblocking (self-touch) pins
 const uint8_t invalidRightPin = 21;
 //Buttons pins
