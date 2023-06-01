@@ -69,7 +69,7 @@ export const schema = z
       }),
     school: z.string().trim().nonempty({ message: "Campo requerido" }).trim(),
     legalGuardian: z.string().trim().nonempty({ message: "Campo requerido" }),
-    guardianPhone: z
+    legalGuardianPhone: z
       .string()
       .trim()
       .regex(/^\d+$/, { message: "Teléfono inválido" })
@@ -86,7 +86,7 @@ export const schema = z
       .refine((input) => input !== "", {
         message: "Campo requerido",
       }),
-    hasInsurance: z.boolean(),
+    hasInsurance: z.boolean().optional(),
     insurance: z
       .string()
       .trim()
@@ -102,7 +102,12 @@ export const schema = z
     { message: "Campo requerido", path: ["insurance"] }
   )
   .transform((data) => {
-    data.insurance = data.insurance || null;
+    if (!data.hasInsurance) {
+      data.insurance = null;
+    } else {
+      data.insurance = data.insurance || null;
+    }
+    delete data.hasInsurance;
     return data;
   })
 

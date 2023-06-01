@@ -29,6 +29,8 @@ import Home from "./pages/Home";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
 import dayjs from "dayjs";
+import FencerProfile from "./pages/fencer/FencerProfile";
+import FencerProfilePersonal from "./pages/fencer/FencerProfilePersonal";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -47,7 +49,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route element={<SignupContextRoute/>}>
+        <Route element={<SignupContextRoute />}>
           <Route path="/signup">
             <Route index element={<SignupForm />} />
             {/* TODO: make this routes innaccesible from the url */}
@@ -75,8 +77,16 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
           <Route path="fencer" element={<FencerHome />} />
+          <Route path="profile">
+            <Route index element={<FencerProfile />}></Route>
+            <Route path="personal" element={<FencerProfilePersonal />} />
+          </Route>
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["fencer", "trainer", "admin"]} />}>
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={["fencer", "trainer", "admin"]} />
+          }
+        >
           <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />

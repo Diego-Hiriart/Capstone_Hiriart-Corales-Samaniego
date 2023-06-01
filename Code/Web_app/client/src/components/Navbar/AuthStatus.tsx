@@ -44,7 +44,7 @@ const AuthStatus = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          <MenuItem component={RouterLink} to="perfil">
+          <MenuItem component={RouterLink} to="profile">
             Perfil
           </MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
