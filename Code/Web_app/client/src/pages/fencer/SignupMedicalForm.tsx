@@ -21,7 +21,8 @@ import axios from "../../services/axios";
 const SignupMedicalForm = () => {
   const navigate = useNavigate();
   const { showError, showSuccess } = useAlert();
-  const { multiFormState, setMultiFormState } = useMultiStepForm();
+  const { multiFormState, setMultiFormState, registrationToken } =
+    useMultiStepForm();
   const {
     control,
     getValues,
@@ -75,7 +76,7 @@ const SignupMedicalForm = () => {
       Object.keys(medicalFamily).forEach((key) => {
         delete data[key as keyof SignupMedicalFormType];
       });
-      await axios.post("auth/user/fencer", { data });
+      await axios.post("auth/user/fencer", { data, token: registrationToken });
       showSuccess("Esgrimista creado exitosamente");
       navigate("/login");
     } catch (error) {

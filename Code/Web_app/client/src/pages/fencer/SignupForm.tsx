@@ -3,7 +3,11 @@ import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import {
+  Link as RouterLink,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,11 +17,14 @@ import useMultiStepForm from "../../hooks/useMultiStepForm";
 import { SignupFormType, schema } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../../services/axios";
+import { useEffect } from "react";
 
 export default function SignupForm() {
-  const { multiFormState, setMultiFormState } = useMultiStepForm();
+  const { multiFormState, setMultiFormState, setRegistrationToken } =
+    useMultiStepForm();
   const { showError } = useAlert();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const {
     register,
@@ -28,6 +35,12 @@ export default function SignupForm() {
     defaultValues: multiFormState,
     resolver: zodResolver(schema),
   });
+
+  // TODO: move this logic to SignupContextRoute
+  useEffect(() => {
+    if (!searchParams.has("t")) return;
+    setRegistrationToken(searchParams.get("t"));
+  }, []);
 
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
