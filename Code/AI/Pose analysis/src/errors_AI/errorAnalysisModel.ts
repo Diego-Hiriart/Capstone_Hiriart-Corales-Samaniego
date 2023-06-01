@@ -1,119 +1,53 @@
 import * as tf from '@tensorflow/tfjs';
-import { existsSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 
 import { errorLog, debugLog } from '../utils/logs';
 
-interface poseKeypoint {
-  name: string;
-  score: number;
-  x: number;
-  y: number;
-  z: number;
-}
-
-type poseKeypointsArray = poseKeypoint[];
-
 export function checkModelDataExists() {
-  const modelPath =
-    'D:/UDLA/Capstone Project/Repo/Code/AI/Pose analysis/src/errors_AI/errors_AI_model_data.jso';
-  if (existsSync(modelPath)) {
+  const modelPath = '../errors_AI_model_data/model.json';
+  const weightsPath = '../errors_AI_model_data/weights.json';
+  if (existsSync(modelPath) && existsSync(weightsPath)) {
+    debugLog('Found previous model, loading');
     return true;
   } else {
-    errorLog('AI model files are missing, contact support');
+    debugLog('No previous AI models found for transfer learning');
     return false;
   }
 }
 
 export async function loadModel() {
-  //Load model's topology and weights
-  const errorsModel = await tf.loadLayersModel(
-    'file://./errors_AI_model_data.json'
+  let errorsModel;
+  const modelJSON = JSON.parse(
+    readFileSync('../errors_AI_model_data/model.json').toString()
   );
+  errorsModel = await tf.models.modelFromJSON(modelJSON);
+  const weightsArray = JSON.parse(
+    readFileSync('../errors_AI_model_data/weights.json').toString()
+  );
+  let weightsTensor: tf.Tensor<tf.Rank>[] = [];
+  weightsArray.forEach((weight: Array<number>) => {
+    weightsTensor.push(tf.tensor(weight));
+  });
+  errorsModel.setWeights(weightsTensor);
   return errorsModel;
 }
 
+/* Runs prediction
+ */
 export async function runModel(
-  errosModel: tf.LayersModel,
-  poseData: poseKeypointsArray[]
+  errorsModel: tf.LayersModel,
+  poseData: Array<any>
 ) {
   //Run
-}
-
-export async function createAndTrainModel() {
-  let errorsModel;
-  const rnnBatchSize = 2;
-  const trainingEpochs = 50;
-  if (checkModelDataExists()) {
-    errorsModel = await tf.loadLayersModel(
-      'file://./errors_AI_model_data.json'
-    );
-  } else {
-    errorsModel = tf.sequential();
-    errorsModel.name = 'posesRNN';
-    const inputLayerNeurons = 10;
-    const inputKeypoints = 33;
-    const keypointFeatures = 3;
-    const inputLayerShape = [
-      keypointFeatures,
-      inputLayerNeurons,
-      inputKeypoints,
-    ];
-    const rnnInputLayerTimesteps = Math.floor(
-      inputLayerNeurons / keypointFeatures
-    );
-    const rnnInputShape = [keypointFeatures, rnnInputLayerTimesteps];
-    const rnnOuputNeurons = 20;
-    const nHiddenLayers = 1;
-    const learningRate = 0.1;
-    const outputNeurons = 48;
-    //Input layer
-    errorsModel.add(
-      tf.layers.dense({
-        units: inputLayerNeurons,
-        inputShape: inputLayerShape,
-        activation: 'relu',
-      })
-    );
-    //Hidden layer
-    errorsModel.add(tf.layers.reshape({ targetShape: rnnInputShape }));
-    let lstm_cells = [];
-    for (let index = 0; index < nHiddenLayers; index++) {
-      lstm_cells.push(tf.layers.lstmCell({ units: rnnOuputNeurons }));
-    }
-    errorsModel.add(
-      tf.layers.rnn({
-        cell: lstm_cells,
-        inputShape: rnnInputShape,
-        returnSequences: false,
-      })
-    );
-    //Output layer
-    errorsModel.add(
-      tf.layers.dense({
-        units: outputNeurons,
-        inputShape: [rnnOuputNeurons],
-        activation: 'relu',
-      })
-    );
-    //Compile model
-    errorsModel.compile({
-      optimizer: tf.train.adam(learningRate),
-      loss: 'meanSquaredError',
+  let processedData: Array<any> = [];
+  poseData.forEach((pose: Array<any>) => {
+    processedData.push([]);
+    pose.forEach((keypoint: any) => {
+      let keypointXYZ = [keypoint['x'], keypoint['y'], keypoint['z']];
+      processedData[processedData.length - 1].push(keypointXYZ);
     });
-  }
-  debugLog('Training goes here');
-  //Training of model with data from JSONs
-  /*
-  const trainingHist = await errorsModel.fit(xs, ys, {
-    batchSize: rnnBatchSize,
-    epochs: trainingEpochs,
-    callbacks: {
-      onEpochEnd: async (epoch, log) => {
-        debugLog(`Epoch ${epoch} (of ${trainingEpochs}): ${log}`);
-      },
-    },
   });
-  return { stats: trainingHist };
-  */
-  return;
+  let tensorX = tf.tensor([processedData]);
+  let results = errorsModel.predict(tensorX).toString();
+  return JSON.parse(results.slice(13, results.length - 2));
 }

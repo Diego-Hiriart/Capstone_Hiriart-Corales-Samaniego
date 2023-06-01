@@ -13,15 +13,18 @@ import { STATE } from './params.js';
 
 let detector, camera;
 let rafId;
-let posesPacketSize,
+let posesPacketSize = 0,
   videoDuration,
-  videoDone = false;
-let lastVideoTime = 0;
+  videoDone;
+let lastVideoTime;
 //To save poses JSONs in packets
-let posesJSON = [[]];
-let currentPosesIndex = 0;
+let posesJSON;
+let currentPosesIndex;
 let statusP;
 let videoName;
+let count;
+//Delay between frames to see progress
+const interFrameDelay = 100;
 
 const createDetector = async () => {
   const runtime = 'mediapipe';
@@ -63,15 +66,25 @@ const renderResult = async () => {
   if (poses != undefined && poses.length > 0 && !STATE.isModelChanged) {
     camera.drawResults(poses);
   }
+  //Print progress
+  console.log(`Detection number ${count}: `, poses);
+  count++;
+  //Add a delay so you can see progress and os that model can successfully extract poses from frames (yes, it matters)
+  await new Promise((r) => setTimeout(r, interFrameDelay));
   //Save results in JSON to be downloaded
   savePoseData(poses);
 };
 
 const downloadPosesJSON = () => {
   if (posesJSON !== null && posesJSON !== undefined) {
-    statusP.innerHTML = 'Extraction done, downloading';
     if (posesJSON[posesJSON.length - 1].length < posesPacketSize) {
       posesJSON.pop();
+    }
+    if (posesJSON.length == 0) {
+      statusP.innerHTML =
+        'Could not extract anything, try a diferent number of poses packet size or check your file';
+    } else {
+      statusP.innerHTML = 'Extraction complete, dowmloading';
     }
     alert('downloading poses JSON');
     const a = document.createElement('a');
@@ -86,13 +99,14 @@ const downloadPosesJSON = () => {
     )}_poses-JSON.json`;
     a.download = fileName;
     a.click();
+    a.remove();
   }
 };
 
 const runPrediction = async () => {
   //Advance current time of video to analyze the right frames and get the specified poses per second
   if (lastVideoTime <= videoDuration) {
-    lastVideoTime += 1 / posesPacketSize;
+    lastVideoTime += videoDuration / posesPacketSize;
     video.currentTime = lastVideoTime;
   } else {
     videoDone = true;
@@ -157,15 +171,29 @@ const startDetection = async () => {
 };
 
 export const poseDetectionAI = async (extractionData) => {
+  //Initialize
+  count = 1;
+  videoDone = false;
+  lastVideoTime = 0;
+  posesJSON = [[]]; //To save poses JSONs in packets
+  currentPosesIndex = 0;
+  statusP;
+  videoName;
+  //Start process
   statusP = document.getElementById('extraction-status');
   statusP.innerHTML = 'Extraction in progress';
   videoName = extractionData.videoFile.name;
   //Update poses packet size
-  posesPacketSize = extractionData.posesPacketSize;
+  posesPacketSize = Number(extractionData.posesPacketSize);
+  //Ensure video can be divided in the packet size +1 (to ensure initial empty detection doesnt cause failure obtaining packet size)
+  if ((videoDuration / posesPacketSize) * posesPacketSize > videoDuration) {
+    posesPacketSize += 1;
+  }
   //Load and start video
   camera = new Context();
   detector = await createDetector();
   //Load video in page
   await updateVideo(extractionData.videoFile);
+  //Start detecting
   await startDetection();
 };

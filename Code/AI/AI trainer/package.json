@@ -1,7 +1,7 @@
 {
-  "name": "pose-analysis-backend",
+  "name": "ai-trainer",
   "version": "1.0.0",
-  "description": "Backend AI for pose analysis",
+  "description": "Module to train AI and generate weights and topology JSON",
   "main": "index.js",
   "repository": "https://github.com/Diego-Hiriart/Capstone_Hiriart-Corales-Samaniego",
   "author": "Hiriart Corales Samaniego",
@@ -10,6 +10,7 @@
     "@tensorflow/tfjs": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
     "seedrandom": "^3.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"

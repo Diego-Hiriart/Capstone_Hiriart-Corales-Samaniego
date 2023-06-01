@@ -57,7 +57,7 @@ function App() {
           <form onSubmit={(e) => extractJSON(e)}>
             <div className='formField'>
               <label>
-                Poses packet size/poses per second (amount of keypoints to be
+                Poses packet size (amount of keypoints to be
                 packed together and added to the JSON)
               </label>
               <input
