@@ -107,9 +107,9 @@ const fencers = [
 const trainers = [
   {
     userID: 2,
-    experience: "123",
-    weapon: "123",
-    pictureURL: "123",
+    experience: "5 años",
+    weapon: "Espada",
+    pictureURL: null,
   },
 ];
 

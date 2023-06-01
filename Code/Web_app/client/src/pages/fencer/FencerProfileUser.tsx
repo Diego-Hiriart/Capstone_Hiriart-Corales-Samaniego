@@ -7,12 +7,19 @@ import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAlert } from "../../hooks/useAlert";
 import { AxiosError } from "axios";
-import { SignupFormType, schema } from "./validations/SignupFormValidation";
+import { SignupFormType } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../../services/axios";
 import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import { Stack } from "@mui/material";
+import { z } from "zod";
+
+const schema = z.object({
+  names: z.string().nonempty({ message: "Campo requerido" }),
+  lastNames: z.string().nonempty({ message: "Campo requerido" }),
+  email: z.string().email({ message: "Email inválido" }),
+});
 
 export default function FencerProfileUser() {
   const { showError, showSuccess } = useAlert();
@@ -27,16 +34,31 @@ export default function FencerProfileUser() {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isDirty },
+    formState: { errors, dirtyFields },
   } = useForm<SignupFormType>({
-    defaultValues: {...user},
+    defaultValues: { ...user },
     resolver: zodResolver(schema),
   });
 
+  interface IObjectKeys {
+    [key: string]: string | undefined | null;
+  }
+
   const onSubmit: SubmitHandler<SignupFormType> = async (formData) => {
     try {
-      await axios.put("/dashboard/user", {data: formData})
-      showSuccess("Perfil actualizado correctamente")
+      const updatedData = Object.keys(dirtyFields).reduce<IObjectKeys>(
+        (acc, key) => {
+          acc[key] = formData[key as keyof SignupFormType];
+          return acc;
+        },
+        {}
+      );
+
+      // if no fields were changed, don't send the request
+      if (Object.keys(updatedData).length === 0) return;
+
+      await axios.put(`/dashboard/user/${user?.userID}`, { data: updatedData });
+      showSuccess("Perfil actualizado correctamente");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
@@ -108,7 +130,7 @@ export default function FencerProfileUser() {
               type="submit"
               fullWidth
               variant="contained"
-              disabled={!isDirty}
+              disabled={!!dirtyFields && Object.keys(dirtyFields).length === 0}
             >
               Guardar Cambios
             </Button>

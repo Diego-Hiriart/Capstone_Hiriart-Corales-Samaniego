@@ -77,10 +77,17 @@ export async function deleteUserById(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await updateUserById(Number(req.body.userID), req.body.data),
+      data: await updateUserById(Number(req.params.id), req.body.data),
     });
   } catch (error) {
     errorLog(error);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return res.status(409).json({
+          error: "El correo ingresado ya está en uso.",
+        });
+      }
+    }
     return res.sendStatus(500);
   }
 }
