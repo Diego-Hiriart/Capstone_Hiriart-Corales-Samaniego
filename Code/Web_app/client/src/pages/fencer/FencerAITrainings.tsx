@@ -9,16 +9,22 @@ import {
   ListItemText,
   Dialog,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "../../services/axios";
-import { AITraining }  from "../../types";
-import { Link as RouterLink } from "react-router-dom";
+import { AITraining } from "../../types";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import NewTrainingDialog from "./NewTrainingDialog";
 import dayjs from "dayjs";
+import AuthContext from "../../contexts/AuthContext";
 
 const FencerAITrainings = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useContext(AuthContext);
   // const [trainings, setTrainings] = useState<AITraining[]>([]);
+  const { id } = useParams();
+
+  const fencerID = user?.roles.includes("fencer") ? user?.fencer?.fencerID : id;
+  const aitrainingPath = `/fencer/${fencerID}/aitrainings/`;
 
   const handleOpen = () => {
     setOpen(true);
@@ -59,9 +65,11 @@ const FencerAITrainings = () => {
           <Typography variant="h1" alignSelf="start">
             Entrenamientos IA
           </Typography>
-          <Button variant="contained" onClick={handleOpen}>
-            Crear nuevo
-          </Button>
+          {user?.roles?.includes("fencer") && (
+            <Button variant="contained" onClick={handleOpen}>
+              Crear nuevo
+            </Button>
+          )}
         </Box>
         <List sx={{ mt: 1 }}>
           {trainings?.map((training) => (
@@ -69,7 +77,7 @@ const FencerAITrainings = () => {
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={`/trainings/${String(training.AITraining)}`}
+                to={aitrainingPath + training.AITraining}
               >
                 <ListItemText
                   primary={String(dayjs(training.date).format("DD MMMM YYYY"))}
@@ -80,7 +88,7 @@ const FencerAITrainings = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
-      <NewTrainingDialog open={open} handleClose={handleClose}/>
+      <NewTrainingDialog open={open} handleClose={handleClose} />
     </Container>
   );
 };

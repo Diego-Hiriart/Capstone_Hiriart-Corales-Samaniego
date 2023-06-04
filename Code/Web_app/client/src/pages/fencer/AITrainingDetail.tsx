@@ -16,13 +16,13 @@ import AIErrorDialog from "./AIErrorDialog";
 
 const AITrainingDetail = () => {
   // const [training, setTraining] = useState<AITraining | null>(null);
-  const { id } = useParams();
+  const { trainingID } = useParams();
   const [open, setOpen] = useState(false);
   const [selectedErrorID, setSelectedErrorID] = useState<number | null>(null);
 
   useEffect(() => {
     // const fetchTraining = async () => {
-    //   const { data } = await axios.get(`/dashboard/aitraining/${id}`);
+    //   const { data } = await axios.get(`/dashboard/aitraining/${trainingID}`);
     //   setTraining(data.data);
     // }
     // fetchTraining();

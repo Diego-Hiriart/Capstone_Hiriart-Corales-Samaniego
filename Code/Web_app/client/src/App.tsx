@@ -111,8 +111,8 @@ export const App = () => {
           }
         >
           <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
-          <Route path="trainings" element={<FencerAITrainings/>}></Route>
-          <Route path="trainings/:id" element={<AITrainingDetail />}></Route>
+          <Route path="fencer/:id/aitrainings" element={<FencerAITrainings/>}></Route>
+          <Route path="fencer/:fencerID/aitrainings/:trainingID" element={<AITrainingDetail />}></Route>
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />
