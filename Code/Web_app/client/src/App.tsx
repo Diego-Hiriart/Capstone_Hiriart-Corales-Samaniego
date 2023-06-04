@@ -39,6 +39,8 @@ import FencerProfileUser from "./pages/fencer/FencerProfileUser";
 import FencerGroupList from "./pages/fencer/groups/FencerGroupList";
 import FencerGroupMesoCycle from "./pages/fencer/groups/FencerGroupMesoCycle";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
+import FencerAITrainings from "./pages/fencer/FencerAITrainings";
+import AITrainingDetail from "./pages/fencer/AITrainingDetail";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -109,6 +111,8 @@ export const App = () => {
           }
         >
           <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
+          <Route path="trainings" element={<FencerAITrainings/>}></Route>
+          <Route path="trainings/:id" element={<AITrainingDetail />}></Route>
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />

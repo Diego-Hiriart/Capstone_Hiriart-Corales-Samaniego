@@ -325,6 +325,7 @@ export type AITraining = {
   duration: Date;
   feedback: string;
   trainerID: number;
+  exercise: string;
 };
 
 /**
