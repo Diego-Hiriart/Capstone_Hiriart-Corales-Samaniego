@@ -1,4 +1,3 @@
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
   Avatar,
   Box,
@@ -15,7 +14,6 @@ import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import axios from "../../services/axios";
 import { MesoCycle, TrainingGroupFull } from "../../types";
-import GroupAddFencer from "./GroupAddFencer";
 import { formatDate } from "../../utils/formatDate";
 import GroupAddMesocycle from "./GroupAddMesocycle";
 import AuthContext from "../../contexts/AuthContext";
@@ -79,7 +77,6 @@ const GroupMesoCycle = () => {
                   ${formatDate(cycle.endDate)}`}
                 />
               </ListItemButton>
-              <ArrowForwardIosIcon />
             </ListItem>
           ))}
         </List>
