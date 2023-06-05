@@ -11,24 +11,26 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import axios from "../../services/axios";
 import { MesoCycle, TrainingGroupFull } from "../../types";
 import GroupAddFencer from "./GroupAddFencer";
 import { formatDate } from "../../utils/formatDate";
+import GroupAddMesocycle from "./GroupAddMesocycle";
+import AuthContext from "../../contexts/AuthContext";
 
 const GroupMesoCycle = () => {
   const { id } = useParams();
   const [group, setGroup] = useState<TrainingGroupFull>(null!);
   const [open, setOpen] = useState(false);
   const [selectedCycle, setSelectedCycle] = useState<MesoCycle>(null!);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchGroup = async () => {
       const { data } = await axios.get("/dashboard/training_group/" + id);
 
-      console.log(data);
       setGroup(data.data);
     };
 
@@ -83,7 +85,12 @@ const GroupMesoCycle = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
-      {/* <GroupAddFencer group={group} handleClose={handleClose} open={open} /> */}
+      <GroupAddMesocycle
+        group={group}
+        handleClose={handleClose}
+        open={open}
+        trainerID={user?.trainer?.trainerID ?? 1}
+      />
     </Container>
   );
 };
