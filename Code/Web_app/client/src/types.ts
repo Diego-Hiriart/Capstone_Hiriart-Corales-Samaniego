@@ -319,13 +319,14 @@ export type Attendance = {
  *
  */
 export type AITraining = {
-  AITraining: number;
+  AITrainingID: number;
   fencerID: number;
   date: Date;
   duration: Date;
   feedback: string;
   trainerID: number;
   exercise: string;
+  trainingError: TrainingError[];
 };
 
 /**
@@ -347,6 +348,7 @@ export type TrainingError = {
   trainingErrorID: number;
   AITrainingID: number;
   errorID: number;
+  error: Error;
   poseData: string;
 };
 

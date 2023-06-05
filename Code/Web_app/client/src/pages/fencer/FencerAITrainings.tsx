@@ -20,7 +20,7 @@ import AuthContext from "../../contexts/AuthContext";
 const FencerAITrainings = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
-  // const [trainings, setTrainings] = useState<AITraining[]>([]);
+  const [trainings, setTrainings] = useState<AITraining[]>([]);
   const { id } = useParams();
 
   const fencerID = user?.roles.includes("fencer") ? user?.fencer?.fencerID : id;
@@ -35,21 +35,12 @@ const FencerAITrainings = () => {
   };
 
   useEffect(() => {
-    // const fetchTrainings = async () => {
-    //   const { data } = await axios.get("/dashboard/aitraining");
-    //   setTrainings(data.data);
-    // };
-    // fetchTrainings();
+    const fetchTrainings = async () => {
+      const { data } = await axios.get("/dashboard/aitraining");
+      setTrainings(data.data);
+    };
+    fetchTrainings();
   }, []);
-
-  const trainings = [
-    {
-      AITraining: 1,
-      date: new Date(),
-      ejercicio: "Fleche",
-      duracion: 5,
-    },
-  ];
 
   return (
     <Container component="main" maxWidth="sm">
@@ -73,11 +64,11 @@ const FencerAITrainings = () => {
         </Box>
         <List sx={{ mt: 1 }}>
           {trainings?.map((training) => (
-            <ListItem key={training.AITraining} disablePadding divider>
+            <ListItem key={training.AITrainingID} disablePadding divider>
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={aitrainingPath + training.AITraining}
+                to={aitrainingPath + training.AITrainingID}
               >
                 <ListItemText
                   primary={String(dayjs(training.date).format("DD MMMM YYYY"))}
