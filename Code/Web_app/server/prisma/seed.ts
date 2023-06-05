@@ -148,6 +148,34 @@ const feedbacks = [
   },
 ];
 
+const aiTrainings = [
+  {
+    AITrainingID: 1,
+    fencerID: 1,
+    date: new Date(),
+    duration: 120,
+    feedback: "Feedback training ai",
+    trainerID: 1,
+  }
+];
+
+const errors = [
+  {
+    errorID: 1,
+    name: "Error 1",
+    description: "Error Description 1",
+  }
+]
+
+const trainingErrors = [
+  {
+    trainingErrorID: 1,
+    AITrainingID: 1,
+    errorID: 1,
+    poseData: "Pose data 1",
+  }
+]
+
 async function main() {
   await prisma.user.createMany({
     data: users,
@@ -163,6 +191,15 @@ async function main() {
   });
   await prisma.singleFeedback.createMany({
     data: feedbacks,
+  });
+  await prisma.aITraining.createMany({
+    data: aiTrainings,
+  });
+  await prisma.error.createMany({
+    data: errors,
+  });
+  await prisma.trainingError.createMany({
+    data: trainingErrors,
   });
 }
 
