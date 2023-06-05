@@ -167,6 +167,7 @@ model MicroCycle {
   mesoCycle                MesoCycle   @relation(fields: [mesoCycleID], references: [mesoCycleID])
   mesoCycleID              Int
   startDate                DateTime
+  endDate                  DateTime
   speed                    Int?        @db.SmallInt
   coordination             Int?        @db.SmallInt
   resistance               Int?        @db.SmallInt

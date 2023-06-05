@@ -1,3 +1,4 @@
+/* eslint-disable no-loops/no-loops */
 import { PrismaClient, MesoCycle } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -8,6 +9,9 @@ export async function findMesoCycleById(id: number) {
       where: {
         mesoCycleID: id,
       },
+      include: {
+        microCycle: true,
+      },
     });
     return mesoCycle;
   } catch (error) {
@@ -17,7 +21,11 @@ export async function findMesoCycleById(id: number) {
 
 export async function findAllMesoCycle() {
   try {
-    const mesoCycle = await prisma.mesoCycle.findMany();
+    const mesoCycle = await prisma.mesoCycle.findMany({
+      include: {
+        microCycle: true,
+      },
+    });
     return mesoCycle;
   } catch (error) {
     throw error;
@@ -40,11 +48,72 @@ export async function createMesoCycle(data: MesoCycle) {
         tacticalScore: data.tacticalScore,
       },
     });
+
+    const dates = getDates(mesoCycle.startDate, mesoCycle.endDate);
+
+    for (let i = 0; i < dates.length; i++) {
+      await prisma.microCycle.create({
+        data: {
+          startDate: dates[i].begin,
+          endDate: dates[i].end,
+          mesoCycle: {
+            connect: {
+              mesoCycleID: mesoCycle.mesoCycleID,
+            },
+          },
+        },
+      });
+    }
+
     return mesoCycle;
   } catch (error) {
     throw error;
   }
 }
+
+interface DateRange {
+  begin: Date;
+  end: Date;
+}
+
+const getDates = (startDate: Date, endDate: Date): DateRange[] => {
+  const addDays = (date: Date, days: number): Date => {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + days);
+    return newDate;
+  };
+
+  const adjustToMonday = (date: Date): Date => {
+    const adjustedDate = new Date(date);
+    if (adjustedDate.getDay() > 1) {
+      adjustedDate.setDate(adjustedDate.getDate() - adjustedDate.getDay());
+    }
+    return adjustedDate;
+  };
+
+  const generateDateRange = (start: Date, end: Date): DateRange[] => {
+    const dates: DateRange[] = [];
+    let newStart = start;
+    let monday = adjustToMonday(start);
+
+    while (newStart <= end) {
+      const endWeekDate = addDays(monday, 7);
+
+      if (endWeekDate > end) {
+        dates.push({ begin: newStart, end });
+      } else {
+        dates.push({ begin: newStart, end: endWeekDate });
+      }
+
+      newStart = addDays(newStart, 7);
+      monday = addDays(monday, 7);
+    }
+
+    return dates;
+  };
+
+  return generateDateRange(startDate, endDate);
+};
 
 export async function updateMesoCycleById(id: number, data: MesoCycle) {
   try {
