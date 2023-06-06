@@ -41,6 +41,7 @@ import FencerGroupMesoCycle from "./pages/fencer/groups/FencerGroupMesoCycle";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
+import AITrainingDetection from "./pages/fencer/AITrainingDetection";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -104,6 +105,7 @@ export const App = () => {
           <Route path="groups/:id/cycles" element={<FencerGroupMesoCycle />} />
           <Route path="groups/:id/list" element={<FencerGroupList />} />
           <Route path="groups/:id" element={<GroupDetails />} />
+          <Route path="aitrainings/new" element={<AITrainingDetection />}></Route>
         </Route>
         <Route
           element={

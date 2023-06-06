@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link as RouterLink } from "react-router-dom";
 import { z } from "zod";
 
 interface Props {
@@ -89,7 +90,7 @@ const NewTrainingDialog = ({ open, handleClose }: Props) => {
           <Button fullWidth variant="outlined" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button fullWidth variant="contained" onClick={handleClose}>
+          <Button fullWidth variant="contained" component={RouterLink} to="/aitrainings/new">
             Confirmar
           </Button>
         </DialogActions>

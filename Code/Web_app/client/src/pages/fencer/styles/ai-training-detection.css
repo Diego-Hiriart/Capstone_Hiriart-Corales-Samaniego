@@ -1,0 +1,19 @@
+.output-canvas{
+  height: 480px;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 640px;
+  z-index: 9;
+}
+
+.webcam-pane{
+  z-index: 8;
+}
+
+.render-pane{
+  z-index: 9;
+}
