@@ -14,6 +14,11 @@ export async function findTrainingGroupById(id: number) {
             user: true,
           },
         },
+        mesoCycle: {
+          include: {
+            microCycle: true,
+          },
+        },
       },
     });
     return trainingGroup;

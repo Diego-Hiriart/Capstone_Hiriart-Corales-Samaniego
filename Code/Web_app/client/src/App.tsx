@@ -8,9 +8,14 @@ import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
 import AuthContext from "./contexts/AuthContext";
 import Unauthorized from "./pages/Unauthorized";
+import ActivityList from "./pages/activity/ActivityList";
+import AdminHome from "./pages/admin/AdminHome";
+import FencerHome from "./pages/fencer/FencerHome";
 import FencerList from "./pages/fencer/FencerList";
 import GroupDetails from "./pages/group/GroupDetails";
 import GroupFencersList from "./pages/group/GroupFencersList";
+import GroupMesoCycle from "./pages/group/GroupMesoCycle";
+import MesoCycleDetails from "./pages/mesocycle/MesoCycleDetails";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
@@ -63,10 +68,16 @@ export const App = () => {
           <Route path="trainer/create" element={<CreateTrainer />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
+          <Route path="activity" element={<ActivityList />} />
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/:id" element={<FencerDetail />} />
           <Route path="fencer/list" element={<FencerList />} />
+          <Route
+            path="fencer/groups/:id/cycles/:id"
+            element={<MesoCycleDetails />}
+          />
+          <Route path="fencer/groups/:id/cycles" element={<GroupMesoCycle />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/groups" element={<TrainerTrainingGroups />} />

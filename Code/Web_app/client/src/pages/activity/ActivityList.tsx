@@ -12,24 +12,22 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
 import axios from "../../services/axios";
-import { Fencer, TrainingGroupFull } from "../../types";
-import GroupAddFencer from "./GroupAddFencer";
-import GroupRemoveFencer from "./GroupRemoveFencer";
+import { ActivityType } from "../../types";
+import ActivityAddType from "./ActivityAddType";
+import ActivityRemoveType from "./ActivityRemoveType";
 
-const GroupFencersList = () => {
-  const { id } = useParams();
-  const [group, setGroup] = useState<TrainingGroupFull>(null!);
+const ActivityList = () => {
+  const [activityTypes, setActivityTypes] = useState<ActivityType[]>(null!);
   const [open, setOpen] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
-  const [selectedFencer, setSelectedFencer] = useState<Fencer>(null!);
+  const [selectedActivity, setSelectedActivity] = useState<ActivityType>(null!);
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const { data } = await axios.get("/dashboard/training_group/" + id);
+      const { data } = await axios.get("/dashboard/activity_type");
 
-      setGroup(data.data);
+      setActivityTypes(data.data);
     };
 
     fetchGroup();
@@ -47,8 +45,8 @@ const GroupFencersList = () => {
     setRemoveDialogOpen(false);
   };
 
-  const handleRemoveOpen = (fencer: Fencer) => {
-    setSelectedFencer(fencer);
+  const handleRemoveOpen = (activityType: ActivityType) => {
+    setSelectedActivity(activityType);
     setRemoveDialogOpen(true);
   };
 
@@ -64,39 +62,31 @@ const GroupFencersList = () => {
           }}
         >
           <Typography variant="h1" alignSelf="start">
-            Integrantes
+            Tipos de actividades
           </Typography>
           <Button variant="contained" onClick={handleOpen}>
-            + Añadir integrante
+            + Añadir tipo
           </Button>
         </Box>
         <List sx={{ mt: 1 }}>
-          {group?.fencer.map((fencer) => (
-            <ListItem key={fencer.fencerID} disablePadding>
-              <ListItemButton
-                sx={{ px: 1 }}
-                component={RouterLink}
-                to={String(fencer.fencerID)}
-              >
+          {activityTypes?.map((type) => (
+            <ListItem key={type.activityTypeID} disablePadding>
+              <ListItemButton sx={{ px: 1 }}>
                 <ListItemAvatar>
                   <Avatar></Avatar>
                 </ListItemAvatar>
-                <ListItemText
-                  primary={`${fencer.user.names} ${fencer.user.lastNames}`}
-                />
+                <ListItemText primary={type.name} />
               </ListItemButton>
-              <Button variant="text" onClick={() => handleRemoveOpen(fencer)}>
+              <Button variant="text" onClick={() => handleRemoveOpen(type)}>
                 <DeleteIcon />
               </Button>
             </ListItem>
           ))}
         </List>
-        {/* TODO: Add pagination */}
       </Box>
-      <GroupAddFencer group={group} handleClose={handleClose} open={open} />
-      <GroupRemoveFencer
-        group={group}
-        fencer={selectedFencer}
+      <ActivityAddType handleClose={handleClose} open={open} />
+      <ActivityRemoveType
+        activityType={selectedActivity}
         handleClose={handleRemoveClose}
         open={removeDialogOpen}
       />
@@ -104,4 +94,4 @@ const GroupFencersList = () => {
   );
 };
 
-export default GroupFencersList;
+export default ActivityList;

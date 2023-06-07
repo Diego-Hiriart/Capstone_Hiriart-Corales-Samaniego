@@ -41,7 +41,8 @@
     "lint-fix": "eslint . --ext .ts --fix",
     "env-win": "copy .env.example .env",
     "env-lin": "cp .env.example .env",
-    "setup": "yarn install && prisma generate && yarn migrate"
+    "setup": "yarn install && prisma generate && yarn migrate",
+    "db-reset": "prisma db push --force-reset && prisma db seed"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

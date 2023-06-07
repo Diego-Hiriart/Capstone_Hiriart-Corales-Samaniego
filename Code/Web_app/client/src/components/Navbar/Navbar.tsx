@@ -36,9 +36,11 @@ const NavBar = () => {
     if (roles?.includes("admin")) {
       items["Entrenadores"] = "trainer";
       items["Esgrimistas"] = "fencer";
+      items["Actividades"] = "activity";
     }
     if (roles?.includes("trainer")) {
       items["Esgrimistas"] = "fencer";
+      items["Actividades"] = "activity";
     }
     if (roles?.includes("fencer")) {
       items["Grupos"] = "groups";

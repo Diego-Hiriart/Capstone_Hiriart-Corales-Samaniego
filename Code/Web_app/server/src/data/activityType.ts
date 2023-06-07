@@ -17,7 +17,7 @@ export async function findActivityTypeById(id: number) {
 
 export async function findAllActivityType() {
   try {
-    const activityType = await prisma.activity.findMany();
+    const activityType = await prisma.activityType.findMany();
     return activityType;
   } catch (error) {
     throw error;

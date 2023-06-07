@@ -30,6 +30,7 @@ export async function createMicroCycle(data: MicroCycle) {
       data: {
         mesoCycleID: data.mesoCycleID,
         startDate: data.startDate,
+        endDate: data.endDate,
         speed: data.speed,
         coordination: data.coordination,
         resistance: data.resistance,

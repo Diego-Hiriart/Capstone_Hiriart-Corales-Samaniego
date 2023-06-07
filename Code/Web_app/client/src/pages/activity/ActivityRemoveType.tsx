@@ -1,42 +1,39 @@
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { AxiosError } from "axios";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { z } from "zod";
 import axios from "../../services/axios";
-import { Fencer, TrainingGroupFull } from "../../types";
+import { ActivityType } from "../../types";
 
-interface GroupRemoveFencer {
-  fencer: Fencer;
-  group: TrainingGroupFull;
+interface ActivityRemoveTypeProps {
+  activityType: ActivityType;
   handleClose: () => void;
   open: boolean;
 }
 
-const GroupRemoveFencer = ({
+const ActivityRemoveType = ({
   open,
   handleClose,
-  fencer,
-  group,
-}: GroupRemoveFencer) => {
+  activityType,
+}: ActivityRemoveTypeProps) => {
   const navigate = useNavigate();
 
   const { setError } = useForm();
 
   const onSubmit = async () => {
     try {
-      await axios.put("/dashboard/fencer/group/" + fencer.fencerID);
+      await axios.delete(
+        "/dashboard/activity_type/" + activityType.activityTypeID
+      );
       navigate(0);
     } catch (error) {
       if (error instanceof AxiosError) {
         setError("root", {
           type: "manual",
-          message: "Ha ocurrido un error al remover integrante",
+          message: "Ha ocurrido un error al remover tipo de actividad",
         });
       }
     }
@@ -44,7 +41,7 @@ const GroupRemoveFencer = ({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Remover Integrante</DialogTitle>
+      <DialogTitle>Eliminar tipo de actividad</DialogTitle>
       <DialogContent>
         <Container component="main" maxWidth="xs">
           <Box
@@ -54,8 +51,7 @@ const GroupRemoveFencer = ({
             }}
           >
             <Typography>
-              ¿Seguro que desea remover a {fencer?.user?.names}{" "}
-              {fencer?.user?.lastNames} del Grupo: {group?.name}?
+              ¿Seguro que desea eliminar la actividad: {activityType?.name}?
             </Typography>
             <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
               <Button
@@ -64,7 +60,7 @@ const GroupRemoveFencer = ({
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Remover del grupo
+                Eliminar
               </Button>
               <Button fullWidth variant="outlined" onClick={handleClose}>
                 Cancelar
@@ -77,4 +73,4 @@ const GroupRemoveFencer = ({
   );
 };
 
-export default GroupRemoveFencer;
+export default ActivityRemoveType;

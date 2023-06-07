@@ -3,8 +3,18 @@ export interface LoginFormInputs {
   password: string;
 }
 
-export interface TrainingGroupWithFencers extends TrainingGroup {
+export interface SignupForm {
+  names: string;
+  lastNames: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  roles: string[];
+}
+
+export interface TrainingGroupFull extends TrainingGroup {
   fencer: Fencer[];
+  mesoCycle: MesoCycle[];
 }
 
 /**
@@ -171,6 +181,7 @@ export type MicroCycle = {
   microCycleID: number;
   mesoCycleID: number;
   startDate: Date;
+  endDate: Date;
   speed: number | null;
   coordination: number | null;
   resistance: number | null;
@@ -184,6 +195,7 @@ export type MicroCycle = {
   freeCombat: number | null;
   tacticalIndividualLesson: number | null;
   competitionAnalysis: number | null;
+  dailyPlan: DailyPlan[];
 };
 
 /**

@@ -118,7 +118,7 @@ model TrainingGroup {
   name            String      @db.VarChar(25)
   weapon          String      @db.VarChar(25)
   fencer          Fencer[]
-  MesoCycle       MesoCycle[]
+  mesoCycle       MesoCycle[]
 }
 
 model CycleGoal {
@@ -169,6 +169,7 @@ model MicroCycle {
   mesoCycle                MesoCycle   @relation(fields: [mesoCycleID], references: [mesoCycleID])
   mesoCycleID              Int
   startDate                DateTime
+  endDate                  DateTime
   speed                    Int?        @db.SmallInt
   coordination             Int?        @db.SmallInt
   resistance               Int?        @db.SmallInt
