@@ -108,6 +108,9 @@ void checkButtonPress() {
   if (digitalRead(incLeft) == LOW) {
     updateButtonStatuses(incLeft, LOW);
   }
+  if (digitalRead(oneMin) == LOW) {
+    updateButtonStatuses(oneMin, LOW);
+  }
   if (digitalRead(prevUnit) == LOW) {
     updateButtonStatuses(prevUnit, LOW);
   }
@@ -117,17 +120,17 @@ void checkButtonPress() {
   if (digitalRead(switchScores) == LOW) {
     updateButtonStatuses(switchScores, LOW);
   }
-  if (analogRead(upload) <= LOW) {
+  if (digitalRead(upload) == LOW) {
     updateButtonStatuses(upload, LOW);
   }
-  if (digitalRead(incPeriod) == HIGH) {  //High since it is pin 13
-    updateButtonStatuses(incPeriod, HIGH);
+  if (digitalRead(incPeriod) == LOW) {
+    updateButtonStatuses(incPeriod, LOW);
   }
   if (digitalRead(decTime) == LOW) {
     updateButtonStatuses(decTime, LOW);
   }
-  if (digitalRead(editTimeToggle) == HIGH) {  //High since it is pin 13
-    updateButtonStatuses(editTimeToggle, HIGH);
+  if (digitalRead(editTimeToggle) == LOW) {
+    updateButtonStatuses(editTimeToggle, LOW);
   }
   if (digitalRead(incTime) == LOW) {
     updateButtonStatuses(incTime, LOW);
@@ -156,7 +159,7 @@ void checkButtonPress() {
   if (digitalRead(nextUnit) == LOW) {
     updateButtonStatuses(nextUnit, LOW);
   }
-  if (analogRead(pauseRes) == LOW) {  //Check if analog reading indicates voltage close to LOW
+  if (digitalRead(pauseRes) == LOW) {
     updateButtonStatuses(pauseRes, LOW);
   }
 }
