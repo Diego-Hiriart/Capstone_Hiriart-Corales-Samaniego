@@ -181,7 +181,9 @@ void handleRemote(String receivedCommand) {
         yCardLeft = true;
       } else {
         rCardLeft = true;
-        rightScore++;
+        if (rightScore != 99) {  //Cant go over 99
+          rightScore++;
+        }
       }
       currentBuzzAlert = 2;
       break;
@@ -190,7 +192,9 @@ void handleRemote(String receivedCommand) {
         rCardLeft = true;
       }
       //Always assign a touch against
-      rightScore++;
+      if (rightScore != 99) {
+        rightScore++;
+      }
       currentBuzzAlert = 2;
       break;
     case 26:
@@ -371,7 +375,9 @@ void handleRemote(String receivedCommand) {
         yCardRight = true;
       } else {
         rCardRight = true;
-        leftScore++;
+        if (leftScore != 99) {
+          leftScore++;
+        }
       }
       currentBuzzAlert = 2;
       break;
@@ -380,7 +386,9 @@ void handleRemote(String receivedCommand) {
         rCardRight = true;
       }
       //Always assign a touch against
-      leftScore++;
+      if (leftScore != 99) {
+        leftScore++;
+      }
       currentBuzzAlert = 2;
       break;
     case 41:
@@ -522,13 +530,13 @@ void checkTouches() {
   uint8_t invalidLeftDebounce = digitalRead(invalidLeftPin);
   if (leftTouch == leftTouchDebounce && leftTouchDebounce == HIGH) {
     paused = true;
-    if (pointsIncAuto) {
+    if (pointsIncAuto && leftScore != 99) {
       leftScore += 1;
     }
   }
   if (rightTouch == rightTouchDebounce && rightTouchDebounce == HIGH) {
     paused = true;
-    if (pointsIncAuto) {
+    if (pointsIncAuto && rightScore != 99) {
       rightScore += 1;
     }
   }
