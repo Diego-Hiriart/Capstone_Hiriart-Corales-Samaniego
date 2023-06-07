@@ -9,12 +9,15 @@ import AuthContext from "./contexts/AuthContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Unauthorized from "./pages/Unauthorized";
+import ActivityList from "./pages/activity/ActivityList";
 import AdminHome from "./pages/admin/AdminHome";
 import FencerHome from "./pages/fencer/FencerHome";
 import FencerList from "./pages/fencer/FencerList";
 import Signup from "./pages/fencer/Signup";
 import GroupDetails from "./pages/group/GroupDetails";
 import GroupFencersList from "./pages/group/GroupFencersList";
+import GroupMesoCycle from "./pages/group/GroupMesoCycle";
+import MesoCycleDetails from "./pages/mesocycle/MesoCycleDetails";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
 import TrainerHome from "./pages/trainer/TrainerHome";
 import TrainerList from "./pages/trainer/TrainerList";
@@ -22,8 +25,6 @@ import TrainerProfile from "./pages/trainer/TrainerProfile";
 import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import GroupMesoCycle from "./pages/group/GroupMesoCycle";
-import MesoCycleDetails from "./pages/mesocycle/MesoCycleDetails";
 
 export const App = () => {
   const { user, checkToken } = useContext(AuthContext);
@@ -54,6 +55,7 @@ export const App = () => {
           <Route path="trainer/create" element={<CreateTrainer />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
+          <Route path="activity" element={<ActivityList />} />
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/list" element={<FencerList />} />
