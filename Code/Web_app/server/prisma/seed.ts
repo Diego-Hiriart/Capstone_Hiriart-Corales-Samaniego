@@ -1,62 +1,115 @@
 import { PrismaClient } from "@prisma/client";
-import { hashPassword } from "../src/utils/hashPassword";
 
 const prisma = new PrismaClient();
+const password =
+  "$argon2id$v=19$m=65536,t=3,p=4$QlqQtAUgua3rh18ufw/CwQ$K+YgFptK2/uBuf8KIMHtt+/8bgkTW/LM9gc7otNUAu4";
+// password123
+
+const users = [
+  {
+    email: "pestrella@gmail.com",
+    password: password,
+    names: "Patricio",
+    lastNames: "Estrella",
+    roles: ["fencer"],
+  },
+  {
+    email: "mscott@gmail.com",
+    password: password,
+    names: "Michael",
+    lastNames: "Scott",
+    roles: ["trainer"],
+  },
+  {
+    email: "rsanchez@gmail.com",
+    password: password,
+    names: "Rick",
+    lastNames: "Sanchez",
+    roles: ["admin"],
+  },
+  {
+    email: "jpadilla@gmail.com",
+    password: password,
+    names: "Jorge",
+    lastNames: "Padilla",
+    roles: ["fencer"],
+  },
+  {
+    email: "lcorales@gmail.com",
+    password: password,
+    names: "Luis",
+    lastNames: "Corales",
+    roles: ["admin"],
+  },
+];
 
 const fencers = [
   {
     userID: 1,
     trainingGroupID: 1,
-    idNumber: "111",
-    emergencyPhone: "123",
+    idNumber: "1707217293",
+    emergencyPhone: "0979349191",
     birthDate: new Date(),
-    bloodType: "123",
-    sex: "123",
-    laterality: "123",
-    phone: "123",
-    insurance: "123",
+    bloodType: "O+",
+    sex: "M",
+    school: null,
+    laterality: "D",
+    phone: "0979349191",
+    insurance: null,
     inscriptionDate: new Date(),
     startDate: new Date(),
-    occupation: "123",
-    schedule: "123",
-    legalGuardian: "123",
-    leadSource: "123",
-    inscriptionReason: "123",
+    occupation: "Student",
+    schedule: "Tarde",
+    legalGuardian: null,
+    legalGuardianPhone: null,
+    leadSource: "Redes Sociales",
+    inscriptionReason: "Hobby",
     height: 123,
     weight: 123,
-    physicalActivity: "123",
-    medicalFamily: "123",
-    medicalPersonal: "123",
-    personalMedicalDetails: "123",
-    weapon: "123",
-    pictureURL: "123",
+    physicalActivity: null,
+    medicalFamily: `{"familyBoneDisease":true,"familyAllergies":true,"familyAsthma":true,"familyPregnancy":true,"familyHospitalization":true,"familyDrugs":true,"familyHypertension":true,"familyHypotension":true,"familyPsychological":true,"familyOther":false,"familyOtherDetails":null}`,
+    medicalPersonal: `{"personalHeartDisease":true,"personalHeartAttack":true,"personalDiabetes":true,"personalCholesterol":true,"personalHypertension":true,"personalHypotension":true}`,
+    personalMedicalDetails: "Diabetes",
+    weapon: "Espada",
+    pictureURL: null,
   },
   {
     userID: 4,
     trainingGroupID: 1,
-    idNumber: "222",
-    emergencyPhone: "123",
+    idNumber: "1707217293",
+    emergencyPhone: "0979349191",
     birthDate: new Date(),
-    bloodType: "123",
-    sex: "1",
-    laterality: "1",
-    phone: "123",
-    insurance: "123",
+    bloodType: "O+",
+    sex: "M",
+    school: "Gotitas del saber",
+    laterality: "D",
+    phone: "0979349191",
+    insurance: "Seguros Equinoccial",
     inscriptionDate: new Date(),
     startDate: new Date(),
-    occupation: "123",
-    schedule: "123",
-    legalGuardian: "123",
-    leadSource: "123",
-    inscriptionReason: "123",
+    occupation: "Student",
+    schedule: "Tarde",
+    legalGuardian: "Marco Padilla",
+    legalGuardianPhone: "0979349191",
+    leadSource: "Redes Sociales",
+    inscriptionReason: "Hobby",
     height: 123,
     weight: 123,
-    physicalActivity: "123",
-    medicalFamily: "123",
-    medicalPersonal: "123",
-    personalMedicalDetails: "123",
-    weapon: "123",
-    pictureURL: "123",
+    physicalActivity: "Futbol",
+    medicalFamily: `{"familyBoneDisease":true,"familyAllergies":true,"familyAsthma":true,"familyPregnancy":true,"familyHospitalization":true,"familyDrugs":true,"familyHypertension":true,"familyHypotension":true,"familyPsychological":true,"familyOther":false,"familyOtherDetails":null}`,
+    medicalPersonal: `{"personalHeartDisease":true,"personalHeartAttack":true,"personalDiabetes":true,"personalCholesterol":true,"personalHypertension":true,"personalHypotension":true}`,
+    personalMedicalDetails: "Diabetes",
+    weapon: "Espada",
+    pictureURL: null,
+  },
+];
+
+const trainers = [
+  {
+    userID: 2,
+    experience: "5 años",
+    weapon: "Espada",
+    pictureURL: null,
   },
 ];
 
@@ -99,47 +152,33 @@ const mesoCycles = [
   },
 ];
 
-async function main() {
-  const password = await hashPassword("password123");
+const feedbacks = [
+  {
+    fencerID: 1,
+    trainerID: 1,
+    date: new Date(),
+    content: "Feedback 1",
+  },
+  {
+    fencerID: 1,
+    trainerID: 1,
+    date: new Date(),
+    content: "Feedback 2",
+  },
+  {
+    fencerID: 1,
+    trainerID: 1,
+    date: new Date(),
+    content: "Feedback 3",
+  },
+];
 
+async function main() {
   await prisma.user.createMany({
-    data: [
-      {
-        email: "pestrella@gmail.com",
-        password: password,
-        names: "Patricio",
-        lastNames: "Estrella",
-        roles: ["fencer"],
-      },
-      {
-        email: "mscott@gmail.com",
-        password: password,
-        names: "Michael",
-        lastNames: "Scott",
-        roles: ["trainer"],
-      },
-      {
-        email: "rsanchez@gmail.com",
-        password: password,
-        names: "Rick",
-        lastNames: "Sanchez",
-        roles: ["admin"],
-      },
-      {
-        email: "jpadilla@gmail.com",
-        password: password,
-        names: "Jorge",
-        lastNames: "Padilla",
-        roles: ["fencer"],
-      },
-      {
-        email: "lcorales@gmail.com",
-        password: await hashPassword("12345678"),
-        names: "Luis",
-        lastNames: "Corales",
-        roles: ["admin"],
-      },
-    ],
+    data: users,
+  });
+  await prisma.trainer.createMany({
+    data: trainers,
   });
   await prisma.trainingGroup.createMany({
     data: trainingGroups,
@@ -152,6 +191,9 @@ async function main() {
   });
   await prisma.mesoCycle.createMany({
     data: mesoCycles,
+  });
+  await prisma.singleFeedback.createMany({
+    data: feedbacks,
   });
 }
 

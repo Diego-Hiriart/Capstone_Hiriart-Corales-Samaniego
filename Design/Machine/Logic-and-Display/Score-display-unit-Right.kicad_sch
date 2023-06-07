@@ -551,7 +551,7 @@
     (uuid f9ce8921-b1c7-4aa8-9038-c4fe2c370e9c)
   )
 
-  (hierarchical_label "ESP32-TX2" (shape input) (at 182.88 83.82 180) (fields_autoplaced)
+  (hierarchical_label "ESP32-TX2" (shape output) (at 182.88 83.82 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 01f5cac5-d705-41fa-b621-5aa76a0f321d)
   )

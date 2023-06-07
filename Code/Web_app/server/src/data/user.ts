@@ -15,6 +15,10 @@ export async function findUserById(id: number) {
       where: {
         userID: id,
       },
+      include: {
+        trainer: true,
+        fencer: true,
+      },
     });
     return user && removePasswordInUser(user);
   } catch (error) {
@@ -132,14 +136,15 @@ export async function createUserFencer(data: User & Fencer) {
             birthDate: data.birthDate,
             bloodType: data.bloodType,
             sex: data.sex,
+            school: data.school,
             laterality: data.laterality,
             phone: data.phone,
             insurance: data.insurance,
-            inscriptionDate: data.inscriptionDate,
-            startDate: data.startDate,
+            inscriptionDate: new Date(),
             occupation: data.occupation,
             schedule: data.schedule,
             legalGuardian: data.legalGuardian,
+            legalGuardianPhone: data.legalGuardianPhone,
             leadSource: data.leadSource,
             inscriptionReason: data.inscriptionReason,
             height: data.height,

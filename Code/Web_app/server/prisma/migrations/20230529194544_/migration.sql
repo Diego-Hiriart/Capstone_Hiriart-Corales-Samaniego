@@ -1,0 +1,6 @@
+-- AlterTable
+ALTER TABLE "Fencer" ALTER COLUMN "insurance" DROP NOT NULL,
+ALTER COLUMN "startDate" DROP NOT NULL,
+ALTER COLUMN "physicalActivity" DROP NOT NULL,
+ALTER COLUMN "personalMedicalDetails" DROP NOT NULL,
+ALTER COLUMN "pictureURL" DROP NOT NULL;

@@ -28,8 +28,8 @@ export async function createSingleFeedback(data: SingleFeedback) {
   try {
     const singleFeedback = await prisma.singleFeedback.create({
       data: {
-        fencerID: data.fencerID,
-        trainerID: data.trainerID,
+        fencerID: Number(data.fencerID),
+        trainerID: Number(data.trainerID),
         date: data.date,
         content: data.content,
       },
@@ -73,4 +73,39 @@ export async function deleteSingleFeedbackById(id: number) {
   } catch (error) {
     throw error;
   }
+}
+
+export async function findFeedbacksByFencerId(
+  id: number,
+  take: number,
+  page: number
+) {
+  const data = await prisma.singleFeedback.findMany({
+    skip: take * (page - 1),
+    take: take,
+    where: {
+      fencerID: id,
+    },
+    include: {
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      date: "desc",
+    },
+  });
+  const count = await prisma.singleFeedback.count({
+    where: {
+      fencerID: id,
+    },
+  });
+  return { data, count };
 }

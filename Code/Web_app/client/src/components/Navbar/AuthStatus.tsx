@@ -44,7 +44,7 @@ const AuthStatus = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          <MenuItem component={RouterLink} to="perfil">
+          <MenuItem component={RouterLink} to="profile">
             Perfil
           </MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
@@ -52,16 +52,7 @@ const AuthStatus = () => {
       </Box>
     );
   }
-  return (
-    <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "end" }}>
-      <Button component={RouterLink} to="login">
-        Login
-      </Button>
-      <Button component={RouterLink} to="signup">
-        Signup
-      </Button>
-    </Box>
-  );
+  return null;
 };
 
 export default AuthStatus;

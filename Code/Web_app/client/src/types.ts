@@ -31,7 +31,8 @@ export type User = {
   createdAt: Date;
   updatedAt: Date | null;
   deletedAt: Date | null;
-  trainer: Trainer | null;
+  trainer?: Trainer;
+  fencer?: Fencer;
 };
 
 /**
@@ -50,6 +51,7 @@ export type Administrator = {
 export type Trainer = {
   trainerID: number;
   userID: number;
+  user: User;
   experience: string;
   weapon: string;
   pictureURL: string | null;
@@ -68,6 +70,7 @@ export type Fencer = {
   birthDate: Date;
   bloodType: string;
   sex: string;
+  school: string;
   laterality: string;
   phone: string;
   insurance: string;
@@ -76,6 +79,7 @@ export type Fencer = {
   occupation: string;
   schedule: string;
   legalGuardian: string;
+  legalGuardianPhone: string;
   leadSource: string;
   inscriptionReason: string;
   height: number;
@@ -110,6 +114,7 @@ export type SingleFeedback = {
   singleFeedbackID: number;
   fencerID: number;
   trainerID: number;
+  trainer: Trainer;
   date: Date;
   content: string;
 };

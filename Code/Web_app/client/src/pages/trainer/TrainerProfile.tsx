@@ -1,8 +1,6 @@
-import { useParams } from "react-router-dom";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "../../services/axios";
 import {
-  Avatar,
   Box,
   Button,
   Container,
@@ -11,7 +9,6 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,8 +17,9 @@ import { z } from "zod";
 import { useAlert } from "../../hooks/useAlert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { User } from "../../types";
+import AuthContext from "../../contexts/AuthContext";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),
@@ -38,48 +36,60 @@ type TrainerAPIResponse = {
   weapon: string;
   pictureURL: string | null;
   user: Partial<User>;
-}
+};
 
 const TrainerProfile = () => {
   const { id } = useParams();
   const { showSuccess, showError } = useAlert();
-  const [image, setImage] = useState<File | null>(null);
-  const [previewImageURL, setPreviewImageURL] = useState<string | null>(null);
+  // const [image, setImage] = useState<File | null>(null);
+  // const [previewImageURL, setPreviewImageURL] = useState<string | null>(null);
   const [trainer, setTrainer] = useState<TrainerAPIResponse | null>(null);
+  const { pathname } = useLocation();
+  const { user } = useContext(AuthContext);
+  let trainerID = pathname === "/profile" ? user?.trainer?.trainerID : id;
 
   useEffect(() => {
     const fetchTrainer = async () => {
-      const { data } = await axios.get(`/dashboard/trainer/${id}`);
+      const { data } = await axios.get(`/dashboard/trainer/${trainerID}`);
       setTrainer(data.data);
       //replace when backend is ready:
       // setPreviewImageURL(data.data.pictureURL);
-      setPreviewImageURL("https://mui.com/static/images/avatar/2.jpg");
     };
     fetchTrainer();
   }, []);
 
   useEffect(() => {
-    reset({
-      names: trainer?.user.names,
-      lastNames: trainer?.user.lastNames,
-      email: trainer?.user.email,
-      experience: trainer?.experience,
-      weapon: trainer?.weapon,
-    });
+    if (pathname === "/profile") {
+      reset({
+        names: user?.names,
+        lastNames: user?.lastNames,
+        email: user?.email,
+        experience: user?.trainer?.experience,
+        weapon: user?.trainer?.weapon,
+      });
+    } else {
+      reset({
+        names: trainer?.user.names,
+        lastNames: trainer?.user.lastNames,
+        email: trainer?.user.email,
+        experience: trainer?.experience,
+        weapon: trainer?.weapon,
+      });
+    }
   }, [trainer]);
 
-  useEffect(() => {
-    if (!image) return;
-    const reader = new FileReader();
-    reader.readAsDataURL(image);
-    reader.onloadend = () => {
-      setPreviewImageURL(reader.result as string);
-    };
-  }, [image]);
+  // useEffect(() => {
+  //   if (!image) return;
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(image);
+  //   reader.onloadend = () => {
+  //     setPreviewImageURL(reader.result as string);
+  //   };
+  // }, [image]);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setImage(e.target.files?.[0] || null);
-  };
+  // const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setImage(e.target.files?.[0] || null);
+  // };
 
   const {
     register,
@@ -109,16 +119,15 @@ const TrainerProfile = () => {
       );
 
       // if image was changed, send it to the backend
-      image && (updatedData.pictureURL = image);
+      // image && (updatedData.pictureURL = image);
 
       // if no fields were changed, don't send the request
       if (Object.keys(updatedData).length === 0) return;
 
-      //uncomment when backend is ready:
-      // await axios.put(`/dashboard/trainer/${id}`, { data: updatedData });
+      await axios.put(`/dashboard/trainer/${trainerID}`, { data: updatedData });
       showSuccess("Entrenador actualizado exitosamente");
       reset({}, { keepValues: true });
-      setImage(null);
+      // setImage(null);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 409) {
@@ -145,7 +154,7 @@ const TrainerProfile = () => {
           onSubmit={handleSubmit(onSubmit)}
           sx={{ mt: 1 }}
         >
-          <Stack alignItems="center" spacing={2} margin={2}>
+          {/* <Stack alignItems="center" spacing={2} margin={2}>
             <Avatar src={previewImageURL || ""} sx={{ width: 100, height: 100 }} />
             <Button
               variant="outlined"
@@ -160,7 +169,7 @@ const TrainerProfile = () => {
               />
               Cambiar Foto
             </Button>
-          </Stack>
+          </Stack> */}
           <TextField
             InputLabelProps={{ shrink: true }}
             required
@@ -209,7 +218,7 @@ const TrainerProfile = () => {
           <Controller
             name="weapon"
             control={control}
-            defaultValue=""
+            defaultValue={trainer?.weapon || ""}
             render={({ field }) => (
               <FormControl>
                 <FormLabel>Arma</FormLabel>
@@ -220,17 +229,17 @@ const TrainerProfile = () => {
                   value={field.value}
                 >
                   <FormControlLabel
-                    value="espada"
+                    value="Espada"
                     control={<Radio />}
                     label="Espada"
                   />
                   <FormControlLabel
-                    value="sable"
+                    value="Sable"
                     control={<Radio />}
                     label="Sable"
                   />
                   <FormControlLabel
-                    value="florete"
+                    value="Florete"
                     control={<Radio />}
                     label="Florete"
                   />
@@ -243,6 +252,7 @@ const TrainerProfile = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={!!dirtyFields && Object.keys(dirtyFields).length === 0}
           >
             Guardar Cambios
           </Button>

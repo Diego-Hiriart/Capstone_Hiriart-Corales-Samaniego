@@ -26,27 +26,28 @@ declare module "@mui/material/AppBar" {
 
 const drawerWidth = 240;
 
-const navItems = (roles: string[] | undefined) => {
-  // Label: path object
-  const items: Record<string, string> = {};
-  if (roles?.includes("admin")) {
-    items["Entrenadores"] = "trainer";
-    items["Esgrimistas"] = "fencer";
-    items["Actividades"] = "activity";
-  }
-  if (roles?.includes("trainer")) {
-    items["Esgrimistas"] = "fencers";
-    items["Actividades"] = "activity";
-  }
-  if (roles?.includes("fencer")) {
-    items["Grupos"] = "groups";
-  }
-  return items;
-};
-
 const NavBar = () => {
   const { user } = useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+
+  const navItems = (roles: string[] | undefined) => {
+    const items: Record<string, string> = {};
+    // Label: path
+    if (roles?.includes("admin")) {
+      items["Entrenadores"] = "trainer";
+      items["Esgrimistas"] = "fencer";
+      items["Actividades"] = "activity";
+    }
+    if (roles?.includes("trainer")) {
+      items["Esgrimistas"] = "fencer";
+      items["Actividades"] = "activity";
+    }
+    if (roles?.includes("fencer")) {
+      items["Grupos"] = "groups";
+      items["Feedback"] = `/fencer/${user?.fencer?.fencerID}/feedback`;
+    }
+    return items;
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);

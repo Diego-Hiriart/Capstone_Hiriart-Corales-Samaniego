@@ -6,8 +6,8 @@
 //For data persistance
 #include <EEPROM.h>
 //Touches input pins
-const uint8_t leftTouchPin = 27;
-const uint8_t rightTouchPin = 15;
+const uint8_t leftTouchPin = 25;
+const uint8_t rightTouchPin = 26;
 const uint8_t invalidLeftPin = 22;  //Invalid target or antiblocking (self-touch) pins
 const uint8_t invalidRightPin = 21;
 //Buttons pins
@@ -19,7 +19,7 @@ const uint8_t syncPin = 33;
 //RF receiver pins, IRQ pin (interrupt) is not needed
 nRF24L01CLKPin  = 18;  //RF CLK
 nRF24L01MOSIPin = 23;   //RF MOSI (data out)
-nRF24L01MISOPin = 19;   //RF MOSI (data out)*/
+nRF24L01MISOPin = 19;   //RF MISO (data in)*/
 const uint8_t nRF24L01CEPin = 4;   //RF CS
 const uint8_t nRF24L01CSNPin = 5;  //RF CSN
 
