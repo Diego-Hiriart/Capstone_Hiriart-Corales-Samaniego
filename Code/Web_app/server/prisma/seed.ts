@@ -55,18 +55,18 @@ const fencers = [
     school: null,
     laterality: "D",
     phone: "0979349191",
-    insurance: null,
+    insurance: "BMI",
     inscriptionDate: new Date(),
     startDate: new Date(),
     occupation: "Student",
     schedule: "Tarde",
-    legalGuardian: null,
-    legalGuardianPhone: null,
+    legalGuardian: "Luis Corales",
+    legalGuardianPhone: "0999999999",
     leadSource: "Redes Sociales",
     inscriptionReason: "Hobby",
     height: 123,
     weight: 123,
-    physicalActivity: null,
+    physicalActivity: "Some",
     medicalFamily: `{"familyBoneDisease":true,"familyAllergies":true,"familyAsthma":true,"familyPregnancy":true,"familyHospitalization":true,"familyDrugs":true,"familyHypertension":true,"familyHypotension":true,"familyPsychological":true,"familyOther":false,"familyOtherDetails":null}`,
     medicalPersonal: `{"personalHeartDisease":true,"personalHeartAttack":true,"personalDiabetes":true,"personalCholesterol":true,"personalHypertension":true,"personalHypotension":true}`,
     personalMedicalDetails: "Diabetes",
@@ -107,15 +107,6 @@ const fencers = [
 const trainers = [
   {
     userID: 2,
-    experience: "5 años",
-    weapon: "Espada",
-    pictureURL: null,
-  },
-];
-
-const trainers = [
-  {
-    userID: 2,
     experience: "Too much",
     weapon: "Sable",
   },
@@ -133,22 +124,6 @@ const trainingGroups = [
   {
     name: "Grupo 3",
     weapon: "Espada",
-  },
-];
-
-const mesoCycles = [
-  {
-    endDate: "1970-01-01T00:00:00.000Z",
-    mesoCycleID: 1,
-    name: "Test",
-    startDate: "1970-05-01T00:00:00.000Z",
-    trainerID: 1,
-    trainingGroupID: 1,
-    period: "1",
-    stage: "1",
-    physicalScore: 1,
-    technicalScore: 1,
-    tacticalScore: 1,
   },
 ];
 
@@ -185,12 +160,6 @@ async function main() {
   });
   await prisma.fencer.createMany({
     data: fencers,
-  });
-  await prisma.trainer.createMany({
-    data: trainers,
-  });
-  await prisma.mesoCycle.createMany({
-    data: mesoCycles,
   });
   await prisma.singleFeedback.createMany({
     data: feedbacks,
