@@ -176,6 +176,7 @@ export type MicroCycle = {
   microCycleID: number;
   mesoCycleID: number;
   startDate: Date;
+  endDate: Date;
   speed: number | null;
   coordination: number | null;
   resistance: number | null;
@@ -189,6 +190,7 @@ export type MicroCycle = {
   freeCombat: number | null;
   tacticalIndividualLesson: number | null;
   competitionAnalysis: number | null;
+  dailyPlan: DailyPlan[];
 };
 
 /**

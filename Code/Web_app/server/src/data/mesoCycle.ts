@@ -10,7 +10,19 @@ export async function findMesoCycleById(id: number) {
         mesoCycleID: id,
       },
       include: {
-        microCycle: true,
+        microCycle: {
+          include: {
+            dailyPlan: {
+              include: {
+                activityType: {
+                  include: {
+                    activity: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
     return mesoCycle;
