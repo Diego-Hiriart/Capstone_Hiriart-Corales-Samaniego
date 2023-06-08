@@ -13,6 +13,20 @@ const uint8_t invalidRightPin = 21;
 //Buttons pins
 const uint8_t toggleAutoPointsPin = 32;
 const uint8_t synchPin = 33;
+//Debounce
+uint8_t debounceDelay = 50;  //Debounce delay time
+uint8_t autoToggleDebounce = 0;
+uint8_t syncDebounce = 0;
+uint8_t leftTouchDebounce = 0;
+uint8_t rightTouchDebounce = 0;
+uint8_t invalidLeftDebounce = 0;
+uint8_t invalidRightDebounce = 0;
+uint32_t lastAutoToggleDebTime = 0;
+uint32_t lastSyncDebTime = 0;
+uint32_t lastLTouchDebTime = 0;
+uint32_t lastRTouchDebTime = 0;
+uint32_t lastInvLDebTime = 0;
+uint32_t lastInvRDebTime = 0;
 
 /*IMPORTANT!!!!
 //These pins are used by RF communication with remote
@@ -54,8 +68,6 @@ uint8_t currentlyEditing = 0;  //0 for mins, 1 for s, 2 for tenths, 3 for hundre
 * 3: two beeps
 * 4: three beeps
 * 5: six bepes*/
-//Debounce delay time
-uint8_t debounceDelay = 50;
 
 //Message delimiters
 const String messageStartDelimiter = "s";
@@ -498,53 +510,86 @@ void syncRemote() {
   }
 }
 
+//Reset debounce time if there was a press or noise that changed the state
+uint32_t debounceTimeUpdate(uint8_t press, uint8_t debounce, uint32_t lastDebTime) {
+  if (press != debounce) {
+    lastDebTime = millis();
+  }
+  return lastDebTime;
+}
+
+/*If that reading has been there for the set time, it was a press not just noise 
+* (presses last longer), return true if it was a press*/
+bool debounceCheck(uint32_t lastDebTime) {
+  bool wasPress = false;
+  if ((millis() - lastDebTime) > debounceDelay) {
+    return true;
+  }
+  return wasPress;
+}
+
+
 void onBoardButtons() {
   uint8_t autoTogglePress = digitalRead(toggleAutoPointsPin);
   uint8_t syncPress = digitalRead(synchPin);
   //Check that there is still a press after delay time, if so do what is needed
-  delay(debounceDelay);
-  uint8_t autoToggleDebounce = digitalRead(toggleAutoPointsPin);
-  uint8_t syncDebounce = digitalRead(synchPin);
-  if (autoTogglePress == autoToggleDebounce && autoToggleDebounce == HIGH) {
+  //Reset debounce time if there was a press or noise that changed the state
+  lastAutoToggleDebTime = debounceTimeUpdate(autoTogglePress, autoToggleDebounce, lastAutoToggleDebTime);
+  //If that reading has been there for the set time, it was a press not just noise
+  if (autoTogglePress == HIGH && debounceCheck(lastAutoToggleDebTime)) {
     pointsIncAuto = !pointsIncAuto;
   }
-  if (syncPress == syncDebounce && syncDebounce == HIGH) {
+  autoToggleDebounce = autoTogglePress;  //Save last state
+  //Reset debounce time if there was a press or noise that changed the state
+  lastSyncDebTime = debounceTimeUpdate(syncPress, syncDebounce, lastSyncDebTime);
+  //If that reading has been there for the set time, it was a press not just noise
+  if (syncPress == HIGH && debounceCheck(lastSyncDebTime)) {
     //Attempt to sync remote
     syncRemote();
   }
+  syncDebounce = syncPress;  //Save last state
 }
 
 void checkTouches() {
-  uint8_t leftPrev = leftScore;    //Last left score
-  uint8_t rightPrev = rightScore;  //last right score
   uint8_t leftTouch = digitalRead(leftTouchPin);
   uint8_t rightTouch = digitalRead(rightTouchPin);
-  uint8_t invalidRight = digitalRead(invalidRightPin);
   uint8_t invalidLeft = digitalRead(invalidLeftPin);
+  uint8_t invalidRight = digitalRead(invalidRightPin);
   //Check that there is still a press after delay time, if so do what is needed
-  delay(debounceDelay);
-  uint8_t leftTouchDebounce = digitalRead(leftTouchPin);
-  uint8_t rightTouchDebounce = digitalRead(rightTouchPin);
-  uint8_t invalidRightDebounce = digitalRead(invalidRightPin);
-  uint8_t invalidLeftDebounce = digitalRead(invalidLeftPin);
-  if (leftTouch == leftTouchDebounce && leftTouchDebounce == HIGH) {
+  //Reset debounce time if there was a press or noise
+  lastLTouchDebTime = debounceTimeUpdate(leftTouch, leftTouchDebounce, lastLTouchDebTime);
+  //If that reading has been there for the set time, it was a press not just noise
+  if (leftTouch == HIGH && debounceCheck(lastLTouchDebTime)) {
     paused = true;
     if (pointsIncAuto) {
       leftScore = scoreIncCheck(leftScore);
     }
   }
-  if (rightTouch == rightTouchDebounce && rightTouchDebounce == HIGH) {
+  leftTouchDebounce = leftTouch;  //Save last state
+  //Reset debounce time if there was a press or noise
+  lastRTouchDebTime = debounceTimeUpdate(rightTouch, rightTouchDebounce, lastRTouchDebTime);
+  //If that reading has been there for the set time, it was a press not just noise
+  if (rightTouch == HIGH && debounceCheck(lastRTouchDebTime)) {
     paused = true;
     if (pointsIncAuto) {
       rightScore = scoreIncCheck(rightScore);
     }
   }
-  if (invalidRight == invalidRightDebounce && invalidRightDebounce == HIGH) {
+  rightTouchDebounce = rightTouch;  //Save last state
+  //Reset debounce time if there was a press or noise
+  lastInvLDebTime = debounceTimeUpdate(invalidLeft, invalidLeftDebounce, lastInvLDebTime);
+  //If that reading has been there for the set time, it was a press not just noise
+  if (invalidLeft == HIGH && debounceCheck(lastInvLDebTime)) {
     paused = true;
   }
-  if (invalidLeft == invalidLeftDebounce && invalidLeftDebounce == HIGH) {
+  invalidLeftDebounce = invalidLeft;  //Save last state
+  //Reset debounce time if there was a press or noise
+  lastInvRDebTime = debounceTimeUpdate(invalidRight, invalidRightDebounce, lastInvRDebTime);
+  //If that reading has been there for the set time, it was a press not just noise
+  if (invalidRight == HIGH && debounceCheck(lastInvRDebTime)) {
     paused = true;
   }
+  invalidRightDebounce = invalidRight;  //Save last state
 }
 
 void sendLEDsTimerPeriod() {
