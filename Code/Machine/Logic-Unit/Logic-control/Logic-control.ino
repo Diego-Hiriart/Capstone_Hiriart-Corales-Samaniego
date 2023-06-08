@@ -142,6 +142,22 @@ void checkTimerEnd() {
   }
 }
 
+//Control that score doesnt go over 99
+uint8_t scoreIncCheck(uint8_t score) {
+  if (score != 99) {
+    score++;
+  }
+  return score;
+}
+
+//Control score doesnt go below 0
+uint8_t scoreDecCheck(uint8_t score) {
+  if (score != 0) {
+    score--;
+  }
+  return score;
+}
+
 void handleRemote(String receivedCommand) {
   //Get data grom message with format s;id;instruction;e\n, e.g.: s;0000000001;44;e\n
   //Ignore if message was empty
@@ -181,9 +197,7 @@ void handleRemote(String receivedCommand) {
         yCardLeft = true;
       } else {
         rCardLeft = true;
-        if (rightScore != 99) {  //Cant go over 99
-          rightScore++;
-        }
+        rightScore = scoreIncCheck(rightScore);
       }
       currentBuzzAlert = 2;
       break;
@@ -192,23 +206,15 @@ void handleRemote(String receivedCommand) {
         rCardLeft = true;
       }
       //Always assign a touch against
-      if (rightScore != 99) {
-        rightScore++;
-      }
+      rightScore = scoreIncCheck(rightScore);
       currentBuzzAlert = 2;
       break;
     case 26:
-      //Dont let score be less than 0
-      if (leftScore != 0) {
-        leftScore--;
-      }
+      leftScore = scoreDecCheck(leftScore);
       currentBuzzAlert = 2;
       break;
     case 27:
-      //Dont let score be more than 99
-      if (leftScore != 99) {
-        leftScore++;
-      }
+      leftScore = scoreIncCheck(leftScore);
       currentBuzzAlert = 2;
       break;
     case 28:
@@ -375,9 +381,7 @@ void handleRemote(String receivedCommand) {
         yCardRight = true;
       } else {
         rCardRight = true;
-        if (leftScore != 99) {
-          leftScore++;
-        }
+        leftScore = scoreIncCheck(leftScore);
       }
       currentBuzzAlert = 2;
       break;
@@ -386,23 +390,15 @@ void handleRemote(String receivedCommand) {
         rCardRight = true;
       }
       //Always assign a touch against
-      if (leftScore != 99) {
-        leftScore++;
-      }
+      leftScore = scoreIncCheck(leftScore);
       currentBuzzAlert = 2;
       break;
     case 41:
-      //Dont let score be less than 0
-      if (rightScore != 0) {
-        rightScore--;
-      }
+      rightScore = scoreDecCheck(rightScore);
       currentBuzzAlert = 2;
       break;
     case 42:
-      //Dont let score be more than 99
-      if (rightScore != 99) {
-        rightScore++;
-      }
+      rightScore = scoreIncCheck(rightScore);
       currentBuzzAlert = 2;
       break;
     case 43:
@@ -530,14 +526,14 @@ void checkTouches() {
   uint8_t invalidLeftDebounce = digitalRead(invalidLeftPin);
   if (leftTouch == leftTouchDebounce && leftTouchDebounce == HIGH) {
     paused = true;
-    if (pointsIncAuto && leftScore != 99) {
-      leftScore += 1;
+    if (pointsIncAuto) {
+      leftScore = scoreIncCheck(leftScore);
     }
   }
   if (rightTouch == rightTouchDebounce && rightTouchDebounce == HIGH) {
     paused = true;
-    if (pointsIncAuto && rightScore != 99) {
-      rightScore += 1;
+    if (pointsIncAuto) {
+      rightScore = scoreIncCheck(rightScore);
     }
   }
   if (invalidRight == invalidRightDebounce && invalidRightDebounce == HIGH) {
