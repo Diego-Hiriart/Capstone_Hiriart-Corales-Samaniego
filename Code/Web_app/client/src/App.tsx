@@ -2,7 +2,7 @@ import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
 import SignupForm from "./pages/fencer/SignupForm";
 import { useContext, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
@@ -42,9 +42,11 @@ import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
 import AITrainingDetection from "./pages/fencer/AITrainingDetection";
+import { navbarExcludePaths } from "./Constants";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     dayjs.locale("es");
@@ -53,9 +55,10 @@ export const App = () => {
 
   return (
     <div>
-      <NavBar />
+      { !navbarExcludePaths.includes(pathname) && (
+        <NavBar />
+      )}
       <Snackbar />
-      <Toolbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />

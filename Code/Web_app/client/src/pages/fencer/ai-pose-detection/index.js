@@ -10,6 +10,7 @@ import * as poseDetection from '@tensorflow-models/pose-detection';
 import { Camera } from './camera.js';
 import { RendererCanvas2d } from './renderer_canvas2d.js';
 import { STATE } from './params.js';
+import axios from "../../../services/axios";
 
 let detector, camera;
 let rafId;
@@ -27,16 +28,11 @@ const createDetector = async () => {
   });
 };
 
-const poseAnalysis = (poseData) => {
-  if (
-    poseData !== undefined &&
-    poseData[0] !== undefined &&
-    poseData[0] !== null
-  ) {
-    console.log(
-      'This will eventually be sent to a back-end API with a recurrent NN: ',
-      poseData
-    );
+const poseAnalysis = async (poseData) => {
+  if (poseData?.length) {
+    // await axios.post("/dashboard/pose", {
+    //   data: poseData,
+    // })
   }
 };
 
@@ -57,7 +53,6 @@ const renderResult = async () => {
     try {
       poses = await detector.estimatePoses(camera.video, {
         maxPoses: STATE.modelConfig.maxPoses,
-        flipHorizontal: false,
       });
     } catch (error) {
       detector.dispose();
@@ -80,12 +75,19 @@ const renderPrediction = async () => {
 };
 
 export const poseDetectionAI = async () => {
-  camera = await Camera.setup(STATE.camera);
   detector = await createDetector();
-  console.log('poseDetectionAI')
   const canvas = document.getElementById('output');
   canvas.width = camera.video.width;
   canvas.height = camera.video.height;
   renderer = new RendererCanvas2d(canvas);
   renderPrediction();
 };
+
+export const startCapture = async () => {
+  camera = await Camera.setup(STATE.camera);
+  camera.video.play();
+}
+
+export const stopCapture = async () => {
+  camera.video.pause();
+}

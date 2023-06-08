@@ -59,8 +59,6 @@ export class Camera {
       };
     });
 
-    camera.video.play();
-
     const videoWidth = camera.video.videoWidth;
     const videoHeight = camera.video.videoHeight;
     // Must set below two lines, otherwise video element doesn't show.

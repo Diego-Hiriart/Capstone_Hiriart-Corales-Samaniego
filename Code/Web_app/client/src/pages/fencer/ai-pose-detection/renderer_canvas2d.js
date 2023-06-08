@@ -82,7 +82,7 @@ export class RendererCanvas2d {
     this.scatterGLHasInitialized = false;
     this.videoWidth = canvas.width;
     this.videoHeight = canvas.height;
-    this.flip(this.videoWidth, this.videoHeight);
+    // this.flip(this.videoWidth, this.videoHeight);
   }
 
   flip(videoWidth, videoHeight) {

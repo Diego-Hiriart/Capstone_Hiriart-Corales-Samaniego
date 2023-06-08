@@ -8,6 +8,7 @@
   text-align: center;
   width: 640px;
   z-index: 9;
+  transform: scaleX(-1);
 }
 
 .webcam-pane{
