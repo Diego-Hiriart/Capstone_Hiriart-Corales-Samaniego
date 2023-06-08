@@ -2217,7 +2217,7 @@
     (property "Reference" "SW1" (at 144.78 13.97 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "Block" (at 144.78 16.256 0)
+    (property "Value" "CardsReset" (at 144.78 16.256 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Button_Switch_THT:SW_PUSH_6mm" (at 144.78 15.24 0)

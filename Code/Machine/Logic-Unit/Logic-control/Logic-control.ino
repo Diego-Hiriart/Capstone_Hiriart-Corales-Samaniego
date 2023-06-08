@@ -40,7 +40,6 @@ const uint16_t timeDisplayThreshold = 10000;  //Threshold that indicates if tent
 //Machine status
 bool pointsIncAuto = true;     //Points increase automatic or not
 uint8_t currentBuzzAlert = 0;  //Current alert that must play, values 1 to 5
-bool blocked = false;          //Blocked for inputs
 //Cards
 bool yCardLeft = false;
 bool rCardLeft = false;
@@ -175,8 +174,11 @@ void handleRemote(String receivedCommand) {
   //Command handling, if command is 0 (invalid) or 37 (synch) do nothing
   switch (commandID) {
     case 22:
-      blocked = !blocked;
-      currentBuzzAlert = 4;  //Play 3 beeps to indicate blocking command was received and executed
+      yCardLeft = false;
+      rCardLeft = false;
+      yCardRight = false;
+      rCardRight = false;
+      currentBuzzAlert = 2;  //Play 1 beep to indicate command was received and executed
       break;
     case 23:
       {
@@ -189,7 +191,7 @@ void handleRemote(String receivedCommand) {
           rightPriority = true;
         }
       }
-      currentBuzzAlert = 2;  //Play 1 beep to indicate command was received and executed
+      currentBuzzAlert = 2;
       break;
     case 24:
       //If the yellow card has already been assigned, it becomes a red and a touch against
@@ -258,12 +260,14 @@ void handleRemote(String receivedCommand) {
       //Machine status
       pointsIncAuto = true;  //Points increase automatic or not
       currentBuzzAlert = 0;  //Current alert that must play, values 1 to 5
-      blocked = false;       //Blocked for inputs
       //Cards
       yCardLeft = false;
       rCardLeft = false;
       yCardRight = false;
       rCardRight = false;
+      //Time editing vars
+      editingTime = false;
+      currentlyEditing = 0;  //0 for mins, 1 for s, 2 for tenths, 3 for hundredths
       currentBuzzAlert = 2;
       break;
     case 31:
@@ -272,7 +276,6 @@ void handleRemote(String receivedCommand) {
         uint8_t tempLeft = leftScore;
         leftScore = rightScore;
         rightScore = tempLeft;
-        blocked = !blocked;
       }
       currentBuzzAlert = 2;
       break;
@@ -546,7 +549,7 @@ void checkTouches() {
 
 void sendLEDsTimerPeriod() {
   /*Send string like:
-  * start;time(in ms);paused;period;leftYellow;leftRed;rightYellow;rightRed;leftPriority;rightPriority;autoPoints;machineBlocked;buzzerPattern;end\n
+  * start;time(in ms);paused;period;leftYellow;leftRed;rightYellow;rightRed;leftPriority;rightPriority;autoPoints;editingTime;buzzerPattern;end\n
   * e.g. (1.5 used minutes): s;0000090000;0;2;1;1;1;0;0;0;1;0;3;e\n
   */
   int32_t timerTime = setTime - elapsedTime;
@@ -570,7 +573,7 @@ void sendLEDsTimerPeriod() {
   message += String(leftPriority) + messageSeparator;
   message += String(rightPriority) + messageSeparator;
   message += String(pointsIncAuto) + messageSeparator;
-  message += String(blocked) + messageSeparator;
+  message += String(editingTime) + messageSeparator;
   message += String(currentBuzzAlert) + messageSeparator;
   message += messageEndDelimiter;
   int charMessageLength = message.length() + 1;

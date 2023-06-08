@@ -3,7 +3,7 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 //Declare input pins for buttons
-const uint8_t block = 22;
+const uint8_t resetCards = 22;
 const uint8_t pAuto = 23;
 const uint8_t yCardL = 24;
 const uint8_t rCardL = 25;
@@ -46,7 +46,7 @@ const byte address[6] = "46920";  //Same for all remotes and machines, ID will b
 
 void setup() {
   //Set button pins for input pullup
-  pinMode(block, INPUT_PULLUP);
+  pinMode(resetCards, INPUT_PULLUP);
   pinMode(pAuto, INPUT_PULLUP);
   pinMode(yCardL, INPUT_PULLUP);
   pinMode(rCardL, INPUT_PULLUP);
@@ -90,8 +90,8 @@ void loop() {
 }
 
 void checkButtonPress() {
-  if (digitalRead(block) == LOW) {
-    updateButtonStatuses(block, LOW);
+  if (digitalRead(resetCards) == LOW) {
+    updateButtonStatuses(resetCards, LOW);
   }
   if (digitalRead(pAuto) == LOW) {
     updateButtonStatuses(pAuto, LOW);
