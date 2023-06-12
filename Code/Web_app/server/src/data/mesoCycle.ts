@@ -61,21 +61,43 @@ export async function createMesoCycle(data: MesoCycle) {
       },
     });
 
-    const dates = getDates(mesoCycle.startDate, mesoCycle.endDate);
+    const dates = getMicroCyclesDates(mesoCycle.startDate, mesoCycle.endDate);
+
+    const microCycles = [];
 
     for (let i = 0; i < dates.length; i++) {
-      await prisma.microCycle.create({
-        data: {
-          startDate: dates[i].begin,
-          endDate: dates[i].end,
-          mesoCycle: {
-            connect: {
-              mesoCycleID: mesoCycle.mesoCycleID,
+      microCycles.push(
+        await prisma.microCycle.create({
+          data: {
+            startDate: dates[i].begin,
+            endDate: dates[i].end,
+            mesoCycle: {
+              connect: {
+                mesoCycleID: mesoCycle.mesoCycleID,
+              },
             },
           },
-        },
-      });
+        })
+      );
     }
+
+    const dailyPlansDate = microCycles.map((cycle) =>
+      getDaysArray(cycle.startDate, cycle.endDate, cycle.microCycleID)
+    );
+
+    console.log(dailyPlansDate);
+
+    dailyPlansDate.forEach((dates) =>
+      dates.forEach(
+        async (date) =>
+          await prisma.dailyPlan.create({
+            data: {
+              date: date.date,
+              microCycleID: date.id,
+            },
+          })
+      )
+    );
 
     return mesoCycle;
   } catch (error) {
@@ -88,7 +110,23 @@ interface DateRange {
   end: Date;
 }
 
-const getDates = (startDate: Date, endDate: Date): DateRange[] => {
+const getDaysArray = (start: Date, end: Date, id: number) => {
+  const arr = [];
+  const startDate: Date = new Date(start);
+  const endDate: Date = new Date(end);
+
+  for (
+    let dt = new Date(startDate);
+    dt <= endDate;
+    dt.setDate(dt.getDate() + 1)
+  ) {
+    arr.push({ id: id, date: new Date(dt) });
+  }
+
+  return arr;
+};
+
+const getMicroCyclesDates = (startDate: Date, endDate: Date): DateRange[] => {
   const addDays = (date: Date, days: number): Date => {
     const newDate = new Date(date);
     newDate.setDate(newDate.getDate() + days);
@@ -117,7 +155,7 @@ const getDates = (startDate: Date, endDate: Date): DateRange[] => {
         dates.push({ begin: newStart, end: endWeekDate });
       }
 
-      newStart = addDays(newStart, 7);
+      newStart = addDays(monday, 8);
       monday = addDays(monday, 7);
     }
 

@@ -69,9 +69,6 @@ const GroupMesoCycle = () => {
                 component={RouterLink}
                 to={String(cycle.mesoCycleID)}
               >
-                <ListItemAvatar>
-                  <Avatar></Avatar>
-                </ListItemAvatar>
                 <ListItemText
                   primary={`${formatDate(cycle.startDate)} - 
                   ${formatDate(cycle.endDate)}`}

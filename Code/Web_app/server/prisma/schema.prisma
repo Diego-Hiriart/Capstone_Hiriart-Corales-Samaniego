@@ -191,8 +191,8 @@ model DailyPlan {
   microCycle        MicroCycle          @relation(fields: [microCycleID], references: [microCycleID])
   microCycleID      Int
   date              DateTime
-  activityType      ActivityType        @relation(fields: [activityTypeID], references: [activityTypeID])
-  activityTypeID    Int
+  activityType      ActivityType?       @relation(fields: [activityTypeID], references: [activityTypeID])
+  activityTypeID    Int?
   dailyPlanActivity DailyPlanActivity[]
 }
 
