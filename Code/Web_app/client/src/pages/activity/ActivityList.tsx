@@ -72,9 +72,6 @@ const ActivityList = () => {
           {activityTypes?.map((type) => (
             <ListItem key={type.activityTypeID} disablePadding>
               <ListItemButton sx={{ px: 1 }}>
-                <ListItemAvatar>
-                  <Avatar></Avatar>
-                </ListItemAvatar>
                 <ListItemText primary={type.name} />
               </ListItemButton>
               <Button variant="text" onClick={() => handleRemoveOpen(type)}>
