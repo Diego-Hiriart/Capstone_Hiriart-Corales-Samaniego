@@ -35,8 +35,6 @@ const ActivityAddType = ({ open, handleClose }: ActivityAddTypeProps) => {
 
   const onSubmit: SubmitHandler<ActivityAddTypeForm> = async (formData) => {
     try {
-      console.log(formData);
-
       await axios.post("/dashboard/activity_type/", {
         data: {
           name: formData.name,

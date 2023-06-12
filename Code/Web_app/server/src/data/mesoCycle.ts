@@ -85,8 +85,6 @@ export async function createMesoCycle(data: MesoCycle) {
       getDaysArray(cycle.startDate, cycle.endDate, cycle.microCycleID)
     );
 
-    console.log(dailyPlansDate);
-
     dailyPlansDate.forEach((dates) =>
       dates.forEach(
         async (date) =>
