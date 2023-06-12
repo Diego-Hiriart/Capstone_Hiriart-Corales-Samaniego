@@ -26,9 +26,6 @@ const schema = z.object({
   name: z.string(),
   period: z.string(),
   stage: z.string(),
-  physicalScore: z.string(),
-  technicalScore: z.string(),
-  tacticalScore: z.string(),
 });
 
 type GroupAddMesocycleForm = z.infer<typeof schema>;
@@ -71,9 +68,6 @@ const GroupAddMesocycle = ({
           endDate: endDate,
           period: formData.period,
           stage: formData.stage,
-          physicalScore: Number(formData.physicalScore),
-          technicalScore: Number(formData.technicalScore),
-          tacticalScore: Number(formData.tacticalScore),
         },
       });
       navigate(0);
@@ -156,42 +150,6 @@ const GroupAddMesocycle = ({
                 {...register("stage")}
                 error={!!errors.stage}
                 helperText={errors.stage?.message}
-              />
-              <TextField
-                type="number"
-                required
-                fullWidth
-                margin="normal"
-                id="physicalScore"
-                label="Puntaje físico"
-                autoFocus
-                {...register("physicalScore")}
-                error={!!errors.physicalScore}
-                helperText={errors.physicalScore?.message}
-              />
-              <TextField
-                type="number"
-                required
-                fullWidth
-                margin="normal"
-                id="technicalScore"
-                label="Puntaje técnico"
-                autoFocus
-                {...register("technicalScore")}
-                error={!!errors.technicalScore}
-                helperText={errors.technicalScore?.message}
-              />
-              <TextField
-                type="number"
-                required
-                fullWidth
-                margin="normal"
-                id="tacticalScore"
-                label="Puntaje táctico"
-                autoFocus
-                {...register("tacticalScore")}
-                error={!!errors.tacticalScore}
-                helperText={errors.tacticalScore?.message}
               />
               <Button
                 type="submit"

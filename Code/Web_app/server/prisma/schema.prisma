@@ -156,9 +156,9 @@ model MesoCycle {
   endDate         DateTime
   period          String          @db.VarChar(50)
   stage           String          @db.VarChar(100)
-  physicalScore   Int             @db.SmallInt
-  technicalScore  Int             @db.SmallInt
-  tacticalScore   Int             @db.SmallInt
+  physicalScore   Int             @default(0) @db.SmallInt
+  technicalScore  Int             @default(0) @db.SmallInt
+  tacticalScore   Int             @default(0) @db.SmallInt
   cycleGoal       CycleGoal[]
   cycleFeedback   CycleFeedback[]
   microCycle      MicroCycle[]
