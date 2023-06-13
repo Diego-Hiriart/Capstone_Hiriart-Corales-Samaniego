@@ -4,65 +4,95 @@ import {
   Container,
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "../../services/axios";
-import { DailyPlan, MesoCycle, MicroCycle } from "../../types";
+import { DailyPlanFull, MesoCycleFull, MicroCycle } from "../../types";
 import { formatDate } from "../../utils/formatDate";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import MesoCycleAddPlan from "./MesoCycleAddPlan";
+import MesoCycleMicroLoad from "./MesoCycleMicroLoad";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
   const [microCycles, setMicroCycles] = useState<MicroCycle[]>(null!);
-  const [mesoCycle, setMesoCycle] = useState<MesoCycle>(null!);
+  const [mesoCycle, setMesoCycle] = useState<MesoCycleFull>(null!);
   const [currentCycle, setCurrentCycle] = useState<MicroCycle>(null!);
-  const [cyclePlans, setCyclePlans] = useState<DailyPlan[]>(null!);
-  const [days, setDays] = useState<Date[]>(null!);
-
-  console.log(mesoCycle);
-  console.log(microCycles);
-  console.log(currentCycle);
-
-  console.log(cyclePlans);
-  console.log(days);
+  const [cyclePlans, setCyclePlans] = useState<DailyPlanFull[]>(null!);
+  const [currentPlan, setCurrentPlan] = useState<DailyPlanFull>(null!);
+  const [openAddActivity, setOpenAddActivity] = useState(false);
+  const [openLoad, setOpenLoad] = useState(false);
+  const [index, setIndex] = useState<number>(0);
 
   useEffect(() => {
-    const fetchGroup = async () => {
+    const fetchCycle = async () => {
       const { data } = await axios.get("/dashboard/meso_cycle/" + id);
 
       setMesoCycle(data.data);
-      setMicroCycles(data.data.microCycle);
-      setCurrentCycle(data.data.microCycle[0]);
+      setMicroCycles(sortByDate(data.data.microCycle));
+      setCurrentCycle(sortByDate(data.data.microCycle)[0]);
       setCyclePlans(data.data.microCycle[0].dailyPlan);
-      setDays(
-        dateRange(
-          new Date(data.data.microCycle[0].startDate),
-          new Date(data.data.microCycle[0].endDate)
-        )
-      );
     };
 
-    fetchGroup();
+    fetchCycle();
   }, []);
 
-  const dateRange = (startDate: Date, endDate: Date, steps = 1) => {
-    const dateArray = [];
-    let currentDate = new Date(startDate);
+  const sortByDate = (microCycles: MicroCycle[]) => {
+    return microCycles.sort(
+      (a: MicroCycle, b: MicroCycle) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+  };
 
-    while (currentDate <= new Date(endDate)) {
-      dateArray.push(new Date(currentDate));
-      currentDate.setUTCDate(currentDate.getDate() + steps);
+  const nextCycle = () => {
+    const i = index + 1;
+    const newI = Math.max(0, Math.min(i, mesoCycle.microCycle.length - 1));
+    setCurrentCycle(mesoCycle.microCycle[newI]);
+    setCyclePlans(mesoCycle.microCycle[newI].dailyPlan);
+    setIndex(newI);
+  };
+
+  const previousCycle = () => {
+    const i = index - 1;
+    const newI = Math.max(0, Math.min(i, mesoCycle.microCycle.length - 1));
+    setCurrentCycle(mesoCycle.microCycle[newI]);
+    setCyclePlans(mesoCycle.microCycle[newI].dailyPlan);
+    setIndex(newI);
+  };
+
+  const handleOpenAddActivity = (dailyPlan: DailyPlanFull) => {
+    setCurrentPlan(dailyPlan);
+    setOpenAddActivity(true);
+  };
+
+  const handleCloseAddActivity = () => {
+    setOpenAddActivity(false);
+  };
+
+  const handleOpenLoad = (cycle: MicroCycle) => {
+    setCurrentCycle(cycle);
+    setOpenLoad(true);
+  };
+
+  const handleCloseLoad = () => {
+    setOpenLoad(false);
+  };
+
+  const hasSunday = (startDate: Date, endDate: Date) => {
+    for (
+      let currentDate = new Date(startDate);
+      currentDate <= endDate;
+      currentDate.setDate(currentDate.getDate() + 1)
+    ) {
+      if (currentDate.getDay() === 0) {
+        return true; // Sunday found
+      }
     }
 
-    return dateArray;
+    return false; // No Sunday found
   };
 
   return (
@@ -90,19 +120,26 @@ const MesoCycleDetails = () => {
                   {formatDate(currentCycle.startDate)} -{" "}
                   {formatDate(currentCycle.endDate)}
                 </Typography>
-                <Button>
+                <Button sx={{ padding: 0 }} onClick={previousCycle}>
                   <ArrowBackIosIcon />
                 </Button>
-                <Button>
+                <Button onClick={nextCycle}>
                   <ArrowForwardIosIcon />
+                </Button>
+                <Button
+                  sx={{ marginTop: "2rem" }}
+                  variant="contained"
+                  onClick={() => handleOpenLoad(currentCycle)}
+                >
+                  Cambiar carga
                 </Button>
               </Box>
 
               <Box sx={{ flexGrow: 1 }}>
                 <Grid
                   container
-                  spacing={2}
                   sx={{
+                    marginTop: "1rem",
                     "--Grid-borderWidth": "1px",
                     borderTop: "var(--Grid-borderWidth) solid",
                     borderLeft: "var(--Grid-borderWidth) solid",
@@ -114,20 +151,57 @@ const MesoCycleDetails = () => {
                     },
                   }}
                 >
-                  {days.map((item) => {
-                    return (
-                      <Grid item xs={12 / days.length}>
-                        <Typography>
-                          {item
-                            .toLocaleDateString("es-mx", {
-                              weekday: "long",
-                            })
-                            .toUpperCase()}{" "}
-                          {item.getDate()}
-                        </Typography>
-                      </Grid>
-                    );
-                  })}
+                  {currentCycle.dailyPlan
+                    .sort(
+                      (a, b) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime()
+                    )
+                    .map((item) => {
+                      return new Date(item.date).getDay() === 0 ? undefined : (
+                        <Grid
+                          item
+                          sx={{
+                            textAlign: "center",
+                          }}
+                          xs={
+                            12 /
+                            (hasSunday(
+                              new Date(currentCycle.startDate),
+                              new Date(currentCycle.endDate)
+                            )
+                              ? cyclePlans.length - 1
+                              : cyclePlans.length)
+                          }
+                        >
+                          <Box>
+                            <Typography
+                              sx={{ fontWeight: "bold" }}
+                              variant="h5"
+                            >
+                              {new Date(item.date)
+                                .toLocaleDateString("es-mx", {
+                                  weekday: "long",
+                                })
+                                .toUpperCase()}{" "}
+                              {new Date(item.date).getDate()}
+                            </Typography>
+                            <Divider></Divider>
+                          </Box>
+
+                          <Typography sx={{ fontWeight: "bold" }}>
+                            {item.activityType?.name}
+                          </Typography>
+
+                          <Button
+                            sx={{ marginTop: "2rem" }}
+                            variant="contained"
+                            onClick={() => handleOpenAddActivity(item)}
+                          >
+                            +
+                          </Button>
+                        </Grid>
+                      );
+                    })}
                 </Grid>
               </Box>
             </>
@@ -136,6 +210,17 @@ const MesoCycleDetails = () => {
           )}
         </Box>
       </Box>
+      <MesoCycleAddPlan
+        cycle={currentCycle}
+        handleClose={handleCloseAddActivity}
+        open={openAddActivity}
+        dailyPlan={currentPlan}
+      />
+      <MesoCycleMicroLoad
+        cycle={currentCycle}
+        handleClose={handleCloseLoad}
+        open={openLoad}
+      />
     </Container>
   );
 };

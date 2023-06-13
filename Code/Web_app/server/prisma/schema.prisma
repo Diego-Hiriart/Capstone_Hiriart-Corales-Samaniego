@@ -156,9 +156,9 @@ model MesoCycle {
   endDate         DateTime
   period          String          @db.VarChar(50)
   stage           String          @db.VarChar(100)
-  physicalScore   Int             @db.SmallInt
-  technicalScore  Int             @db.SmallInt
-  tacticalScore   Int             @db.SmallInt
+  physicalScore   Int             @default(0) @db.SmallInt
+  technicalScore  Int             @default(0) @db.SmallInt
+  tacticalScore   Int             @default(0) @db.SmallInt
   cycleGoal       CycleGoal[]
   cycleFeedback   CycleFeedback[]
   microCycle      MicroCycle[]
@@ -170,19 +170,19 @@ model MicroCycle {
   mesoCycleID              Int
   startDate                DateTime
   endDate                  DateTime
-  speed                    Int?        @db.SmallInt
-  coordination             Int?        @db.SmallInt
-  resistance               Int?        @db.SmallInt
-  strength                 Int?        @db.SmallInt
-  individualLessons        Int?        @db.SmallInt
-  groupLessons             Int?        @db.SmallInt
-  pairWork                 Int?        @db.SmallInt
-  individualWork           Int?        @db.SmallInt
-  technicalBasedCombats    Int?        @db.SmallInt
-  trainingTournament       Int?        @db.SmallInt
-  freeCombat               Int?        @db.SmallInt
-  tacticalIndividualLesson Int?        @db.SmallInt
-  competitionAnalysis      Int?        @db.SmallInt
+  speed                    Int?        @default(0) @db.SmallInt
+  coordination             Int?        @default(0) @db.SmallInt
+  resistance               Int?        @default(0) @db.SmallInt
+  strength                 Int?        @default(0) @db.SmallInt
+  individualLessons        Int?        @default(0) @db.SmallInt
+  groupLessons             Int?        @default(0) @db.SmallInt
+  pairWork                 Int?        @default(0) @db.SmallInt
+  individualWork           Int?        @default(0) @db.SmallInt
+  technicalBasedCombats    Int?        @default(0) @db.SmallInt
+  trainingTournament       Int?        @default(0) @db.SmallInt
+  freeCombat               Int?        @default(0) @db.SmallInt
+  tacticalIndividualLesson Int?        @default(0) @db.SmallInt
+  competitionAnalysis      Int?        @default(0) @db.SmallInt
   dailyPlan                DailyPlan[]
 }
 
@@ -191,8 +191,8 @@ model DailyPlan {
   microCycle        MicroCycle          @relation(fields: [microCycleID], references: [microCycleID])
   microCycleID      Int
   date              DateTime
-  activityType      ActivityType        @relation(fields: [activityTypeID], references: [activityTypeID])
-  activityTypeID    Int
+  activityType      ActivityType?       @relation(fields: [activityTypeID], references: [activityTypeID])
+  activityTypeID    Int?
   dailyPlanActivity DailyPlanActivity[]
 }
 

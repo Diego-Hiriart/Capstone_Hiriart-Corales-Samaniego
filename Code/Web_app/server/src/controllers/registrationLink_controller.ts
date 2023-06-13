@@ -112,7 +112,6 @@ export async function checkTokenValid(req: Request, res: Response) {
     const token = req.query.t?.toString() ?? "";
     const tokenData = jwt.verify(token, jwtSecret) as RegistrationLink;
     const link = await findRegistrationLinkByEmail(tokenData.email);
-    console.log(link);
     if (!link) {
       throw new Error("Token invalid");
     }
