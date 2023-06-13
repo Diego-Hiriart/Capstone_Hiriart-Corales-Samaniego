@@ -113,7 +113,6 @@ const MesoCycleDetails = () => {
               <Box sx={{ flexGrow: 1 }}>
                 <Grid
                   container
-                  spacing={2}
                   sx={{
                     marginTop: "1rem",
                     "--Grid-borderWidth": "1px",
@@ -136,7 +135,9 @@ const MesoCycleDetails = () => {
                       return new Date(item.date).getDay() === 0 ? undefined : (
                         <Grid
                           item
-                          sx={{ padding: 0, textAlign: "center" }}
+                          sx={{
+                            textAlign: "center",
+                          }}
                           xs={
                             12 /
                             (hasSunday(
@@ -148,7 +149,10 @@ const MesoCycleDetails = () => {
                           }
                         >
                           <Box>
-                            <Typography>
+                            <Typography
+                              sx={{ fontWeight: "bold" }}
+                              variant="h5"
+                            >
                               {new Date(item.date)
                                 .toLocaleDateString("es-mx", {
                                   weekday: "long",
