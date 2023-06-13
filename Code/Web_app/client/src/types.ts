@@ -17,17 +17,21 @@ export interface TrainingGroupFull extends TrainingGroup {
   mesoCycle: MesoCycle[];
 }
 
-export type DailyPlanFull = DailyPlan & {
-  activityType:
-    | (ActivityType & {
-        activity: Activity[];
-      })
-    | null;
-};
+export interface DailyPlanFull extends DailyPlan {
+  activityType: ActivityType;
+}
+
+// export type DailyPlanFull = DailyPlan & {
+//   activityType:
+//     | (ActivityType & {
+//         activity: Activity[];
+//       })
+//     | null;
+// };
 
 export type MesoCycleFull = MesoCycle & {
   microCycle: (MicroCycle & {
-    dailyPlan: (DailyPlan & {
+    dailyPlan: (DailyPlanFull & {
       activityType:
         | (ActivityType & {
             activity: Activity[];
@@ -215,7 +219,7 @@ export type MicroCycle = {
   freeCombat: number | null;
   tacticalIndividualLesson: number | null;
   competitionAnalysis: number | null;
-  dailyPlan: DailyPlan[];
+  dailyPlan: DailyPlanFull[];
 };
 
 /**

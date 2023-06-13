@@ -23,6 +23,7 @@ const MesoCycleDetails = () => {
   const [cyclePlans, setCyclePlans] = useState<DailyPlanFull[]>(null!);
   const [currentPlan, setCurrentPlan] = useState<DailyPlanFull>(null!);
   const [openAddActivity, setOpenAddActivity] = useState(false);
+  const [index, setIndex] = useState<number>(0);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -37,6 +38,22 @@ const MesoCycleDetails = () => {
     fetchGroup();
   }, []);
 
+  const nextCycle = () => {
+    const i = index + 1;
+    const newI = Math.max(0, Math.min(i, mesoCycle.microCycle.length - 1));
+    setCurrentCycle(mesoCycle.microCycle[newI]);
+    setCyclePlans(mesoCycle.microCycle[newI].dailyPlan);
+    setIndex(newI);
+  };
+
+  const previousCycle = () => {
+    const i = index - 1;
+    const newI = Math.max(0, Math.min(i, mesoCycle.microCycle.length - 1));
+    setCurrentCycle(mesoCycle.microCycle[newI]);
+    setCyclePlans(mesoCycle.microCycle[newI].dailyPlan);
+    setIndex(newI);
+  };
+
   const handleOpenAddActivity = (dailyPlan: DailyPlanFull) => {
     setCurrentPlan(dailyPlan);
     setOpenAddActivity(true);
@@ -44,6 +61,20 @@ const MesoCycleDetails = () => {
 
   const handleCloseAddActivity = () => {
     setOpenAddActivity(false);
+  };
+
+  const hasSunday = (startDate: Date, endDate: Date) => {
+    for (
+      let currentDate = new Date(startDate);
+      currentDate <= endDate;
+      currentDate.setDate(currentDate.getDate() + 1)
+    ) {
+      if (currentDate.getDay() === 0) {
+        return true; // Sunday found
+      }
+    }
+
+    return false; // No Sunday found
   };
 
   return (
@@ -71,10 +102,10 @@ const MesoCycleDetails = () => {
                   {formatDate(currentCycle.startDate)} -{" "}
                   {formatDate(currentCycle.endDate)}
                 </Typography>
-                <Button>
+                <Button onClick={previousCycle}>
                   <ArrowBackIosIcon />
                 </Button>
-                <Button>
+                <Button onClick={nextCycle}>
                   <ArrowForwardIosIcon />
                 </Button>
               </Box>
@@ -95,14 +126,25 @@ const MesoCycleDetails = () => {
                     },
                   }}
                 >
-                  {cyclePlans
+                  {currentCycle.dailyPlan
                     .sort(
                       (a, b) =>
                         new Date(a.date).getTime() - new Date(b.date).getTime()
                     )
                     .map((item) => {
-                      return (
-                        <Grid item xs={12 / cyclePlans.length}>
+                      return new Date(item.date).getDay() === 0 ? undefined : (
+                        <Grid
+                          item
+                          xs={
+                            12 /
+                            (hasSunday(
+                              new Date(currentCycle.startDate),
+                              new Date(currentCycle.endDate)
+                            )
+                              ? cyclePlans.length - 1
+                              : cyclePlans.length)
+                          }
+                        >
                           <Typography>
                             {new Date(item.date)
                               .toLocaleDateString("es-mx", {
