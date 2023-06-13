@@ -3,7 +3,7 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 //Declare input pins for buttons
-const uint8_t block = 22;
+const uint8_t resetCards = 22;
 const uint8_t pAuto = 23;
 const uint8_t yCardL = 24;
 const uint8_t rCardL = 25;
@@ -46,7 +46,7 @@ const byte address[6] = "46920";  //Same for all remotes and machines, ID will b
 
 void setup() {
   //Set button pins for input pullup
-  pinMode(block, INPUT_PULLUP);
+  pinMode(resetCards, INPUT_PULLUP);
   pinMode(pAuto, INPUT_PULLUP);
   pinMode(yCardL, INPUT_PULLUP);
   pinMode(rCardL, INPUT_PULLUP);
@@ -90,8 +90,8 @@ void loop() {
 }
 
 void checkButtonPress() {
-  if (digitalRead(block) == LOW) {
-    updateButtonStatuses(block, LOW);
+  if (digitalRead(resetCards) == LOW) {
+    updateButtonStatuses(resetCards, LOW);
   }
   if (digitalRead(pAuto) == LOW) {
     updateButtonStatuses(pAuto, LOW);
@@ -108,6 +108,9 @@ void checkButtonPress() {
   if (digitalRead(incLeft) == LOW) {
     updateButtonStatuses(incLeft, LOW);
   }
+  if (digitalRead(oneMin) == LOW) {
+    updateButtonStatuses(oneMin, LOW);
+  }
   if (digitalRead(prevUnit) == LOW) {
     updateButtonStatuses(prevUnit, LOW);
   }
@@ -117,17 +120,17 @@ void checkButtonPress() {
   if (digitalRead(switchScores) == LOW) {
     updateButtonStatuses(switchScores, LOW);
   }
-  if (analogRead(upload) <= LOW) {
+  if (digitalRead(upload) == LOW) {
     updateButtonStatuses(upload, LOW);
   }
-  if (digitalRead(incPeriod) == HIGH) {  //High since it is pin 13
-    updateButtonStatuses(incPeriod, HIGH);
+  if (digitalRead(incPeriod) == LOW) {
+    updateButtonStatuses(incPeriod, LOW);
   }
   if (digitalRead(decTime) == LOW) {
     updateButtonStatuses(decTime, LOW);
   }
-  if (digitalRead(editTimeToggle) == HIGH) {  //High since it is pin 13
-    updateButtonStatuses(editTimeToggle, HIGH);
+  if (digitalRead(editTimeToggle) == LOW) {
+    updateButtonStatuses(editTimeToggle, LOW);
   }
   if (digitalRead(incTime) == LOW) {
     updateButtonStatuses(incTime, LOW);
@@ -156,7 +159,7 @@ void checkButtonPress() {
   if (digitalRead(nextUnit) == LOW) {
     updateButtonStatuses(nextUnit, LOW);
   }
-  if (analogRead(pauseRes) == LOW) {  //Check if analog reading indicates voltage close to LOW
+  if (digitalRead(pauseRes) == LOW) {
     updateButtonStatuses(pauseRes, LOW);
   }
 }

@@ -8,7 +8,7 @@ const uint8_t ic4511BPin = 3;
 const uint8_t ic4511CPin = 4;
 const uint8_t ic4511DPin = 5;
 const uint8_t autoPointsLEDPin = 6;
-const uint8_t blockedLEDPin = 7;
+const uint8_t editingTimeLEDPin = 7;
 const uint8_t leftYellowPin = 8;
 const uint8_t leftRedPin = 9;
 const uint8_t leftPriorityPin = A0;
@@ -50,7 +50,7 @@ uint8_t redCardR = 0;
 uint8_t leftPriority = 0;
 uint8_t rightPriority = 0;
 uint8_t automaticPoints = 0;
-uint8_t blockedMachine = 0;
+uint8_t editingTime = 0;
 uint8_t buzzerPattern = 0;
 uint8_t currentBuzzPattern[25];
 uint8_t currentPatternIndex = 0;
@@ -66,7 +66,7 @@ void setup() {
   pinMode(ic4511DPin, OUTPUT);
   //LED pins
   pinMode(autoPointsLEDPin, OUTPUT);
-  pinMode(blockedLEDPin, OUTPUT);
+  pinMode(editingTimeLEDPin, OUTPUT);
   pinMode(leftYellowPin, OUTPUT);
   pinMode(leftRedPin, OUTPUT);
   pinMode(rightYellowPin, OUTPUT);
@@ -83,7 +83,7 @@ void setup() {
   digitalWrite(ic4511DPin, LOW);
   //LEDs off
   digitalWrite(autoPointsLEDPin, LOW);
-  digitalWrite(blockedLEDPin, LOW);
+  digitalWrite(editingTimeLEDPin, LOW);
   digitalWrite(leftYellowPin, LOW);
   digitalWrite(leftRedPin, LOW);
   digitalWrite(rightYellowPin, LOW);
@@ -108,13 +108,13 @@ void loop() {
   cardsDisplay();
   priorityDisplay();
   autoPointsDisplay();
-  blockedDisplay();
+  editingTimeDisplay();
   buzzerAlert();
 }
 
 void serialReceive() {
   /*Read string like:
-  * start;time(in ms);paused;period;leftYellow;leftRed;rightYellow;rightRed;leftPriority;rightPriority;autoPoints;machineBlocked;buzzerPattern;end\n
+  * start;time(in ms);paused;period;leftYellow;leftRed;rightYellow;rightRed;leftPriority;rightPriority;autoPoints;editingTime;buzzerPattern;end\n
   * e.g. (1.5 used minutes): s;0000090000;0;2;1;1;1;0;0;0;1;0;3;e\n
   */
   if (Serial.available() >= messageLength) {
@@ -148,7 +148,7 @@ void serialReceive() {
       readValue = esp32Message.substring(29, 30);
       automaticPoints = readValue.toInt();
       readValue = esp32Message.substring(31, 32);
-      blockedMachine = readValue.toInt();
+      editingTime = readValue.toInt();
       readValue = esp32Message.substring(33, 34);
       buzzerPattern = readValue.toInt();
     } else {
@@ -222,8 +222,8 @@ void autoPointsDisplay() {
   digitalWrite(autoPointsLEDPin, automaticPoints);
 }
 
-void blockedDisplay() {
-  digitalWrite(blockedLEDPin, blockedMachine);
+void editingTimeDisplay() {
+  digitalWrite(editingTimeLEDPin, editingTime);
 }
 
 void setBuzzerPattern() {

@@ -220,7 +220,6 @@ export type MicroCycle = {
   tacticalIndividualLesson: number | null;
   competitionAnalysis: number | null;
   dailyPlan: DailyPlanFull[];
-};
 
 /**
  * Model DailyPlan

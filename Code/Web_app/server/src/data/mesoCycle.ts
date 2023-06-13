@@ -96,7 +96,6 @@ export async function createMesoCycle(data: MesoCycle) {
           })
       )
     );
-
     return mesoCycle;
   } catch (error) {
     throw error;
@@ -152,7 +151,6 @@ const getMicroCyclesDates = (startDate: Date, endDate: Date): DateRange[] => {
       } else {
         dates.push({ begin: newStart, end: endWeekDate });
       }
-
       newStart = addDays(monday, 8);
       monday = addDays(monday, 7);
     }
