@@ -7,6 +7,7 @@ import {
   poseDetectionAI,
   startCapture,
   stopCapture,
+  stopDetection,
 } from "./ai-pose-detection/index";
 import { isMobile } from "react-device-detect";
 import { css } from "@emotion/react";
@@ -30,6 +31,7 @@ function AITrainingDetection() {
 
   const handleStop = () => {
     stopCapture();
+    stopDetection();
     setIsCapturing(false);
   };
 

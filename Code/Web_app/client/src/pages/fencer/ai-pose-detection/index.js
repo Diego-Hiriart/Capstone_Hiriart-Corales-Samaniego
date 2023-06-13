@@ -16,7 +16,7 @@ let detector, camera;
 let rafId;
 let renderer = null;
 let useGpuRenderer = false;
-const detectionInterval = 83; //1/12 of a second (12 fps)
+const detectionInterval = 3000; //1/12 of a second (12 fps)
 
 const createDetector = async () => {
   const runtime = 'mediapipe';
@@ -30,9 +30,18 @@ const createDetector = async () => {
 
 const poseAnalysis = async (poseData) => {
   if (poseData?.length) {
-    // await axios.post("/dashboard/pose", {
-    //   data: poseData,
-    // })
+    try {
+      const response = await axios.post("/dashboard/pose-detection", {
+        data: poseData,
+      })
+      if (response.data.poseError) {
+        showError();
+      }
+    } catch (error) {
+      console.log(error);
+      camera.video.pause();
+      detector.dispose();
+    }
   }
 };
 
@@ -70,7 +79,7 @@ const renderResult = async () => {
 const renderPrediction = async () => {
   setInterval(async () => {
     await renderResult();
-    rafId = requestAnimationFrame(renderPrediction);
+    rafId = requestAnimationFrame(renderPrediction); 
   }, detectionInterval);
 };
 
@@ -90,4 +99,19 @@ export const startCapture = async () => {
 
 export const stopCapture = async () => {
   camera.video.pause();
+}
+
+export const stopDetection = async () => {
+  cancelAnimationFrame(rafId);
+  if (detector != null) {
+    detector.dispose();
+  }
+  if (camera != null) {
+    camera.video.pause();
+    camera.video.srcObject = null;
+  }
+}
+
+export const showError = () => {
+  
 }
