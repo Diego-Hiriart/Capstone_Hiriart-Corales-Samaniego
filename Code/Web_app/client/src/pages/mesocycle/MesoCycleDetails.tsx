@@ -4,35 +4,25 @@ import {
   Container,
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "../../services/axios";
-import { DailyPlan, MesoCycle, MicroCycle } from "../../types";
+import { DailyPlanFull, MesoCycleFull, MicroCycle } from "../../types";
 import { formatDate } from "../../utils/formatDate";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import MesoCycleAddPlan from "./MesoCycleAddPlan";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
   const [microCycles, setMicroCycles] = useState<MicroCycle[]>(null!);
-  const [mesoCycle, setMesoCycle] = useState<MesoCycle>(null!);
+  const [mesoCycle, setMesoCycle] = useState<MesoCycleFull>(null!);
   const [currentCycle, setCurrentCycle] = useState<MicroCycle>(null!);
-  const [cyclePlans, setCyclePlans] = useState<DailyPlan[]>(null!);
-  const [days, setDays] = useState<Date[]>(null!);
-
-  console.log(mesoCycle);
-  console.log(microCycles);
-  console.log(currentCycle);
-
-  console.log(cyclePlans);
-  console.log(days);
+  const [cyclePlans, setCyclePlans] = useState<DailyPlanFull[]>(null!);
+  const [currentPlan, setCurrentPlan] = useState<DailyPlanFull>(null!);
+  const [openAddActivity, setOpenAddActivity] = useState(false);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -42,27 +32,18 @@ const MesoCycleDetails = () => {
       setMicroCycles(data.data.microCycle);
       setCurrentCycle(data.data.microCycle[0]);
       setCyclePlans(data.data.microCycle[0].dailyPlan);
-      setDays(
-        dateRange(
-          new Date(data.data.microCycle[0].startDate),
-          new Date(data.data.microCycle[0].endDate)
-        )
-      );
     };
 
     fetchGroup();
   }, []);
 
-  const dateRange = (startDate: Date, endDate: Date, steps = 1) => {
-    const dateArray = [];
-    let currentDate = new Date(startDate);
+  const handleOpenAddActivity = (dailyPlan: DailyPlanFull) => {
+    setCurrentPlan(dailyPlan);
+    setOpenAddActivity(true);
+  };
 
-    while (currentDate <= new Date(endDate)) {
-      dateArray.push(new Date(currentDate));
-      currentDate.setUTCDate(currentDate.getDate() + steps);
-    }
-
-    return dateArray;
+  const handleCloseAddActivity = () => {
+    setOpenAddActivity(false);
   };
 
   return (
@@ -114,30 +95,38 @@ const MesoCycleDetails = () => {
                     },
                   }}
                 >
-                  {days.map((item) => {
-                    return (
-                      <Grid item xs={12 / days.length}>
-                        <Typography>
-                          {item
-                            .toLocaleDateString("es-mx", {
-                              weekday: "long",
-                            })
-                            .toUpperCase()}{" "}
-                          {item.getDate()}
-                        </Typography>
-                        <Divider></Divider>
+                  {cyclePlans
+                    .sort(
+                      (a, b) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime()
+                    )
+                    .map((item) => {
+                      return (
+                        <Grid item xs={12 / cyclePlans.length}>
+                          <Typography>
+                            {new Date(item.date)
+                              .toLocaleDateString("es-mx", {
+                                weekday: "long",
+                              })
+                              .toUpperCase()}{" "}
+                            {new Date(item.date).getDate()}
+                          </Typography>
+                          <Divider></Divider>
 
-                        <Typography>ADSADDSA</Typography>
-                        <Typography>ADSADDSA</Typography>
-                        <Typography>ADSADDSA</Typography>
+                          <Typography sx={{ fontWeight: "bold" }}>
+                            {item.activityType?.name}
+                          </Typography>
 
-                        <Typography>ADSADDSA</Typography>
-                        <Typography>ADSADDSA</Typography>
-                        <Typography>ADSADDSA</Typography>
-                        <Typography>ADSADDSA</Typography>
-                      </Grid>
-                    );
-                  })}
+                          <Button
+                            sx={{ marginTop: "2rem" }}
+                            variant="contained"
+                            onClick={() => handleOpenAddActivity(item)}
+                          >
+                            +
+                          </Button>
+                        </Grid>
+                      );
+                    })}
                 </Grid>
               </Box>
             </>
@@ -146,6 +135,12 @@ const MesoCycleDetails = () => {
           )}
         </Box>
       </Box>
+      <MesoCycleAddPlan
+        cycle={currentCycle}
+        handleClose={handleCloseAddActivity}
+        open={openAddActivity}
+        dailyPlan={currentPlan}
+      />
     </Container>
   );
 };

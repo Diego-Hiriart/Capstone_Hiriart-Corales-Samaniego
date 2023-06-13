@@ -17,6 +17,26 @@ export interface TrainingGroupFull extends TrainingGroup {
   mesoCycle: MesoCycle[];
 }
 
+export type DailyPlanFull = DailyPlan & {
+  activityType:
+    | (ActivityType & {
+        activity: Activity[];
+      })
+    | null;
+};
+
+export type MesoCycleFull = MesoCycle & {
+  microCycle: (MicroCycle & {
+    dailyPlan: (DailyPlan & {
+      activityType:
+        | (ActivityType & {
+            activity: Activity[];
+          })
+        | null;
+    })[];
+  })[];
+};
+
 /**
  * Model User
  *
