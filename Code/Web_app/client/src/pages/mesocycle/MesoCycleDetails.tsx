@@ -14,6 +14,7 @@ import { formatDate } from "../../utils/formatDate";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import MesoCycleAddPlan from "./MesoCycleAddPlan";
+import MesoCycleMicroLoad from "./MesoCycleMicroLoad";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
@@ -23,20 +24,28 @@ const MesoCycleDetails = () => {
   const [cyclePlans, setCyclePlans] = useState<DailyPlanFull[]>(null!);
   const [currentPlan, setCurrentPlan] = useState<DailyPlanFull>(null!);
   const [openAddActivity, setOpenAddActivity] = useState(false);
+  const [openLoad, setOpenLoad] = useState(false);
   const [index, setIndex] = useState<number>(0);
 
   useEffect(() => {
-    const fetchGroup = async () => {
+    const fetchCycle = async () => {
       const { data } = await axios.get("/dashboard/meso_cycle/" + id);
 
       setMesoCycle(data.data);
-      setMicroCycles(data.data.microCycle);
-      setCurrentCycle(data.data.microCycle[0]);
+      setMicroCycles(sortByDate(data.data.microCycle));
+      setCurrentCycle(sortByDate(data.data.microCycle)[0]);
       setCyclePlans(data.data.microCycle[0].dailyPlan);
     };
 
-    fetchGroup();
+    fetchCycle();
   }, []);
+
+  const sortByDate = (microCycles: MicroCycle[]) => {
+    return microCycles.sort(
+      (a: MicroCycle, b: MicroCycle) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    );
+  };
 
   const nextCycle = () => {
     const i = index + 1;
@@ -61,6 +70,15 @@ const MesoCycleDetails = () => {
 
   const handleCloseAddActivity = () => {
     setOpenAddActivity(false);
+  };
+
+  const handleOpenLoad = (cycle: MicroCycle) => {
+    setCurrentCycle(cycle);
+    setOpenLoad(true);
+  };
+
+  const handleCloseLoad = () => {
+    setOpenLoad(false);
   };
 
   const hasSunday = (startDate: Date, endDate: Date) => {
@@ -107,6 +125,13 @@ const MesoCycleDetails = () => {
                 </Button>
                 <Button onClick={nextCycle}>
                   <ArrowForwardIosIcon />
+                </Button>
+                <Button
+                  sx={{ marginTop: "2rem" }}
+                  variant="contained"
+                  onClick={() => handleOpenLoad(currentCycle)}
+                >
+                  Cambiar carga
                 </Button>
               </Box>
 
@@ -190,6 +215,11 @@ const MesoCycleDetails = () => {
         handleClose={handleCloseAddActivity}
         open={openAddActivity}
         dailyPlan={currentPlan}
+      />
+      <MesoCycleMicroLoad
+        cycle={currentCycle}
+        handleClose={handleCloseLoad}
+        open={openLoad}
       />
     </Container>
   );

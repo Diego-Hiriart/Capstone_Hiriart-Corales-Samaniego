@@ -1,0 +1,14 @@
+-- AlterTable
+ALTER TABLE "MicroCycle" ALTER COLUMN "speed" SET DEFAULT 0,
+ALTER COLUMN "coordination" SET DEFAULT 0,
+ALTER COLUMN "resistance" SET DEFAULT 0,
+ALTER COLUMN "strength" SET DEFAULT 0,
+ALTER COLUMN "individualLessons" SET DEFAULT 0,
+ALTER COLUMN "groupLessons" SET DEFAULT 0,
+ALTER COLUMN "pairWork" SET DEFAULT 0,
+ALTER COLUMN "individualWork" SET DEFAULT 0,
+ALTER COLUMN "technicalBasedCombats" SET DEFAULT 0,
+ALTER COLUMN "trainingTournament" SET DEFAULT 0,
+ALTER COLUMN "freeCombat" SET DEFAULT 0,
+ALTER COLUMN "tacticalIndividualLesson" SET DEFAULT 0,
+ALTER COLUMN "competitionAnalysis" SET DEFAULT 0;
