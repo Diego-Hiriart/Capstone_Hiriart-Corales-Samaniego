@@ -102,7 +102,7 @@ const MesoCycleDetails = () => {
                   {formatDate(currentCycle.startDate)} -{" "}
                   {formatDate(currentCycle.endDate)}
                 </Typography>
-                <Button onClick={previousCycle}>
+                <Button sx={{ padding: 0 }} onClick={previousCycle}>
                   <ArrowBackIosIcon />
                 </Button>
                 <Button onClick={nextCycle}>
@@ -115,6 +115,7 @@ const MesoCycleDetails = () => {
                   container
                   spacing={2}
                   sx={{
+                    marginTop: "1rem",
                     "--Grid-borderWidth": "1px",
                     borderTop: "var(--Grid-borderWidth) solid",
                     borderLeft: "var(--Grid-borderWidth) solid",
@@ -135,6 +136,7 @@ const MesoCycleDetails = () => {
                       return new Date(item.date).getDay() === 0 ? undefined : (
                         <Grid
                           item
+                          sx={{ padding: 0, textAlign: "center" }}
                           xs={
                             12 /
                             (hasSunday(
@@ -145,15 +147,17 @@ const MesoCycleDetails = () => {
                               : cyclePlans.length)
                           }
                         >
-                          <Typography>
-                            {new Date(item.date)
-                              .toLocaleDateString("es-mx", {
-                                weekday: "long",
-                              })
-                              .toUpperCase()}{" "}
-                            {new Date(item.date).getDate()}
-                          </Typography>
-                          <Divider></Divider>
+                          <Box>
+                            <Typography>
+                              {new Date(item.date)
+                                .toLocaleDateString("es-mx", {
+                                  weekday: "long",
+                                })
+                                .toUpperCase()}{" "}
+                              {new Date(item.date).getDate()}
+                            </Typography>
+                            <Divider></Divider>
+                          </Box>
 
                           <Typography sx={{ fontWeight: "bold" }}>
                             {item.activityType?.name}
