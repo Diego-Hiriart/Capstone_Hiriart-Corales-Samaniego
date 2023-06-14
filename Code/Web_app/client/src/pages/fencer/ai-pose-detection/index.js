@@ -30,18 +30,19 @@ const createDetector = async () => {
 
 const poseAnalysis = async (poseData) => {
   if (poseData?.length) {
-    try {
-      const response = await axios.post("/dashboard/pose-detection", {
-        data: poseData,
-      })
-      if (response.data.poseError) {
-        showError();
-      }
-    } catch (error) {
-      console.log(error);
-      camera.video.pause();
-      detector.dispose();
-    }
+    // try {
+    //   const response = await axios.post("/dashboard/pose-detection", {
+    //     data: poseData,
+    //   })
+    //   if (response.data.poseError) {
+    //     showError();
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   camera.video.pause();
+    //   detector.dispose();
+    // }
+    console.log(poseData);
   }
 };
 
@@ -76,11 +77,14 @@ const renderResult = async () => {
   renderer.draw(rendererParams);
 };
 
-const renderPrediction = async () => {
-  setInterval(async () => {
+let lastTime = 0;
+
+const renderPrediction = async (now) => {
+  if (now - lastTime >= detectionInterval) {
     await renderResult();
-    rafId = requestAnimationFrame(renderPrediction); 
-  }, detectionInterval);
+    lastTime = now;
+  }
+  requestAnimationFrame(renderPrediction); 
 };
 
 export const poseDetectionAI = async () => {
