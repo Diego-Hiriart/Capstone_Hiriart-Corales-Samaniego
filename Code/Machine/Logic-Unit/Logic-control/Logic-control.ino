@@ -84,17 +84,39 @@ const uint8_t synchCommand = 37;     //Command that must be sent to sync to new 
 RF24 radioRX(nRF24L01CEPin, nRF24L01CSNPin);  // CE, CSN
 const byte address[6] = "46920";
 
+//Battery and jack voltage reading
+const uint8_t battVoltagePin = 39;
+const uint8_t jackVoltagePin = 36;
+uint8_t batteryLow = 0;
+uint8_t lastBatteryLow = 0;
+//About 4V from DC jack
+//A small value of around 1200 will be read when tehre is no power, this is noise from the display arduino receiving serial data and kinda turning on
+const uint16_t lowJackVolts = 3000;
+//About 2.78V (after lowering 6.4V from 4xAA, 2.78 (5.4V in batt) or less means the batteries are dead)
+const uint16_t lowBattVolts = 3000;
+//Low battery indicator LED
+const uint8_t lowBattLEDPin = 27;
+//Power status
+bool powerLost = false;
+
 //EEPROM config
 /*Bytes needed, 4 for remote ID (ulong stored as chars), 
 * 4 for setTime (ulong stored as chars), 
 * 4 for elapsedTime (ulong stored as chars), 2 for scores (1 per score)
 */
-const uint8_t EEPROM_SIZE = 14;  //512 bytes available
+const uint8_t EEPROM_SIZE = 21;  //512 bytes available
 const uint8_t remoteIDAddress = 0;
 const uint8_t setTimeAddress = 4;
 const uint8_t elapsedTimeAddress = 8;
 const uint8_t leftScoreAddress = 12;
 const uint8_t rightScoreAddress = 13;
+const uint8_t leftYellowAddress = 14;
+const uint8_t leftRedAddress = 15;
+const uint8_t rightYellowAddress = 16;
+const uint8_t rightRedAddress = 17;
+const uint8_t leftPriorityAddress = 18;
+const uint8_t rightPriorityAddress = 19;
+const uint8_t periodAddress = 20;
 
 
 void setup() {
@@ -111,6 +133,11 @@ void setup() {
   //Buttons
   pinMode(toggleAutoPointsPin, INPUT_PULLDOWN);
   pinMode(synchPin, INPUT_PULLDOWN);
+  //Voltage reading
+  pinMode(battVoltagePin, INPUT);
+  pinMode(jackVoltagePin, INPUT);
+  //Low battery LED
+  pinMode(lowBattLEDPin, OUTPUT);
   //Radio RX
   radioRX.begin();
   radioRX.openReadingPipe(0, address);
@@ -118,16 +145,32 @@ void setup() {
   radioRX.setPALevel(RF24_PA_HIGH);  //-6dBM power amplifier
   radioRX.setAutoAck(false);         //Disable message ACK so it can read from any TX and just the id gets checked
   radioRX.startListening();
-  //Init EEPROM
+  //Read stored values from EEPROM
   EEPROM.begin(EEPROM_SIZE);
-  //Read stored remote value
   EEPROM.get(remoteIDAddress, synchedRemoteID);  //Writes directly to var
+  EEPROM.get(setTimeAddress, setTime);
+  EEPROM.get(elapsedTimeAddress, elapsedTime);
+  EEPROM.get(leftScoreAddress, leftScore);
+  EEPROM.get(rightScoreAddress, rightScore);
+  EEPROM.get(leftYellowAddress, yCardLeft);
+  EEPROM.get(leftRedAddress, rCardLeft);
+  EEPROM.get(rightYellowAddress, yCardRight);
+  EEPROM.get(rightRedAddress, rCardRight);
+  EEPROM.get(leftPriorityAddress, leftPriority);
+  EEPROM.get(rightPriorityAddress, rightPriority);
+  EEPROM.get(periodAddress, period);
   EEPROM.end();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (!paused) {  //No need to run this if action has stopped
+  //Check if main power source (5V DC Jack) has been lost
+  checkPower();
+  //Check if backup battery is low
+  checkBatttery();
+  lowBattIndicator();  //Update low batt indicator
+  //No need to run this if action has stopped
+  if (!paused) {
     //Update elapsed time and last count time
     elapsedTime += millis() - lastTimeUpdate;  //No need to update time if it is already paused
     lastTimeUpdate = millis();
@@ -143,6 +186,54 @@ void loop() {
   sendLEDsTimerPeriod();
   //Send score to score display units
   sendScores();
+}
+
+void checkPower() {
+  //Save time, cards, and score data if power was lost
+  if (analogRead(jackVoltagePin) > lowJackVolts) {
+    //If powerLost was set to true but the previous conditions was met, then power is not lost anymore
+    if (powerLost) {
+      powerLost = false;
+    }
+    return;
+  }
+  //If jack voltage was low, pause machine and save data in EEPROM (if battery not low to avoid issues)
+  if (!batteryLow && !powerLost) {
+    //Power has been lost
+    powerLost = true;
+    paused = true;
+    //Use EEPROM.put() to write, allows writing of any length but uses EEPROM.update() so it doesnt overwrite if value didnt change
+    EEPROM.begin(EEPROM_SIZE);
+    EEPROM.put(setTimeAddress, setTime);
+    EEPROM.put(elapsedTimeAddress, elapsedTime);
+    EEPROM.put(leftScoreAddress, leftScore);
+    EEPROM.put(rightScoreAddress, rightScore);
+    EEPROM.put(leftYellowAddress, yCardLeft);
+    EEPROM.put(leftRedAddress, rCardLeft);
+    EEPROM.put(rightYellowAddress, yCardRight);
+    EEPROM.put(rightRedAddress, rCardRight);
+    EEPROM.put(leftPriorityAddress, leftPriority);
+    EEPROM.put(rightPriorityAddress, rightPriority);
+    EEPROM.put(periodAddress, period);
+    EEPROM.end();
+  }
+}
+
+void checkBatttery() {
+  //Update battery status
+  if (analogRead(battVoltagePin) < lowBattVolts) {
+    lastBatteryLow = 1;
+  } else {
+    lastBatteryLow = 0;
+  }
+}
+
+void lowBattIndicator() {
+  //Update indicator (LED on or off) depending on batt status
+  if (lastBatteryLow != batteryLow) {
+    batteryLow = lastBatteryLow;
+    digitalWrite(lowBattLEDPin, batteryLow);
+  }
 }
 
 void checkTimerEnd() {
@@ -501,7 +592,7 @@ void syncRemote() {
   } else {
     //Store new ID
     synchedRemoteID = newRemoteID;
-    //Use EEPROM.put() to write, allowa writing of any length but uses EEPROM.update() so it doesnt overwrite if value didnt change
+    //Use EEPROM.put() to write, allows writing of any length but uses EEPROM.update() so it doesnt overwrite if value didnt change
     EEPROM.begin(EEPROM_SIZE);
     EEPROM.put(remoteIDAddress, synchedRemoteID);
     //Alert that sync was successful
