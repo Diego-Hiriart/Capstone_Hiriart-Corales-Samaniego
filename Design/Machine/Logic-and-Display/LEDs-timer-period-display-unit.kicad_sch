@@ -775,6 +775,7 @@
     )
   )
 
+
   (junction (at 116.84 48.26) (diameter 0) (color 0 0 0 0)
     (uuid 3e3b3910-3c48-4de8-87f7-605d990037c1)
   )
@@ -1834,7 +1835,7 @@
     (property "Value" "4511" (at 59.1059 44.45 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Socket:DIP_Socket-16_W4.3_W5.08_W7.62_W10.16_W10.9_3M_216-3340-00-0602J" (at 57.15 55.88 0)
+    (property "Footprint" "Package_DIP:DIP-16_W7.62mm" (at 57.15 55.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "" (at 57.15 55.88 0)
