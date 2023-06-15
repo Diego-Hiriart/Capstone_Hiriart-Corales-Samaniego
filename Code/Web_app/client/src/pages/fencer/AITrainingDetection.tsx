@@ -1,31 +1,87 @@
-import { useEffect, useState } from "react";
-/*Followed tehese tutorials:
- * - Real Time Pose Estimation with Tensorflow.Js and Javascript https://www.youtube.com/watch?v=PyxsziqatFE)
- * - BlazePose MediaPipe https://github.com/tensorflow/tfjs-models/tree/master/pose-detection/src/blazepose_mediapipe
- */
+import { useEffect, useRef, useState } from "react";
 import {
-  poseDetectionAI,
-  startCapture,
-  stopCapture,
-  stopDetection,
+  createDetector,
 } from "./ai-pose-detection/index";
 import { isMobile } from "react-device-detect";
 import { css } from "@emotion/react";
 import Navbar from "../../components/Navbar/Navbar";
 import { Box, Button } from "@mui/material";
+import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
+import axios from "../../services/axios";
+import { Camera } from "./ai-pose-detection/camera";
+import { STATE } from "./ai-pose-detection/params";
 
 function AITrainingDetection() {
   const [isCapturing, setIsCapturing] = useState(false);
+  const webcamRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  useEffect(() => {
-    const startCaptureAsync = async () => {
-      await startCapture();
-    };
-    startCaptureAsync();
-  }, []);
+  const detectionInterval = 1000;
+  let renderer: RendererCanvas2d;
+  let intervalId: number;
 
-  const handleStart = async () => {
-    await poseDetectionAI();
+  const init = () => {
+    if (!canvasRef.current || !webcamRef.current) return;
+    canvasRef.current.width = webcamRef.current.width;
+    canvasRef.current.height = webcamRef.current.height;
+    renderer = new RendererCanvas2d(canvasRef.current);
+    startCapture();
+  };
+
+  const startDetection = async () => {
+    try {
+      const detector = await createDetector();
+      intervalId = window.setInterval(() => {
+        detect(detector);
+      }, detectionInterval);
+    } catch (error) {
+      console.error("There was an error starting the detection: ", error);
+    }
+  };
+
+  const detect = async (detector: any) => {
+    if (!webcamRef.current) return;
+
+    // Get Video Properties
+    const videoWidth = webcamRef.current.videoWidth;
+    const videoHeight = webcamRef.current.videoHeight;
+
+    // Set video width
+    webcamRef.current.width = videoWidth;
+    webcamRef.current.height = videoHeight;
+
+    // Detect Pose
+    const pose = await detector.estimatePoses(webcamRef.current, {
+      maxPoses: 1,
+    });
+
+    // Send Pose to Backend
+    // poseAnalysis(pose)
+
+    drawCanvas(pose, videoWidth, videoHeight);
+  };
+
+  const drawCanvas = (pose: any, videoWidth: any, videoHeight: any) => {
+    if (!canvasRef.current) return;
+
+    canvasRef.current.width = videoWidth;
+    canvasRef.current.height = videoHeight;
+    const rendererParams = [webcamRef.current, pose, false];
+    renderer.draw(rendererParams);
+  };
+
+  const poseAnalysis = async (pose: any) => {
+    try {
+      const url = "/dashboard/pose-analysis";
+      const data = pose;
+      return await axios.post(url, data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleStart = () => {
+    startDetection();
     setIsCapturing(true);
   };
 
@@ -34,6 +90,21 @@ function AITrainingDetection() {
     stopDetection();
     setIsCapturing(false);
   };
+
+  const startCapture = async () => {
+    await Camera.setup(STATE.camera);
+    webcamRef.current?.play();
+  }
+
+  const stopCapture = async () => {
+    webcamRef.current?.pause();
+  }
+
+  const stopDetection = () => {
+    clearInterval(intervalId);
+  }
+
+  init();
 
   return (
     <div>
@@ -46,12 +117,14 @@ function AITrainingDetection() {
       <Box>
         <div className="canvas-wrapper" css={canvasWrapperStyles({ isMobile })}>
           <video
+            ref={webcamRef}
             css={[outputCanvasStyles({ isMobile }), webPaneStyles]}
             autoPlay
             playsInline
             id="video"
           ></video>
           <canvas
+            ref={canvasRef}
             css={[outputCanvasStyles({ isMobile }), renderPaneStyles]}
             id="output"
           ></canvas>

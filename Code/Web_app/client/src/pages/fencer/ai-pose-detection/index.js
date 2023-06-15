@@ -18,7 +18,7 @@ let renderer = null;
 let useGpuRenderer = false;
 const detectionInterval = 3000; //1/12 of a second (12 fps)
 
-const createDetector = async () => {
+export const createDetector = () => {
   const runtime = 'mediapipe';
   const model = poseDetection.SupportedModels.BlazePose;
   return poseDetection.createDetector(model, {
