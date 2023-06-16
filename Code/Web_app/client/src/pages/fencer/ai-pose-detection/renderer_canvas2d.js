@@ -73,13 +73,13 @@ const COLOR_PALETTE = [
 export class RendererCanvas2d {
   constructor(canvas) {
     this.ctx = canvas.getContext('2d');
-    this.scatterGLEl = document.querySelector('#scatter-gl-container');
-    this.scatterGL = new scatter.ScatterGL(this.scatterGLEl, {
-      rotateOnStart: true,
-      selectEnabled: false,
-      styles: { polyline: { defaultOpacity: 1, deselectedOpacity: 1 } },
-    });
-    this.scatterGLHasInitialized = false;
+    // this.scatterGLEl = document.querySelector('#scatter-gl-container');
+    // this.scatterGL = new scatter.ScatterGL(this.scatterGLEl, {
+    //   rotateOnStart: true,
+    //   selectEnabled: false,
+    //   styles: { polyline: { defaultOpacity: 1, deselectedOpacity: 1 } },
+    // });
+    // this.scatterGLHasInitialized = false;
     this.videoWidth = canvas.width;
     this.videoHeight = canvas.height;
     // this.flip(this.videoWidth, this.videoHeight);

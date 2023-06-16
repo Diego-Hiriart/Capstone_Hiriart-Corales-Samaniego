@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  createDetector,
-} from "./ai-pose-detection/index";
+import { createDetector } from "./ai-pose-detection/index";
 import { isMobile } from "react-device-detect";
 import { css } from "@emotion/react";
 import Navbar from "../../components/Navbar/Navbar";
@@ -10,33 +8,41 @@ import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
 import axios from "../../services/axios";
 import { Camera } from "./ai-pose-detection/camera";
 import { STATE } from "./ai-pose-detection/params";
+import { PoseDetector } from "@tensorflow-models/pose-detection";
+import { set } from "react-hook-form";
 
 function AITrainingDetection() {
   const [isCapturing, setIsCapturing] = useState(false);
+  const [renderer, setRenderer] = useState<RendererCanvas2d>();
+  const [detector, setDetector] = useState<PoseDetector>();
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const intervalId = useRef<number>();
 
-  const detectionInterval = 1000;
-  let renderer: RendererCanvas2d;
-  let intervalId: number;
+  const detectionInterval = 100;
 
-  const init = () => {
-    if (!canvasRef.current || !webcamRef.current) return;
-    canvasRef.current.width = webcamRef.current.width;
-    canvasRef.current.height = webcamRef.current.height;
-    renderer = new RendererCanvas2d(canvasRef.current);
-    startCapture();
-  };
-
-  const startDetection = async () => {
-    try {
-      const detector = await createDetector();
-      intervalId = window.setInterval(() => {
-        detect(detector);
-      }, detectionInterval);
-    } catch (error) {
-      console.error("There was an error starting the detection: ", error);
+  useEffect(() => {
+    const init = async () => {
+      if (!canvasRef.current || !webcamRef.current) return;
+      canvasRef.current.width = webcamRef.current.width;
+      canvasRef.current.height = webcamRef.current.height;
+      setRenderer(new RendererCanvas2d(canvasRef.current))
+      await Camera.setup(STATE.camera);
+      const blazePoseDetector = await createDetector();
+      setDetector(blazePoseDetector);
+      startCapture();
     }
+    init();
+  }, []);
+
+  const startDetection = () => {
+    if (!detector) {
+      console.error("Detector does not exist");
+      return;
+    }
+    intervalId.current = window.setInterval(() => {
+      detect(detector);
+    }, detectionInterval);
   };
 
   const detect = async (detector: any) => {
@@ -46,7 +52,7 @@ function AITrainingDetection() {
     const videoWidth = webcamRef.current.videoWidth;
     const videoHeight = webcamRef.current.videoHeight;
 
-    // Set video width
+    // Set video width and height
     webcamRef.current.width = videoWidth;
     webcamRef.current.height = videoHeight;
 
@@ -55,10 +61,11 @@ function AITrainingDetection() {
       maxPoses: 1,
     });
 
+    // Draw Pose
+    drawCanvas(pose, videoWidth, videoHeight);
+
     // Send Pose to Backend
     // poseAnalysis(pose)
-
-    drawCanvas(pose, videoWidth, videoHeight);
   };
 
   const drawCanvas = (pose: any, videoWidth: any, videoHeight: any) => {
@@ -67,44 +74,46 @@ function AITrainingDetection() {
     canvasRef.current.width = videoWidth;
     canvasRef.current.height = videoHeight;
     const rendererParams = [webcamRef.current, pose, false];
-    renderer.draw(rendererParams);
+    renderer?.draw(rendererParams);
   };
 
   const poseAnalysis = async (pose: any) => {
     try {
       const url = "/dashboard/pose-analysis";
       const data = pose;
-      return await axios.post(url, data);
+      const response = await axios.post(url, data);
+      return response;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     startDetection();
     setIsCapturing(true);
   };
 
   const handleStop = () => {
-    stopCapture();
+    // stopCapture();
     stopDetection();
     setIsCapturing(false);
   };
 
   const startCapture = async () => {
-    await Camera.setup(STATE.camera);
-    webcamRef.current?.play();
-  }
+    if (webcamRef.current?.paused) {
+      webcamRef.current?.play();
+    }
+  };
 
-  const stopCapture = async () => {
-    webcamRef.current?.pause();
-  }
+  const stopCapture = () => {
+    if (!webcamRef.current?.paused) {
+      webcamRef.current?.pause();
+    }
+  };
 
   const stopDetection = () => {
-    clearInterval(intervalId);
-  }
-
-  init();
+    clearInterval(intervalId.current);
+  };
 
   return (
     <div>
@@ -146,7 +155,6 @@ function AITrainingDetection() {
             </Button>
           )}
         </div>
-        <div id="scatter-gl-container"></div>
       </Box>
     </div>
   );
