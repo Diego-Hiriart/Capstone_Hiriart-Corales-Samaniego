@@ -9,16 +9,17 @@ import axios from "../../services/axios";
 import { Camera } from "./ai-pose-detection/camera";
 import { STATE } from "./ai-pose-detection/params";
 import { PoseDetector } from "@tensorflow-models/pose-detection";
-import { set } from "react-hook-form";
+import useCountdownTimer from "../../hooks/useCountdownTimer";
 
 function AITrainingDetection() {
-  const [isCapturing, setIsCapturing] = useState(false);
+  const [isDetecting, setIsDetecting] = useState(false);
   const [renderer, setRenderer] = useState<RendererCanvas2d>();
   const [detector, setDetector] = useState<PoseDetector>();
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalId = useRef<number>();
 
+  const countdown = 5;
   const detectionInterval = 100;
 
   useEffect(() => {
@@ -26,12 +27,12 @@ function AITrainingDetection() {
       if (!canvasRef.current || !webcamRef.current) return;
       canvasRef.current.width = webcamRef.current.width;
       canvasRef.current.height = webcamRef.current.height;
-      setRenderer(new RendererCanvas2d(canvasRef.current))
+      setRenderer(new RendererCanvas2d(canvasRef.current));
       await Camera.setup(STATE.camera);
       const blazePoseDetector = await createDetector();
       setDetector(blazePoseDetector);
       startCapture();
-    }
+    };
     init();
   }, []);
 
@@ -77,6 +78,7 @@ function AITrainingDetection() {
     renderer?.draw(rendererParams);
   };
 
+  // Sends pose to backend
   const poseAnalysis = async (pose: any) => {
     try {
       const url = "/dashboard/pose-analysis";
@@ -89,14 +91,16 @@ function AITrainingDetection() {
   };
 
   const handleStart = async () => {
+    if (isDetecting) return;
     startDetection();
-    setIsCapturing(true);
+    setIsDetecting(true);
   };
 
   const handleStop = () => {
-    // stopCapture();
+    if (!isDetecting) return;
+    resetTimer();
     stopDetection();
-    setIsCapturing(false);
+    setIsDetecting(false);
   };
 
   const startCapture = async () => {
@@ -105,22 +109,18 @@ function AITrainingDetection() {
     }
   };
 
-  const stopCapture = () => {
-    if (!webcamRef.current?.paused) {
-      webcamRef.current?.pause();
-    }
-  };
-
   const stopDetection = () => {
     clearInterval(intervalId.current);
   };
+
+  const { timer, startTimer, resetTimer, isRunning } = useCountdownTimer(countdown, handleStart);
 
   return (
     <div>
       {!isMobile && (
         <div>
           <Navbar />
-          <h1>AECQ - entrenamiento individual</h1>
+          <h1>AECQ - entrenamiento individual </h1>
         </div>
       )}
       <Box>
@@ -137,7 +137,7 @@ function AITrainingDetection() {
             css={[outputCanvasStyles({ isMobile }), renderPaneStyles]}
             id="output"
           ></canvas>
-          {isCapturing ? (
+          {isDetecting ? (
             <Button
               css={buttonStyles({ isMobile })}
               variant="outlined"
@@ -149,9 +149,10 @@ function AITrainingDetection() {
             <Button
               css={buttonStyles({ isMobile })}
               variant="contained"
-              onClick={handleStart}
+              onClick={startTimer}
+              disabled={isRunning}
             >
-              Iniciar
+              Iniciar ({timer})
             </Button>
           )}
         </div>
