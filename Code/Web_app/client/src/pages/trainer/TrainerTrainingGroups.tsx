@@ -10,6 +10,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "../../services/axios";
@@ -63,7 +64,7 @@ const TrainerTrainingGroups = () => {
                 to={String(group.trainingGroupID)}
               >
                 <ListItemAvatar>
-                  <Avatar></Avatar>
+                  <GroupWorkIcon />
                 </ListItemAvatar>
                 <ListItemText primary={`${group.name}`} />
               </ListItemButton>
