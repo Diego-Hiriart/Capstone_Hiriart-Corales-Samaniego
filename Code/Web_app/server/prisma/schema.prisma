@@ -12,10 +12,10 @@ datasource db {
 
 model User {
   userID        Int            @id @default(autoincrement())
-  email         String         @unique @db.VarChar(320)
-  password      String
-  names         String         @db.VarChar(100)
-  lastNames     String         @db.VarChar(100)
+  email         String         @unique @db.Text // Encrypt
+  password      String         @db.Text // Encrypt
+  names         String         @db.Text // Encrypt
+  lastNames     String         @db.Text // Encrypt
   roles         String[]       @default(["fencer"])
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -35,9 +35,9 @@ model Trainer {
   trainerID      Int              @id @default(autoincrement())
   user           User             @relation(fields: [userID], references: [userID])
   userID         Int              @unique
-  experience     String           @db.Text
+  experience     String           @db.Text // Encrypt
   weapon         String           @db.VarChar(25)
-  pictureURL     String?          @db.VarChar(255)
+  pictureURL     String?          @db.Text // Encrypt
   weeklyReport   WeeklyReport[]
   singleFeedback SingleFeedback[]
   cycleGoal      CycleGoal[]
@@ -54,32 +54,32 @@ model Fencer {
   userID                     Int?             @unique
   trainingGroup              TrainingGroup?   @relation(fields: [trainingGroupID], references: [trainingGroupID])
   trainingGroupID            Int?
-  idNumber                   String           @db.Text
-  emergencyPhone             String           @db.Text
-  birthDate                  DateTime
-  bloodType                  String           @db.Text
-  sex                        String           @db.Text
-  school                     String?          @db.Text
-  laterality                 String           @db.Text
-  phone                      String           @db.Text
-  insurance                  String?          @db.Text
-  inscriptionDate            DateTime
-  startDate                  DateTime?
-  occupation                 String           @db.Text
-  schedule                   String           @db.Text
-  legalGuardian              String?          @db.Text
-  legalGuardianPhone         String?          @db.Text
-  leadSource                 String           @db.Text
-  inscriptionReason          String
-  height                     Float
-  weight                     Float
-  physicalActivity           String?          @db.Text
-  medicalFamily              String           @db.Text
-  medicalPersonal            String           @db.Text
-  personalMedicalDetails     String?          @db.Text
-  weapon                     String           @db.Text
-  pictureURL                 String?          @db.Text
-  guestName                  String?          @db.Text
+  idNumber                   String           @db.Text // Encrypt
+  emergencyPhone             String           @db.Text // Encrypt
+  birthDate                  String           @db.Text // Encrypt // Date
+  bloodType                  String           @db.Text // Encrypt
+  sex                        String           @db.Text // Encrypt
+  school                     String?          @db.Text // Encrypt
+  laterality                 String           @db.Text // Encrypt
+  phone                      String           @db.Text // Encrypt
+  insurance                  String?          @db.Text // Encrypt
+  inscriptionDate            String           @db.Text // Encrypt // Date
+  startDate                  String?          @db.Text // Encrypt // Date
+  occupation                 String           @db.Text // Encrypt
+  schedule                   String           @db.Text // Encrypt
+  legalGuardian              String?          @db.Text // Encrypt
+  legalGuardianPhone         String?          @db.Text // Encrypt
+  leadSource                 String           @db.Text // Encrypt
+  inscriptionReason          String           @db.Text // Encrypt
+  height                     String           @db.Text // Encrypt //Float
+  weight                     String           @db.Text // Encrypt //Float
+  physicalActivity           String?          @db.Text // Encrypt
+  medicalFamily              String           @db.Text // Encrypt
+  medicalPersonal            String           @db.Text // Encrypt
+  personalMedicalDetails     String?          @db.Text // Encrypt
+  weapon                     String           @db.Text // Encrypt
+  pictureURL                 String?          @db.Text // Encrypt
+  guestName                  String?          @db.Text // Encrypt
   weeklyReport               WeeklyReport[]
   singleFeedback             SingleFeedback[]
   cycleGoal                  CycleGoal[]
