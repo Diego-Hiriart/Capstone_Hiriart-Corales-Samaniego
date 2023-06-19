@@ -274,6 +274,10 @@ void handleRemote(String receivedCommand) {
       commandID = 0;
     }
   }
+  //Reject command if machine is not paused and command isnt pause command (avoid errors during combat)
+  if (!paused && commandID != 45) {
+    commandID = 0;
+  }
   //Command handling, if command is 0 (invalid) or 37 (synch) do nothing
   switch (commandID) {
     case 22:
