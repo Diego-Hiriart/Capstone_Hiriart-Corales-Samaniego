@@ -1,5 +1,6 @@
 import { Fencer, PrismaClient, Trainer, User } from "@prisma/client";
 import { hashPassword } from "../utils/hashPassword";
+import { encryptData } from "../utils/database";
 
 const prisma = new PrismaClient();
 
@@ -56,8 +57,8 @@ export async function createUser(data: User) {
       data: {
         email: data.email,
         password: hashedPass,
-        names: data.names,
-        lastNames: data.lastNames,
+        names: encryptData(data.names),
+        lastNames: encryptData(data.lastNames),
         roles: data.roles,
       },
     });
@@ -131,31 +132,36 @@ export async function createUserFencer(data: User & Fencer) {
         fencer: {
           create: {
             trainingGroupID: data.trainingGroupID,
-            idNumber: data.idNumber,
-            emergencyPhone: data.emergencyPhone,
-            birthDate: data.birthDate,
-            bloodType: data.bloodType,
-            sex: data.sex,
-            school: data.school,
-            laterality: data.laterality,
-            phone: data.phone,
-            insurance: data.insurance,
-            inscriptionDate: new Date(),
-            occupation: data.occupation,
-            schedule: data.schedule,
-            legalGuardian: data.legalGuardian,
-            legalGuardianPhone: data.legalGuardianPhone,
-            leadSource: data.leadSource,
-            inscriptionReason: data.inscriptionReason,
-            height: data.height,
-            weight: data.weight,
-            physicalActivity: data.physicalActivity,
-            medicalFamily: data.medicalFamily,
-            medicalPersonal: data.medicalPersonal,
-            personalMedicalDetails: data.personalMedicalDetails,
-            weapon: data.weapon,
-            pictureURL: data.pictureURL,
-            guestName: data.guestName,
+            idNumber: encryptData(data.idNumber),
+            emergencyPhone: encryptData(data.emergencyPhone),
+            birthDate: encryptData(data.birthDate),
+            bloodType: encryptData(data.bloodType),
+            sex: encryptData(data.sex),
+            school: data.school && encryptData(data.school),
+            laterality: encryptData(data.laterality),
+            phone: encryptData(data.phone),
+            insurance: data.insurance && encryptData(data.insurance),
+            inscriptionDate: encryptData(data.inscriptionDate.toString()),
+            occupation: encryptData(data.occupation),
+            schedule: encryptData(data.schedule),
+            legalGuardian:
+              data.legalGuardian && encryptData(data.legalGuardian),
+            legalGuardianPhone:
+              data.legalGuardianPhone && encryptData(data.legalGuardianPhone),
+            leadSource: encryptData(data.leadSource),
+            inscriptionReason: encryptData(data.inscriptionReason),
+            height: encryptData(data.height),
+            weight: encryptData(data.weight),
+            physicalActivity:
+              data.physicalActivity && encryptData(data.physicalActivity),
+            medicalFamily: encryptData(data.medicalFamily),
+            medicalPersonal: encryptData(data.medicalPersonal),
+            personalMedicalDetails:
+              data.personalMedicalDetails &&
+              encryptData(data.personalMedicalDetails),
+            weapon: encryptData(data.weapon),
+            pictureURL: data.pictureURL && encryptData(data.pictureURL),
+            guestName: data.guestName && encryptData(data.guestName),
           },
         },
       },

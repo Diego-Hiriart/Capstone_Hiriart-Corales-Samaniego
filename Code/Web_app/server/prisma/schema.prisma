@@ -12,8 +12,8 @@ datasource db {
 
 model User {
   userID        Int            @id @default(autoincrement())
-  email         String         @unique @db.Text // Encrypt
-  password      String         @db.Text // Encrypt
+  email         String         @unique @db.Text // Encrypt? nfn
+  password      String         @db.Text // Hash
   names         String         @db.Text // Encrypt
   lastNames     String         @db.Text // Encrypt
   roles         String[]       @default(["fencer"])
