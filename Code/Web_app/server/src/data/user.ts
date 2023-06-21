@@ -1,13 +1,8 @@
 import { Fencer, PrismaClient, Trainer, User } from "@prisma/client";
+import { removePasswordInUser } from "../utils/dataFilters";
 import { hashPassword } from "../utils/hashPassword";
 
 const prisma = new PrismaClient();
-
-export function removePasswordInUser(user: User) {
-  const obj: Partial<Pick<User, "password">> & Omit<User, "password"> = user;
-  delete obj["password"];
-  return obj;
-}
 
 export async function findUserById(id: number) {
   try {

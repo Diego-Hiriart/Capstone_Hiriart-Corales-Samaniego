@@ -1,0 +1,28 @@
+name: CD WebApp Deploy
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths: ["Code/Web_app/**"]
+
+jobs:
+  deploy_webapp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    # steps:
+    # - uses: actions/checkout@v3
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: ${{ matrix.node-version }}
+    # - name: install dependencies
+    #   run: yarn install
+    #   working-directory: Code/Web_app/server
+    # - name: Run linter
+    #   run: yarn lint
+    #   working-directory: Code/Web_app/server
+    # - name: Run tests
+    #   run: yarn test
+    #   working-directory: Code/Web_app/server

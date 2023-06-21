@@ -2,27 +2,6 @@ import { PrismaClient, Fencer } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-type FencerWithUser = Fencer & {
-  user: {
-    names: string;
-    lastNames: string;
-    email: string;
-  } | null;
-};
-
-export const filterFencersByName = (
-  name: string,
-  fencers: FencerWithUser[]
-) => {
-  const searchName = name.toLowerCase();
-  const filtered = fencers.filter(
-    (fencer) =>
-      fencer.user?.lastNames.toLowerCase().startsWith(searchName) ||
-      fencer.user?.names.toLowerCase().startsWith(searchName)
-  );
-  return filtered;
-};
-
 export async function findFencerById(id: number) {
   try {
     const fencer = await prisma.fencer.findUnique({

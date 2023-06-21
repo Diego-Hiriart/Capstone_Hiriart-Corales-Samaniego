@@ -4,7 +4,6 @@ import {
   deleteFencerFromGruop,
   getAllFencer,
   getFencerById,
-  getFencerByWithParams,
   postFencer,
   updateFencer,
   updateFencerToGroup,
@@ -12,7 +11,6 @@ import {
 
 const router = Router();
 
-router.get("/fencer/search", getFencerByWithParams);
 router.get("/fencer/:id", getFencerById);
 router.get("/fencer/", getAllFencer);
 router.post("/fencer/", postFencer);
