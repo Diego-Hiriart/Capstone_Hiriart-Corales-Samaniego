@@ -1,3 +1,5 @@
+name: CI WebApp Server
+
 on:
   pull_request:
     branches: [ main ]
