@@ -3,12 +3,12 @@ import { Request, Response } from "express";
 import {
   addFencerToGroup,
   createFencer,
-  filterFencersByName,
   findAllFencer,
   findFencerById,
   removeFencerFromGroup,
   updateFencerById,
 } from "../data/fencer";
+import { filterFencersByName } from "../utils/dataFilters";
 import { errorLog } from "../utils/logs";
 
 export async function getFencerById(req: Request, res: Response) {
