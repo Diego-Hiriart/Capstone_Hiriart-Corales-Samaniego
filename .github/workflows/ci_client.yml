@@ -1,0 +1,4 @@
+on:
+  pull_request:
+    branches: [ main ]
+    paths: ["Code/Web_app/client/**"]
