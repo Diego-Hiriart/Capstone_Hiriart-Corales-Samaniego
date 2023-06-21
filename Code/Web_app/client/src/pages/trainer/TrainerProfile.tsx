@@ -46,7 +46,7 @@ const TrainerProfile = () => {
   const [trainer, setTrainer] = useState<TrainerAPIResponse | null>(null);
   const { pathname } = useLocation();
   const { user } = useContext(AuthContext);
-  let trainerID = pathname === "/profile" ? user?.trainer?.trainerID : id;
+  const trainerID = pathname === "/profile" ? user?.trainer?.trainerID : id;
 
   useEffect(() => {
     const fetchTrainer = async () => {

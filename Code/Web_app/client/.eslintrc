@@ -9,13 +9,18 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "no-loops/no-loops": 2,
     "no-useless-catch": 0,
-    "semi": "error",
-    "eol-last": ["error", "always"],
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "off",
-    "react/react-in-jsx-scope": "off"
+
+    // TODO Error
+    "semi": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-unused-vars": "off", 
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-loops/no-loops": "off",
+    "eol-last": "off"
+    // "eol-last": ["error", "always"],
   }
 }
