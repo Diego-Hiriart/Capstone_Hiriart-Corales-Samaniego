@@ -64,6 +64,9 @@ export async function createMesoCycle(data: MesoCycle) {
     });
 
     const dates = getMicroCyclesDates(mesoCycle.startDate, mesoCycle.endDate);
+    console.log(mesoCycle.startDate, mesoCycle.endDate);
+
+    console.log(dates);
 
     const microCycles = [];
 

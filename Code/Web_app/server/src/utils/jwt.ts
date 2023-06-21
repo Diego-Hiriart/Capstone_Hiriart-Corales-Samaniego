@@ -1,6 +1,6 @@
 import { RegistrationLink, User } from "@prisma/client";
 import jwt, { SignOptions } from "jsonwebtoken";
-import { removePasswordInUser } from "../data/user";
+import { removePasswordInUser } from "./dataFilters";
 
 export const jwtSecret = process.env.JWT_SECRET || "a dumb secret";
 
