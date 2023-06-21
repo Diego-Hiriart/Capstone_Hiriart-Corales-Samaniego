@@ -10,6 +10,7 @@ export async function findMesoCycleById(id: number) {
         mesoCycleID: id,
       },
       include: {
+        cycleGoal: true,
         microCycle: {
           include: {
             dailyPlan: {

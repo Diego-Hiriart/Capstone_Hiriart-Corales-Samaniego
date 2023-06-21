@@ -28,7 +28,6 @@ export async function createCycleFeedback(data: CycleFeedback) {
   try {
     const cycleFeedback = await prisma.cycleFeedback.create({
       data: {
-        fencerID: data.fencerID,
         trainerID: data.trainerID,
         mesoCycleID: data.mesoCycleID,
         date: data.date,
@@ -48,7 +47,6 @@ export async function updateCycleFeedbackById(id: number, data: CycleFeedback) {
         cycleFeedbackID: id,
       },
       data: {
-        fencerID: data.fencerID || undefined,
         trainerID: data.trainerID || undefined,
         mesoCycleID: data.mesoCycleID || undefined,
         date: data.date || undefined,

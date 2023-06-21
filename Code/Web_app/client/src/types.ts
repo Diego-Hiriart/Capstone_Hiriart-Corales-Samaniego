@@ -30,6 +30,7 @@ export interface DailyPlanFull extends DailyPlan {
 // };
 
 export type MesoCycleFull = MesoCycle & {
+  cycleGoal: CycleGoal;
   microCycle: (MicroCycle & {
     dailyPlan: (DailyPlanFull & {
       activityType:

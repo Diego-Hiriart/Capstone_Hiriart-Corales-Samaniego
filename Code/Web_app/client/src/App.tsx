@@ -39,6 +39,9 @@ import FencerProfileUser from "./pages/fencer/FencerProfileUser";
 import FencerGroupList from "./pages/fencer/groups/FencerGroupList";
 import FencerGroupMesoCycle from "./pages/fencer/groups/FencerGroupMesoCycle";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
+import MesoCycleOptions from "./pages/mesocycle/MesoCycleOptions";
+import MesoCycleGoals from "./pages/mesocycle/MesoCycleGoals";
+import MesoCycleFeedback from "./pages/mesocycle/MesoCycleFeedback";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -77,8 +80,16 @@ export const App = () => {
           <Route path="fencer/:id" element={<FencerDetail />} />
           <Route path="fencer/list" element={<FencerList />} />
           <Route
+            path="fencer/groups/:id/cycles/:id/goals"
+            element={<MesoCycleGoals />}
+          />
+          <Route
+            path="fencer/groups/:id/cycles/:id/feedback"
+            element={<MesoCycleFeedback />}
+          />
+          <Route
             path="fencer/groups/:id/cycles/:id"
-            element={<MesoCycleDetails />}
+            element={<MesoCycleOptions />}
           />
           <Route path="fencer/groups/:id/cycles" element={<GroupMesoCycle />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />

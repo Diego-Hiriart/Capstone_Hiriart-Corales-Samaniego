@@ -28,7 +28,6 @@ export async function createCycleGoal(data: CycleGoal) {
   try {
     const cycleGoal = await prisma.cycleGoal.create({
       data: {
-        fencerID: data.fencerID,
         trainerID: data.trainerID,
         mesoCycleID: data.mesoCycleID,
         date: data.date,
@@ -48,7 +47,6 @@ export async function updateCycleGoalById(id: number, data: CycleGoal) {
         cycleGoalID: id,
       },
       data: {
-        fencerID: data.fencerID || undefined,
         trainerID: data.trainerID || undefined,
         mesoCycleID: data.mesoCycleID || undefined,
         date: data.date || undefined,
