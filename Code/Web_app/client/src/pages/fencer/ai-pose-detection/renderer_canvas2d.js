@@ -99,14 +99,14 @@ export class RendererCanvas2d {
   }
 
   draw(rendererParams) {
-    const [video, poses, isModelChanged] = rendererParams;
+    const [video, poses, isModelChanged, mode] = rendererParams;
     this.drawCtx(video);
 
     // The null check makes sure the UI is not in the middle of changing to a
     // different model. If during model change, the result is from an old model,
     // which shouldn't be rendered.
     if (poses && poses.length > 0 && !isModelChanged) {
-      this.drawResults(poses);
+      this.drawResults(poses, mode);
     }
   }
 
@@ -122,9 +122,9 @@ export class RendererCanvas2d {
    * Draw the keypoints and skeleton on the video.
    * @param poses A list of poses to render.
    */
-  drawResults(poses) {
+  drawResults(poses, mode) {
     for (const pose of poses) {
-      this.drawResult(pose);
+      this.drawResult(pose, mode);
     }
   }
 
@@ -132,10 +132,10 @@ export class RendererCanvas2d {
    * Draw the keypoints and skeleton on the video.
    * @param pose A pose with keypoints to render.
    */
-  drawResult(pose) {
+  drawResult(pose, mode) {
     if (pose.keypoints != null) {
       this.drawKeypoints(pose.keypoints);
-      this.drawSkeleton(pose.keypoints, pose.id);
+      this.drawSkeleton(pose.keypoints, pose.id, mode);
     }
     if (pose.keypoints3D != null && params.STATE.modelConfig.render3D) {
       this.drawKeypoints3D(pose.keypoints3D);
@@ -186,12 +186,15 @@ export class RendererCanvas2d {
    * Draw the skeleton of a body on the video.
    * @param keypoints A list of keypoints.
    */
-  drawSkeleton(keypoints, poseId) {
+  drawSkeleton(keypoints, poseId, mode) {
     // Each poseId is mapped to a color in the color palette.
-    const color =
+    let color =
       params.STATE.modelConfig.enableTracking && poseId != null
         ? COLOR_PALETTE[poseId % 20]
-        : 'White';
+        : "White";
+    if (mode === "playback") {
+      color = "#696969"
+    }
     this.ctx.fillStyle = color;
     this.ctx.strokeStyle = color;
     this.ctx.lineWidth = params.DEFAULT_LINE_WIDTH;

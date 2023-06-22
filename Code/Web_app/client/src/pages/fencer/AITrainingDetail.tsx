@@ -130,13 +130,13 @@ const AITrainingDetail = () => {
         )}
       </Box>
 
-      {selectedErrorID && (
+      {/* {selectedErrorID && (
         <AIErrorDialog
           open={!!open}
           handleClose={handleClose}
           id={selectedErrorID}
         />
-      )}
+      )} */}
     </Container>
   );
 };

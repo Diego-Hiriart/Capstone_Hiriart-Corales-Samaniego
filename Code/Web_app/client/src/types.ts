@@ -1,3 +1,5 @@
+import { Pose } from "@tensorflow-models/pose-detection";
+
 export interface LoginFormInputs {
   email: string;
   password: string;
@@ -361,3 +363,14 @@ export type Error = {
   name: string;
   description: string;
 };
+
+export type DetectedPose = Pose[]
+
+export type Move = DetectedPose[]
+
+export type PoseAnalisisData = {
+  incorrectMove: Move;
+  correctMove: Move;
+  title: string;
+  description: string;
+}
