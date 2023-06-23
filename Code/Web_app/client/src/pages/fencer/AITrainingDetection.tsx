@@ -1,15 +1,21 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { createDetector } from "./ai-pose-detection/index";
 import { isMobile } from "react-device-detect";
 import { css } from "@emotion/react";
 import Navbar from "../../components/Navbar/Navbar";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
 import axios from "../../services/axios";
 import { Camera } from "./ai-pose-detection/camera";
 import { STATE } from "./ai-pose-detection/params";
 import { PoseDetector } from "@tensorflow-models/pose-detection";
-import useCountdownTimer from "../../hooks/useCountdownTimer";
+import useCountdown from "../../hooks/useCountdownTimer";
 import AIErrorDialog from "./AIErrorDialog";
 import { poseAnalisisResponseMock } from "./poseErrorMock";
 import { useAlert } from "../../hooks/useAlert";
@@ -18,6 +24,13 @@ import useAuth from "../../hooks/useAuth";
 import { DetectedPose, Move, PoseAnalisisData } from "../../types";
 
 function AITrainingDetection() {
+  const countdown = 3; // seconds before starting detection
+  const detectionInterval = 100; // milliseconds
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const { showError } = useAlert();
   const [isDetecting, setIsDetecting] = useState(false);
   const [renderer, setRenderer] = useState<RendererCanvas2d>();
   const [detector, setDetector] = useState<PoseDetector>();
@@ -30,13 +43,6 @@ function AITrainingDetection() {
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalId = useRef<number>();
-  const { state } = useLocation();
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const { showError } = useAlert();
-
-  const countdown = 3; // seconds before starting detection
-  const detectionInterval = 100; // milliseconds
 
   useEffect(() => {
     const init = async () => {
@@ -66,6 +72,7 @@ function AITrainingDetection() {
       console.error("Detector does not exist");
       return;
     }
+    startDurationTimer();
     intervalId.current = window.setInterval(() => {
       detect(detector);
     }, detectionInterval);
@@ -101,7 +108,10 @@ function AITrainingDetection() {
         const { data } = await axios.post(url, move);
         if (data.data) {
           handlePause();
-          setIncorrectMoves((incorrectMoves: Move[]) => [...incorrectMoves, move]);
+          setIncorrectMoves((incorrectMoves: Move[]) => [
+            ...incorrectMoves,
+            move,
+          ]);
           setPoseAnalisisData(data.data);
           setErrorDialogOpen(true);
         }
@@ -111,7 +121,7 @@ function AITrainingDetection() {
       //   console.error("Error sending poses to backend", error);
       //   handleStop();
       // });
-      console.log(move);
+      // console.log(move);
       setMove([]);
     }
   }, [move]);
@@ -129,23 +139,24 @@ function AITrainingDetection() {
     renderer?.draw(rendererParams);
   };
 
-  const handleStart = async () => {
+  const handleStart = useCallback(async () => {
     if (isDetecting) return;
     startDetection();
     setIsDetecting(true);
-  };
+  }, [isDetecting, detector]);
 
   const handlePause = () => {
     if (!isDetecting) return;
     resetTimer();
     stopDetection();
-    // setPoseErrorList((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
+    // Used for testing only
+    setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
     setIsDetecting(false);
     setMove([]);
     beepWarning.play();
   };
 
-  const handleStop = async () => {
+  const handleStop = useCallback(async () => {
     stopDetection();
     stopCapture();
     setIsDetecting(false);
@@ -163,7 +174,7 @@ function AITrainingDetection() {
       console.error("Error saving training", error);
       showError("Error al guardar el entrenamiento");
     }
-  };
+  }, [incorrectMoves]);
 
   const startCapture = async () => {
     if (webcamRef.current?.paused) {
@@ -183,16 +194,25 @@ function AITrainingDetection() {
 
   const stopDetection = () => {
     clearInterval(intervalId.current);
+    stopDurationTimer();
   };
 
   const handleClose = () => {
     setErrorDialogOpen(false);
   };
 
-  const { timer, startTimer, resetTimer, isRunning } = useCountdownTimer(
+  const [timer, startTimer, stopTimer, resetTimer, isRunning] = useCountdown(
     countdown,
     handleStart
   );
+
+  const [
+    durationTimer,
+    startDurationTimer,
+    stopDurationTimer,
+    resetDurationTimer,
+    isDurationRunning,
+  ] = useCountdown(state.duration * 60, handleStop);
 
   // Remove eventually (might need later for testing responsive layout):
 
@@ -217,6 +237,7 @@ function AITrainingDetection() {
         </div>
       )}
       <Box>
+        <Typography>{durationTimer}</Typography>
         <div className="canvas-wrapper" css={canvasWrapperStyles({ isMobile })}>
           <video
             ref={webcamRef}

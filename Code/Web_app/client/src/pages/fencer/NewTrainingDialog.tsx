@@ -59,7 +59,7 @@ const NewTrainingDialog = ({ open, handleClose }: Props) => {
   });
 
   const onSubmit = () => {
-    navigate("/aitrainings/new", { state: { exercise: getValues().exercise } });
+    navigate("/aitrainings/new", { state: { exercise: getValues().exercise, duration: getValues().duration } });
   };
 
   return (
