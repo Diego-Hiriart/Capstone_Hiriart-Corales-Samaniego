@@ -10,6 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model MachineCombatData {
+  machineName   String   @id
+  leftScore     Int
+  rightScore    Int
+  dateTime      DateTime
+  leftPriority  Boolean
+  rightPriority Boolean
+}
+
 model User {
   userID        Int            @id @default(autoincrement())
   email         String         @unique @db.VarChar(320)
