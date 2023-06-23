@@ -2283,7 +2283,6 @@
     (pin "J5_16" (uuid e234e531-f377-4395-adf1-f7df3aa8dae4))
     (pin "J5_17" (uuid 4fc28284-21f9-43c4-a0d1-9e46c0b4e44e))
     (pin "J5_18" (uuid d69ceeda-f496-4112-ae99-5c1a7c2d80b5))
-    (pin "J5_19" (uuid 2dc69edd-2908-40e7-a658-a21b6b8c189f))
     (pin "J5_2" (uuid 451004f5-4b1c-4c28-aa5d-b9cee9980b19))
     (pin "J5_3" (uuid 3ffe34c1-060b-4f49-9a39-952ba37a3f64))
     (pin "J5_4" (uuid e9602d81-37a0-4f9f-b1fe-15c22ac89370))
@@ -2292,6 +2291,7 @@
     (pin "J5_7" (uuid cc6cb540-7bf7-4c53-90ce-62b02e5502f8))
     (pin "J5_8" (uuid 7aac5413-2f5e-4077-9d2e-65aec4d39568))
     (pin "J5_9" (uuid f0dc1240-f742-4496-9e9f-a68b76b18769))
+    (pin "J5_19" (uuid 2dc69edd-2908-40e7-a658-a21b6b8c189f))
     (instances
       (project "Logic-and-Display-design"
         (path "/4a7d315f-bdf1-40ee-ab6c-d5952306d95d/cd665250-02e0-4d79-98ce-90874cf1118d"

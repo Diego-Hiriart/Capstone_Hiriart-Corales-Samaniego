@@ -3,8 +3,16 @@
 #include <SPI.h>
 #include "HCS_Font_Data.h"
 
-const uint8_t csPin = 10;                                              //CPI CS for matrix 1
-const MD_MAX72XX::moduleType_t hardwareType = MD_MAX72XX::GENERIC_HW;  //For generic single modules
+const uint8_t csPin = 10;  //CPI CS for matrix 1
+// * Modules (like FC-16) that can fit over each other with no gap
+//  n n-1 n-2 ... n/2+1   <- this direction top row
+//  n/2 ... 3  2  1  0    <- this direction bottom row
+//
+// * Modules (like Generic and Parola) that cannot fit over each other with no gap
+//  n/2+1 ... n-2 n-1 n   -> this direction top row
+//  n/2 ... 3  2  1  0    <- this direction bottom row
+//const MD_MAX72XX::moduleType_t hardwareType = MD_MAX72XX::GENERIC_HW;  //For generic single modules
+const MD_MAX72XX::moduleType_t hardwareType = MD_MAX72XX::FC16_HW;  //For FC-16 modules
 const uint8_t numZones = 2;
 const uint8_t zoneSize = 2;
 const uint8_t maxDevices = (numZones * zoneSize);
