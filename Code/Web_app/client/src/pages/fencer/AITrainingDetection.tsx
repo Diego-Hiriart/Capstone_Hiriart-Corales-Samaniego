@@ -237,8 +237,8 @@ function AITrainingDetection() {
         </div>
       )}
       <Box>
-        <Typography>{durationTimer}</Typography>
         <div className="canvas-wrapper" css={canvasWrapperStyles({ isMobile })}>
+          <div css={durationTimerStyles}>{durationTimer + "s"}</div>
           <video
             ref={webcamRef}
             css={[outputCanvasStyles({ isMobile }), webPaneStyles]}
@@ -323,3 +323,15 @@ const canvasWrapperStyles = ({ isMobile }: { isMobile: boolean }) => css`
   max-width: 640px;
   margin: 0 auto;
 `;
+
+const durationTimerStyles = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 10;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0 1rem;
+`
