@@ -165,6 +165,7 @@ function AITrainingDetection() {
     const aiTrainingObj = {
       exercise: state.exercise,
       poseErrorList: incorrectMoves,
+      duration: state.duration - durationTimer / 60,
     };
     try {
       // const { data } = await axios.post(url, aiTrainingObj);
