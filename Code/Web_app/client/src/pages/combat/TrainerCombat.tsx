@@ -46,13 +46,18 @@ const TrainerCombat = () => {
     setOpen(false);
   };
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+  const WinnerIcon = () => (
+    <Typography
+      sx={{
+        backgroundColor: "gray",
+        color: "white",
+        padding: "8px",
+        borderRadius: "0.2rem",
+      }}
+    >
+      GANADOR
+    </Typography>
+  );
 
   return (
     <Container component="main" maxWidth="lg">
@@ -99,16 +104,7 @@ const TrainerCombat = () => {
                         primary={`${combat.fencer1.user.names} ${combat.fencer2.user.lastNames}`}
                       />
                       {combat.winnerFencerID === combat.fencer1.fencerID && (
-                        <Typography
-                          sx={{
-                            backgroundColor: "gray",
-                            color: "white",
-                            padding: "4px",
-                            borderRadius: "0.4rem",
-                          }}
-                        >
-                          WINNER
-                        </Typography>
+                        <WinnerIcon />
                       )}
                     </Box>
                   </Grid>
@@ -123,16 +119,7 @@ const TrainerCombat = () => {
                       }}
                     >
                       {combat.winnerFencerID === combat.fencer2.fencerID && (
-                        <Typography
-                          sx={{
-                            backgroundColor: "gray",
-                            color: "white",
-                            padding: "4px",
-                            borderRadius: "0.4rem",
-                          }}
-                        >
-                          WINNER
-                        </Typography>
+                        <WinnerIcon />
                       )}
                       <ListItemText
                         sx={{ textAlignLast: "end", marginRight: 2 }}
