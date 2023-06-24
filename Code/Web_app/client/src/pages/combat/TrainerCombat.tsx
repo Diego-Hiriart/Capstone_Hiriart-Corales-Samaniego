@@ -65,11 +65,55 @@ const TrainerCombat = () => {
           {combats?.map((combat) => (
             <ListItem key={combat.trainingCombatID} disablePadding>
               <ListItemButton
-                sx={{ px: 1 }}
+                sx={{
+                  px: 1,
+                  display: "flex",
+                  justifyContent: "space-between  ",
+                }}
                 component={RouterLink}
                 to={String(combat.trainingCombatID)}
               >
-                <ListItemText primary={combat.fencer1ID} />
+                <ListItemAvatar>
+                  <Avatar></Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${combat.fencer1.user.names} ${combat.fencer2.user.lastNames}`}
+                />
+
+                {combat.winnerFencerID === combat.fencer1.fencerID && (
+                  <Typography
+                    sx={{
+                      backgroundColor: "gray",
+                      color: "white",
+                      padding: "4px",
+                      borderRadius: "0.4rem",
+                    }}
+                  >
+                    WINNER
+                  </Typography>
+                )}
+
+                <Typography sx={{ marginX: "4px" }}>VS</Typography>
+
+                {combat.winnerFencerID === combat.fencer2.fencerID && (
+                  <Typography
+                    sx={{
+                      backgroundColor: "gray",
+                      color: "white",
+                      padding: "4px",
+                      borderRadius: "0.4rem",
+                    }}
+                  >
+                    WINNER
+                  </Typography>
+                )}
+                <ListItemText
+                  sx={{ textAlignLast: "end", marginRight: 2 }}
+                  primary={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
+                />
+                <ListItemAvatar>
+                  <Avatar></Avatar>
+                </ListItemAvatar>
               </ListItemButton>
             </ListItem>
           ))}
