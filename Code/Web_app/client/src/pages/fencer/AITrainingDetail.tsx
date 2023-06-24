@@ -9,7 +9,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { AITraining } from "../../types";
+import { AITraining, PoseAnalisisData } from "../../types";
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import dayjs from "dayjs";
@@ -20,6 +20,7 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAlert } from "../../hooks/useAlert";
+import { poseAnalisisResponseMock } from "./poseErrorMock";
 
 const schema = z.object({
   feedback: z.string().trim().max(255).nullish(),
@@ -30,8 +31,8 @@ type FormType = z.infer<typeof schema>;
 const AITrainingDetail = () => {
   const { user } = useAuth();
   const { trainingID } = useParams();
-  const [open, setOpen] = useState(false);
-  const [selectedErrorID, setSelectedErrorID] = useState<number | null>(null);
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [poseAnalisisData, setPoseAnalisisData] = useState<PoseAnalisisData | null>(null);
   const [training, setTraining] = useState<AITraining | null>(null);
   const aitrainingURL = `/dashboard/aitraining/${trainingID}`;
   const { showSuccess, showError } = useAlert();
@@ -58,11 +59,18 @@ const AITrainingDetail = () => {
   }, [training])
 
   const handleClose = () => {
-    setSelectedErrorID(null);
+    setErrorDialogOpen(false);
   };
-  const handleOpen = (id: number) => {
-    setSelectedErrorID(id);
-    setOpen(true);
+
+  const handleOpen = async (id: number) => {
+    // Testing (remove eventually)
+    setPoseAnalisisData(poseAnalisisResponseMock.data);
+
+    // Production
+    // const { data } = await axios.get(`/dashboard/aitraining/${trainingID}/error/${id}}`)
+    // setPoseAnalisisData(data.data);
+
+    setErrorDialogOpen(true);
   };
 
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
@@ -129,14 +137,9 @@ const AITrainingDetail = () => {
           <Typography>{training?.feedback}</Typography>
         )}
       </Box>
-
-      {/* {selectedErrorID && (
-        <AIErrorDialog
-          open={!!open}
-          handleClose={handleClose}
-          id={selectedErrorID}
-        />
-      )} */}
+      {poseAnalisisData && (
+        <AIErrorDialog open={errorDialogOpen} handleClose={handleClose} poseAnalisisData={poseAnalisisData}/>
+      )}
     </Container>
   );
 };

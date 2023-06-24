@@ -1,6 +1,6 @@
 export const poseAnalisisResponseMock = {
   data: {
-    incorrectMove: [
+    incorrectMove: [ // No necesario para ai detection.
       [
         {
           keypoints: [
