@@ -43,6 +43,7 @@ import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
 import AITrainingDetection from "./pages/fencer/AITrainingDetection";
 import { navbarExcludePaths } from "./Constants";
+import TrainerCombat from "./pages/combat/TrainerCombat";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -78,6 +79,7 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
           <Route path="activity" element={<ActivityList />} />
+          <Route path="combats" element={<TrainerCombat />} />
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/:id" element={<FencerDetail />} />

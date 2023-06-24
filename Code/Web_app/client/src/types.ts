@@ -1,3 +1,5 @@
+import { boolean } from "zod";
+
 import { Pose } from "@tensorflow-models/pose-detection";
 
 export interface LoginFormInputs {
@@ -21,6 +23,16 @@ export interface TrainingGroupFull extends TrainingGroup {
 
 export interface DailyPlanFull extends DailyPlan {
   activityType: ActivityType;
+}
+
+export interface TrainingCombatFull extends TrainingCombat {
+  fencer1: Fencer & {
+    user: User | null;
+  };
+  fencer2: Fencer & {
+    user: User | null;
+  };
+  winnerFencer: Fencer & { user: User | null };
 }
 
 // export type DailyPlanFull = DailyPlan & {
