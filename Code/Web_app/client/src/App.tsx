@@ -2,7 +2,7 @@ import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
 import SignupForm from "./pages/fencer/SignupForm";
 import { useContext, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
@@ -39,9 +39,14 @@ import FencerProfileUser from "./pages/fencer/FencerProfileUser";
 import FencerGroupList from "./pages/fencer/groups/FencerGroupList";
 import FencerGroupMesoCycle from "./pages/fencer/groups/FencerGroupMesoCycle";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
+import FencerAITrainings from "./pages/fencer/FencerAITrainings";
+import AITrainingDetail from "./pages/fencer/AITrainingDetail";
+import AITrainingDetection from "./pages/fencer/AITrainingDetection";
+import { navbarExcludePaths } from "./Constants";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     dayjs.locale("es");
@@ -50,9 +55,10 @@ export const App = () => {
 
   return (
     <div>
-      <NavBar />
+      { !navbarExcludePaths.includes(pathname) && (
+        <NavBar />
+      )}
       <Snackbar />
-      <Toolbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -102,6 +108,7 @@ export const App = () => {
           <Route path="groups/:id/cycles" element={<FencerGroupMesoCycle />} />
           <Route path="groups/:id/list" element={<FencerGroupList />} />
           <Route path="groups/:id" element={<GroupDetails />} />
+          <Route path="aitrainings/new" element={<AITrainingDetection />}></Route>
         </Route>
         <Route
           element={
@@ -109,6 +116,8 @@ export const App = () => {
           }
         >
           <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
+          <Route path="fencer/:id/aitrainings" element={<FencerAITrainings/>}></Route>
+          <Route path="fencer/:fencerID/aitrainings/:trainingID" element={<AITrainingDetail />}></Route>
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />

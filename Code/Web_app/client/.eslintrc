@@ -20,7 +20,9 @@
     "@typescript-eslint/no-unused-vars": "off", 
     "@typescript-eslint/no-non-null-assertion": "off",
     "no-loops/no-loops": "off",
-    "eol-last": "off"
+    "eol-last": "off",
     // "eol-last": ["error", "always"],
+
+    "react/no-unknown-property": ["error", { "ignore": ["css"] }] // Allow css prop from emotion
   }
 }
