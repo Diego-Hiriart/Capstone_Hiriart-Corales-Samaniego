@@ -3,13 +3,16 @@ import {
   Box,
   Button,
   Container,
+  Grid,
   List,
   ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Paper,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
@@ -43,8 +46,16 @@ const TrainerCombat = () => {
     setOpen(false);
   };
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="lg">
       <Box py={{ xs: 2, lg: 4 }}>
         <Box
           sx={{
@@ -68,52 +79,71 @@ const TrainerCombat = () => {
                 sx={{
                   px: 1,
                   display: "flex",
-                  justifyContent: "space-between  ",
+                  justifyContent: "space-between",
                 }}
                 component={RouterLink}
                 to={String(combat.trainingCombatID)}
               >
-                <ListItemAvatar>
-                  <Avatar></Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${combat.fencer1.user.names} ${combat.fencer2.user.lastNames}`}
-                />
-
-                {combat.winnerFencerID === combat.fencer1.fencerID && (
-                  <Typography
-                    sx={{
-                      backgroundColor: "gray",
-                      color: "white",
-                      padding: "4px",
-                      borderRadius: "0.4rem",
-                    }}
-                  >
-                    WINNER
-                  </Typography>
-                )}
-
-                <Typography sx={{ marginX: "4px" }}>VS</Typography>
-
-                {combat.winnerFencerID === combat.fencer2.fencerID && (
-                  <Typography
-                    sx={{
-                      backgroundColor: "gray",
-                      color: "white",
-                      padding: "4px",
-                      borderRadius: "0.4rem",
-                    }}
-                  >
-                    WINNER
-                  </Typography>
-                )}
-                <ListItemText
-                  sx={{ textAlignLast: "end", marginRight: 2 }}
-                  primary={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
-                />
-                <ListItemAvatar>
-                  <Avatar></Avatar>
-                </ListItemAvatar>
+                <Grid container spacing={2} columns={16}>
+                  <Grid item xs={7}>
+                    <Box
+                      sx={{
+                        px: 1,
+                        display: "flex",
+                      }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar></Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${combat.fencer1.user.names} ${combat.fencer2.user.lastNames}`}
+                      />
+                      {combat.winnerFencerID === combat.fencer1.fencerID && (
+                        <Typography
+                          sx={{
+                            backgroundColor: "gray",
+                            color: "white",
+                            padding: "4px",
+                            borderRadius: "0.4rem",
+                          }}
+                        >
+                          WINNER
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={2} sx={{ textAlign: "center" }}>
+                    <Typography sx={{ marginX: "4px" }}>VS</Typography>
+                  </Grid>
+                  <Grid item xs={7}>
+                    <Box
+                      sx={{
+                        px: 1,
+                        display: "flex",
+                      }}
+                    >
+                      {combat.winnerFencerID === combat.fencer2.fencerID && (
+                        <Typography
+                          sx={{
+                            backgroundColor: "gray",
+                            color: "white",
+                            padding: "4px",
+                            borderRadius: "0.4rem",
+                          }}
+                        >
+                          WINNER
+                        </Typography>
+                      )}
+                      <ListItemText
+                        sx={{ textAlignLast: "end", marginRight: 2 }}
+                        primary={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
+                      />
+                      <ListItemAvatar>
+                        <Avatar></Avatar>
+                      </ListItemAvatar>
+                    </Box>
+                  </Grid>
+                </Grid>
               </ListItemButton>
             </ListItem>
           ))}
