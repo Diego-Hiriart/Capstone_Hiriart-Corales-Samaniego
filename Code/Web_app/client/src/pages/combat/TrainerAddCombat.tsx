@@ -30,6 +30,7 @@ const schema = z.object({
   fencer2Name: z.string(),
   fencer1Score: z.string(),
   fencer2Score: z.string(),
+  winner: z.string(),
 });
 
 type TrainerAddCombatForm = z.infer<typeof schema>;
@@ -43,7 +44,6 @@ type leftRight = "left" | "right" | string;
 
 const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
   const [date, setDate] = useState<Date>(null!);
-  const [priority, setPriority] = useState<leftRight>(null!);
   const [fencers, setFencers] = useState<Fencer[]>(null!);
   const [selectedWinner, setSelectedWinner] = useState<leftRight>(null!);
 
@@ -86,8 +86,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
           fencer2ID: fencer2?.fencerID,
           fencer1Score: Number(formData.fencer1Score),
           fencer2Score: Number(formData.fencer2Score),
-          leftPriority: priority === "left",
-          rightPriority: priority === "right",
           dateTime: date,
           winnerFencerID:
             selectedWinner === "left" ? fencer1?.fencerID : fencer2?.fencerID,
@@ -106,10 +104,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedWinner(event.target.value);
-  };
-
-  const handlePrioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPriority(event.target.value);
   };
 
   return (
@@ -214,11 +208,13 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                     value={"left"}
                     control={<Radio />}
                     label="Esgrimista izquierda"
+                    {...register("winner")}
                   />
                   <FormControlLabel
                     value={"right"}
                     control={<Radio />}
                     label="Esgrimista derecha"
+                    {...register("winner")}
                   />
                 </RadioGroup>
               </FormControl>
