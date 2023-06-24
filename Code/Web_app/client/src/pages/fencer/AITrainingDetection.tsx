@@ -150,7 +150,7 @@ function AITrainingDetection() {
     resetTimer();
     stopDetection();
     // Used for testing only
-    setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
+    // setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
     setIsDetecting(false);
     setMove([]);
     beepWarning.play();
@@ -216,16 +216,16 @@ function AITrainingDetection() {
 
   // Remove eventually (might need later for testing responsive layout):
 
-  function handleOnError() {
-    handlePause();
-    beepWarning.play();
-    setPoseAnalisisData(poseAnalisisResponseMock.data);
-    setErrorDialogOpen(true);
-  }
+  // function handleOnError() {
+  //   handlePause();
+  //   beepWarning.play();
+  //   setPoseAnalisisData(poseAnalisisResponseMock.data);
+  //   setErrorDialogOpen(true);
+  // }
 
-  useEffect(() => {
-    console.log(poseAnalisisData);
-  }, [poseAnalisisData]);
+  // useEffect(() => {
+  //   console.log(poseAnalisisData);
+  // }, [poseAnalisisData]);
 
   return (
     <div>
@@ -233,7 +233,7 @@ function AITrainingDetection() {
         <div>
           <Navbar />
           <h1>AECQ - entrenamiento individual </h1>
-          <Button onClick={handleOnError}>error</Button>
+          {/* <Button onClick={handleOnError}>error</Button> */}
         </div>
       )}
       <Box>
