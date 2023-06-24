@@ -1,3 +1,5 @@
+import { boolean } from "zod";
+
 export interface LoginFormInputs {
   email: string;
   password: string;
@@ -19,6 +21,16 @@ export interface TrainingGroupFull extends TrainingGroup {
 
 export interface DailyPlanFull extends DailyPlan {
   activityType: ActivityType;
+}
+
+export interface TrainingCombatFull extends TrainingCombat {
+  fencer1: Fencer & {
+    user: User | null;
+  };
+  fencer2: Fencer & {
+    user: User | null;
+  };
+  winnerFencer: Fencer & { user: User | null };
 }
 
 // export type DailyPlanFull = DailyPlan & {

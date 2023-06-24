@@ -8,6 +8,23 @@ export async function findTrainingCombatById(id: number) {
       where: {
         trainingCombatID: id,
       },
+      include: {
+        fencer1: {
+          include: {
+            user: true,
+          },
+        },
+        fencer2: {
+          include: {
+            user: true,
+          },
+        },
+        winnerFencer: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
     return trainingCombat;
   } catch (error) {
@@ -17,7 +34,25 @@ export async function findTrainingCombatById(id: number) {
 
 export async function findAllTrainingCombat() {
   try {
-    const trainingCombat = await prisma.trainingCombat.findMany();
+    const trainingCombat = await prisma.trainingCombat.findMany({
+      include: {
+        fencer1: {
+          include: {
+            user: true,
+          },
+        },
+        fencer2: {
+          include: {
+            user: true,
+          },
+        },
+        winnerFencer: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
     return trainingCombat;
   } catch (error) {
     throw error;

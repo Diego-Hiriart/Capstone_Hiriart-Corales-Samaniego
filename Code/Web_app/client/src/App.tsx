@@ -39,6 +39,7 @@ import FencerProfileUser from "./pages/fencer/FencerProfileUser";
 import FencerGroupList from "./pages/fencer/groups/FencerGroupList";
 import FencerGroupMesoCycle from "./pages/fencer/groups/FencerGroupMesoCycle";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
+import TrainerCombat from "./pages/combat/TrainerCombat";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -72,6 +73,7 @@ export const App = () => {
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
           <Route path="activity" element={<ActivityList />} />
+          <Route path="combats" element={<TrainerCombat />} />
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/:id" element={<FencerDetail />} />
