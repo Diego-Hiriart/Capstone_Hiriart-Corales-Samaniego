@@ -1,3 +1,5 @@
+//disable eslint for this file
+/* eslint-disable */
 export const poseAnalisisResponseMock = {
   data: {
     incorrectMove: [ // No necesario para ai detection.

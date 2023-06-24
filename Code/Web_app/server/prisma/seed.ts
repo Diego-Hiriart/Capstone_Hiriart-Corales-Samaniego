@@ -156,7 +156,7 @@ const aiTrainings = [
     duration: 120,
     feedback: "Feedback training ai",
     trainerID: 1,
-  }
+  },
 ];
 
 const errors = [
@@ -164,8 +164,8 @@ const errors = [
     errorID: 1,
     name: "Error 1",
     description: "Error Description 1",
-  }
-]
+  },
+];
 
 const trainingErrors = [
   {
@@ -173,8 +173,8 @@ const trainingErrors = [
     AITrainingID: 1,
     errorID: 1,
     poseData: "Pose data 1",
-  }
-]
+  },
+];
 
 async function main() {
   await prisma.user.createMany({

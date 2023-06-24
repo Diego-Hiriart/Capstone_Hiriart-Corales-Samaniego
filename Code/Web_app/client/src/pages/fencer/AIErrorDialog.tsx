@@ -60,7 +60,7 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
     const incorrectMoveGenerator = stepGen(poseAnalisisData.incorrectMove);
     const correctMoveGenerator = stepGen(poseAnalisisData.correctMove);
 
-    let intervalId = window.setInterval(() => {
+    const intervalId = window.setInterval(() => {
       drawCanvas(
         errorCanvasRef.current!,
         errorRenderer,
