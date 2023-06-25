@@ -45,6 +45,7 @@ const NavBar = () => {
       items["Combates"] = "combats";
     }
     if (roles?.includes("fencer")) {
+      items["Combates"] = "combats";
       items["Grupos"] = `groups/${user?.fencer?.trainingGroupID}`;
       items["Feedback"] = `/fencer/${user?.fencer?.fencerID}/feedback`;
       items[
