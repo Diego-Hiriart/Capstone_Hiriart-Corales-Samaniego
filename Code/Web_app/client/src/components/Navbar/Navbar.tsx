@@ -17,6 +17,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import AuthStatus from "./AuthStatus";
+import { SideBarLinks } from "./SideBarLinks";
 
 declare module "@mui/material/AppBar" {
   export interface AppBarPropsColorOverrides {
@@ -119,6 +120,7 @@ const NavBar = () => {
               },
             }}
           >
+            <Toolbar />
             <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
               <Typography variant="h6" sx={{ my: 2 }}>
                 Capstone
@@ -138,6 +140,8 @@ const NavBar = () => {
                 ))}
               </List>
             </Box>
+            <Divider />
+            <SideBarLinks />
           </Drawer>
         </Box>
       </Box>
