@@ -81,7 +81,6 @@ export const App = () => {
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/:id" element={<FencerDetail />} />
-          <Route path="fencer/list" element={<FencerList />} />
           <Route
             path="fencer/groups/:id/cycles/:id"
             element={<MesoCycleDetails />}
@@ -108,10 +107,10 @@ export const App = () => {
           <Route path="groups/:id/cycles" element={<FencerGroupMesoCycle />} />
           <Route path="groups/:id/list" element={<FencerGroupList />} />
           <Route path="groups/:id" element={<GroupDetails />} />
-          <Route
-            path="aitrainings/new"
-            element={<AITrainingDetection />}
-          ></Route>
+          <Route path="aitraining/new" element={<AITrainingDetection />} />
+          <Route path="feedback" element={<FencerFeedback />} />
+          <Route path="aitraining" element={<FencerAITrainings />} />
+          <Route path="aitraining/:id" element={<AITrainingDetail />} />
         </Route>
         <Route
           element={
@@ -120,15 +119,6 @@ export const App = () => {
         >
           <Route path="combats/:id" element={<CombatDetails />} />
           <Route path="combats" element={<TrainerCombat />} />
-          <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
-          <Route
-            path="fencer/:id/aitrainings"
-            element={<FencerAITrainings />}
-          ></Route>
-          <Route
-            path="fencer/:fencerID/aitrainings/:trainingID"
-            element={<AITrainingDetail />}
-          ></Route>
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />

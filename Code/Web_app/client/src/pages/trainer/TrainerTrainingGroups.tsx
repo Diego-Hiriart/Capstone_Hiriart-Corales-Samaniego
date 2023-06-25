@@ -61,7 +61,7 @@ const TrainerTrainingGroups = () => {
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={String(group.trainingGroupID)}
+                to={"groups/" + group.trainingGroupID}
               >
                 <ListItemAvatar>
                   <GroupWorkIcon />
