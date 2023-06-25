@@ -19,12 +19,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { Fencer, MachineCombatData, TrainingGroupFull } from "../../types";
+import { Fencer, MachineCombatData } from "../../types";
 import TrainerCombatMachineData from "./TrainerCombatMachineData";
 
 const schema = z.object({
@@ -64,10 +64,23 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<TrainerAddCombatForm>({
     resolver: zodResolver(schema),
   });
+
+  useEffect(() => {
+    if (machineData) {
+      reset({
+        fencer1Score: machineData.leftScore.toString(),
+        fencer2Score: machineData.rightScore.toString(),
+        winner: setScore(machineData),
+      });
+
+      setSelectedWinner(setScore(machineData));
+    }
+  }, [machineData]);
 
   const navigate = useNavigate();
 
@@ -106,17 +119,41 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedWinner(event.target.value);
+  const handleCloseModal = () => {
+    setOpenModal(false);
   };
-
-  const handleCloseModal = () => setOpenModal(false);
 
   const handleMachine = () => {
     setOpenModal(true);
   };
 
-  const setMachineState = (data: MachineCombatData) => setMachineData(data);
+  const setMachineState = (data: MachineCombatData) => {
+    setMachineData(data);
+  };
+
+  const setScore = (data: MachineCombatData): leftRight => {
+    if (!machineData) return "";
+
+    if (data.leftScore > data.rightScore) {
+      return "left";
+    } else if (data.leftScore < data.rightScore) {
+      return "right";
+    } else if (data.leftScore === data.rightScore && data.leftPriority) {
+      return "left";
+    } else {
+      return "right";
+    }
+  };
+
+  const handleRadioChange = (
+    event:
+      | ChangeEvent<HTMLInputElement>
+      | SyntheticEvent<Element, Event>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      | any
+  ) => {
+    setSelectedWinner(event.target.value);
+  };
 
   return (
     <>
@@ -132,11 +169,12 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                 sx={{ mt: 1, display: "flex", flexDirection: "column" }}
               >
                 <FormControl>
-                  <FormLabel>Fecha</FormLabel>
+                  <FormLabel required>Fecha</FormLabel>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
+                      value={date}
                       onChange={(newValue: Date | null) => {
-                        setDate(newValue ?? new Date());
+                        setDate(newValue || new Date());
                       }}
                     />
                   </LocalizationProvider>
@@ -151,11 +189,12 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   sx={{ width: 300 }}
                   renderInput={(params) => (
                     <TextField
+                      required
                       margin="normal"
                       label="Nombre"
                       autoFocus
                       {...register("fencer1Name")}
-                      error={!!errors.fencer1Name}
+                      error={!errors.fencer1Name}
                       helperText={errors.fencer1Name?.message}
                       {...params}
                     />
@@ -169,9 +208,13 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   label="Puntaje"
                   type="number"
                   autoFocus
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   {...register("fencer1Score")}
-                  error={!!errors.fencer1Score}
+                  error={!errors.fencer1Score}
                   helperText={errors.fencer1Score?.message}
+                  defaultValue={machineData?.leftScore}
                 />
 
                 <FormLabel>Esgrimista derecha</FormLabel>
@@ -184,11 +227,12 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   sx={{ width: 300 }}
                   renderInput={(params) => (
                     <TextField
+                      required
                       margin="normal"
                       label="Nombre"
                       autoFocus
                       {...register("fencer2Name")}
-                      error={!!errors.fencer2Name}
+                      error={!errors.fencer2Name}
                       helperText={errors.fencer2Name?.message}
                       {...params}
                     />
@@ -202,9 +246,13 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   label="Puntaje"
                   type="number"
                   autoFocus
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                   {...register("fencer2Score")}
-                  error={!!errors.fencer2Score}
+                  error={!errors.fencer2Score}
                   helperText={errors.fencer2Score?.message}
+                  defaultValue={machineData?.rightScore}
                 />
 
                 <FormControl>
@@ -213,21 +261,22 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   </FormLabel>
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
                     value={selectedWinner}
-                    onChange={handleChange}
+                    {...register("winner")}
                   >
                     <FormControlLabel
                       value={"left"}
                       control={<Radio />}
                       label="Esgrimista izquierda"
-                      {...register("winner")}
+                      checked={selectedWinner === "left"}
+                      onChange={handleRadioChange}
                     />
                     <FormControlLabel
                       value={"right"}
                       control={<Radio />}
                       label="Esgrimista derecha"
-                      {...register("winner")}
+                      checked={selectedWinner === "right"}
+                      onChange={handleRadioChange}
                     />
                   </RadioGroup>
                 </FormControl>

@@ -90,7 +90,14 @@ const TrainerCombatMachineData = ({
                 <Autocomplete
                   disablePortal
                   id="machine"
-                  options={machines?.map((machine) => machine.machineName)}
+                  options={machines
+                    ?.filter(
+                      (obj, index) =>
+                        machines?.findIndex(
+                          (item) => item.machineName === obj.machineName
+                        ) === index
+                    )
+                    .map((machine) => machine.machineName)}
                   sx={{ width: 300 }}
                   renderInput={(params) => (
                     <TextField

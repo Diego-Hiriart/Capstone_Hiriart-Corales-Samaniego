@@ -20,7 +20,11 @@ export async function findMachineCombatDataByName(name: string) {
 
 export async function findAllMachineCombatData() {
   try {
-    const machineCombatData = await prisma.machineCombatData.findMany();
+    const machineCombatData = await prisma.machineCombatData.findMany({
+      orderBy: {
+        dateTime: "desc",
+      },
+    });
     return machineCombatData;
   } catch (error) {
     throw error;

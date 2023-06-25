@@ -101,7 +101,7 @@ const TrainerCombat = () => {
                         <Avatar></Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={`${combat.fencer1.user.names} ${combat.fencer2.user.lastNames}`}
+                        primary={`${combat.fencer1.user.names} ${combat.fencer1.user.lastNames}`}
                       />
                       {combat.winnerFencerID === combat.fencer1.fencerID && (
                         <WinnerIcon />
