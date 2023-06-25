@@ -56,9 +56,7 @@ export const App = () => {
 
   return (
     <div>
-      { !navbarExcludePaths.includes(pathname) && (
-        <NavBar />
-      )}
+      {!navbarExcludePaths.includes(pathname) && <NavBar />}
       <Snackbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>
@@ -110,7 +108,10 @@ export const App = () => {
           <Route path="groups/:id/cycles" element={<FencerGroupMesoCycle />} />
           <Route path="groups/:id/list" element={<FencerGroupList />} />
           <Route path="groups/:id" element={<GroupDetails />} />
-          <Route path="aitrainings/new" element={<AITrainingDetection />}></Route>
+          <Route
+            path="aitrainings/new"
+            element={<AITrainingDetection />}
+          ></Route>
         </Route>
         <Route
           element={
@@ -118,8 +119,14 @@ export const App = () => {
           }
         >
           <Route path="fencer/:id/feedback" element={<FencerFeedback />} />
-          <Route path="fencer/:id/aitrainings" element={<FencerAITrainings/>}></Route>
-          <Route path="fencer/:fencerID/aitrainings/:trainingID" element={<AITrainingDetail />}></Route>
+          <Route
+            path="fencer/:id/aitrainings"
+            element={<FencerAITrainings />}
+          ></Route>
+          <Route
+            path="fencer/:fencerID/aitrainings/:trainingID"
+            element={<AITrainingDetail />}
+          ></Route>
         </Route>
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<h1>Not found</h1>} />

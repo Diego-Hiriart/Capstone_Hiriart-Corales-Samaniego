@@ -1,3 +1,5 @@
+import { Pose } from "@tensorflow-models/pose-detection";
+
 export interface MachineCombatData {
   machineName: string;
   leftScore: number;
@@ -6,8 +8,6 @@ export interface MachineCombatData {
   leftPriority: boolean;
   rightPriority: boolean;
 }
-
-import { Pose } from "@tensorflow-models/pose-detection";
 
 export interface LoginFormInputs {
   email: string;
@@ -383,13 +383,13 @@ export type Error = {
   description: string;
 };
 
-export type DetectedPose = Pose[]
+export type DetectedPose = Pose[];
 
-export type Move = DetectedPose[]
+export type Move = DetectedPose[];
 
 export type PoseAnalisisData = {
   incorrectMove: Move;
   correctMove: Move;
   title: string;
   description: string;
-}
+};
