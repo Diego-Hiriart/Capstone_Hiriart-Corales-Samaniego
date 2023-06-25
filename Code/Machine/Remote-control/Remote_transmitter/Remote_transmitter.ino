@@ -30,8 +30,8 @@ const uint8_t pauseRes = 45;
 //Controller's ID
 const uint32_t remoteId = 1;  //Must be diferent for every controller
 //RF SPI pins
-const uint8_t rfCEPin = 7;   //CS pin
-const uint8_t rfCSNPin = 8;  //CS Not pin
+const uint8_t rfCEPin = 6;   //CS pin (CE)
+const uint8_t rfCSNPin = 7;  //CS Not pin (CSN)
 //To store which button was just pressed
 int8_t buttonReset = 0;
 int8_t pressedButton = buttonReset;
