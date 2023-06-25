@@ -1,4 +1,11 @@
-import { boolean } from "zod";
+export interface MachineCombatData {
+  machineName: string;
+  leftScore: number;
+  rightScore: number;
+  dateTime: Date;
+  leftPriority: boolean;
+  rightPriority: boolean;
+}
 
 import { Pose } from "@tensorflow-models/pose-detection";
 

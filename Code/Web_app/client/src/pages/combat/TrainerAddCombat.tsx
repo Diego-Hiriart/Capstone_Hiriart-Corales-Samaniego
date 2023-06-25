@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -23,7 +24,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { Fencer, TrainingGroupFull } from "../../types";
+import { Fencer, MachineCombatData, TrainingGroupFull } from "../../types";
+import TrainerCombatMachineData from "./TrainerCombatMachineData";
 
 const schema = z.object({
   fencer1Name: z.string(),
@@ -46,6 +48,8 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
   const [date, setDate] = useState<Date>(null!);
   const [fencers, setFencers] = useState<Fencer[]>(null!);
   const [selectedWinner, setSelectedWinner] = useState<leftRight>(null!);
+  const [openModal, setOpenModal] = useState(false);
+  const [machineData, setMachineData] = useState<MachineCombatData>(null!);
 
   useEffect(() => {
     const fetchFencers = async () => {
@@ -106,135 +110,161 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
     setSelectedWinner(event.target.value);
   };
 
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleMachine = () => {
+    setOpenModal(true);
+  };
+
+  const setMachineState = (data: MachineCombatData) => setMachineData(data);
+
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Crear meso-ciclo</DialogTitle>
-      <DialogContent>
-        <Container component="main" maxWidth="xs">
-          <Box>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit(onSubmit)}
-              sx={{ mt: 1, display: "flex", flexDirection: "column" }}
-            >
-              <FormControl>
-                <FormLabel>Fecha</FormLabel>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    onChange={(newValue: Date | null) => {
-                      setDate(newValue ?? new Date());
-                    }}
-                  />
-                </LocalizationProvider>
-              </FormControl>
-              <FormLabel>Esgrimista izquierda</FormLabel>
-              <Autocomplete
-                disablePortal
-                id="fencer"
-                options={fencers?.map(
-                  (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                )}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField
-                    margin="normal"
-                    label="Nombre"
-                    autoFocus
-                    {...register("fencer1Name")}
-                    error={!!errors.fencer1Name}
-                    helperText={errors.fencer1Name?.message}
-                    {...params}
-                  />
-                )}
-              />
-              <TextField
-                required
-                fullWidth
-                margin="normal"
-                id="fencer1Score"
-                label="Puntaje"
-                type="number"
-                autoFocus
-                {...register("fencer1Score")}
-                error={!!errors.fencer1Score}
-                helperText={errors.fencer1Score?.message}
-              />
-
-              <FormLabel>Esgrimista derecha</FormLabel>
-              <Autocomplete
-                disablePortal
-                id="fencer"
-                options={fencers?.map(
-                  (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                )}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField
-                    margin="normal"
-                    label="Nombre"
-                    autoFocus
-                    {...register("fencer2Name")}
-                    error={!!errors.fencer2Name}
-                    helperText={errors.fencer2Name?.message}
-                    {...params}
-                  />
-                )}
-              />
-              <TextField
-                required
-                fullWidth
-                margin="normal"
-                id="fencer2Score"
-                label="Puntaje"
-                type="number"
-                autoFocus
-                {...register("fencer2Score")}
-                error={!!errors.fencer2Score}
-                helperText={errors.fencer2Score?.message}
-              />
-
-              <FormControl>
-                <FormLabel id="demo-controlled-radio-buttons-group">
-                  Ganador
-                </FormLabel>
-                <RadioGroup
-                  aria-labelledby="demo-controlled-radio-buttons-group"
-                  name="controlled-radio-buttons-group"
-                  value={selectedWinner}
-                  onChange={handleChange}
-                >
-                  <FormControlLabel
-                    value={"left"}
-                    control={<Radio />}
-                    label="Esgrimista izquierda"
-                    {...register("winner")}
-                  />
-                  <FormControlLabel
-                    value={"right"}
-                    control={<Radio />}
-                    label="Esgrimista derecha"
-                    {...register("winner")}
-                  />
-                </RadioGroup>
-              </FormControl>
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+    <>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Crear meso-ciclo</DialogTitle>
+        <DialogContent>
+          <Container component="main" maxWidth="xs">
+            <Box>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit(onSubmit)}
+                sx={{ mt: 1, display: "flex", flexDirection: "column" }}
               >
-                Crear
-              </Button>
-              <Button fullWidth variant="outlined" onClick={handleClose}>
-                Cancelar
-              </Button>
+                <FormControl>
+                  <FormLabel>Fecha</FormLabel>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      onChange={(newValue: Date | null) => {
+                        setDate(newValue ?? new Date());
+                      }}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+                <FormLabel>Esgrimista izquierda</FormLabel>
+                <Autocomplete
+                  disablePortal
+                  id="fencer"
+                  options={fencers?.map(
+                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
+                  )}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      margin="normal"
+                      label="Nombre"
+                      autoFocus
+                      {...register("fencer1Name")}
+                      error={!!errors.fencer1Name}
+                      helperText={errors.fencer1Name?.message}
+                      {...params}
+                    />
+                  )}
+                />
+                <TextField
+                  required
+                  fullWidth
+                  margin="normal"
+                  id="fencer1Score"
+                  label="Puntaje"
+                  type="number"
+                  autoFocus
+                  {...register("fencer1Score")}
+                  error={!!errors.fencer1Score}
+                  helperText={errors.fencer1Score?.message}
+                />
+
+                <FormLabel>Esgrimista derecha</FormLabel>
+                <Autocomplete
+                  disablePortal
+                  id="fencer"
+                  options={fencers?.map(
+                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
+                  )}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      margin="normal"
+                      label="Nombre"
+                      autoFocus
+                      {...register("fencer2Name")}
+                      error={!!errors.fencer2Name}
+                      helperText={errors.fencer2Name?.message}
+                      {...params}
+                    />
+                  )}
+                />
+                <TextField
+                  required
+                  fullWidth
+                  margin="normal"
+                  id="fencer2Score"
+                  label="Puntaje"
+                  type="number"
+                  autoFocus
+                  {...register("fencer2Score")}
+                  error={!!errors.fencer2Score}
+                  helperText={errors.fencer2Score?.message}
+                />
+
+                <FormControl>
+                  <FormLabel id="demo-controlled-radio-buttons-group">
+                    Ganador
+                  </FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={selectedWinner}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value={"left"}
+                      control={<Radio />}
+                      label="Esgrimista izquierda"
+                      {...register("winner")}
+                    />
+                    <FormControlLabel
+                      value={"right"}
+                      control={<Radio />}
+                      label="Esgrimista derecha"
+                      {...register("winner")}
+                    />
+                  </RadioGroup>
+                </FormControl>
+
+                <Button
+                  onClick={handleMachine}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Traer datos de máquina
+                </Button>
+
+                <Divider sx={{ borderColor: "rgba(0, 0, 0, 0.4)" }}></Divider>
+
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Crear
+                </Button>
+                <Button fullWidth variant="outlined" onClick={handleClose}>
+                  Cancelar
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        </Container>
-      </DialogContent>
-    </Dialog>
+          </Container>
+        </DialogContent>
+      </Dialog>
+      <TrainerCombatMachineData
+        open={openModal}
+        handleClose={handleCloseModal}
+        setState={setMachineState}
+      />
+    </>
   );
 };
 
