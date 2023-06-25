@@ -11,12 +11,13 @@ datasource db {
 }
 
 model MachineCombatData {
-  machineName   String   @id
-  leftScore     Int
-  rightScore    Int
-  dateTime      DateTime
-  leftPriority  Boolean
-  rightPriority Boolean
+  machineCombatDataID Int      @id @default(autoincrement())
+  machineName         String
+  leftScore           Int
+  rightScore          Int
+  dateTime            DateTime
+  leftPriority        Boolean
+  rightPriority       Boolean
 }
 
 model User {

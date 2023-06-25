@@ -1,5 +1,14 @@
 import { Pose } from "@tensorflow-models/pose-detection";
 
+export interface MachineCombatData {
+  machineName: string;
+  leftScore: number;
+  rightScore: number;
+  dateTime: Date;
+  leftPriority: boolean;
+  rightPriority: boolean;
+}
+
 export interface LoginFormInputs {
   email: string;
   password: string;
@@ -21,6 +30,16 @@ export interface TrainingGroupFull extends TrainingGroup {
 
 export interface DailyPlanFull extends DailyPlan {
   activityType: ActivityType;
+}
+
+export interface TrainingCombatFull extends TrainingCombat {
+  fencer1: Fencer & {
+    user: User | null;
+  };
+  fencer2: Fencer & {
+    user: User | null;
+  };
+  winnerFencer: Fencer & { user: User | null };
 }
 
 // export type DailyPlanFull = DailyPlan & {
@@ -364,13 +383,13 @@ export type Error = {
   description: string;
 };
 
-export type DetectedPose = Pose[]
+export type DetectedPose = Pose[];
 
-export type Move = DetectedPose[]
+export type Move = DetectedPose[];
 
 export type PoseAnalisisData = {
   incorrectMove: Move;
   correctMove: Move;
   title: string;
   description: string;
-}
+};

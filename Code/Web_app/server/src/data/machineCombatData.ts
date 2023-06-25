@@ -4,9 +4,12 @@ const prisma = new PrismaClient();
 
 export async function findMachineCombatDataByName(name: string) {
   try {
-    const machineCombatData = await prisma.machineCombatData.findUnique({
+    const machineCombatData = await prisma.machineCombatData.findMany({
       where: {
         machineName: name,
+      },
+      orderBy: {
+        dateTime: "desc",
       },
     });
     return machineCombatData;
@@ -17,7 +20,11 @@ export async function findMachineCombatDataByName(name: string) {
 
 export async function findAllMachineCombatData() {
   try {
-    const machineCombatData = await prisma.machineCombatData.findMany();
+    const machineCombatData = await prisma.machineCombatData.findMany({
+      orderBy: {
+        dateTime: "desc",
+      },
+    });
     return machineCombatData;
   } catch (error) {
     throw error;
@@ -42,14 +49,14 @@ export async function createMachineCombatData(data: MachineCombatData) {
   }
 }
 
-export async function updateMachineCombatDataByName(
-  name: string,
+export async function updateMachineCombatDataByID(
+  id: number,
   data: MachineCombatData
 ) {
   try {
     const machineCombatData = await prisma.machineCombatData.update({
       where: {
-        machineName: name,
+        machineCombatDataID: id,
       },
       data: {
         machineName: data.machineName || undefined,
@@ -66,11 +73,11 @@ export async function updateMachineCombatDataByName(
   }
 }
 
-export async function deleteMachineCombatDataByName(name: string) {
+export async function deleteMachineCombatDataByID(id: number) {
   try {
     const machineCombatData = await prisma.machineCombatData.delete({
       where: {
-        machineName: name,
+        machineCombatDataID: id,
       },
     });
     return machineCombatData;

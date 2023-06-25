@@ -37,10 +37,12 @@ const NavBar = () => {
       items["Entrenadores"] = "trainer";
       items["Esgrimistas"] = "fencer";
       items["Actividades"] = "activity";
+      items["Combates"] = "combats";
     }
     if (roles?.includes("trainer")) {
       items["Esgrimistas"] = "fencer";
       items["Actividades"] = "activity";
+      items["Combates"] = "combats";
     }
     if (roles?.includes("fencer")) {
       items["Grupos"] = `groups/${user?.fencer?.trainingGroupID}`;

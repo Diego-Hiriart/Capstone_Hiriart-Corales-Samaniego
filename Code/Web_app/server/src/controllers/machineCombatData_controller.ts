@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 
 import {
   createMachineCombatData,
-  deleteMachineCombatDataByName,
+  deleteMachineCombatDataByID,
   findAllMachineCombatData,
   findMachineCombatDataByName,
-  updateMachineCombatDataByName,
+  updateMachineCombatDataByID,
 } from "../data/machineCombatData";
 import { errorLog } from "../utils/logs";
 
@@ -45,7 +45,10 @@ export async function postMachineCombatData(req: Request, res: Response) {
 export async function updateMachineCombatData(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await updateMachineCombatDataByName(req.params.name, req.body.data),
+      data: await updateMachineCombatDataByID(
+        Number(req.params.id),
+        req.body.data
+      ),
     });
   } catch (error) {
     errorLog(error);
@@ -56,7 +59,7 @@ export async function updateMachineCombatData(req: Request, res: Response) {
 export async function deleteMachineCombatData(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await deleteMachineCombatDataByName(req.params.name),
+      data: await deleteMachineCombatDataByID(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);

@@ -176,6 +176,33 @@ const trainingErrors = [
   },
 ];
 
+const machineCombatData = [
+  {
+    machineName: "mach1",
+    leftScore: 2,
+    rightScore: 15,
+    dateTime: new Date("2000/12/01"),
+    leftPriority: true,
+    rightPriority: false,
+  },
+  {
+    machineName: "mach1",
+    leftScore: 15,
+    rightScore: 2,
+    dateTime: new Date("1999/12/01"),
+    leftPriority: true,
+    rightPriority: false,
+  },
+  {
+    machineName: "mach2",
+    leftScore: 30,
+    rightScore: 30,
+    dateTime: new Date(),
+    leftPriority: true,
+    rightPriority: false,
+  },
+];
+
 async function main() {
   await prisma.user.createMany({
     data: users,
@@ -200,6 +227,9 @@ async function main() {
   });
   await prisma.trainingError.createMany({
     data: trainingErrors,
+  });
+  await prisma.machineCombatData.createMany({
+    data: machineCombatData,
   });
 }
 
