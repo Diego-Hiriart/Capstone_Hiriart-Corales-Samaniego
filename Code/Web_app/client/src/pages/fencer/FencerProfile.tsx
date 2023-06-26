@@ -1,4 +1,3 @@
-import SideBarList from "../../components/SideBarList";
 
 const items = [
   { itemName: "Informacion Usuario", ref: "user" },
@@ -9,9 +8,7 @@ const items = [
 
 const FencerProfile = () => {
   return (
-    <SideBarList listItems={items}>
       <h1>Fencer Profile</h1>
-    </SideBarList>
   );
 };
 

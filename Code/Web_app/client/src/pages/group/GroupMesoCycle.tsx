@@ -67,7 +67,7 @@ const GroupMesoCycle = () => {
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={String(cycle.mesoCycleID)}
+                to={`cycles/${cycle.mesoCycleID}`}
               >
                 <ListItemText
                   primary={`${formatDate(cycle.startDate)} - 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
 import useTab from "../hooks/useTab";
-import { TabPanel, a11yProps } from "./TabPanel";
+import { TabPanel } from "./TabPanel";
 import { TabItem } from "../types";
 
 interface Props {
@@ -52,5 +52,12 @@ const VerticalTabs = ({ tabItems }: Props) => {
     </Box>
   );
 };
+
+export function a11yProps(index: number) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
 
 export default VerticalTabs;

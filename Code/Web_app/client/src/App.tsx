@@ -81,7 +81,6 @@ export const App = () => {
             path="fencer/groups/:id/cycles/:id"
             element={<MesoCycleDetails />}
           />
-          <Route path="fencer/groups/:id/cycles" element={<GroupMesoCycle />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/aitraining/:id" element={<AITrainingDetail />} />
@@ -100,8 +99,6 @@ export const App = () => {
             path="groups/:id/cycles/:id"
             element={<FencerMesoCycleDetails />}
           />
-          <Route path="groups/:id/cycles" element={<FencerGroupMesoCycle />} />
-          <Route path="groups/:id/list" element={<FencerGroupList />} />
           <Route path="groups/:id" element={<GroupDetails />} />
           <Route path="aitraining/new" element={<AITrainingDetection />} />
           <Route path="feedback" element={<FencerFeedback />} />
