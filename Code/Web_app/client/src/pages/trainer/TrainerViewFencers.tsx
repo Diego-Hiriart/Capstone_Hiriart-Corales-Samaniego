@@ -7,7 +7,6 @@ export default function TrainerViewFencers() {
   const { setTabValue, setTabItems } = useTab();
 
   useEffect(() => {
-    console.log("qwer")
     setTabItems(trainerFencerTabs);
     setTabValue(0);
   }, []);
