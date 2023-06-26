@@ -8,10 +8,13 @@ import { TrainingCombatFull } from "../../types";
 import { formatDate } from "../../utils/formatDate";
 import { CombatEntry } from "./CombatEntry";
 import EditCombat from "./EditCombat";
+import DeleteCombat from "./DeleteCombat";
 
 const CombatDetails = () => {
   const [combat, setCombat] = useState<TrainingCombatFull>(null!);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
   const { user } = useContext(AuthContext);
   const { id } = useParams();
 
@@ -38,6 +41,14 @@ const CombatDetails = () => {
     marginRight: 2,
   };
 
+  const handleOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
+
   return (
     <Container component="main" maxWidth="lg">
       <Box py={{ xs: 2, lg: 4 }}>
@@ -59,7 +70,7 @@ const CombatDetails = () => {
               <Button variant="contained" onClick={handleOpen}>
                 Editar combate
               </Button>
-              <Button variant="text" onClick={undefined}>
+              <Button variant="text" onClick={handleOpenDelete}>
                 <DeleteIcon />
               </Button>
             </>
@@ -122,6 +133,11 @@ const CombatDetails = () => {
         {/* TODO: Add pagination */}
       </Box>
       <EditCombat open={open} handleClose={handleClose} combat={combat} />
+      <DeleteCombat
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        id={Number(id)}
+      />
     </Container>
   );
 };
