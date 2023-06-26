@@ -1,4 +1,3 @@
-import { Toolbar } from "@mui/material";
 import "dayjs/locale/es";
 import SignupForm from "./pages/fencer/SignupForm";
 import { useContext, useEffect } from "react";
@@ -9,9 +8,6 @@ import Snackbar from "./components/Snackbar";
 import AuthContext from "./contexts/AuthContext";
 import Unauthorized from "./pages/Unauthorized";
 import ActivityList from "./pages/activity/ActivityList";
-import AdminHome from "./pages/admin/AdminHome";
-import FencerHome from "./pages/fencer/FencerHome";
-import FencerList from "./pages/fencer/FencerList";
 import GroupDetails from "./pages/group/GroupDetails";
 import GroupFencersList from "./pages/group/GroupFencersList";
 import GroupMesoCycle from "./pages/group/GroupMesoCycle";
@@ -88,7 +84,6 @@ export const App = () => {
           <Route path="fencer/groups/:id/cycles" element={<GroupMesoCycle />} />
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
-          <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
           <Route path="fencer/aitraining/:id" element={<AITrainingDetail />} />
         </Route>
         <Route
