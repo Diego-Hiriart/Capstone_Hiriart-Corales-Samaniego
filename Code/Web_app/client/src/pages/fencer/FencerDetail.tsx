@@ -1,16 +1,17 @@
-import SideBarList from "../../components/SideBarList"
-
-const items = [
-  { itemName: "Feedback", ref: "feedback" },
-  { itemName: "Entrenamientos IA", ref: "aitrainings" },
-];
+import { useEffect } from "react";
+import useTab from "../../hooks/useTab";
+import VerticalTabs from "../../components/VerticalTabs";
+import { fencerDetailTabs } from "../../components/Sidebar/fencerDetailTabs";
 
 const FencerDetail = () => {
-  return (
-    <SideBarList listItems={items}>
-      <h1>Fencer Detail</h1>
-    </SideBarList>
-  )
+  const { setTabValue, setTabItems } = useTab();
+
+  useEffect(() => {
+    setTabItems(fencerDetailTabs);
+    setTabValue(0);
+  }, []);
+
+  return <VerticalTabs tabItems={fencerDetailTabs} />;
 }
 
 export default FencerDetail 

@@ -1,17 +1,15 @@
-import React from "react";
-import SideBarList from "../../components/SideBarList";
+import { useEffect } from "react";
+import useTab from "../../hooks/useTab";
+import { trainerFencerTabs } from "../../components/Sidebar/trainerFencerTabs";
+import VerticalTabs from "../../components/VerticalTabs";
 
-const TrainerViewFencers = () => {
-  const items = [
-    { itemName: "Listado de alumnos", ref: "list" },
-    { itemName: "Grupos", ref: "groups" },
-  ];
+export default function TrainerViewFencers() {
+  const { setTabValue, setTabItems } = useTab();
 
-  return (
-    <SideBarList listItems={items}>
-      <div>View</div>
-    </SideBarList>
-  );
-};
+  useEffect(() => {
+    setTabItems(trainerFencerTabs);
+    setTabValue(0);
+  }, []);
 
-export default TrainerViewFencers;
+  return <VerticalTabs tabItems={trainerFencerTabs} />;
+}

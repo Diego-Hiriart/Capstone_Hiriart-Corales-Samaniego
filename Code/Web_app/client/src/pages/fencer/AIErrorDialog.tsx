@@ -45,7 +45,8 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   }, []);
 
   // Generator function to loop through poses
-  function* stepGen(steps: DetectedPose[]): any { // TODO: define return type
+  // TODO: define return type
+  function* stepGen(steps: DetectedPose[]): any {
     while (true) yield* steps;
   }
 
@@ -81,7 +82,7 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   const drawCanvas = (
     canvas: HTMLCanvasElement,
     renderer: RendererCanvas2d,
-    pose: Pose[], 
+    pose: Pose[]
   ) => {
     canvas.width = canvasSize;
     canvas.height = canvasSize;
@@ -90,27 +91,23 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth={'md'} fullWidth>
+    <Dialog open={open} onClose={handleClose} maxWidth={"md"} fullWidth>
       <DialogTitle>{poseAnalisisData.title}</DialogTitle>
-      <DialogContent>
-        <Stack direction="row" gap={4} flexWrap="wrap" justifyContent="center">
-          <Box>
-            <canvas
-              ref={setCanvasRef}
-              css={[outputCanvasStyles(canvasSize), redBorder]}
-              id="error-canvas"
-            ></canvas>
-          </Box>
-          <Box>
-            <canvas
-              ref={setCanvasRef}
-              css={[outputCanvasStyles(canvasSize), greenBorder]}
-              id="correct-canvas"
-            ></canvas>
-          </Box>
-        </Stack>
+      <DialogContent css={dialogContentStyles}>
+        <div css={canvasContainerStyles}>
+          <canvas
+            ref={setCanvasRef}
+            css={[outputCanvasStyles(canvasSize), redBorder]}
+            id="error-canvas"
+          ></canvas>
+          <canvas
+            ref={setCanvasRef}
+            css={[outputCanvasStyles(canvasSize), greenBorder]}
+            id="correct-canvas"
+          ></canvas>
+        </div>
         <Typography>{poseAnalisisData.description}</Typography>
-        <DialogActions sx={{ mt: 3 }}>
+        <DialogActions sx={{paddingBottom: 0}}>
           <Button variant="contained" onClick={handleClose}>
             Continuar
           </Button>
@@ -120,21 +117,33 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   );
 };
 
+const dialogContentStyles = css`
+  display: flex;
+  flex-direction: column;
+`;
+
+const canvasContainerStyles = css`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  height: 100%;
+  object-fit: contain;
+  min-height: 0;
+`;
 const outputCanvasStyles = (canvasSize: number) => css`
   transform: scaleX(-1);
   object-fit: contain;
   width: 100%;
   max-width: 400px;
-  height: 100%;
-  max-height: 400px;
+  min-width: 0;
 `;
 
 const redBorder = css`
   border: 1px solid red;
-`
+`;
 
 const greenBorder = css`
   border: 1px solid green;
-`
+`;
 
 export default AIErrorDialog;

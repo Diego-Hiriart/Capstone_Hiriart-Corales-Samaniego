@@ -16,7 +16,6 @@ import { useAlert } from "../../hooks/useAlert";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import {
   SignupFencerFormType,
   schema,
@@ -27,7 +26,6 @@ import AuthContext from "../../contexts/AuthContext";
 
 const FencerProfileFencer = () => {
   const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
   const { showError, showSuccess } = useAlert();
   const {
     control,
@@ -43,10 +41,6 @@ const FencerProfileFencer = () => {
     },
     resolver: zodResolver(schema),
   });
-
-  const handleBack = () => {
-    navigate("/profile");
-  };
 
   const onSubmit: SubmitHandler<SignupFencerFormType> = async (formData) => {
     try {
@@ -175,9 +169,6 @@ const FencerProfileFencer = () => {
             helperText={errors.schedule?.message}
           />
           <Stack direction="row" spacing={2}>
-            <Button fullWidth variant="outlined" onClick={handleBack}>
-              Cancelar
-            </Button>
             <Button
               type="submit"
               fullWidth

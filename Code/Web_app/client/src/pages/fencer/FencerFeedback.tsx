@@ -12,7 +12,6 @@ import {
 import {
   ChangeEvent,
   useCallback,
-  useContext,
   useEffect,
   useState,
 } from "react";
@@ -21,9 +20,9 @@ import axios from "../../services/axios";
 import { useParams, useSearchParams } from "react-router-dom";
 import dayjs from "dayjs";
 import AddFeedbackDialog from "./AddFeedbackDialog";
-import AuthContext from "../../contexts/AuthContext";
-import { useAlert } from "../../hooks/useAlert";
 import FeedbackDialog from "./FeedbackDialog";
+import useAuth from "../../hooks/useAuth";
+import { useAlert } from "../../hooks/useAlert";
 
 interface feedbacksResponse {
   data: SingleFeedback[] | null;
@@ -34,7 +33,7 @@ const FencerFeedback = () => {
   const resultsPerPage = 5; //Has to be the same as the one in the backend constants.ts file
   const { id } = useParams();
   const { showError } = useAlert();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(searchParams.get("page") || 1);
   const [feedbacks, setFeedbacks] = useState<feedbacksResponse>({
@@ -66,8 +65,10 @@ const FencerFeedback = () => {
   };
 
   const fetchFeedbacks = useCallback(async () => {
+    const fencerId = user?.roles.includes("fencer") ? user?.fencer?.fencerID : id;
+    const url = `/dashboard/fencer_single_feedback/${fencerId}`;
     const { data } = await axios.get(
-      `/dashboard/fencer_single_feedback/${id}`,
+      url,
       { params: { page } }
     );
     setFeedbacks(data);

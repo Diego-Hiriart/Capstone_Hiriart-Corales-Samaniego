@@ -30,11 +30,11 @@ type FormType = z.infer<typeof schema>;
 
 const AITrainingDetail = () => {
   const { user } = useAuth();
-  const { trainingID } = useParams();
+  const { id } = useParams();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [poseAnalisisData, setPoseAnalisisData] = useState<PoseAnalisisData | null>(null);
   const [training, setTraining] = useState<AITraining | null>(null);
-  const aitrainingURL = `/dashboard/aitraining/${trainingID}`;
+  const aitrainingURL = `/dashboard/aitraining/${id}`;
   const { showSuccess, showError } = useAlert();
 
   const {
@@ -48,7 +48,7 @@ const AITrainingDetail = () => {
 
   useEffect(() => {
     const fetchTraining = async () => {
-      const { data } = await axios.get(`/dashboard/aitraining/${trainingID}`);
+      const { data } = await axios.get(`/dashboard/aitraining/${id}`);
       setTraining(data.data);
     };
     fetchTraining();

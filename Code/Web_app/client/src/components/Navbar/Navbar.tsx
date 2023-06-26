@@ -1,7 +1,7 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -17,6 +17,8 @@ import {
   ListItemText,
 } from "@mui/material";
 import AuthStatus from "./AuthStatus";
+import { SideBarItems } from "./SideBarItems";
+import useTab from "../../hooks/useTab";
 
 declare module "@mui/material/AppBar" {
   export interface AppBarPropsColorOverrides {
@@ -29,6 +31,7 @@ const drawerWidth = 240;
 const NavBar = () => {
   const { user } = useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const { tabItems } = useTab();
 
   const navItems = (roles: string[] | undefined) => {
     const items: Record<string, string> = {};
@@ -47,10 +50,8 @@ const NavBar = () => {
     if (roles?.includes("fencer")) {
       items["Combates"] = "combats";
       items["Grupos"] = `groups/${user?.fencer?.trainingGroupID}`;
-      items["Feedback"] = `/fencer/${user?.fencer?.fencerID}/feedback`;
-      items[
-        "Entrenamiento IA"
-      ] = `/fencer/${user?.fencer?.fencerID}/aitrainings`;
+      items["Feedback"] = `feedback`;
+      items["Entrenamiento IA"] = `aitraining`;
     }
     return items;
   };
@@ -119,6 +120,7 @@ const NavBar = () => {
               },
             }}
           >
+            <Toolbar />
             <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
               <Typography variant="h6" sx={{ my: 2 }}>
                 Capstone
@@ -138,6 +140,8 @@ const NavBar = () => {
                 ))}
               </List>
             </Box>
+            <Divider />
+            {tabItems && <SideBarItems items={tabItems} />}
           </Drawer>
         </Box>
       </Box>

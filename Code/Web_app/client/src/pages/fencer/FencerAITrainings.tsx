@@ -7,24 +7,19 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Dialog,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { AITraining } from "../../types";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import NewTrainingDialog from "./NewTrainingDialog";
 import dayjs from "dayjs";
-import AuthContext from "../../contexts/AuthContext";
+import useAuth from "../../hooks/useAuth";
 
 const FencerAITrainings = () => {
   const [open, setOpen] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [trainings, setTrainings] = useState<AITraining[]>([]);
-  const { id } = useParams();
-
-  const fencerID = user?.roles.includes("fencer") ? user?.fencer?.fencerID : id;
-  const aitrainingPath = `/fencer/${fencerID}/aitrainings/`;
 
   const handleOpen = () => {
     setOpen(true);
@@ -41,6 +36,13 @@ const FencerAITrainings = () => {
     };
     fetchTrainings();
   }, []);
+
+  const detailUrl = (id: number) => {
+    if (!user?.roles?.includes("fencer")) {
+      return `/fencer/aitraining/${id}`;
+    }
+    return String(id);
+  }
 
   return (
     <Container component="main" maxWidth="sm">
@@ -68,7 +70,7 @@ const FencerAITrainings = () => {
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={aitrainingPath + training.AITrainingID}
+                to={detailUrl(training.AITrainingID)}
               >
                 <ListItemText
                   primary={String(dayjs(training.date).format("DD MMMM YYYY"))}
