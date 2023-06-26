@@ -79,9 +79,11 @@ export async function createTrainingCombat(data: TrainingCombat) {
 
 export async function updateTrainingCombatById(
   id: number,
-  data: TrainingCombat
+  data: TrainingCombat & { winner: string }
 ) {
   try {
+    const combat = await findTrainingCombatById(id);
+
     const trainingCombat = await prisma.trainingCombat.update({
       where: {
         trainingCombatID: id,
@@ -92,7 +94,9 @@ export async function updateTrainingCombatById(
         fencer1Score: data.fencer1Score || undefined,
         fencer2Score: data.fencer2Score || undefined,
         dateTime: data.dateTime || undefined,
-        winnerFencerID: data.winnerFencerID || undefined,
+        winnerFencerID:
+          (data.winner === "left" ? combat?.fencer1ID : combat?.fencer2ID) ||
+          undefined,
       },
     });
     return trainingCombat;

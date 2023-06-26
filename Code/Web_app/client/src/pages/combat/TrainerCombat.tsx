@@ -1,23 +1,18 @@
 import {
-  Avatar,
   Box,
   Button,
   Container,
-  Grid,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
-  ListItemText,
-  Paper,
   Typography,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { useContext, useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import { TrainingCombatFull } from "../../types";
+import { CombatEntry } from "./CombatEntry";
 import TrainerAddCombat from "./TrainerAddCombat";
 
 const TrainerCombat = () => {
@@ -46,19 +41,6 @@ const TrainerCombat = () => {
     setOpen(false);
   };
 
-  const WinnerIcon = () => (
-    <Typography
-      sx={{
-        backgroundColor: "gray",
-        color: "white",
-        padding: "8px",
-        borderRadius: "0.2rem",
-      }}
-    >
-      GANADOR
-    </Typography>
-  );
-
   return (
     <Container component="main" maxWidth="lg">
       <Box py={{ xs: 2, lg: 4 }}>
@@ -73,9 +55,12 @@ const TrainerCombat = () => {
           <Typography variant="h1" alignSelf="start">
             Combates
           </Typography>
-          <Button variant="contained" onClick={handleOpen}>
-            + Agregar combate
-          </Button>
+
+          {user?.roles.includes("trainer") && (
+            <Button variant="contained" onClick={handleOpen}>
+              + Agregar combate
+            </Button>
+          )}
         </Box>
         <List sx={{ mt: 1 }}>
           {combats?.map((combat) => (
@@ -89,48 +74,13 @@ const TrainerCombat = () => {
                 component={RouterLink}
                 to={String(combat.trainingCombatID)}
               >
-                <Grid container spacing={2} columns={16}>
-                  <Grid item xs={7}>
-                    <Box
-                      sx={{
-                        px: 1,
-                        display: "flex",
-                      }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar></Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={`${combat.fencer1.user.names} ${combat.fencer1.user.lastNames}`}
-                      />
-                      {combat.winnerFencerID === combat.fencer1.fencerID && (
-                        <WinnerIcon />
-                      )}
-                    </Box>
-                  </Grid>
-                  <Grid item xs={2} sx={{ textAlign: "center" }}>
-                    <Typography sx={{ marginX: "4px" }}>VS</Typography>
-                  </Grid>
-                  <Grid item xs={7}>
-                    <Box
-                      sx={{
-                        px: 1,
-                        display: "flex",
-                      }}
-                    >
-                      {combat.winnerFencerID === combat.fencer2.fencerID && (
-                        <WinnerIcon />
-                      )}
-                      <ListItemText
-                        sx={{ textAlignLast: "end", marginRight: 2 }}
-                        primary={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
-                      />
-                      <ListItemAvatar>
-                        <Avatar></Avatar>
-                      </ListItemAvatar>
-                    </Box>
-                  </Grid>
-                </Grid>
+                <CombatEntry
+                  fencer1Name={`${combat.fencer1.user.names} ${combat.fencer1.user.lastNames}`}
+                  fencer2Name={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
+                  fencer1ID={combat.fencer1ID}
+                  fencer2ID={combat.fencer2ID}
+                  winnerFencerID={combat.winnerFencerID}
+                />
               </ListItemButton>
             </ListItem>
           ))}
