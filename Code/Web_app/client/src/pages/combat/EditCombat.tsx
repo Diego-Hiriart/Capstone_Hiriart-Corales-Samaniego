@@ -61,6 +61,9 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
 
   useEffect(() => {
     setDate(combat?.dateTime);
+    setSelectedWinner(
+      combat?.winnerFencerID === combat?.fencer1ID ? "left" : "right"
+    );
   }, [combat]);
 
   const {
