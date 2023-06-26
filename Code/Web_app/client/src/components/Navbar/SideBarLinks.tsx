@@ -1,22 +1,19 @@
 import useTab from "../../hooks/useTab";
-import FencerList from "../../pages/fencer/FencerList";
-import TrainerTrainingGroups from "../../pages/trainer/TrainerTrainingGroups";
 import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useLocation } from "react-router-dom";
-
-const TrainerFencerLinks = [
-  { label: "Listado de esgrimistas", component: <FencerList /> },
-  { label: "Grupos", component: <TrainerTrainingGroups /> },
-];
+import { TrainerFencerTabs } from "../Sidebar/trainerFencerTabs";
+import { FencerDetailTabs } from "../Sidebar/fencerDetailTabs";
 
 export const SideBarLinks = () => {
   const { pathname } = useLocation();
   const { setTabValue } = useTab();
 
   let links;
-  if (pathname === "/fencer") {
-    links = TrainerFencerLinks;
-  }
+  if (/^\/fencer$/.test(pathname)) {
+    links = TrainerFencerTabs;
+  } else if (/^\/fencer\/\d+$/.test(pathname)) {
+    links = FencerDetailTabs; 
+  } 
 
   return (
     <List>
