@@ -393,3 +393,8 @@ export type PoseAnalisisData = {
   title: string;
   description: string;
 };
+
+export type TabItem = {
+  label: string;
+  component: JSX.Element;
+};

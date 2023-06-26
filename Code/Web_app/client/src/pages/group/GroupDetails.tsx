@@ -1,19 +1,27 @@
-import React from "react";
-import SideBarList from "../../components/SideBarList";
+import { useEffect } from "react";
+import useTab from "../../hooks/useTab";
+import VerticalTabs from "../../components/VerticalTabs";
+import useAuth from "../../hooks/useAuth";
+import {
+  fencerGroupTabs,
+  trainerGroupTabs,
+} from "../../components/Sidebar/groupTabs";
 
 const GroupDetails = () => {
-  const items = [
-    { itemName: "Integrantes", ref: "list" },
-    { itemName: "Meso-ciclo", ref: "cycles" },
-  ];
-
   // TODO: Fetch group data and store in context or sm
+  const { setTabValue, setTabItems: setTabList } = useTab();
+  const { user } = useAuth();
 
-  return (
-    <SideBarList listItems={items}>
-      <div>Details</div>
-    </SideBarList>
-  );
+  const groupDetailTabs = user?.roles?.includes("fencer")
+    ? fencerGroupTabs
+    : trainerGroupTabs;
+
+  useEffect(() => {
+    setTabList(groupDetailTabs);
+    setTabValue(0);
+  }, []);
+
+  return <VerticalTabs tabItems={groupDetailTabs} />;
 };
 
 export default GroupDetails;
