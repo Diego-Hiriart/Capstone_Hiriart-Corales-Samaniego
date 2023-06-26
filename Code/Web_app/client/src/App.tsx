@@ -89,6 +89,7 @@ export const App = () => {
           <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/groups" element={<TrainerTrainingGroups />} />
+          <Route path="fencer/aitraining/:id" element={<AITrainingDetail />} />
         </Route>
         <Route
           element={<ProtectedRoute allowedRoles={["fencer", "trainer"]} />}

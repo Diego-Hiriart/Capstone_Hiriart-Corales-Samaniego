@@ -37,6 +37,13 @@ const FencerAITrainings = () => {
     fetchTrainings();
   }, []);
 
+  const detailUrl = (id: number) => {
+    if (!user?.roles?.includes("fencer")) {
+      return `/fencer/aitraining/${id}`;
+    }
+    return String(id);
+  }
+
   return (
     <Container component="main" maxWidth="sm">
       <Box py={{ xs: 2, lg: 4 }}>
@@ -63,7 +70,7 @@ const FencerAITrainings = () => {
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={String(training.AITrainingID)}
+                to={detailUrl(training.AITrainingID)}
               >
                 <ListItemText
                   primary={String(dayjs(training.date).format("DD MMMM YYYY"))}
