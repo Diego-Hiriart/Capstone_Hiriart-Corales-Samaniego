@@ -28,7 +28,7 @@ const VerticalTabs = ({ tabItems }: Props) => {
         value={tabValue}
         onChange={(e, value) => setTabValue(value)}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider" }} // TODO: add fixed position to sidebar
+        sx={{ borderRight: 1, borderColor: "divider", display: {xs: "none", sm: "block"}}} // TODO: add fixed position to sidebar
       >
         {tabItems.map((tabItem, index) => (
           <Tab
