@@ -15,7 +15,7 @@ export function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
-      css={{ width: "100%" }}
+      css={{ width: "100%", height: "100%"}}
       {...other}
     >
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}

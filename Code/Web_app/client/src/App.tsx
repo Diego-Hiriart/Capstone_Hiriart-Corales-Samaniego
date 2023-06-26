@@ -9,13 +9,10 @@ import AuthContext from "./contexts/AuthContext";
 import Unauthorized from "./pages/Unauthorized";
 import ActivityList from "./pages/activity/ActivityList";
 import GroupDetails from "./pages/group/GroupDetails";
-import GroupFencersList from "./pages/group/GroupFencersList";
-import GroupMesoCycle from "./pages/group/GroupMesoCycle";
 import MesoCycleDetails from "./pages/mesocycle/MesoCycleDetails";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
 import TrainerList from "./pages/trainer/TrainerList";
 import TrainerProfile from "./pages/trainer/TrainerProfile";
-import TrainerTrainingGroups from "./pages/trainer/TrainerTrainingGroups";
 import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupPersonalForm from "./pages/fencer/SignupPersonalForm";
@@ -32,8 +29,6 @@ import FencerProfileFencer from "./pages/fencer/FencerProfileFencer";
 import FencerProfileMedical from "./pages/fencer/FencerProfileMedical";
 import Profile from "./pages/Profile";
 import FencerProfileUser from "./pages/fencer/FencerProfileUser";
-import FencerGroupList from "./pages/fencer/groups/FencerGroupList";
-import FencerGroupMesoCycle from "./pages/fencer/groups/FencerGroupMesoCycle";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
@@ -81,7 +76,6 @@ export const App = () => {
             path="fencer/groups/:id/cycles/:id"
             element={<MesoCycleDetails />}
           />
-          <Route path="fencer/groups/:id/list" element={<GroupFencersList />} />
           <Route path="fencer/groups/:id" element={<GroupDetails />} />
           <Route path="fencer/aitraining/:id" element={<AITrainingDetail />} />
         </Route>
@@ -91,10 +85,6 @@ export const App = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
-          <Route path="profile/user" element={<FencerProfileUser />} />
-          <Route path="profile/personal" element={<FencerProfilePersonal />} />
-          <Route path="profile/fencer" element={<FencerProfileFencer />} />
-          <Route path="profile/medical" element={<FencerProfileMedical />} />
           <Route
             path="groups/:id/cycles/:id"
             element={<FencerMesoCycleDetails />}

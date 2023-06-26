@@ -21,16 +21,14 @@ const VerticalTabs = ({ tabItems }: Props) => {
         flexGrow: 1,
         bgcolor: "background.paper",
         display: "flex",
-        height: 224,
       }}
     >
       <Tabs
         orientation="vertical"
-        variant="scrollable"
         value={tabValue}
         onChange={(e, value) => setTabValue(value)}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: "divider" }}
+        sx={{ borderRight: 1, borderColor: "divider" }} // TODO: add fixed position to sidebar
       >
         {tabItems.map((tabItem, index) => (
           <Tab

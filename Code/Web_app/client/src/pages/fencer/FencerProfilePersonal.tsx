@@ -22,7 +22,6 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useNavigate } from "react-router-dom";
 import {
   SignupPersonalFormType,
   schema,
@@ -36,7 +35,6 @@ import axios from "../../services/axios";
 import dayjs from "dayjs";
 
 const FencerProfilePersonal = () => {
-  const navigate = useNavigate();
   const { showError, showSuccess } = useAlert();
   const { user } = useContext(AuthContext);
   const {
@@ -59,10 +57,6 @@ const FencerProfilePersonal = () => {
     },
     resolver: zodResolver(schema),
   });
-
-  const handleBack = () => {
-    navigate("/profile");
-  };
 
   const onSubmit: SubmitHandler<SignupPersonalFormType> = async (formData) => {
     try {
@@ -318,9 +312,6 @@ const FencerProfilePersonal = () => {
             helperText={errors.insurance?.message}
           />
           <Stack direction="row" spacing={2}>
-            <Button fullWidth variant="outlined" onClick={handleBack}>
-              Cancelar
-            </Button>
             <Button
               type="submit"
               fullWidth
