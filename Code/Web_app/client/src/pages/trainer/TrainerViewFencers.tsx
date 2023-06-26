@@ -4,10 +4,11 @@ import { trainerFencerTabs } from "../../components/Sidebar/trainerFencerTabs";
 import VerticalTabs from "../../components/VerticalTabs";
 
 export default function TrainerViewFencers() {
-  const { setTabValue, setTabItems: setTabList } = useTab();
+  const { setTabValue, setTabItems } = useTab();
 
   useEffect(() => {
-    setTabList(trainerFencerTabs);
+    console.log("qwer")
+    setTabItems(trainerFencerTabs);
     setTabValue(0);
   }, []);
 

@@ -24,11 +24,7 @@ import Home from "./pages/Home";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
 import dayjs from "dayjs";
-import FencerProfilePersonal from "./pages/fencer/FencerProfilePersonal";
-import FencerProfileFencer from "./pages/fencer/FencerProfileFencer";
-import FencerProfileMedical from "./pages/fencer/FencerProfileMedical";
 import Profile from "./pages/Profile";
-import FencerProfileUser from "./pages/fencer/FencerProfileUser";
 import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
@@ -36,19 +32,25 @@ import AITrainingDetection from "./pages/fencer/AITrainingDetection";
 import { navbarExcludePaths } from "./Constants";
 import TrainerCombat from "./pages/combat/TrainerCombat";
 import CombatDetails from "./pages/combat/CombatDetails";
+import useTab from "./hooks/useTab";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const { setTabItems } = useTab();
 
   useEffect(() => {
     dayjs.locale("es");
     checkToken();
   }, []);
 
+  useEffect(() => {
+    setTabItems(null);
+  }, [location])
+
   return (
     <div>
-      {!navbarExcludePaths.includes(pathname) && <NavBar />}
+      {!navbarExcludePaths.includes(location.pathname) && <NavBar />}
       <Snackbar />
       {/* ^--- This is to avoid the content to be hidden by the navbar */}
       <Routes>

@@ -3,8 +3,8 @@ import { TabItem } from "../types";
 interface TabContext {
   tabValue: number;
   setTabValue: React.Dispatch<React.SetStateAction<number>>;
-  tabItems: TabItem[];
-  setTabItems: React.Dispatch<React.SetStateAction<TabItem[]>>;
+  tabItems: (TabItem[] | null);
+  setTabItems: React.Dispatch<React.SetStateAction<TabItem[] | null>>;
 }
 
 const TabContext = createContext<TabContext>({
@@ -16,15 +16,15 @@ const TabContext = createContext<TabContext>({
 
 export const TabProvider = ({ children }: { children: ReactNode }) => {
   const [tabValue, setTabValue] = useState<number>(0);
-  const [tabList, setTabList] = useState<TabItem[]>([]);
+  const [tabItems, setTabItems] = useState<TabItem[] | null>(null);
 
   return (
     <TabContext.Provider
       value={{
         tabValue,
         setTabValue,
-        tabItems: tabList,
-        setTabItems: setTabList,
+        tabItems,
+        setTabItems,
       }}
     >
       {children}

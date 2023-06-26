@@ -4,10 +4,10 @@ import VerticalTabs from "../../components/VerticalTabs";
 import { fencerDetailTabs } from "../../components/Sidebar/fencerDetailTabs";
 
 const FencerDetail = () => {
-  const { setTabValue, setTabItems: setTabList } = useTab();
+  const { setTabValue, setTabItems } = useTab();
 
   useEffect(() => {
-    setTabList(fencerDetailTabs);
+    setTabItems(fencerDetailTabs);
     setTabValue(0);
   }, []);
 

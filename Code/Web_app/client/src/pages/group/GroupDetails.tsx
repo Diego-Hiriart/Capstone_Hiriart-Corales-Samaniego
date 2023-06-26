@@ -9,7 +9,7 @@ import {
 
 const GroupDetails = () => {
   // TODO: Fetch group data and store in context or sm
-  const { setTabValue, setTabItems: setTabList } = useTab();
+  const { setTabValue, setTabItems } = useTab();
   const { user } = useAuth();
 
   const groupDetailTabs = user?.roles?.includes("fencer")
@@ -17,7 +17,7 @@ const GroupDetails = () => {
     : trainerGroupTabs;
 
   useEffect(() => {
-    setTabList(groupDetailTabs);
+    setTabItems(groupDetailTabs);
     setTabValue(0);
   }, []);
 

@@ -141,7 +141,7 @@ const NavBar = () => {
               </List>
             </Box>
             <Divider />
-            {tabItems.length && <SideBarItems items={tabItems} />}
+            {tabItems && <SideBarItems items={tabItems} />}
           </Drawer>
         </Box>
       </Box>
