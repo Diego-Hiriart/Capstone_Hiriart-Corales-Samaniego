@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -15,25 +14,24 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AxiosError } from "axios";
 import enGB from "date-fns/locale/en-GB";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
 import { z } from "zod";
 import axios from "../../services/axios";
-import { Fencer, MachineCombatData } from "../../types";
-import TrainerCombatMachineData from "./TrainerCombatMachineData";
+import { Fencer, TrainingCombatFull } from "../../types";
 
 const schema = z.object({
-  fencer1Name: z.string(),
-  fencer2Name: z.string(),
-  fencer1Score: z.string(),
-  fencer2Score: z.string(),
-  winner: z.string(),
+  fencer1Name: z.string().optional(),
+  fencer2Name: z.string().optional(),
+  fencer1Score: z.string().optional(),
+  fencer2Score: z.string().optional(),
 });
 
 type TrainerAddCombatForm = z.infer<typeof schema>;
@@ -41,16 +39,16 @@ type TrainerAddCombatForm = z.infer<typeof schema>;
 interface TrainerAddCombatProps {
   handleClose: () => void;
   open: boolean;
+  combat: TrainingCombatFull;
 }
 
 type leftRight = "left" | "right" | string;
 
-const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
+const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
   const [date, setDate] = useState<Date>(null!);
   const [fencers, setFencers] = useState<Fencer[]>(null!);
   const [selectedWinner, setSelectedWinner] = useState<leftRight>(null!);
-  const [openModal, setOpenModal] = useState(false);
-  const [machineData, setMachineData] = useState<MachineCombatData>(null!);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchFencers = async () => {
@@ -61,27 +59,18 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
     fetchFencers();
   }, []);
 
+  useEffect(() => {
+    setDate(combat?.dateTime);
+  }, [combat]);
+
   const {
     register,
     handleSubmit,
     setError,
-    reset,
     formState: { errors },
   } = useForm<TrainerAddCombatForm>({
     resolver: zodResolver(schema),
   });
-
-  useEffect(() => {
-    if (machineData) {
-      reset({
-        fencer1Score: machineData.leftScore.toString(),
-        fencer2Score: machineData.rightScore.toString(),
-        winner: setScore(machineData),
-      });
-
-      setSelectedWinner(setScore(machineData));
-    }
-  }, [machineData]);
 
   const navigate = useNavigate();
 
@@ -98,15 +87,14 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
           formData.fencer2Name
       );
 
-      await axios.post("/dashboard/training_combat/", {
+      await axios.put("/dashboard/training_combat/" + id, {
         data: {
           fencer1ID: fencer1?.fencerID,
           fencer2ID: fencer2?.fencerID,
           fencer1Score: Number(formData.fencer1Score),
           fencer2Score: Number(formData.fencer2Score),
           dateTime: date,
-          winnerFencerID:
-            selectedWinner === "left" ? fencer1?.fencerID : fencer2?.fencerID,
+          winner: selectedWinner,
         },
       });
       navigate(0);
@@ -117,32 +105,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
           message: "Ha ocurrido un error crear un combate",
         });
       }
-    }
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
-  const handleMachine = () => {
-    setOpenModal(true);
-  };
-
-  const setMachineState = (data: MachineCombatData) => {
-    setMachineData(data);
-  };
-
-  const setScore = (data: MachineCombatData): leftRight => {
-    if (!machineData) return "";
-
-    if (data.leftScore > data.rightScore) {
-      return "left";
-    } else if (data.leftScore < data.rightScore) {
-      return "right";
-    } else if (data.leftScore === data.rightScore && data.leftPriority) {
-      return "left";
-    } else {
-      return "right";
     }
   };
 
@@ -159,7 +121,7 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Crear combate</DialogTitle>
+        <DialogTitle>Editar combate</DialogTitle>
         <DialogContent>
           <Container component="main" maxWidth="xs">
             <Box>
@@ -170,15 +132,13 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                 sx={{ mt: 1, display: "flex", flexDirection: "column" }}
               >
                 <FormControl>
-                  <FormLabel required>Fecha</FormLabel>
+                  <FormLabel>Fecha</FormLabel>
                   <LocalizationProvider
                     dateAdapter={AdapterDateFns}
                     adapterLocale={enGB}
                   >
                     <DatePicker
-                      value={
-                        machineData ? new Date(machineData.dateTime) : date
-                      }
+                      value={date ? new Date(date) : date}
                       onChange={(newValue: Date | null) => {
                         setDate(newValue || new Date());
                       }}
@@ -192,10 +152,10 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   options={fencers?.map(
                     (fencer) => fencer.user.names + " " + fencer.user.lastNames
                   )}
+                  defaultValue={`${combat?.fencer1.user.names} ${combat?.fencer1.user.lastNames}`}
                   sx={{ width: 300 }}
                   renderInput={(params) => (
                     <TextField
-                      required
                       margin="normal"
                       label="Nombre"
                       autoFocus
@@ -207,7 +167,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   )}
                 />
                 <TextField
-                  required
                   fullWidth
                   margin="normal"
                   id="fencer1Score"
@@ -220,7 +179,7 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   {...register("fencer1Score")}
                   error={!errors.fencer1Score}
                   helperText={errors.fencer1Score?.message}
-                  defaultValue={machineData?.leftScore}
+                  defaultValue={combat?.fencer1Score}
                 />
 
                 <FormLabel>Esgrimista derecha</FormLabel>
@@ -230,10 +189,10 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   options={fencers?.map(
                     (fencer) => fencer.user.names + " " + fencer.user.lastNames
                   )}
+                  defaultValue={`${combat?.fencer2.user.names} ${combat?.fencer2.user.lastNames}`}
                   sx={{ width: 300 }}
                   renderInput={(params) => (
                     <TextField
-                      required
                       margin="normal"
                       label="Nombre"
                       autoFocus
@@ -245,7 +204,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   )}
                 />
                 <TextField
-                  required
                   fullWidth
                   margin="normal"
                   id="fencer2Score"
@@ -258,7 +216,7 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   {...register("fencer2Score")}
                   error={!errors.fencer2Score}
                   helperText={errors.fencer2Score?.message}
-                  defaultValue={machineData?.rightScore}
+                  defaultValue={combat?.fencer2Score}
                 />
 
                 <FormControl>
@@ -268,7 +226,7 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     value={selectedWinner}
-                    {...register("winner")}
+                    // {...register("winner")}
                   >
                     <FormControlLabel
                       value={"left"}
@@ -288,23 +246,12 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                 </FormControl>
 
                 <Button
-                  onClick={handleMachine}
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Traer datos de máquina
-                </Button>
-
-                <Divider sx={{ borderColor: "rgba(0, 0, 0, 0.4)" }}></Divider>
-
-                <Button
                   type="submit"
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Crear
+                  Editar
                 </Button>
                 <Button fullWidth variant="outlined" onClick={handleClose}>
                   Cancelar
@@ -314,14 +261,8 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
           </Container>
         </DialogContent>
       </Dialog>
-      <TrainerCombatMachineData
-        open={openModal}
-        handleClose={handleCloseModal}
-        setState={setMachineState}
-        setDate={setDate}
-      />
     </>
   );
 };
 
-export default TrainerAddCombat;
+export default EditCombat;

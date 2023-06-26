@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -6,6 +7,7 @@ import axios from "../../services/axios";
 import { TrainingCombatFull } from "../../types";
 import { formatDate } from "../../utils/formatDate";
 import { CombatEntry } from "./CombatEntry";
+import EditCombat from "./EditCombat";
 
 const CombatDetails = () => {
   const [combat, setCombat] = useState<TrainingCombatFull>(null!);
@@ -53,9 +55,14 @@ const CombatDetails = () => {
           </Typography>
 
           {user?.roles.includes("trainer") && (
-            <Button variant="contained" onClick={handleOpen}>
-              Editar combate
-            </Button>
+            <>
+              <Button variant="contained" onClick={handleOpen}>
+                Editar combate
+              </Button>
+              <Button variant="text" onClick={undefined}>
+                <DeleteIcon />
+              </Button>
+            </>
           )}
         </Box>
 
@@ -114,6 +121,7 @@ const CombatDetails = () => {
 
         {/* TODO: Add pagination */}
       </Box>
+      <EditCombat open={open} handleClose={handleClose} combat={combat} />
     </Container>
   );
 };

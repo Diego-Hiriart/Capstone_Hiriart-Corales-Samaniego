@@ -27,12 +27,14 @@ interface TrainerCombatMachineDataProps {
   handleClose: () => void;
   open: boolean;
   setState: (data: MachineCombatData) => void;
+  setDate: (date: Date) => void;
 }
 
 const TrainerCombatMachineData = ({
   open,
   handleClose,
   setState,
+  setDate,
 }: TrainerCombatMachineDataProps) => {
   const [machines, setMachines] = useState<MachineCombatData[]>(null!);
 
@@ -62,6 +64,7 @@ const TrainerCombatMachineData = ({
         (machine) => machine.machineName === formData.machineName
       );
       setState(machine!);
+      setDate(new Date(machine?.dateTime || ""));
       handleClose();
     } catch (error) {
       if (error instanceof AxiosError) {
