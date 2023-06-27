@@ -61,8 +61,10 @@ function App() {
           <form onSubmit={(e) => extractJSON(e)}>
             <div className='formField'>
               <label>
-                Poses packet size (amount of keypoints to be packed together and
-                added to the JSON)
+                Target poses packet size / amount of keypoints to be packed
+                together and added to the JSON (might not be able to extracte
+                desired amount and get more or less, use console output as
+                guide)
               </label>
               <input
                 name='posesPacketSize'
