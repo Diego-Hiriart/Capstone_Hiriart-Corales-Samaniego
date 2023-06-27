@@ -51,7 +51,7 @@ const NavBar = () => {
       items["Combates"] = "combats";
       items["Grupos"] = `groups/${user?.fencer?.trainingGroupID}`;
       items["Feedback"] = `feedback`;
-      items["Entrenamiento IA"] = `aitraining`;
+      items["Entrenamiento IA"] = `aitrainings`;
     }
     return items;
   };

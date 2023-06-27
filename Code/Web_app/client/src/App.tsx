@@ -92,10 +92,10 @@ export const App = () => {
             element={<FencerMesoCycleDetails />}
           />
           <Route path="groups/:id" element={<GroupDetails />} />
-          <Route path="aitraining/new" element={<AITrainingDetection />} />
+          <Route path="aitrainings/new" element={<AITrainingDetection />} />
           <Route path="feedback" element={<FencerFeedback />} />
-          <Route path="aitraining" element={<FencerAITrainings />} />
-          <Route path="aitraining/:id" element={<AITrainingDetail />} />
+          <Route path="aitrainings" element={<FencerAITrainings />} />
+          <Route path="aitrainings/:id" element={<AITrainingDetail />} />
         </Route>
         <Route
           element={
