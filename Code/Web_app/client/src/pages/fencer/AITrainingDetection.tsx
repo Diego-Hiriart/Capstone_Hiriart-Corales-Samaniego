@@ -170,7 +170,7 @@ function AITrainingDetection() {
     try {
       // const { data } = await axios.post(url, aiTrainingObj);
       console.log(aiTrainingObj);
-      navigate(`/fencer/${user?.fencer?.fencerID}/aitrainings`);
+      navigate(`/aitrainings`);
     } catch (error) {
       console.error("Error saving training", error);
       showError("Error al guardar el entrenamiento");
