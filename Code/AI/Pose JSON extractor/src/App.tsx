@@ -62,7 +62,7 @@ function App() {
             <div className='formField'>
               <label>
                 Target poses packet size / amount of keypoints to be packed
-                together and added to the JSON (might not be able to extracte
+                together and added to the JSON (might not be able to extract
                 desired amount and get more or less, use console output as
                 guide)
               </label>
