@@ -15,7 +15,7 @@ let detector, camera;
 let rafId;
 let renderer = null;
 let useGpuRenderer = false;
-const detectionInterval = 83; //1/12 of a second (12 fps)
+const detectionInterval = 66; //1/15 of a second (15 captures per second)
 
 const createDetector = async () => {
   const runtime = 'mediapipe';
@@ -33,6 +33,7 @@ const poseAnalysis = (poseData) => {
     poseData[0] !== undefined &&
     poseData[0] !== null
   ) {
+    console.log(new Date().toISOString());
     console.log(
       'This will eventually be sent to a back-end API with a recurrent NN: ',
       poseData
