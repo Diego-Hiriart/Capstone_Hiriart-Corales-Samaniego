@@ -10,6 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model MachineCombatData {
+  machineCombatDataID Int      @id @default(autoincrement())
+  machineName         String
+  leftScore           Int
+  rightScore          Int
+  dateTime            DateTime
+  leftPriority        Boolean
+  rightPriority       Boolean
+}
+
 model User {
   userID        Int            @id @default(autoincrement())
   email         String         @unique @db.VarChar(320)
@@ -264,11 +274,11 @@ model Attendance {
 }
 
 model AITraining {
-  AITraining    Int             @id @default(autoincrement())
+  AITrainingID  Int             @id @default(autoincrement())
   fencer        Fencer          @relation(fields: [fencerID], references: [fencerID])
   fencerID      Int
   date          DateTime
-  duration      DateTime
+  duration      Int
   feedback      String          @db.Text
   trainer       Trainer         @relation(fields: [trainerID], references: [trainerID])
   trainerID     Int
@@ -284,7 +294,7 @@ model RegistrationLink {
 
 model TrainingError {
   trainingErrorID Int        @id @default(autoincrement())
-  AITraining      AITraining @relation(fields: [AITrainingID], references: [AITraining])
+  AITraining      AITraining @relation(fields: [AITrainingID], references: [AITrainingID])
   AITrainingID    Int
   error           Error      @relation(fields: [errorID], references: [errorID])
   errorID         Int

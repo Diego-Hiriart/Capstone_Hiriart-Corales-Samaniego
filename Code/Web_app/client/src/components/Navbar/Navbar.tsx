@@ -17,6 +17,8 @@ import {
   ListItemText,
 } from "@mui/material";
 import AuthStatus from "./AuthStatus";
+import { SideBarItems } from "./SideBarItems";
+import useTab from "../../hooks/useTab";
 
 declare module "@mui/material/AppBar" {
   export interface AppBarPropsColorOverrides {
@@ -29,6 +31,7 @@ const drawerWidth = 240;
 const NavBar = () => {
   const { user } = useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+  const { tabItems } = useTab();
 
   const navItems = (roles: string[] | undefined) => {
     const items: Record<string, string> = {};
@@ -37,14 +40,18 @@ const NavBar = () => {
       items["Entrenadores"] = "trainer";
       items["Esgrimistas"] = "fencer";
       items["Actividades"] = "activity";
+      items["Combates"] = "combats";
     }
     if (roles?.includes("trainer")) {
       items["Esgrimistas"] = "fencer";
       items["Actividades"] = "activity";
+      items["Combates"] = "combats";
     }
     if (roles?.includes("fencer")) {
+      items["Combates"] = "combats";
       items["Grupos"] = `groups/${user?.fencer?.trainingGroupID}`;
-      items["Feedback"] = `/fencer/${user?.fencer?.fencerID}/feedback`;
+      items["Feedback"] = `feedback`;
+      items["Entrenamiento IA"] = `aitrainings`;
     }
     return items;
   };
@@ -56,84 +63,90 @@ const NavBar = () => {
   const navLinks = navItems(user?.roles);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar
-        component="nav"
-        color="light"
-        elevation={0}
-        sx={{
-          borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
-      >
-        <Toolbar>
-          {user && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            Capstone
-          </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" }, mx: 2 }}>
-            {Object.keys(navLinks).map((link) => (
-              <Button key={link} component={RouterLink} to={navLinks[link]}>
-                {link}
-              </Button>
-            ))}
-          </Box>
-          <AuthStatus />
-        </Toolbar>
-      </AppBar>
-      <Box component="nav">
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
+    <>
+      <Box sx={{ display: "flex" }}>
+        <AppBar
+          component="nav"
+          color="light"
+          elevation={0}
           sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
+            borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+            zIndex: (theme) => theme.zIndex.drawer + 1,
           }}
         >
-          <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
+          <Toolbar>
+            {user && (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2, display: { sm: "none" } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Typography
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
               Capstone
             </Typography>
-            <Divider />
-            <List>
+            <Box sx={{ display: { xs: "none", sm: "block" }, mx: 2 }}>
               {Object.keys(navLinks).map((link) => (
-                <ListItem key={link} disablePadding>
-                  <ListItemButton
-                    component={RouterLink}
-                    to={navLinks[link]}
-                    sx={{ py: -1, my: 0 }}
-                  >
-                    <ListItemText primary={link} />
-                  </ListItemButton>
-                </ListItem>
+                <Button key={link} component={RouterLink} to={navLinks[link]}>
+                  {link}
+                </Button>
               ))}
-            </List>
-          </Box>
-        </Drawer>
+            </Box>
+            <AuthStatus />
+          </Toolbar>
+        </AppBar>
+        <Box component="nav">
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            <Toolbar />
+            <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+              <Typography variant="h6" sx={{ my: 2 }}>
+                Capstone
+              </Typography>
+              <Divider />
+              <List>
+                {Object.keys(navLinks).map((link) => (
+                  <ListItem key={link} disablePadding>
+                    <ListItemButton
+                      component={RouterLink}
+                      to={navLinks[link]}
+                      sx={{ py: -1, my: 0 }}
+                    >
+                      <ListItemText primary={link} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+            <Divider />
+            {tabItems && <SideBarItems items={tabItems} />}
+          </Drawer>
+        </Box>
       </Box>
-    </Box>
+      <Toolbar />
+    </>
   );
 };
 

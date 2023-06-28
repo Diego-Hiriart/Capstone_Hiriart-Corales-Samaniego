@@ -1,7 +1,6 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,12 +22,7 @@ const schema = z.object({
 
 export default function FencerProfileUser() {
   const { showError, showSuccess } = useAlert();
-  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
-
-  const handleBack = () => {
-    navigate("/profile");
-  };
 
   const {
     register,
@@ -123,9 +117,6 @@ export default function FencerProfileUser() {
             helperText={errors.email?.message}
           />
           <Stack direction="row" spacing={2}>
-            <Button fullWidth variant="outlined" onClick={handleBack}>
-              Cancelar
-            </Button>
             <Button
               type="submit"
               fullWidth

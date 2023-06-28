@@ -10,6 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AlertProvider } from "./contexts/AlertContext";
 import { ThemeProvider } from "@emotion/react";
 import theme from "./theme";
+import { TabProvider } from "./contexts/TabContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -17,10 +18,12 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <AuthProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
           <ThemeProvider theme={theme}>
-            <AlertProvider>
-              <CssBaseline />
-              <App />
-            </AlertProvider>
+            <TabProvider>
+              <AlertProvider>
+                <CssBaseline />
+                <App />
+              </AlertProvider>
+            </TabProvider>
           </ThemeProvider>
         </LocalizationProvider>
       </AuthProvider>

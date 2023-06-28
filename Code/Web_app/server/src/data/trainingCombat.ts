@@ -8,6 +8,23 @@ export async function findTrainingCombatById(id: number) {
       where: {
         trainingCombatID: id,
       },
+      include: {
+        fencer1: {
+          include: {
+            user: true,
+          },
+        },
+        fencer2: {
+          include: {
+            user: true,
+          },
+        },
+        winnerFencer: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
     return trainingCombat;
   } catch (error) {
@@ -17,7 +34,25 @@ export async function findTrainingCombatById(id: number) {
 
 export async function findAllTrainingCombat() {
   try {
-    const trainingCombat = await prisma.trainingCombat.findMany();
+    const trainingCombat = await prisma.trainingCombat.findMany({
+      include: {
+        fencer1: {
+          include: {
+            user: true,
+          },
+        },
+        fencer2: {
+          include: {
+            user: true,
+          },
+        },
+        winnerFencer: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
     return trainingCombat;
   } catch (error) {
     throw error;
@@ -44,9 +79,11 @@ export async function createTrainingCombat(data: TrainingCombat) {
 
 export async function updateTrainingCombatById(
   id: number,
-  data: TrainingCombat
+  data: TrainingCombat & { winner: string }
 ) {
   try {
+    const combat = await findTrainingCombatById(id);
+
     const trainingCombat = await prisma.trainingCombat.update({
       where: {
         trainingCombatID: id,
@@ -57,7 +94,9 @@ export async function updateTrainingCombatById(
         fencer1Score: data.fencer1Score || undefined,
         fencer2Score: data.fencer2Score || undefined,
         dateTime: data.dateTime || undefined,
-        winnerFencerID: data.winnerFencerID || undefined,
+        winnerFencerID:
+          (data.winner === "left" ? combat?.fencer1ID : combat?.fencer2ID) ||
+          undefined,
       },
     });
     return trainingCombat;

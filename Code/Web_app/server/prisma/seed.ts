@@ -148,6 +148,61 @@ const feedbacks = [
   },
 ];
 
+const aiTrainings = [
+  {
+    AITrainingID: 1,
+    fencerID: 1,
+    date: new Date(),
+    duration: 120,
+    feedback: "Feedback training ai",
+    trainerID: 1,
+  },
+];
+
+const errors = [
+  {
+    errorID: 1,
+    name: "Error 1",
+    description: "Error Description 1",
+  },
+];
+
+const trainingErrors = [
+  {
+    trainingErrorID: 1,
+    AITrainingID: 1,
+    errorID: 1,
+    poseData: "Pose data 1",
+  },
+];
+
+const machineCombatData = [
+  {
+    machineName: "mach1",
+    leftScore: 2,
+    rightScore: 15,
+    dateTime: new Date("2000/12/01"),
+    leftPriority: true,
+    rightPriority: false,
+  },
+  {
+    machineName: "mach1",
+    leftScore: 15,
+    rightScore: 2,
+    dateTime: new Date("1999/12/01"),
+    leftPriority: true,
+    rightPriority: false,
+  },
+  {
+    machineName: "mach2",
+    leftScore: 30,
+    rightScore: 30,
+    dateTime: new Date(),
+    leftPriority: true,
+    rightPriority: false,
+  },
+];
+
 async function main() {
   await prisma.user.createMany({
     data: users,
@@ -163,6 +218,18 @@ async function main() {
   });
   await prisma.singleFeedback.createMany({
     data: feedbacks,
+  });
+  await prisma.aITraining.createMany({
+    data: aiTrainings,
+  });
+  await prisma.error.createMany({
+    data: errors,
+  });
+  await prisma.trainingError.createMany({
+    data: trainingErrors,
+  });
+  await prisma.machineCombatData.createMany({
+    data: machineCombatData,
   });
 }
 

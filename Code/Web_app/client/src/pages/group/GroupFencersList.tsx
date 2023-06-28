@@ -76,7 +76,7 @@ const GroupFencersList = () => {
               <ListItemButton
                 sx={{ px: 1 }}
                 component={RouterLink}
-                to={String(fencer.fencerID)}
+                to={`/fencer/${fencer.fencerID}`}
               >
                 <ListItemAvatar>
                   <Avatar></Avatar>

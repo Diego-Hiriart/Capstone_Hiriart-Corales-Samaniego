@@ -1,16 +1,17 @@
 import { Router } from "express";
 
-import activity_routes from "./activity_routes";
 import activityType_routes from "./activityType_routes";
+import activity_routes from "./activity_routes";
 import admin_routes from "./admin_routes";
 import aiTraining_routes from "./aiTraining_routes";
 import attendance_routes from "./attendance_routes";
 import cycleFeedback_routes from "./cycleFeedback_routes";
 import cycleGoal_routes from "./cycleGoal_routes";
-import dailyPlan_routes from "./dailyPlan_routes";
 import dailyPlanActivity_routes from "./dailyPlanActivity_routes";
+import dailyPlan_routes from "./dailyPlan_routes";
 import error_routes from "./error_routes";
 import fencer_routes from "./fencer_routes";
+import machineCombatData_routes from "./machineCombatData_routes";
 import macroCycle_routes from "./macroCycle_routes";
 import mesoCycle_routes from "./mesoCycle_routes";
 import microCycle_routes from "./microCycle_routes";
@@ -50,6 +51,8 @@ router.use("/", error_routes);
 router.use("/", fencer_routes);
 // MACRO CYCLE
 router.use("/", macroCycle_routes);
+// MACHINE COMBAT DATA
+router.use("/", machineCombatData_routes);
 // MESO CYCLE
 router.use("/", mesoCycle_routes);
 // MICRO CYCLE

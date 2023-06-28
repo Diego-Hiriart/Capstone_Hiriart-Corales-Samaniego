@@ -14,13 +14,11 @@ import {
 } from "./validations/SignupMedicalFormValidation";
 import { useAlert } from "../../hooks/useAlert";
 import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
-import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
 import { useContext } from "react";
 import AuthContext from "../../contexts/AuthContext";
 
 const SignupMedicalForm = () => {
-  const navigate = useNavigate();
   const { showError, showSuccess } = useAlert();
   const { user } = useContext(AuthContext);
 
@@ -41,10 +39,6 @@ const SignupMedicalForm = () => {
     },
     resolver: zodResolver(schema),
   });
-
-  const handleBack = () => {
-    navigate("/profile");
-  };
 
   const onSubmit: SubmitHandler<SignupMedicalFormType> = async (formData) => {
     try {
@@ -247,9 +241,6 @@ const SignupMedicalForm = () => {
               helperText={errors.personalMedicalDetails?.message}
             />
             <Stack direction="row" spacing={2} mt={3}>
-              <Button fullWidth variant="outlined" onClick={handleBack}>
-                Cancelar
-              </Button>
               <Button type="submit" fullWidth variant="contained" disabled={!isDirty}>
                 Guardar Cambios
               </Button>
