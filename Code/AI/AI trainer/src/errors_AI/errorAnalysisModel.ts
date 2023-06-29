@@ -88,7 +88,7 @@ export async function createAndTrainModel(
       errorsModel.add(
         tf.layers.dense({
           name: 'output-layer',
-          units: 2,
+          units: 50,
           activation: 'softmax',
         })
       );
@@ -122,7 +122,7 @@ export async function createAndTrainModel(
     });
     dataJSON = null; //Remove from memory
     //Create one hot encoding of labels
-    let tensorLabels = tf.oneHot(tf.tensor1d(labelArray, 'int32'), 2);
+    let tensorLabels = tf.oneHot(tf.tensor1d(labelArray, 'int32'), 50);
     //Create data tensor
     let tensors3D = [];
     for (let i = 0; i < dataArray.length; i++) {
@@ -133,6 +133,7 @@ export async function createAndTrainModel(
     const trainingResults = await errorsModel.fit(tensorData, tensorLabels, {
       batchSize: batchSize,
       epochs: trainingEpochs,
+      validationSplit: 0.2,
       callbacks: { onEpochEnd },
     });
     //Save outside of project
