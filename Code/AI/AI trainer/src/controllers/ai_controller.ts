@@ -14,7 +14,7 @@ export async function trainModel(req: Request, res: Response) {
     req.body.batchSize,
     req.body.posesPerMovement
   );
-  return res.status(500).json(trainingResult);
+  return res.status(200).json(trainingResult);
 }
 
 /*To save trained model, POST */
