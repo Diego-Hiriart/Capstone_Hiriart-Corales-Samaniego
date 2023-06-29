@@ -24,8 +24,9 @@ import useAuth from "../../hooks/useAuth";
 import { DetectedPose, Move, PoseAnalisisData } from "../../types";
 
 function AITrainingDetection() {
-  const countdown = 3; // seconds before starting detection
-  const detectionInterval = 100; // milliseconds
+  const countdown = 5; // seconds before starting detection
+  const detectionInterval = 100; // milliseconds between each pose detection
+  const requestInterval = 3000; // milliseconds between each request to backend (aka move duration)
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function AITrainingDetection() {
   const [poseAnalisisData, setPoseAnalisisData] =
     useState<PoseAnalisisData | null>(null); // TODO: define errorPose type from response
   const [move, setMove] = useState<Move>([]);
-  const [beepWarning] = useState(new Audio("/static/audio/beep-warning.mp3"));
+  const beepWarning = useRef(new Audio("/static/audio/beep-warning.mp3"));
   const [incorrectMoves, setIncorrectMoves] = useState<Move[]>([]);
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -60,6 +61,7 @@ function AITrainingDetection() {
     });
   }, []);
 
+  // Stop webcam capture after unmounting
   useLayoutEffect(
     () => () => {
       stopCapture();
@@ -97,34 +99,57 @@ function AITrainingDetection() {
     // Draw Pose
     drawCanvas(pose, videoWidth, videoHeight);
 
-    // Accumulate n poses
+    // Accumulate poses
     setMove((poses: Move) => [...poses, pose]);
   };
 
+  // function to mimic async request using setTimeout
+  const asyncRequest = (duration: number): Promise<any> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ data:"asdf" });
+      }, duration);
+    });
+  };
+
   useEffect(() => {
-    if (move?.length === 1000 / detectionInterval) {
+    // If move array has accumulated (requestInterval / detectionInterval) elements, send to backend
+    if (move?.length === requestInterval / detectionInterval) {
+      handlePause();
       const poseAnalysis = async () => {
+        console.log(move);
         const url = "/dashboard/analyze-pose";
-        const { data } = await axios.post(url, move);
+        // const { data } = await axios.post(url, move);
+        // test
+        const { data } = await asyncRequest(1000);
         if (data.data) {
-          handlePause();
-          setIncorrectMoves((incorrectMoves: Move[]) => [
-            ...incorrectMoves,
-            move,
-          ]);
+          console.log("data.data", data.data);
+          // handlePause();
+          // setIncorrectMoves((incorrectMoves: Move[]) => [
+          //   ...incorrectMoves,
+          //   move,
+          // ]);
           setPoseAnalisisData(data.data);
           setErrorDialogOpen(true);
+          beepWarning.current.play();
+          setMove([]);
+          return;
         }
+        setMove([]);
+        startTimer();
       };
       // Send array of poses to backend
-      // poseAnalysis().catch((error) => {
-      //   console.error("Error sending poses to backend", error);
-      //   handleStop();
-      // });
+      poseAnalysis().catch((error) => {
+        console.error("Error sending poses to backend", error);
+        handleStop();
+      });
       // console.log(move);
-      setMove([]);
     }
   }, [move]);
+
+  useEffect(() => {
+    if (errorDialogOpen) return;
+  }, [errorDialogOpen])
 
   const drawCanvas = (
     pose: DetectedPose,
@@ -152,8 +177,6 @@ function AITrainingDetection() {
     // Used for testing only
     // setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
     setIsDetecting(false);
-    setMove([]);
-    beepWarning.play();
   };
 
   const handleStop = useCallback(async () => {
@@ -202,11 +225,13 @@ function AITrainingDetection() {
     setErrorDialogOpen(false);
   };
 
+  // Timer for countdown before starting detection between moves
   const [timer, startTimer, stopTimer, resetTimer, isRunning] = useCountdown(
     countdown,
     handleStart
   );
 
+  //Timer for session duration
   const [
     durationTimer,
     startDurationTimer,

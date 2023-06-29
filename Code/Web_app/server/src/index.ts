@@ -13,9 +13,9 @@ app.use(cors({
   origin: process.env.CLIENT_URL,
   credentials: true,
 }));
-app.use(express.json());
+app.use(express.json({limit: '1mb'}));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 
 // Root URL is /api
 app.use("/api", router);
