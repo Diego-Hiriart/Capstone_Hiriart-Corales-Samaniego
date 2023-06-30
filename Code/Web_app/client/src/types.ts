@@ -9,6 +9,7 @@ export type AcademyConfig = {
 };
 
 export interface MachineCombatData {
+  machineCombatDataID: number;
   machineName: string;
   leftScore: number;
   rightScore: number;
