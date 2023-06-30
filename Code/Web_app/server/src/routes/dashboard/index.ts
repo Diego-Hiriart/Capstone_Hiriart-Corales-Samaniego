@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import academyConfig_routes from "./academyConfig_routes";
 import activityType_routes from "./activityType_routes";
 import activity_routes from "./activity_routes";
 import admin_routes from "./admin_routes";
@@ -37,6 +38,8 @@ router.use("/", admin_routes);
 router.use("/", aiTraining_routes);
 // ATTENDANCE
 router.use("/", attendance_routes);
+// CONFIG
+router.use("/", academyConfig_routes);
 // CYCLE FEEDBACK
 router.use("/", cycleFeedback_routes);
 // CYCLE GOAL
