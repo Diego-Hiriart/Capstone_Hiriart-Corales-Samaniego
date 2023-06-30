@@ -200,7 +200,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                       label="Nombre"
                       autoFocus
                       {...register("fencer1Name")}
-                      error={!errors.fencer1Name}
                       helperText={errors.fencer1Name?.message}
                       {...params}
                     />
@@ -218,7 +217,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                     shrink: true,
                   }}
                   {...register("fencer1Score")}
-                  error={!errors.fencer1Score}
                   helperText={errors.fencer1Score?.message}
                   defaultValue={machineData?.leftScore}
                 />
@@ -238,7 +236,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                       label="Nombre"
                       autoFocus
                       {...register("fencer2Name")}
-                      error={!errors.fencer2Name}
                       helperText={errors.fencer2Name?.message}
                       {...params}
                     />
@@ -256,7 +253,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                     shrink: true,
                   }}
                   {...register("fencer2Score")}
-                  error={!errors.fencer2Score}
                   helperText={errors.fencer2Score?.message}
                   defaultValue={machineData?.rightScore}
                 />
