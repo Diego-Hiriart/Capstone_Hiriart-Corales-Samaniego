@@ -18,7 +18,6 @@ import { PoseDetector } from "@tensorflow-models/pose-detection";
 import useCountdown from "../../hooks/useCountdownTimer";
 import AIErrorDialog from "./AIErrorDialog";
 import { poseAnalisisResponseMock } from "./poseErrorMock";
-import { useAlert } from "../../hooks/useAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { DetectedPose, Move, PoseAnalisisData } from "../../types";
@@ -31,13 +30,11 @@ function AITrainingDetection() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { showError } = useAlert();
-  const [isDetecting, setIsDetecting] = useState(false);
   const [renderer, setRenderer] = useState<RendererCanvas2d>();
   const [detector, setDetector] = useState<PoseDetector>();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [poseAnalisisData, setPoseAnalisisData] =
-    useState<PoseAnalisisData | null>(null); // TODO: define errorPose type from response
+    useState<PoseAnalisisData | null>(null);
   const [move, setMove] = useState<Move>([]);
   const beepWarning = useRef(new Audio("/static/audio/beep-warning.mp3"));
   const [incorrectMoves, setIncorrectMoves] = useState<Move[]>([]);
@@ -46,6 +43,7 @@ function AITrainingDetection() {
   const intervalId = useRef<number>();
   const isAnalyzingRef = useRef(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const previousTime = useRef<number>(0);
 
   useEffect(() => {
     const init = async () => {
@@ -57,6 +55,7 @@ function AITrainingDetection() {
       startCapture();
       const blazePoseDetector = await createDetector();
       setDetector(blazePoseDetector);
+      previousTime.current = durationTimer;
     };
     init().catch((error) => {
       console.error("Error initializing", error);
@@ -96,7 +95,6 @@ function AITrainingDetection() {
     // Draw Pose
     drawCanvas(pose, videoWidth, videoHeight);
 
-    console.log(isAnalyzingRef.current);
     // Accumulate poses
     if (isAnalyzingRef.current) {
       setMove((poses: Move) => [...poses, pose]);
@@ -107,28 +105,24 @@ function AITrainingDetection() {
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data: "asdf" });
+        resolve({ data: { data: "asdf" } });
       }, duration);
     });
   };
 
   useEffect(() => {
-    // If move array has accumulated (requestInterval / detectionInterval) elements, send to backend
-    if (move?.length === requestInterval / detectionInterval) {
+    // If move array has accumulated (requestInterval / detectionInterval) elements, pause and send to backend
+    // if (move?.length === requestInterval / detectionInterval) {
+
+    // if (requestInterval / 1000) seconds have passed, pause and send to backend
+    if (durationTimer === previousTime.current - requestInterval / 1000) {
       handlePause();
       const poseAnalysis = async () => {
-        console.log(move);
         const url = "/dashboard/analyze-pose";
         // const { data } = await axios.post(url, move);
         // test
         const { data } = await asyncRequest(1000);
         if (data.data) {
-          console.log("data.data", data.data);
-          // handlePause();
-          // setIncorrectMoves((incorrectMoves: Move[]) => [
-          //   ...incorrectMoves,
-          //   move,
-          // ]);
           setPoseAnalisisData(data.data);
           setErrorDialogOpen(true);
           beepWarning.current.play();
@@ -136,7 +130,6 @@ function AITrainingDetection() {
           return;
         }
         setMove([]);
-        console.log("qwer")
         startSetupTimer();
       };
       // Send array of poses to backend
@@ -171,31 +164,18 @@ function AITrainingDetection() {
     setIsAnalyzing(false);
     isAnalyzingRef.current = false;
     stopDurationTimer();
+    previousTime.current = durationTimer;
     resetSetupTimer();
 
     // Used for testing only
     // setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
-
   };
 
   const handleStop = useCallback(async () => {
     stopDetection();
     stopCapture();
     setMove([]);
-    const url = "/dashboard/aitraining";
-    const aiTrainingObj = {
-      exercise: state.exercise,
-      poseErrorList: incorrectMoves,
-      duration: state.duration - durationTimer / 60,
-    };
-    try {
-      // const { data } = await axios.post(url, aiTrainingObj);
-      console.log(aiTrainingObj);
-      navigate(`/aitrainings`);
-    } catch (error) {
-      console.error("Error saving training", error);
-      showError("Error al guardar el entrenamiento");
-    }
+    navigate(`/aitrainings`);
   }, [incorrectMoves]);
 
   const startCapture = async () => {
@@ -224,40 +204,29 @@ function AITrainingDetection() {
   };
 
   // Timer for countdown before starting detection between moves
-  const [setupTimer, startSetupTimer, stopSetupTimer, resetSetupTimer, isSetupTimerRunning] = useCountdown(
-    countdown,
-    startAnalysis
-  );
+  const [
+    setupTimer,
+    startSetupTimer,
+    stopSetupTimer,
+    resetSetupTimer,
+    isSetupTimerRunning,
+  ] = useCountdown(countdown, startAnalysis);
 
   //Timer for session duration
-  const [
-    durationTimer,
-    startDurationTimer,
-    stopDurationTimer,
-    resetDurationTimer,
-    isDurationtimerRunning,
-  ] = useCountdown(state.duration * 60, handleStop);
+  const [durationTimer, startDurationTimer, stopDurationTimer] = useCountdown(
+    state.duration * 60,
+    handleStop
+  );
 
   // Stop webcam capture after unmounting
   useLayoutEffect(
     () => () => {
       stopCapture();
+      stopDetection();
+      stopSetupTimer();
     },
     []
   );
-
-  // Remove eventually (might need later for testing responsive layout):
-
-  // function handleOnError() {
-  //   handlePause();
-  //   beepWarning.play();
-  //   setPoseAnalisisData(poseAnalisisResponseMock.data);
-  //   setErrorDialogOpen(true);
-  // }
-
-  // useEffect(() => {
-  //   console.log(poseAnalisisData);
-  // }, [poseAnalisisData]);
 
   return (
     <div>
@@ -265,7 +234,6 @@ function AITrainingDetection() {
         <div>
           <Navbar />
           <h1>AECQ - entrenamiento individual </h1>
-          {/* <Button onClick={handleOnError}>error</Button> */}
         </div>
       )}
       <Box>

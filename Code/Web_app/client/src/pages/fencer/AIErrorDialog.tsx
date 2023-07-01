@@ -109,7 +109,7 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
         <Typography>{poseAnalisisData.description}</Typography>
         <DialogActions sx={{paddingBottom: 0}}>
           <Button variant="contained" onClick={handleClose}>
-            Continuar
+            Cerrar
           </Button>
         </DialogActions>
       </DialogContent>
