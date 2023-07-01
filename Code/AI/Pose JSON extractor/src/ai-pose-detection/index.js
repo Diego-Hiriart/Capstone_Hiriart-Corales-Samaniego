@@ -16,6 +16,8 @@ let rafId;
 let posesPacketSize = 0,
   videoDuration,
   videoDone;
+let extract2D;
+let detectionsToMake;
 let lastVideoTime;
 //To save poses JSONs in packets
 let posesJSON;
@@ -42,7 +44,8 @@ const savePoseData = (poseData) => {
     poseData[0] !== undefined &&
     poseData[0] !== null
   ) {
-    let keypoints3DData = poseData[0]['keypoints3D'];
+    let extrationKeypoints = extract2D ? 'keypoints' : 'keypoints3D';
+    let keypoints3DData = poseData[0][extrationKeypoints];
     //Check if the current packet in the JSON is full, create a new one if so, otherwise add pose data
     if (posesJSON[currentPosesIndex].length == posesPacketSize) {
       posesJSON.push([keypoints3DData]);
@@ -77,9 +80,9 @@ const renderResult = async () => {
 
 const downloadPosesJSON = () => {
   if (posesJSON !== null && posesJSON !== undefined) {
-    if (posesJSON[posesJSON.length - 1].length < posesPacketSize) {
+    /*if (posesJSON[posesJSON.length - 1].length < posesPacketSize) {
       posesJSON.pop();
-    }
+    }*/
     if (posesJSON.length == 0) {
       statusP.innerHTML =
         'Could not extract anything, try a diferent number of poses packet size or check your file';
@@ -93,10 +96,9 @@ const downloadPosesJSON = () => {
     });
     a.href = URL.createObjectURL(file);
     let fileName = videoName;
-    fileName = `${fileName.substring(
-      0,
-      fileName.lastIndexOf('.')
-    )}_poses-JSON.json`;
+    fileName = `${fileName.substring(0, fileName.lastIndexOf('.'))}_${
+      extract2D ? '2D' : '3D'
+    }poses-JSON.json`;
     a.download = fileName;
     a.click();
     a.remove();
@@ -104,9 +106,9 @@ const downloadPosesJSON = () => {
 };
 
 const runPrediction = async () => {
-  //Advance current time of video to analyze the right frames and get the specified poses per second
+  //Advance current time of video to analyze the right frames and get the specified poses per second;
   if (lastVideoTime <= videoDuration) {
-    lastVideoTime += videoDuration / posesPacketSize;
+    lastVideoTime += videoDuration / detectionsToMake;
     video.currentTime = lastVideoTime;
   } else {
     videoDone = true;
@@ -185,9 +187,13 @@ export const poseDetectionAI = async (extractionData) => {
   videoName = extractionData.videoFile.name;
   //Update poses packet size
   posesPacketSize = Number(extractionData.posesPacketSize);
-  //Ensure video can be divided in the packet size +1 (to ensure initial empty detection doesnt cause failure obtaining packet size)
+  //Parts to divide video in
+  detectionsToMake = posesPacketSize;
+  //Whether to extract 2D keypoints or not (default is 3d)
+  extract2D = extractionData.extract2D;
+  //Ensure video can be divided in the packet size +2 (to ensure initial empty detection doesnt cause failure obtaining packet size)
   if ((videoDuration / posesPacketSize) * posesPacketSize > videoDuration) {
-    posesPacketSize += 1;
+    detectionsToMake += 2;
   }
   //Load and start video
   camera = new Context();

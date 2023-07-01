@@ -16,7 +16,9 @@ export function checkModelDataExists() {
 }
 
 function onEpochEnd(epoch: any, logs: any) {
-  debugLog(`Epoch ${epoch}\n \t-accuracy: ${logs.acc} -loss:${logs.loss}`);
+  debugLog(
+    `Epoch ${epoch}\n \t-validation accuracy: ${logs.val_acc} | validation loss:${logs.val_loss} \n\t-accuracy: ${logs.acc} | loss:${logs.loss}`
+  );
 }
 
 export async function createAndTrainModel(
@@ -56,9 +58,8 @@ export async function createAndTrainModel(
       const rnnTimeSteps = posesPerMovement;
       const rnnInputLayerFeatures = inputKeypoints * posesPerMovement;
       const rnnInputShape = [rnnInputLayerFeatures, rnnTimeSteps];
-      const rnnOuputNeurons = 20;
-      const nHiddenLayers = 1;
-      const outputNeurons = 2; //Detectable errors
+      const nHiddenLayers = 5;
+      const outputNeurons = 50; //Detectable errors
       //Input layer
       errorsModel.add(
         tf.layers.dense({
@@ -74,8 +75,10 @@ export async function createAndTrainModel(
       );
       let lstm_cells = [];
       for (let index = 0; index < nHiddenLayers; index++) {
-        lstm_cells.push(tf.layers.lstmCell({ units: rnnOuputNeurons }));
+        lstm_cells.push(tf.layers.lstmCell({ units: rnnTimeSteps }));
       }
+      debugLog("Cells")
+      debugLog(lstm_cells.length.toString())
       errorsModel.add(
         tf.layers.rnn({
           name: 'hidden-rnn',
@@ -88,7 +91,7 @@ export async function createAndTrainModel(
       errorsModel.add(
         tf.layers.dense({
           name: 'output-layer',
-          units: 2,
+          units: outputNeurons,
           activation: 'softmax',
         })
       );
@@ -122,7 +125,7 @@ export async function createAndTrainModel(
     });
     dataJSON = null; //Remove from memory
     //Create one hot encoding of labels
-    let tensorLabels = tf.oneHot(tf.tensor1d(labelArray, 'int32'), 2);
+    let tensorLabels = tf.oneHot(tf.tensor1d(labelArray, 'int32'), 50);
     //Create data tensor
     let tensors3D = [];
     for (let i = 0; i < dataArray.length; i++) {
@@ -133,6 +136,7 @@ export async function createAndTrainModel(
     const trainingResults = await errorsModel.fit(tensorData, tensorLabels, {
       batchSize: batchSize,
       epochs: trainingEpochs,
+      validationSplit: 0.3,
       callbacks: { onEpochEnd },
     });
     //Save outside of project
