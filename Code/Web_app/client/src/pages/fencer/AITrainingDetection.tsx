@@ -44,6 +44,8 @@ function AITrainingDetection() {
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalId = useRef<number>();
+  const isAnalyzingRef = useRef(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -52,29 +54,24 @@ function AITrainingDetection() {
       canvasRef.current.height = webcamRef.current.height;
       setRenderer(new RendererCanvas2d(canvasRef.current));
       await Camera.setup(STATE.camera);
+      startCapture();
       const blazePoseDetector = await createDetector();
       setDetector(blazePoseDetector);
-      startCapture();
     };
     init().catch((error) => {
       console.error("Error initializing", error);
     });
   }, []);
 
-  // Stop webcam capture after unmounting
-  useLayoutEffect(
-    () => () => {
-      stopCapture();
-    },
-    []
-  );
+  useEffect(() => {
+    startDetection();
+  }, [detector]);
 
   const startDetection = () => {
     if (!detector) {
       console.error("Detector does not exist");
       return;
     }
-    startDurationTimer();
     intervalId.current = window.setInterval(() => {
       detect(detector);
     }, detectionInterval);
@@ -99,15 +96,18 @@ function AITrainingDetection() {
     // Draw Pose
     drawCanvas(pose, videoWidth, videoHeight);
 
+    console.log(isAnalyzingRef.current);
     // Accumulate poses
-    setMove((poses: Move) => [...poses, pose]);
+    if (isAnalyzingRef.current) {
+      setMove((poses: Move) => [...poses, pose]);
+    }
   };
 
   // function to mimic async request using setTimeout
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data:"asdf" });
+        resolve({ data: "asdf" });
       }, duration);
     });
   };
@@ -136,20 +136,16 @@ function AITrainingDetection() {
           return;
         }
         setMove([]);
-        startTimer();
+        console.log("qwer")
+        startSetupTimer();
       };
       // Send array of poses to backend
       poseAnalysis().catch((error) => {
         console.error("Error sending poses to backend", error);
         handleStop();
       });
-      // console.log(move);
     }
   }, [move]);
-
-  useEffect(() => {
-    if (errorDialogOpen) return;
-  }, [errorDialogOpen])
 
   const drawCanvas = (
     pose: DetectedPose,
@@ -164,25 +160,27 @@ function AITrainingDetection() {
     renderer?.draw(rendererParams);
   };
 
-  const handleStart = useCallback(async () => {
-    if (isDetecting) return;
-    startDetection();
-    setIsDetecting(true);
-  }, [isDetecting, detector]);
+  const startAnalysis = useCallback(async () => {
+    if (isAnalyzing) return;
+    startDurationTimer();
+    setIsAnalyzing(true);
+    isAnalyzingRef.current = true;
+  }, [isAnalyzing]);
 
   const handlePause = () => {
-    if (!isDetecting) return;
-    resetTimer();
-    stopDetection();
+    setIsAnalyzing(false);
+    isAnalyzingRef.current = false;
+    stopDurationTimer();
+    resetSetupTimer();
+
     // Used for testing only
     // setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
-    setIsDetecting(false);
+
   };
 
   const handleStop = useCallback(async () => {
     stopDetection();
     stopCapture();
-    setIsDetecting(false);
     setMove([]);
     const url = "/dashboard/aitraining";
     const aiTrainingObj = {
@@ -226,9 +224,9 @@ function AITrainingDetection() {
   };
 
   // Timer for countdown before starting detection between moves
-  const [timer, startTimer, stopTimer, resetTimer, isRunning] = useCountdown(
+  const [setupTimer, startSetupTimer, stopSetupTimer, resetSetupTimer, isSetupTimerRunning] = useCountdown(
     countdown,
-    handleStart
+    startAnalysis
   );
 
   //Timer for session duration
@@ -237,8 +235,16 @@ function AITrainingDetection() {
     startDurationTimer,
     stopDurationTimer,
     resetDurationTimer,
-    isDurationRunning,
+    isDurationtimerRunning,
   ] = useCountdown(state.duration * 60, handleStop);
+
+  // Stop webcam capture after unmounting
+  useLayoutEffect(
+    () => () => {
+      stopCapture();
+    },
+    []
+  );
 
   // Remove eventually (might need later for testing responsive layout):
 
@@ -277,7 +283,7 @@ function AITrainingDetection() {
             css={[outputCanvasStyles({ isMobile }), renderPaneStyles]}
             id="output"
           ></canvas>
-          {isDetecting ? (
+          {isAnalyzingRef.current ? (
             <Button
               css={buttonStyles({ isMobile })}
               variant="outlined"
@@ -289,10 +295,10 @@ function AITrainingDetection() {
             <Button
               css={buttonStyles({ isMobile })}
               variant="contained"
-              onClick={startTimer}
-              disabled={isRunning}
+              onClick={startSetupTimer}
+              disabled={isSetupTimerRunning}
             >
-              Iniciar ({timer})
+              Iniciar ({setupTimer})
             </Button>
           )}
         </div>
@@ -360,4 +366,4 @@ const durationTimerStyles = css`
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0 1rem;
-`
+`;
