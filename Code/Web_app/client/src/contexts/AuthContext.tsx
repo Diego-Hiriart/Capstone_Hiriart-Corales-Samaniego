@@ -32,7 +32,8 @@ const AuthContext = createContext<AuthContext>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>(() => {
     const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
+    const parsedUser = user ? JSON.parse(user) : null;
+    return parsedUser ? parsedUser : null;
   });
 
   const navigate = useNavigate();
@@ -74,6 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(null!);
         }
       }
+      console.error(error);
     }
   };
 
