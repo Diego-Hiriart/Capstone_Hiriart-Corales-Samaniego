@@ -150,7 +150,6 @@ const feedbacks = [
 
 const aiTrainings = [
   {
-    AITrainingID: 1,
     fencerID: 1,
     date: new Date(),
     duration: 120,
@@ -169,7 +168,6 @@ const trainingExercises = [
 
 const errors = [
   {
-    errorID: 1,
     name: "Error 1",
     description: "Error Description 1",
     correctPose: "json pose",

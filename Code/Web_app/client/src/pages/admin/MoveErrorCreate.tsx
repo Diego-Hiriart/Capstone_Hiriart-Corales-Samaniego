@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { parseJsonFile } from "../../utils/files";
+import { fileToString } from "../../utils/files";
 import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
 
@@ -31,7 +31,7 @@ const schema = z.object({
       { message: "Archivo no valido" }
     )
     .transform(async (fileList) => {
-      return await parseJsonFile(fileList?.[0]!);
+      return await fileToString(fileList?.[0]!);
     }),
 });
 
@@ -61,6 +61,7 @@ const MoveErrorCreate = ({ open, handleClose, fetchMoveErrors }: Props) => {
         name: formData.name,
         systemName: formData.systemName,
         description: formData.description,
+        correctPose: formData.correctPose,
       };
       await axios.post(url, { data: data });
       fetchMoveErrors();
