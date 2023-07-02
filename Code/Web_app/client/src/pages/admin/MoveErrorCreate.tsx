@@ -2,16 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-async function parseJsonFile(file: File) {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.onload = (event) =>
-      resolve(JSON.parse(event.target?.result as string));
-    fileReader.onerror = (error) => reject(error);
-    fileReader.readAsText(file);
-  });
-}
+import { parseJsonFile } from "../../utils/files";
 
 const schema = z.object({
   name: z.string().nonempty("Campo obligatorio"),
@@ -33,19 +24,19 @@ const schema = z.object({
     }),
 });
 
-type TrainingErrorsFormType = z.infer<typeof schema>;
+type MoveErrorCreateFormType = z.infer<typeof schema>;
 
-const TrainingErrors = () => {
+const MoveErrorCreate = () => {
 
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<TrainingErrorsFormType>({
+  } = useForm<MoveErrorCreateFormType>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: TrainingErrorsFormType) => {
+  const onSubmit = async (data: MoveErrorCreateFormType) => {
     console.log(data);
   };
 
@@ -114,4 +105,4 @@ const TrainingErrors = () => {
   );
 };
 
-export default TrainingErrors;
+export default MoveErrorCreate;

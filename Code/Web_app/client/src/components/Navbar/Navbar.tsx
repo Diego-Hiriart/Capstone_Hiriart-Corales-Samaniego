@@ -41,7 +41,7 @@ const NavBar = () => {
       items["Esgrimistas"] = "fencer";
       items["Academia"] = "academy";
       items["Combates"] = "combats";
-      items["Errores AI"] = "trainingErrors";
+      items["Configuracion AI"] = "ai-config";
     }
     if (roles?.includes("trainer")) {
       items["Esgrimistas"] = "fencer";
