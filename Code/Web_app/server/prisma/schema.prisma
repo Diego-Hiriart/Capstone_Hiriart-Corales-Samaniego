@@ -314,8 +314,6 @@ model Error {
   name               String           @db.VarChar(100)
   description        String           @db.Text
   trainingError      TrainingError[]
-  trainingExercise   TrainingExercise @relation(fields: [trainingExerciseID], references: [trainingExerciseID])
-  trainingExerciseID Int
   correctPose        String           @db.Text
   systemName         String           @unique
 }
@@ -324,5 +322,4 @@ model TrainingExercise {
   trainingExerciseID Int     @id @default(autoincrement())
   name               String  @db.VarChar(100)
   description        String? @db.Text
-  Error              Error[]
 }

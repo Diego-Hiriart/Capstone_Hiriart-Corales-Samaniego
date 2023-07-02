@@ -172,7 +172,6 @@ const errors = [
     errorID: 1,
     name: "Error 1",
     description: "Error Description 1",
-    trainingExerciseID: 1,
     correctPose: "json pose",
     systemName: "AI name"
   },
