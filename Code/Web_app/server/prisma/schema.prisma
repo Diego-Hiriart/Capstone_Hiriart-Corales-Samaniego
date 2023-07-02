@@ -302,12 +302,14 @@ model TrainingError {
 }
 
 model Error {
-  errorID            Int               @id @default(autoincrement())
-  name               String            @db.VarChar(100)
-  description        String            @db.Text
+  errorID            Int              @id @default(autoincrement())
+  name               String           @db.VarChar(100)
+  description        String           @db.Text
   trainingError      TrainingError[]
-  trainingExercise   TrainingExercise  @relation(fields: [trainingExerciseID], references: [trainingExerciseID])
+  trainingExercise   TrainingExercise @relation(fields: [trainingExerciseID], references: [trainingExerciseID])
   trainingExerciseID Int
+  correctPose        String           @db.Text
+  systemName         String           @unique
 }
 
 model TrainingExercise {

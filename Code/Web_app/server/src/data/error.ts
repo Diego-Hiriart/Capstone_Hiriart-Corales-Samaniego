@@ -1,4 +1,4 @@
-import { PrismaClient, Error } from "@prisma/client";
+import { PrismaClient, Error } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -24,6 +24,19 @@ export async function findAllError() {
   }
 }
 
+export async function findErrorBySystemName(systemName: string) {
+  try {
+    const error = await prisma.error.findUnique({
+      where: {
+        systemName: systemName,
+      },
+    });
+    return error;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function createError(data: Error) {
   try {
     const error = await prisma.error.create({
@@ -31,6 +44,8 @@ export async function createError(data: Error) {
         name: data.name,
         description: data.description,
         trainingExerciseID: data.trainingExerciseID,
+        correctPose: data.correctPose,
+        systemName: data.systemName,
       },
     });
     return error;

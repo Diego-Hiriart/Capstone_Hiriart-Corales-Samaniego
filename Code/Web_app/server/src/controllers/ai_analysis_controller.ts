@@ -24,7 +24,7 @@ export async function poseAnalysis(req: Request, res: Response) {
       errorsModel = await loadModel();
     }
     let analysisResults = await runModel(errorsModel, req.body.data);
-    return res.status(200).json({ analysisResults });
+    return res.status(200).json(analysisResults);
   } catch (error) {
     errorLog(error);
     if (error instanceof Error) {
