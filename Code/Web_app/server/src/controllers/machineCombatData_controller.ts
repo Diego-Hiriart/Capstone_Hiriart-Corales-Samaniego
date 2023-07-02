@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import {
   createMachineCombatData,
+  deleteMachineByName,
   deleteMachineCombatDataByID,
   findAllMachineCombatData,
   findMachineCombatDataByName,
@@ -60,6 +61,17 @@ export async function deleteMachineCombatData(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await deleteMachineCombatDataByID(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function deleteMachineCombatDataName(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await deleteMachineByName(req.params.name),
     });
   } catch (error) {
     errorLog(error);

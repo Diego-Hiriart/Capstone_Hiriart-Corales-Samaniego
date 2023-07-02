@@ -39,12 +39,12 @@ const NavBar = () => {
     if (roles?.includes("admin")) {
       items["Entrenadores"] = "trainer";
       items["Esgrimistas"] = "fencer";
-      items["Actividades"] = "activity";
+      items["Academia"] = "academy";
       items["Combates"] = "combats";
     }
     if (roles?.includes("trainer")) {
       items["Esgrimistas"] = "fencer";
-      items["Actividades"] = "activity";
+      items["Academia"] = "academy";
       items["Combates"] = "combats";
     }
     if (roles?.includes("fencer")) {

@@ -33,6 +33,7 @@ import { navbarExcludePaths } from "./Constants";
 import TrainerCombat from "./pages/combat/TrainerCombat";
 import CombatDetails from "./pages/combat/CombatDetails";
 import useTab from "./hooks/useTab";
+import AcademyOptions from "./pages/academy/AcademyOptions";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -46,7 +47,7 @@ export const App = () => {
 
   useEffect(() => {
     setTabItems(null);
-  }, [location])
+  }, [location]);
 
   return (
     <div>
@@ -70,7 +71,7 @@ export const App = () => {
           <Route path="trainer/create" element={<CreateTrainer />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
-          <Route path="activity" element={<ActivityList />} />
+          <Route path="academy" element={<AcademyOptions />} />
           <Route path="trainer/:id" element={<TrainerProfile />} />
           <Route path="fencer" element={<TrainerViewFencers />} />
           <Route path="fencer/:id" element={<FencerDetail />} />
