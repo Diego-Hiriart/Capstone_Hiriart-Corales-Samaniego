@@ -30,6 +30,7 @@ export async function createAndTrainModel(
   try {
     let errorsModel;
     const trainingEpochs = epochs;
+    const outputNeurons = 50; //Detectable errors
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
         readFileSync('../errors_AI_model_data/model.json').toString()
@@ -58,8 +59,7 @@ export async function createAndTrainModel(
       const rnnTimeSteps = posesPerMovement;
       const rnnInputLayerFeatures = inputKeypoints * posesPerMovement;
       const rnnInputShape = [rnnInputLayerFeatures, rnnTimeSteps];
-      const nHiddenLayers = 5;
-      const outputNeurons = 50; //Detectable errors
+      const nHiddenLayers = 2;
       //Input layer
       errorsModel.add(
         tf.layers.dense({
@@ -105,35 +105,63 @@ export async function createAndTrainModel(
     debugLog(`${errorsModel.summary()}`);
     //Create Xs and Ys for training
     //Get labels and data from files
-    let labelArray = JSON.parse(
+    let trainLabelArray = JSON.parse(
       readFileSync('./AITrainingLabels.json').toString()
     );
-    let dataJSON = JSON.parse(readFileSync('./AITrainingData.json').toString());
+    let trainDataJSON = JSON.parse(readFileSync('./AITrainingData.json').toString());
     //Create data array from JSON
-    let dataArray: Array<any> = [];
-    dataJSON.forEach((movementSample: Array<any>) => {
-      dataArray.push([]);
+    let trainDataArray: Array<any> = [];
+    trainDataJSON.forEach((movementSample: Array<any>) => {
+      trainDataArray.push([]);
       movementSample.forEach((pose) => {
-        dataArray[dataArray.length - 1].push([]);
+        trainDataArray[trainDataArray.length - 1].push([]);
         pose.forEach((keypoint: any) => {
           let keypointXYZ = [keypoint['x'], keypoint['y'], keypoint['z']];
-          dataArray[dataArray.length - 1][
-            dataArray[dataArray.length - 1].length - 1
+          trainDataArray[trainDataArray.length - 1][
+            trainDataArray[trainDataArray.length - 1].length - 1
           ].push(keypointXYZ);
         });
       });
     });
-    dataJSON = null; //Remove from memory
-    //Create one hot encoding of labels
-    let tensorLabels = tf.oneHot(tf.tensor1d(labelArray, 'int32'), 50);
-    //Create data tensor
-    let tensors3D = [];
-    for (let i = 0; i < dataArray.length; i++) {
-      tensors3D.push(dataArray[i]);
+    trainDataJSON = null; //Remove from memory
+    //Create one hot encoding of training labels
+    let trainingTensorLabels = tf.oneHot(tf.tensor1d(trainLabelArray, 'int32'), outputNeurons);
+    //Create training data tensor
+    let trainTensors3D = [];
+    for (let i = 0; i < trainDataArray.length; i++) {
+      trainTensors3D.push(trainDataArray[i]);
     }
-    let tensorData = tf.tensor(tensors3D);
+    let trainingTensorData = tf.tensor(trainTensors3D);
+    //Get validation data from giles
+    let validationLabelArray = JSON.parse(
+      readFileSync('./AIValidationLabels.json').toString()
+    );
+    let validationDataJSON = JSON.parse(readFileSync('./AIValidationData.json').toString());
+    //Create data array from JSON
+    let validationDataArray: Array<any> = [];
+    validationDataJSON.forEach((movementSample: Array<any>) => {
+      validationDataArray.push([]);
+      movementSample.forEach((pose) => {
+        validationDataArray[validationDataArray.length - 1].push([]);
+        pose.forEach((keypoint: any) => {
+          let keypointXYZ = [keypoint['x'], keypoint['y'], keypoint['z']];
+          validationDataArray[validationDataArray.length - 1][
+            validationDataArray[validationDataArray.length - 1].length - 1
+          ].push(keypointXYZ);
+        });
+      });
+    });
+    validationDataJSON = null; //Remove from memory
+    //Create one hot encoding of validation labels
+    let validationTensorLabels = tf.oneHot(tf.tensor1d(validationLabelArray, 'int32'), outputNeurons);
+    //Create validation data tensor
+    let validationTensors3D = [];
+    for (let i = 0; i < validationDataArray.length; i++) {
+      validationTensors3D.push(validationDataArray[i]);
+    }
+    let validationTensorData = tf.tensor(validationTensors3D);
     //Training of model with data from JSONs
-    const trainingResults = await errorsModel.fit(tensorData, tensorLabels, {
+    const trainingResults = await errorsModel.fit(trainingTensorData, trainingTensorLabels, {
       batchSize: batchSize,
       epochs: trainingEpochs,
       validationSplit: 0.3,
