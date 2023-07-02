@@ -18,31 +18,32 @@ import { PoseDetector } from "@tensorflow-models/pose-detection";
 import useCountdown from "../../hooks/useCountdownTimer";
 import AIErrorDialog from "./AIErrorDialog";
 import { poseAnalisisResponseMock } from "./poseErrorMock";
-import { useAlert } from "../../hooks/useAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { DetectedPose, Move, PoseAnalisisData } from "../../types";
 
 function AITrainingDetection() {
-  const countdown = 3; // seconds before starting detection
-  const detectionInterval = 100; // milliseconds
+  const countdown = 5; // seconds before starting detection
+  const detectionInterval = 100; // milliseconds between each pose detection
+  const requestInterval = 3000; // milliseconds between each request to backend (aka move duration)
 
   const { user } = useAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { showError } = useAlert();
-  const [isDetecting, setIsDetecting] = useState(false);
   const [renderer, setRenderer] = useState<RendererCanvas2d>();
   const [detector, setDetector] = useState<PoseDetector>();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [poseAnalisisData, setPoseAnalisisData] =
-    useState<PoseAnalisisData | null>(null); // TODO: define errorPose type from response
+    useState<PoseAnalisisData | null>(null);
   const [move, setMove] = useState<Move>([]);
-  const [beepWarning] = useState(new Audio("/static/audio/beep-warning.mp3"));
+  const beepWarning = useRef(new Audio("/static/audio/beep-warning.mp3"));
   const [incorrectMoves, setIncorrectMoves] = useState<Move[]>([]);
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalId = useRef<number>();
+  const isAnalyzingRef = useRef(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const previousTime = useRef<number>(0);
 
   useEffect(() => {
     const init = async () => {
@@ -51,28 +52,25 @@ function AITrainingDetection() {
       canvasRef.current.height = webcamRef.current.height;
       setRenderer(new RendererCanvas2d(canvasRef.current));
       await Camera.setup(STATE.camera);
+      startCapture();
       const blazePoseDetector = await createDetector();
       setDetector(blazePoseDetector);
-      startCapture();
+      previousTime.current = durationTimer;
     };
     init().catch((error) => {
       console.error("Error initializing", error);
     });
   }, []);
 
-  useLayoutEffect(
-    () => () => {
-      stopCapture();
-    },
-    []
-  );
+  useEffect(() => {
+    startDetection();
+  }, [detector]);
 
   const startDetection = () => {
     if (!detector) {
       console.error("Detector does not exist");
       return;
     }
-    startDurationTimer();
     intervalId.current = window.setInterval(() => {
       detect(detector);
     }, detectionInterval);
@@ -97,32 +95,48 @@ function AITrainingDetection() {
     // Draw Pose
     drawCanvas(pose, videoWidth, videoHeight);
 
-    // Accumulate n poses
-    setMove((poses: Move) => [...poses, pose]);
+    // Accumulate poses
+    if (isAnalyzingRef.current) {
+      setMove((poses: Move) => [...poses, pose]);
+    }
+  };
+
+  // function to mimic async request using setTimeout
+  const asyncRequest = (duration: number): Promise<any> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ data: { data: "asdf" } });
+      }, duration);
+    });
   };
 
   useEffect(() => {
-    if (move?.length === 1000 / detectionInterval) {
+    // If move array has accumulated (requestInterval / detectionInterval) elements, pause and send to backend
+    // if (move?.length === requestInterval / detectionInterval) {
+
+    // if (requestInterval / 1000) seconds have passed, pause and send to backend
+    if (durationTimer === previousTime.current - requestInterval / 1000) {
+      handlePause();
       const poseAnalysis = async () => {
         const url = "/dashboard/analyze-pose";
-        const { data } = await axios.post(url, move);
+        // const { data } = await axios.post(url, move);
+        // test
+        const { data } = await asyncRequest(1000);
         if (data.data) {
-          handlePause();
-          setIncorrectMoves((incorrectMoves: Move[]) => [
-            ...incorrectMoves,
-            move,
-          ]);
           setPoseAnalisisData(data.data);
           setErrorDialogOpen(true);
+          beepWarning.current.play();
+          setMove([]);
+          return;
         }
+        setMove([]);
+        startSetupTimer();
       };
       // Send array of poses to backend
-      // poseAnalysis().catch((error) => {
-      //   console.error("Error sending poses to backend", error);
-      //   handleStop();
-      // });
-      // console.log(move);
-      setMove([]);
+      poseAnalysis().catch((error) => {
+        console.error("Error sending poses to backend", error);
+        handleStop();
+      });
     }
   }, [move]);
 
@@ -139,42 +153,29 @@ function AITrainingDetection() {
     renderer?.draw(rendererParams);
   };
 
-  const handleStart = useCallback(async () => {
-    if (isDetecting) return;
-    startDetection();
-    setIsDetecting(true);
-  }, [isDetecting, detector]);
+  const startAnalysis = useCallback(async () => {
+    if (isAnalyzing) return;
+    startDurationTimer();
+    setIsAnalyzing(true);
+    isAnalyzingRef.current = true;
+  }, [isAnalyzing]);
 
   const handlePause = () => {
-    if (!isDetecting) return;
-    resetTimer();
-    stopDetection();
+    setIsAnalyzing(false);
+    isAnalyzingRef.current = false;
+    stopDurationTimer();
+    previousTime.current = durationTimer;
+    resetSetupTimer();
+
     // Used for testing only
     // setIncorrectMoves((errorList: any) => [...errorList, poseAnalisisResponseMock.data.incorrectMove]);
-    setIsDetecting(false);
-    setMove([]);
-    beepWarning.play();
   };
 
   const handleStop = useCallback(async () => {
     stopDetection();
     stopCapture();
-    setIsDetecting(false);
     setMove([]);
-    const url = "/dashboard/aitraining";
-    const aiTrainingObj = {
-      exercise: state.exercise,
-      poseErrorList: incorrectMoves,
-      duration: state.duration - durationTimer / 60,
-    };
-    try {
-      // const { data } = await axios.post(url, aiTrainingObj);
-      console.log(aiTrainingObj);
-      navigate(`/aitrainings`);
-    } catch (error) {
-      console.error("Error saving training", error);
-      showError("Error al guardar el entrenamiento");
-    }
+    navigate(`/aitrainings`);
   }, [incorrectMoves]);
 
   const startCapture = async () => {
@@ -202,31 +203,30 @@ function AITrainingDetection() {
     setErrorDialogOpen(false);
   };
 
-  const [timer, startTimer, stopTimer, resetTimer, isRunning] = useCountdown(
-    countdown,
-    handleStart
+  // Timer for countdown before starting detection between moves
+  const [
+    setupTimer,
+    startSetupTimer,
+    stopSetupTimer,
+    resetSetupTimer,
+    isSetupTimerRunning,
+  ] = useCountdown(countdown, startAnalysis);
+
+  //Timer for session duration
+  const [durationTimer, startDurationTimer, stopDurationTimer] = useCountdown(
+    state.duration * 60,
+    handleStop
   );
 
-  const [
-    durationTimer,
-    startDurationTimer,
-    stopDurationTimer,
-    resetDurationTimer,
-    isDurationRunning,
-  ] = useCountdown(state.duration * 60, handleStop);
-
-  // Remove eventually (might need later for testing responsive layout):
-
-  // function handleOnError() {
-  //   handlePause();
-  //   beepWarning.play();
-  //   setPoseAnalisisData(poseAnalisisResponseMock.data);
-  //   setErrorDialogOpen(true);
-  // }
-
-  // useEffect(() => {
-  //   console.log(poseAnalisisData);
-  // }, [poseAnalisisData]);
+  // Stop webcam capture after unmounting
+  useLayoutEffect(
+    () => () => {
+      stopCapture();
+      stopDetection();
+      stopSetupTimer();
+    },
+    []
+  );
 
   return (
     <div>
@@ -234,7 +234,6 @@ function AITrainingDetection() {
         <div>
           <Navbar />
           <h1>AECQ - entrenamiento individual </h1>
-          {/* <Button onClick={handleOnError}>error</Button> */}
         </div>
       )}
       <Box>
@@ -252,7 +251,7 @@ function AITrainingDetection() {
             css={[outputCanvasStyles({ isMobile }), renderPaneStyles]}
             id="output"
           ></canvas>
-          {isDetecting ? (
+          {isAnalyzingRef.current ? (
             <Button
               css={buttonStyles({ isMobile })}
               variant="outlined"
@@ -264,10 +263,10 @@ function AITrainingDetection() {
             <Button
               css={buttonStyles({ isMobile })}
               variant="contained"
-              onClick={startTimer}
-              disabled={isRunning}
+              onClick={startSetupTimer}
+              disabled={isSetupTimerRunning}
             >
-              Iniciar ({timer})
+              Iniciar ({setupTimer})
             </Button>
           )}
         </div>
@@ -335,4 +334,4 @@ const durationTimerStyles = css`
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0 1rem;
-`
+`;
