@@ -34,6 +34,7 @@ import TrainerCombat from "./pages/combat/TrainerCombat";
 import CombatDetails from "./pages/combat/CombatDetails";
 import useTab from "./hooks/useTab";
 import AcademyOptions from "./pages/academy/AcademyOptions";
+import TrainingErrors from "./pages/admin/AddTrainingErrors";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -69,6 +70,7 @@ export const App = () => {
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="trainer" element={<TrainerList />} />
           <Route path="trainer/create" element={<CreateTrainer />} />
+          <Route path="trainingErrors" element={<TrainingErrors />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
           <Route path="academy" element={<AcademyOptions />} />

@@ -69,7 +69,8 @@ export default function FencerInvite({
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <FormControlLabel
             control={<Checkbox {...register("isGuest")} />}
-            label="Es Invitado"
+            label="Es Invitado (coming soon)"
+            disabled={true}
           />
           <TextField
             required
