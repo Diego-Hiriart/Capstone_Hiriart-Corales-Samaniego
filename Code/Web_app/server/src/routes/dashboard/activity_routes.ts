@@ -12,8 +12,8 @@ const router = Router();
 
 router.get("/activity/:id", getActivityById);
 router.get("/activity/", getAllActivity);
-router.post("/acitivity/", postActivity);
-router.put("/acitivity/:id", updateActivity);
-router.delete("/acitivity/:id", deleteActivity);
+router.post("/activity/", postActivity);
+router.put("/activity/:id", updateActivity);
+router.delete("/activity/:id", deleteActivity);
 
 export default router;
