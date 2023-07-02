@@ -1,8 +1,19 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { parseJsonFile } from "../../utils/files";
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
 
 const schema = z.object({
   name: z.string().nonempty("Campo obligatorio"),
@@ -26,7 +37,14 @@ const schema = z.object({
 
 type MoveErrorCreateFormType = z.infer<typeof schema>;
 
-const MoveErrorCreate = () => {
+interface Props {
+  open: boolean;
+  handleClose: () => void;
+  fetchMoveErrors: () => void;
+}
+
+const MoveErrorCreate = ({ open, handleClose, fetchMoveErrors }: Props) => {
+  const { showError, showSuccess } = useAlert();
 
   const {
     handleSubmit,
@@ -36,72 +54,83 @@ const MoveErrorCreate = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data: MoveErrorCreateFormType) => {
-    console.log(data);
+  const onSubmit = async (formData: MoveErrorCreateFormType) => {
+    try {
+      const url = "/dashboard/error";
+      const data = {
+        name: formData.name,
+        systemName: formData.systemName,
+        description: formData.description,
+      };
+      await axios.post(url, { data: data });
+      fetchMoveErrors();
+      showSuccess("Error de entrenamiento creado con éxito");
+      handleClose();
+    } catch (error) {
+      showError("Hubo un error al crear el error de entrenamiento");
+    }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        my={{ xs: 3, sm: 8 }}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h4">
-          Errores de entrenamiento
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-          sx={{ mt: 1 }}
-        >
-          <TextField
-            fullWidth
-            margin="normal"
-            label="Nombre"
-            id="name"
-            {...register("name")}
-            error={!!errors.name}
-            helperText={errors.name?.message}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            label="SystemName"
-            id="systemName"
-            {...register("systemName")}
-            error={!!errors.systemName}
-            helperText={errors.systemName?.message}
-          />
-          <TextField
-            fullWidth
-            margin="normal"
-            multiline
-            rows={4}
-            label="Descripción"
-            id="description"
-            {...register("description")}
-            error={!!errors.description}
-            helperText={errors.description?.message}
-          />
-          <input
-            type="file"
-            accept=".json"
-            {...register("correctPose")}
-          />
-          {errors.correctPose && <div>{errors.correctPose.message}</div>}
-          <Box mt={2}>
-            <Button type="submit" variant="outlined">
-              Guardar
-            </Button>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Agregar Error</DialogTitle>
+      <DialogContent>
+        <Container component="main" maxWidth="xs">
+          <Box
+            my={{ xs: 3, sm: 8 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+              sx={{ mt: 1 }}
+            >
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Nombre"
+                id="name"
+                {...register("name")}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+              <TextField
+                fullWidth
+                margin="normal"
+                label="SystemName"
+                id="systemName"
+                {...register("systemName")}
+                error={!!errors.systemName}
+                helperText={errors.systemName?.message}
+              />
+              <TextField
+                fullWidth
+                margin="normal"
+                multiline
+                rows={4}
+                label="Descripción"
+                id="description"
+                {...register("description")}
+                error={!!errors.description}
+                helperText={errors.description?.message}
+              />
+              <input type="file" accept=".json" {...register("correctPose")} />
+              {errors.correctPose && <div>{errors.correctPose.message}</div>}
+              <Box mt={2}>
+                <Button type="submit" variant="outlined">
+                  Guardar
+                </Button>
+              </Box>
+            </Box>
           </Box>
-        </Box>
-      </Box>
-    </Container>
+        </Container>
+      </DialogContent>
+    </Dialog>
   );
 };
 

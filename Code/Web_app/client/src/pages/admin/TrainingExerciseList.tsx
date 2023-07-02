@@ -16,13 +16,13 @@ import TrainingExerciseCreate from "./TrainingExerciseCreate";
 import { useAlert } from "../../hooks/useAlert";
 
 const TrainingExerciseList = () => {
-  const url = "/dashboard/training-exercises";
-
   const [TrainingExercise, setTrainingExercise] = useState<TrainingExercise[]>(
     null!
   );
   const [open, setOpen] = useState(false);
   const { showError, showSuccess } = useAlert();
+
+  const url = "/dashboard/training-exercises";
 
   const handleOpen = () => {
     setOpen(true);
@@ -36,11 +36,12 @@ const TrainingExerciseList = () => {
     try {
       await axios.delete(`${url}/${id}`);
       showSuccess("Ejercicio de entrenamiento eliminado correctamente");
+      fetchTrainingExercises();
     } catch (error) {
       console.error(error);
       showError("Hubo un error al eliminar el ejercicio de entrenamiento");
     }
-  }
+  };
 
   const fetchTrainingExercises = useCallback(async () => {
     const { data } = await axios.get(url);
@@ -78,7 +79,10 @@ const TrainingExerciseList = () => {
               key={exercise.trainingExerciseID}
               disablePadding
               secondaryAction={
-                <IconButton aria-label="delete" onClick={(e) => handleDelete(exercise.trainingExerciseID)}>
+                <IconButton
+                  aria-label="delete"
+                  onClick={(e) => handleDelete(exercise.trainingExerciseID)}
+                >
                   <DeleteIcon />
                 </IconButton>
               }

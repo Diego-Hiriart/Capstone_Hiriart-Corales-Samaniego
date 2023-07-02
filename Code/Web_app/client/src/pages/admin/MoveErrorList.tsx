@@ -11,14 +11,19 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { Error as MoveError } from "../../types";
-import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useAlert } from "../../hooks/useAlert";
+import MoveErrorCreate from "./MoveErrorCreate";
 
 const MoveErrorList = () => {
   const [moveErrors, setMoveErrors] = useState<MoveError[]>(null!);
+  const { showError, showSuccess } = useAlert();
   const [open, setOpen] = useState(false);
+
+  const url = "/dashboard/error";
 
   const handleOpen = () => {
     setOpen(true);
@@ -28,12 +33,27 @@ const MoveErrorList = () => {
     setOpen(false);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`${url}/${id}`);
+      showSuccess("Error de entrenamiento eliminado correctamente");
+      fetchMoveErrors();
+    } catch (error) {
+      console.error(error);
+      showError("Hubo un error al eliminar el error de entrenamiento");
+    }
+  };
+
+  const fetchMoveErrors = useCallback(async () => {
+    const { data } = await axios.get(url);
+    setMoveErrors(data.data);
+  }, []);
+
   useEffect(() => {
-    const fetchMoveErrors = async () => {
-      const { data } = await axios.get("/dashboard/error");
-      setMoveErrors(data.data);
-    };
-    fetchMoveErrors();
+    fetchMoveErrors().catch((error) => {
+      console.error(error);
+      showError("Hubo un error al cargar los errores de entrenamiento");
+    });
   }, []);
 
   return (
@@ -60,8 +80,11 @@ const MoveErrorList = () => {
               key={moveError.errorID}
               disablePadding
               secondaryAction={
-                <IconButton aria-label="comment">
-                  <EditIcon />
+                <IconButton
+                  aria-label="delete"
+                  onClick={(e) => handleDelete(moveError.errorID)}
+                >
+                  <DeleteIcon />
                 </IconButton>
               }
             >
@@ -71,10 +94,11 @@ const MoveErrorList = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Agregar Training Error</DialogTitle>
-        <DialogContent></DialogContent>
-      </Dialog>
+      <MoveErrorCreate
+        open={open}
+        handleClose={handleClose}
+        fetchMoveErrors={fetchMoveErrors}
+      />
     </Container>
   );
 };
