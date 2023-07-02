@@ -159,11 +159,22 @@ const aiTrainings = [
   },
 ];
 
+const trainingExercises = [
+  {
+    trainingExerciseID: 1,
+    name: "Exercise 1",
+    description: "Exercise Description 1",
+  },
+];
+
 const errors = [
   {
     errorID: 1,
     name: "Error 1",
     description: "Error Description 1",
+    trainingExerciseID: 1,
+    correctPose: "json pose",
+    systemName: "AI name"
   },
 ];
 
@@ -228,6 +239,9 @@ async function main() {
   });
   await prisma.aITraining.createMany({
     data: aiTrainings,
+  });
+  await prisma.trainingExercise.createMany({
+    data: trainingExercises,
   });
   await prisma.error.createMany({
     data: errors,

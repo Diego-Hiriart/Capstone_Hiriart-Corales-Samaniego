@@ -1,4 +1,4 @@
-import { PrismaClient, TrainingError } from "@prisma/client";
+import { PrismaClient, TrainingError } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -24,7 +24,12 @@ export async function findAllTrainingError() {
   }
 }
 
-export async function createTrainingError(data: TrainingError) {
+interface TrainingErrorType {
+  AITrainingID: number;
+  errorID: number;
+  poseData: string;
+}
+export async function createTrainingError(data: TrainingErrorType) {
   try {
     const trainingError = await prisma.trainingError.create({
       data: {

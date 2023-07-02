@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 /*
  * Done using https://github.com/tensorflow/tfjs-models/tree/master/pose-detection/demos/upload_video
@@ -7,28 +7,31 @@ import './App.css';
 import { poseDetectionAI } from './ai-pose-detection/index';
 
 function App() {
-  interface ExtractionFormTypes {
+  interface ExtractionForm {
     posesPacketSize: number;
     videoFile: File;
+    extract2D: Boolean;
   }
   //Defines the amount of keypoints to be packed together and added to the JSON
-  const [extractionFormData, setExtractionFormData] =
-    useState<ExtractionFormTypes>({
-      posesPacketSize: 10,
-      videoFile: new File([new Blob()], ''),
-    });
+  const [extractionFormData, setExtractionFormData] = useState<ExtractionForm>({
+    posesPacketSize: 10,
+    videoFile: new File([new Blob()], ''),
+    extract2D: false,
+  });
 
   function handleFormChange(e: any) {
-    e.preventDefault();
     let fieldValue;
     if (e.target.type === 'file') {
       fieldValue = e.target.files[0];
+    } else if (e.target.type == 'checkbox') {
+      fieldValue = e.target.checked;
     } else {
       fieldValue = e.target.value; //Get the value of the field
+      e.preventDefault();
     }
-    const fieldName = e.target.getAttribute('name'); //Get the name field
+    const fieldName: keyof ExtractionForm = e.target.getAttribute('name'); //Get the name field
     const newFormData = { ...extractionFormData }; //Get the current state
-    newFormData[fieldName as keyof typeof newFormData] = fieldValue; //Update the value of a field
+    newFormData[fieldName] = fieldValue; //Update the value of a field
 
     setExtractionFormData(newFormData); //Update state
   }
@@ -36,9 +39,10 @@ function App() {
   async function extractJSON(e: React.FormEvent) {
     e.preventDefault(); //Dont reload page
     //Call AI function
-    let extractionData: ExtractionFormTypes = {
+    let extractionData: ExtractionForm = {
       posesPacketSize: extractionFormData.posesPacketSize,
       videoFile: extractionFormData.videoFile,
+      extract2D: extractionFormData.extract2D,
     };
     poseDetectionAI(extractionData);
   }
@@ -57,8 +61,10 @@ function App() {
           <form onSubmit={(e) => extractJSON(e)}>
             <div className='formField'>
               <label>
-                Poses packet size (amount of keypoints to be
-                packed together and added to the JSON)
+                Target poses packet size / amount of keypoints to be packed
+                together and added to the JSON (might not be able to extract
+                desired amount and get more or less, use console output as
+                guide)
               </label>
               <input
                 name='posesPacketSize'
@@ -77,11 +83,19 @@ function App() {
                 required
               ></input>
             </div>
+            <div className='formField'>
+              <label>Extract 2D</label>
+              <input
+                name='extract2D'
+                type='checkbox'
+                onChange={(e) => handleFormChange(e)}
+              ></input>
+            </div>
             <button type='submit'>Extract</button>
           </form>
           <span className='status-section'>
             <label>Extraction status: </label>
-              <p id='extraction-status'>Extraction incomplete</p>
+            <p id='extraction-status'>Extraction incomplete</p>
           </span>
           <video className='output-canvas webcam-pane' id='video'>
             <source id='currentVID' src='' type='video/mp4' />
