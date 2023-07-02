@@ -164,8 +164,8 @@ const trainingExercises = [
     trainingExerciseID: 1,
     name: "Exercise 1",
     description: "Exercise Description 1",
-  }
-]
+  },
+];
 
 const errors = [
   {
