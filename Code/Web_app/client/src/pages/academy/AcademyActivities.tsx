@@ -14,10 +14,12 @@ import axios from "../../services/axios";
 import { Activity } from "../../types";
 import ActivityAddType from "./AcademyAddActivity";
 import ActivityRemoveType from "./AcademyRemoveActivity";
+import AcademyEditActivity from "./AcademyEditActivity";
 
 const AcademyActivities = () => {
   const [activities, setActivities] = useState<Activity[]>(null!);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity>(null!);
 
@@ -37,6 +39,15 @@ const AcademyActivities = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleEditOpen = (activity: Activity) => {
+    setSelectedActivity(activity);
+    setOpenEdit(true);
+  };
+
+  const handleEditClose = () => {
+    setOpenEdit(false);
   };
 
   const handleRemoveClose = () => {
@@ -67,12 +78,15 @@ const AcademyActivities = () => {
           </Button>
         </Box>
         <List sx={{ mt: 1 }}>
-          {activities?.map((type) => (
-            <ListItem key={type.activityID} disablePadding>
-              <ListItemButton sx={{ px: 1 }}>
-                <ListItemText primary={type.name} />
+          {activities?.map((activity) => (
+            <ListItem key={activity.activityID} disablePadding>
+              <ListItemButton
+                sx={{ px: 1 }}
+                onClick={() => handleEditOpen(activity)}
+              >
+                <ListItemText primary={activity.name} />
               </ListItemButton>
-              <Button variant="text" onClick={() => handleRemoveOpen(type)}>
+              <Button variant="text" onClick={() => handleRemoveOpen(activity)}>
                 <DeleteIcon />
               </Button>
             </ListItem>
@@ -80,6 +94,11 @@ const AcademyActivities = () => {
         </List>
       </Box>
       <ActivityAddType handleClose={handleClose} open={open} />
+      <AcademyEditActivity
+        open={openEdit}
+        handleClose={handleEditClose}
+        activity={selectedActivity}
+      />
       <ActivityRemoveType
         activity={selectedActivity}
         handleClose={handleRemoveClose}

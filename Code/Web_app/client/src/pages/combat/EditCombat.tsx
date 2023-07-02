@@ -105,7 +105,7 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
       if (error instanceof AxiosError) {
         setError("root", {
           type: "manual",
-          message: "Ha ocurrido un error crear un combate",
+          message: "Ha ocurrido un error editar un combate",
         });
       }
     }
