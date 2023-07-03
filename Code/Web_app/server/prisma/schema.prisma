@@ -287,9 +287,9 @@ model AITraining {
   fencerID           Int
   date               DateTime
   duration           Int
-  feedback           String           @db.Text
-  trainer            Trainer          @relation(fields: [trainerID], references: [trainerID])
-  trainerID          Int
+  feedback           String?          @db.Text
+  trainer            Trainer?         @relation(fields: [trainerID], references: [trainerID])
+  trainerID          Int?
   trainingError      TrainingError[]
   trainingExercise   TrainingExercise @relation(fields: [trainingExerciseID], references: [trainingExerciseID])
   trainingExerciseID Int
