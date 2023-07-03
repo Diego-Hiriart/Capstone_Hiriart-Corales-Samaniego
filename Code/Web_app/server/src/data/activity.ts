@@ -31,7 +31,6 @@ export async function createActivity(data: Activity) {
         name: data.name,
         description: data.description,
         duration: data.duration,
-        activityTypeID: data.activityTypeID,
       },
     });
     return activity;

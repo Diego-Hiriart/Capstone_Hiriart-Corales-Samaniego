@@ -1,12 +1,15 @@
-import { Request, Response } from 'express';
-import { LayersModel } from '@tensorflow/tfjs';
+/* eslint-disable no-loops/no-loops */
+/* eslint-disable */
 
-import { debugLog, errorLog } from '../utils/logs';
+import { Request, Response } from "express";
+import { LayersModel } from "@tensorflow/tfjs";
+
+import { debugLog, errorLog } from "../utils/logs";
 import {
   checkModelDataExists,
   loadModel,
   runModel,
-} from '../errors_AI/errorAnalysisModel';
+} from "../errors_AI/errorAnalysisModel";
 
 let errorsModel: LayersModel;
 
@@ -18,7 +21,7 @@ export async function poseAnalysis(req: Request, res: Response) {
     if (!errorsModel) {
       //Call to check if the NN's topology and weights exist to ensure it can be loaded later
       if (!checkModelDataExists()) {
-        throw new Error('Model files do not exist');
+        throw new Error("Model files do not exist");
       }
       //Load model and return it to be used in inference
       errorsModel = await loadModel();

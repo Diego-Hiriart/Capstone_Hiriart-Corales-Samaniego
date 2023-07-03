@@ -10,6 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AcademyConfig {
+  academyConfigID Int    @id @default(autoincrement())
+  name            String
+  phoneNumber     String
+  address         String
+  logoURL         String
+}
+
 model MachineCombatData {
   machineCombatDataID Int      @id @default(autoincrement())
   machineName         String
@@ -226,8 +234,8 @@ model Activity {
   name              String              @db.VarChar(25)
   description       String              @db.VarChar(150)
   duration          DateTime
-  activityType      ActivityType        @relation(fields: [activityTypeID], references: [activityTypeID])
-  activityTypeID    Int
+  activityType      ActivityType?       @relation(fields: [activityTypeID], references: [activityTypeID])
+  activityTypeID    Int?
   dailyPlanActivity DailyPlanActivity[]
 }
 

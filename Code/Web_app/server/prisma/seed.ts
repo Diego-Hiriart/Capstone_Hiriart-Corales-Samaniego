@@ -214,6 +214,13 @@ const machineCombatData = [
   },
 ];
 
+const config = {
+  name: "Academia de Esgrima Ciudad de Quito",
+  phoneNumber: "1234567890",
+  address: "Quito",
+  logoURL: "",
+};
+
 async function main() {
   await prisma.user.createMany({
     data: users,
@@ -244,6 +251,9 @@ async function main() {
   });
   await prisma.machineCombatData.createMany({
     data: machineCombatData,
+  });
+  await prisma.academyConfig.create({
+    data: config,
   });
 }
 

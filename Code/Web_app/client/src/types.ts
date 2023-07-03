@@ -1,6 +1,15 @@
 import { Pose } from "@tensorflow-models/pose-detection";
 
+export type AcademyConfig = {
+  academyConfigID: number;
+  name: string;
+  phoneNumber: string;
+  address: string;
+  logoURL: string;
+};
+
 export interface MachineCombatData {
+  machineCombatDataID: number;
   machineName: string;
   leftScore: number;
   rightScore: number;

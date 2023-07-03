@@ -85,3 +85,16 @@ export async function deleteMachineCombatDataByID(id: number) {
     throw error;
   }
 }
+
+export async function deleteMachineByName(name: string) {
+  try {
+    const activity = await prisma.machineCombatData.deleteMany({
+      where: {
+        machineName: name,
+      },
+    });
+    return activity;
+  } catch (error) {
+    throw error;
+  }
+}
