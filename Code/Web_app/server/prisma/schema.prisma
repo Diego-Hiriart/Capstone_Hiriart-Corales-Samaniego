@@ -165,8 +165,8 @@ model CycleFeedback {
 
 model MesoCycle {
   mesoCycleID     Int             @id @default(autoincrement())
-  trainingGroup   TrainingGroup   @relation(fields: [trainingGroupID], references: [trainingGroupID])
-  trainingGroupID Int
+  trainingGroup   TrainingGroup?  @relation(fields: [trainingGroupID], references: [trainingGroupID])
+  trainingGroupID Int?
   trainer         Trainer         @relation(fields: [trainerID], references: [trainerID])
   trainerID       Int
   name            String          @db.VarChar(50)

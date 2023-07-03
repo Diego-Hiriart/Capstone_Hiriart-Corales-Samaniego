@@ -1,28 +1,29 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  Avatar,
   Box,
   Button,
   Container,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import { MesoCycle, TrainingGroupFull } from "../../types";
 import { formatDate } from "../../utils/formatDate";
+import DeleteMesoCycle from "./DeleteMesoCycle";
 import GroupAddMesocycle from "./GroupAddMesocycle";
-import AuthContext from "../../contexts/AuthContext";
 
 const GroupMesoCycle = () => {
   const { id } = useParams();
   const [group, setGroup] = useState<TrainingGroupFull>(null!);
   const [open, setOpen] = useState(false);
   const [selectedCycle, setSelectedCycle] = useState<MesoCycle>(null!);
+  const [openEdit, setOpenEdit] = useState(false);
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -41,6 +42,15 @@ const GroupMesoCycle = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenEdit = (cycle: MesoCycle) => {
+    setSelectedCycle(cycle);
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
   };
 
   return (
@@ -74,6 +84,9 @@ const GroupMesoCycle = () => {
                   ${formatDate(cycle.endDate)}`}
                 />
               </ListItemButton>
+              <Button variant="text" onClick={() => handleOpenEdit(cycle)}>
+                <DeleteIcon />
+              </Button>
             </ListItem>
           ))}
         </List>
@@ -84,6 +97,11 @@ const GroupMesoCycle = () => {
         handleClose={handleClose}
         open={open}
         trainerID={user?.trainer?.trainerID ?? 1}
+      />
+      <DeleteMesoCycle
+        cycle={selectedCycle}
+        handleClose={handleCloseEdit}
+        open={openEdit}
       />
     </Container>
   );

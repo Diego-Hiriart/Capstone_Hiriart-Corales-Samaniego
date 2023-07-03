@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import {
   createTrainingGroup,
+  deleteCycleById,
   deleteTrainingGroupById,
   findAllTrainingGroup,
   findTrainingGroupById,
@@ -57,6 +58,20 @@ export async function deleteTrainingGroup(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await deleteTrainingGroupById(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function deleteTrainingGroupCycle(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await deleteCycleById(
+        req.body.trainingGroupID,
+        req.body.mesoCycleID
+      ),
     });
   } catch (error) {
     errorLog(error);

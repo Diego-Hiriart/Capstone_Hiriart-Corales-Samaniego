@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   deleteTrainingGroup,
+  deleteTrainingGroupCycle,
   getAllTrainingGroup,
   getTrainingGroupById,
   postTrainingGroup,
@@ -14,6 +15,7 @@ router.get("/training_group/:id", getTrainingGroupById);
 router.get("/training_group/", getAllTrainingGroup);
 router.post("/training_group/", postTrainingGroup);
 router.put("/training_group/:id", updateTrainingGroup);
+router.delete("/training_group/cycle/", deleteTrainingGroupCycle);
 router.delete("/training_group/:id", deleteTrainingGroup);
 
 export default router;

@@ -1,6 +1,6 @@
 /* eslint-disable no-loops/no-loops */
 
-import { PrismaClient, MesoCycle } from "@prisma/client";
+import { MesoCycle, PrismaClient } from "@prisma/client";
 import { getDaysArray, getMicroCyclesDates } from "../utils/dates";
 
 const prisma = new PrismaClient();
