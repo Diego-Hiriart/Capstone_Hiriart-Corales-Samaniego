@@ -31,7 +31,9 @@ const schema = z.object({
       { message: "Archivo no valido" }
     )
     .transform(async (fileList) => {
-      return await fileToString(fileList?.[0]!);
+      if (fileList?.[0]) {
+        return await fileToString(fileList?.[0]);
+      }
     }),
 });
 

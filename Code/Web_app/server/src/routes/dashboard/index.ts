@@ -83,6 +83,6 @@ router.use('/', user_routes);
 // WEEKLY REPORT
 router.use("/", weeklyReport_routes);
 // TRAINING EXERCISE
-router.use("/", trainingExercise_routes)
+router.use("/", trainingExercise_routes);
 
 export default router;
