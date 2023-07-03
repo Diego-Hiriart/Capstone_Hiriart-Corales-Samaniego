@@ -282,15 +282,17 @@ model Attendance {
 }
 
 model AITraining {
-  AITrainingID  Int             @id @default(autoincrement())
-  fencer        Fencer          @relation(fields: [fencerID], references: [fencerID])
-  fencerID      Int
-  date          DateTime
-  duration      Int
-  feedback      String          @db.Text
-  trainer       Trainer         @relation(fields: [trainerID], references: [trainerID])
-  trainerID     Int
-  trainingError TrainingError[]
+  AITrainingID       Int              @id @default(autoincrement())
+  fencer             Fencer           @relation(fields: [fencerID], references: [fencerID])
+  fencerID           Int
+  date               DateTime
+  duration           Int
+  feedback           String           @db.Text
+  trainer            Trainer          @relation(fields: [trainerID], references: [trainerID])
+  trainerID          Int
+  trainingError      TrainingError[]
+  trainingExercise   TrainingExercise @relation(fields: [trainingExerciseID], references: [trainingExerciseID])
+  trainingExerciseID Int
 }
 
 model RegistrationLink {
@@ -310,16 +312,17 @@ model TrainingError {
 }
 
 model Error {
-  errorID            Int              @id @default(autoincrement())
-  name               String           @db.VarChar(100)
-  description        String           @db.Text
-  trainingError      TrainingError[]
-  correctPose        String           @db.Text
-  systemName         String           @unique
+  errorID       Int             @id @default(autoincrement())
+  name          String          @db.VarChar(100)
+  description   String          @db.Text
+  trainingError TrainingError[]
+  correctPose   String          @db.Text
+  systemName    String          @unique
 }
 
 model TrainingExercise {
-  trainingExerciseID Int     @id @default(autoincrement())
-  name               String  @db.VarChar(100)
-  description        String? @db.Text
+  trainingExerciseID Int          @id @default(autoincrement())
+  name               String       @db.VarChar(100)
+  description        String?      @db.Text
+  AITraining         AITraining[]
 }
