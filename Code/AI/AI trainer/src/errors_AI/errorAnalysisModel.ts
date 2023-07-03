@@ -25,12 +25,12 @@ export async function createAndTrainModel(
   epochs: number,
   learningRate: number,
   batchSize: number,
-  posesPerMovement: number
+  timesteps: number
 ) {
   try {
     let errorsModel;
     const trainingEpochs = epochs;
-    const outputNeurons = 50; //Detectable errors
+    const outputNeurons = 50; //Detectable movements (includes correct movements)
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
         readFileSync('../errors_AI_model_data/model.json').toString()
@@ -51,20 +51,16 @@ export async function createAndTrainModel(
       const keypointFeatures = 3;
       //If xs is a 3d tensor of shape [a, b, c,d], then inputShape of the first layer should be [b, c, d].
       //Shape of xs is [batch, 10 (poses per movement), 33 (keypoints), 3 (x, y, z of each keypoint)];
-      const inputLayerShape = [
-        posesPerMovement,
-        inputKeypoints,
-        keypointFeatures,
-      ];
-      const rnnTimeSteps = posesPerMovement;
-      const rnnInputLayerFeatures = inputKeypoints * posesPerMovement;
+      const inputLayerShape = [timesteps, inputKeypoints, keypointFeatures];
+      const rnnTimeSteps = timesteps;
+      const rnnInputLayerFeatures = inputKeypoints * timesteps;
       const rnnInputShape = [rnnInputLayerFeatures, rnnTimeSteps];
-      const nHiddenLayers = 2;
+      const nHiddenLayers = 1;
       //Input layer
       errorsModel.add(
         tf.layers.dense({
           name: 'input-layer',
-          units: posesPerMovement,
+          units: timesteps,
           inputShape: inputLayerShape,
           activation: 'sigmoid',
         })
@@ -77,8 +73,8 @@ export async function createAndTrainModel(
       for (let index = 0; index < nHiddenLayers; index++) {
         lstm_cells.push(tf.layers.lstmCell({ units: rnnTimeSteps }));
       }
-      debugLog("Cells")
-      debugLog(lstm_cells.length.toString())
+      debugLog('Cells');
+      debugLog(lstm_cells.length.toString());
       errorsModel.add(
         tf.layers.rnn({
           name: 'hidden-rnn',
@@ -106,9 +102,11 @@ export async function createAndTrainModel(
     //Create Xs and Ys for training
     //Get labels and data from files
     let trainLabelArray = JSON.parse(
-      readFileSync('./AITrainingLabels.json').toString()
+      readFileSync('./AITrainingLabels 50.json').toString()
     );
-    let trainDataJSON = JSON.parse(readFileSync('./AITrainingData.json').toString());
+    let trainDataJSON = JSON.parse(
+      readFileSync('./AITrainingData 50.json').toString()
+    );
     //Create data array from JSON
     let trainDataArray: Array<any> = [];
     trainDataJSON.forEach((movementSample: Array<any>) => {
@@ -125,7 +123,10 @@ export async function createAndTrainModel(
     });
     trainDataJSON = null; //Remove from memory
     //Create one hot encoding of training labels
-    let trainingTensorLabels = tf.oneHot(tf.tensor1d(trainLabelArray, 'int32'), outputNeurons);
+    let trainingTensorLabels = tf.oneHot(
+      tf.tensor1d(trainLabelArray, 'int32'),
+      outputNeurons
+    );
     //Create training data tensor
     let trainTensors3D = [];
     for (let i = 0; i < trainDataArray.length; i++) {
@@ -134,9 +135,11 @@ export async function createAndTrainModel(
     let trainingTensorData = tf.tensor(trainTensors3D);
     //Get validation data from giles
     let validationLabelArray = JSON.parse(
-      readFileSync('./AIValidationLabels.json').toString()
+      readFileSync('./AIValidationLabels 50.json').toString()
     );
-    let validationDataJSON = JSON.parse(readFileSync('./AIValidationData.json').toString());
+    let validationDataJSON = JSON.parse(
+      readFileSync('./AIValidationData 50.json').toString()
+    );
     //Create data array from JSON
     let validationDataArray: Array<any> = [];
     validationDataJSON.forEach((movementSample: Array<any>) => {
@@ -153,7 +156,10 @@ export async function createAndTrainModel(
     });
     validationDataJSON = null; //Remove from memory
     //Create one hot encoding of validation labels
-    let validationTensorLabels = tf.oneHot(tf.tensor1d(validationLabelArray, 'int32'), outputNeurons);
+    let validationTensorLabels = tf.oneHot(
+      tf.tensor1d(validationLabelArray, 'int32'),
+      outputNeurons
+    );
     //Create validation data tensor
     let validationTensors3D = [];
     for (let i = 0; i < validationDataArray.length; i++) {
@@ -161,12 +167,16 @@ export async function createAndTrainModel(
     }
     let validationTensorData = tf.tensor(validationTensors3D);
     //Training of model with data from JSONs
-    const trainingResults = await errorsModel.fit(trainingTensorData, trainingTensorLabels, {
-      batchSize: batchSize,
-      epochs: trainingEpochs,
-      validationSplit: 0.3,
-      callbacks: { onEpochEnd },
-    });
+    const trainingResults = await errorsModel.fit(
+      trainingTensorData,
+      trainingTensorLabels,
+      {
+        batchSize: batchSize,
+        epochs: trainingEpochs,
+        validationData: [validationTensorData, validationTensorLabels],
+        callbacks: { onEpochEnd },
+      }
+    );
     //Save outside of project
     const modelJSON = errorsModel.toJSON().toString();
     const modelWeights = errorsModel.getWeights();

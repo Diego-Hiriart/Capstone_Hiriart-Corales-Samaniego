@@ -11,7 +11,7 @@ export async function trainModel(req: Request, res: Response) {
     req.body.epochs,
     req.body.learningRate,
     req.body.batchSize,
-    req.body.posesPerMovement
+    req.body.timesteps
   );
   return res.status(200).json(trainingResult);
 }
