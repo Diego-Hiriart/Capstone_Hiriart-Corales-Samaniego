@@ -9,7 +9,7 @@ import { createDetector } from "./ai-pose-detection/index";
 import { isMobile } from "react-device-detect";
 import { css } from "@emotion/react";
 import Navbar from "../../components/Navbar/Navbar";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
 import axios from "../../services/axios";
 import { Camera } from "./ai-pose-detection/camera";
@@ -105,7 +105,7 @@ function AITrainingDetection() {
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data: { data: "asdf" } });
+        resolve({ data: { data: "asdf"} });
       }, duration);
     });
   };
@@ -119,9 +119,16 @@ function AITrainingDetection() {
       handlePause();
       const poseAnalysis = async () => {
         const url = "/dashboard/analyze-pose";
-        // const { data } = await axios.post(url, move);
+        const body = {
+          sessionId: state.sessionId,
+          exercise: state.exercise,
+          move,
+          laterality: user?.fencer?.laterality,
+        }
+        console.log(body)
+        const { data } = await axios.post(url, {data: body});
         // test
-        const { data } = await asyncRequest(1000);
+        // const { data } = await asyncRequest(1000);
         if (data.data) {
           setPoseAnalisisData(data.data);
           setErrorDialogOpen(true);
@@ -195,6 +202,7 @@ function AITrainingDetection() {
   };
 
   const stopDetection = () => {
+    if (!intervalId.current) return;
     clearInterval(intervalId.current);
     stopDurationTimer();
   };
@@ -251,7 +259,7 @@ function AITrainingDetection() {
             css={[outputCanvasStyles({ isMobile }), renderPaneStyles]}
             id="output"
           ></canvas>
-          {isAnalyzingRef.current ? (
+          <div css={[buttonWrapperStyles]}>
             <Button
               css={buttonStyles({ isMobile })}
               variant="outlined"
@@ -259,7 +267,6 @@ function AITrainingDetection() {
             >
               Detener
             </Button>
-          ) : (
             <Button
               css={buttonStyles({ isMobile })}
               variant="contained"
@@ -268,7 +275,7 @@ function AITrainingDetection() {
             >
               Iniciar ({setupTimer})
             </Button>
-          )}
+          </div>
         </div>
       </Box>
       {poseAnalisisData && (
@@ -302,14 +309,17 @@ const renderPaneStyles = () => css`
   z-index: 9;
 `;
 
-const buttonStyles = ({ isMobile }: { isMobile: boolean }) => css`
-  width: 8rem;
-  height: 3rem;
-  z-index: 10;
+const buttonWrapperStyles = css`
+  position: absolute;
   left: 50%;
   bottom: -60px;
   transform: translateX(-50%);
-  position: absolute;
+  z-index: 10;
+`
+
+const buttonStyles = ({ isMobile }: { isMobile: boolean }) => css`
+  width: 8rem;
+  height: 3rem;
   ${isMobile &&
   `
     bottom: 20px;
