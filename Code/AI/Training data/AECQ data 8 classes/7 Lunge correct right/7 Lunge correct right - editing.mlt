@@ -56,8 +56,8 @@
     <entry producer="chain2" in="00:00:00.000" out="00:00:19.453"/>
     <entry producer="chain3" in="00:00:00.000" out="00:00:27.594"/>
   </playlist>
-  <producer id="black" in="00:00:00.000" out="00:00:34.868">
-    <property name="length">00:00:34.902</property>
+  <producer id="black" in="00:00:00.000" out="00:01:07.007">
+    <property name="length">00:01:07.040</property>
     <property name="eof">pause</property>
     <property name="resource">0</property>
     <property name="aspect_ratio">1</property>
@@ -66,7 +66,7 @@
     <property name="set.test_audio">0</property>
   </producer>
   <playlist id="background">
-    <entry producer="black" in="00:00:00.000" out="00:00:34.868"/>
+    <entry producer="black" in="00:00:00.000" out="00:01:07.007"/>
   </playlist>
   <chain id="chain4" out="00:00:26.293">
     <property name="length">00:00:26.326</property>
@@ -380,6 +380,370 @@
     <property name="shotcut:hash">303e3ed07908aa8abad59cc1d0b113c6</property>
     <property name="shotcut:caption">MVI_0072.MOV</property>
   </chain>
+  <chain id="chain28" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain29" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain30" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain31" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain32" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain33" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain34" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain35" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain36" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain37" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain38" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain39" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain40" out="00:01:09.510">
+    <property name="length">00:01:09.543</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2644.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:05:51</property>
+    <property name="shotcut:caption">MVI_2644.MOV</property>
+    <property name="shotcut:hash">95ed75d3033d236339491aed7b9e3d58</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain41" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain42" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain43" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain44" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain45" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain46" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain47" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain48" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain49" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain50" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain51" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain52" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
+  <chain id="chain53" out="00:01:02.870">
+    <property name="length">00:01:02.903</property>
+    <property name="eof">pause</property>
+    <property name="resource">D:/UDLA/Capstone Project/Training videos/MVI_2645.MOV</property>
+    <property name="mlt_service">avformat-novalidate</property>
+    <property name="seekable">1</property>
+    <property name="audio_index">1</property>
+    <property name="video_index">0</property>
+    <property name="creation_time">2023-07-04T16:08:59</property>
+    <property name="shotcut:caption">MVI_2645.MOV</property>
+    <property name="shotcut:hash">27b5d4c2b007b4c3fa30d2f865a6efc6</property>
+    <property name="ignore_points">0</property>
+    <property name="xml">was here</property>
+  </chain>
   <playlist id="playlist0">
     <property name="shotcut:video">1</property>
     <property name="shotcut:name">V1</property>
@@ -430,12 +794,64 @@
     <entry producer="chain26" in="00:00:12.679" out="00:00:13.580"/>
     <blank length="00:00:00.367"/>
     <entry producer="chain27" in="00:00:16.750" out="00:00:17.684"/>
+    <blank length="00:00:00.467"/>
+    <entry producer="chain28" in="00:00:03.737" out="00:00:04.571"/>
+    <blank length="00:00:00.200"/>
+    <entry producer="chain29" in="00:00:07.975" out="00:00:08.976"/>
+    <blank length="00:00:00.300"/>
+    <entry producer="chain30" in="00:00:11.879" out="00:00:12.946"/>
+    <blank length="00:00:00.267"/>
+    <entry producer="chain31" in="00:00:18.652" out="00:00:19.686"/>
+    <blank length="00:00:00.400"/>
+    <entry producer="chain32" in="00:00:22.789" out="00:00:23.524"/>
+    <blank length="00:00:00.200"/>
+    <entry producer="chain33" in="00:00:28.161" out="00:00:29.096"/>
+    <blank length="00:00:00.267"/>
+    <entry producer="chain34" in="00:00:32.266" out="00:00:33.033"/>
+    <blank length="00:00:00.300"/>
+    <entry producer="chain35" in="00:00:36.370" out="00:00:37.271"/>
+    <blank length="00:00:00.167"/>
+    <entry producer="chain36" in="00:00:40.274" out="00:00:41.041"/>
+    <blank length="00:00:00.133"/>
+    <entry producer="chain37" in="00:00:44.311" out="00:00:45.412"/>
+    <blank length="00:00:00.200"/>
+    <entry producer="chain38" in="00:00:50.284" out="00:00:51.552"/>
+    <blank length="00:00:00.334"/>
+    <entry producer="chain39" in="00:00:54.621" out="00:00:55.622"/>
+    <blank length="00:00:00.400"/>
+    <entry producer="chain40" in="00:01:01.969" out="00:01:03.303"/>
+    <blank length="00:00:00.467"/>
+    <entry producer="chain41" in="00:00:01.335" out="00:00:02.135"/>
+    <blank length="00:00:00.400"/>
+    <entry producer="chain42" in="00:00:04.471" out="00:00:05.339"/>
+    <blank length="00:00:00.367"/>
+    <entry producer="chain43" in="00:00:07.875" out="00:00:08.675"/>
+    <blank length="00:00:00.267"/>
+    <entry producer="chain44" in="00:00:11.278" out="00:00:12.212"/>
+    <blank length="00:00:00.300"/>
+    <entry producer="chain45" in="00:00:14.615" out="00:00:15.382"/>
+    <blank length="00:00:00.267"/>
+    <entry producer="chain46" in="00:00:17.684" out="00:00:18.685"/>
+    <blank length="00:00:00.234"/>
+    <entry producer="chain47" in="00:00:26.260" out="00:00:27.060"/>
+    <blank length="00:00:00.334"/>
+    <entry producer="chain48" in="00:00:32.766" out="00:00:33.767"/>
+    <blank length="00:00:00.234"/>
+    <entry producer="chain49" in="00:00:36.036" out="00:00:36.970"/>
+    <blank length="00:00:00.267"/>
+    <entry producer="chain50" in="00:00:39.273" out="00:00:40.107"/>
+    <blank length="00:00:00.300"/>
+    <entry producer="chain51" in="00:00:42.609" out="00:00:43.443"/>
+    <blank length="00:00:00.133"/>
+    <entry producer="chain52" in="00:00:46.013" out="00:00:46.747"/>
+    <blank length="00:00:00.200"/>
+    <entry producer="chain53" in="00:00:49.216" out="00:00:50.017"/>
   </playlist>
-  <tractor id="tractor0" title="Shotcut version 23.06.14" in="00:00:00.000" out="00:00:34.868">
+  <tractor id="tractor0" title="Shotcut version 23.06.14" in="00:00:00.000" out="00:01:07.007">
     <property name="shotcut">1</property>
     <property name="shotcut:projectAudioChannels">2</property>
     <property name="shotcut:projectFolder">0</property>
-    <property name="shotcut:scaleFactor">2.87329</property>
+    <property name="shotcut:scaleFactor">3.25179</property>
     <properties name="shotcut:markers">
       <properties name="0">
         <property name="text">Marker 1</property>
@@ -579,6 +995,162 @@
         <property name="text">Marker 24</property>
         <property name="start">00:00:33.934</property>
         <property name="end">00:00:34.902</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="24">
+        <property name="text">Marker 25</property>
+        <property name="start">00:00:35.369</property>
+        <property name="end">00:00:36.236</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="25">
+        <property name="text">Marker 26</property>
+        <property name="start">00:00:36.436</property>
+        <property name="end">00:00:37.471</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="26">
+        <property name="text">Marker 27</property>
+        <property name="start">00:00:37.771</property>
+        <property name="end">00:00:38.872</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="27">
+        <property name="text">Marker 28</property>
+        <property name="start">00:00:39.139</property>
+        <property name="end">00:00:40.207</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="28">
+        <property name="text">Marker 29</property>
+        <property name="start">00:00:40.607</property>
+        <property name="end">00:00:41.375</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="29">
+        <property name="text">Marker 30</property>
+        <property name="start">00:00:41.575</property>
+        <property name="end">00:00:42.543</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="30">
+        <property name="text">Marker 31</property>
+        <property name="start">00:00:42.809</property>
+        <property name="end">00:00:43.610</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="31">
+        <property name="text">Marker 32</property>
+        <property name="start">00:00:43.911</property>
+        <property name="end">00:00:44.845</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="32">
+        <property name="text">Marker 33</property>
+        <property name="start">00:00:45.012</property>
+        <property name="end">00:00:45.812</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="33">
+        <property name="text">Marker 34</property>
+        <property name="start">00:00:45.946</property>
+        <property name="end">00:00:47.080</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="34">
+        <property name="text">Marker 35</property>
+        <property name="start">00:00:47.281</property>
+        <property name="end">00:00:48.582</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="35">
+        <property name="text">Marker 36</property>
+        <property name="start">00:00:48.916</property>
+        <property name="end">00:00:49.950</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="36">
+        <property name="text">Marker 37</property>
+        <property name="start">00:00:50.350</property>
+        <property name="end">00:00:51.718</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="37">
+        <property name="text">Marker 38</property>
+        <property name="start">00:00:52.185</property>
+        <property name="end">00:00:53.020</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="38">
+        <property name="text">Marker 39</property>
+        <property name="start">00:00:53.420</property>
+        <property name="end">00:00:54.321</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="39">
+        <property name="text">Marker 40</property>
+        <property name="start">00:00:54.688</property>
+        <property name="end">00:00:55.522</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="40">
+        <property name="text">Marker 41</property>
+        <property name="start">00:00:55.789</property>
+        <property name="end">00:00:56.757</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="41">
+        <property name="text">Marker 42</property>
+        <property name="start">00:00:57.057</property>
+        <property name="end">00:00:57.858</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="42">
+        <property name="text">Marker 43</property>
+        <property name="start">00:00:58.125</property>
+        <property name="end">00:00:59.159</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="43">
+        <property name="text">Marker 44</property>
+        <property name="start">00:00:59.393</property>
+        <property name="end">00:01:00.234</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="44">
+        <property name="text">Marker 45</property>
+        <property name="start">00:01:00.567</property>
+        <property name="end">00:01:01.602</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="45">
+        <property name="text">Marker 46</property>
+        <property name="start">00:01:01.835</property>
+        <property name="end">00:01:02.803</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="46">
+        <property name="text">Marker 47</property>
+        <property name="start">00:01:03.070</property>
+        <property name="end">00:01:03.937</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="47">
+        <property name="text">Marker 48</property>
+        <property name="start">00:01:04.238</property>
+        <property name="end">00:01:05.105</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="48">
+        <property name="text">Marker 49</property>
+        <property name="start">00:01:05.239</property>
+        <property name="end">00:01:06.006</property>
+        <property name="color">#008000</property>
+      </properties>
+      <properties name="49">
+        <property name="text">Marker 50</property>
+        <property name="start">00:01:06.206</property>
+        <property name="end">00:01:07.040</property>
         <property name="color">#008000</property>
       </properties>
     </properties>
