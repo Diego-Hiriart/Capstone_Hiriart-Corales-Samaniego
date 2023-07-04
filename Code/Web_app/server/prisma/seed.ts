@@ -164,8 +164,6 @@ const aiTrainings = [
     feedback: 'Feedback training ai',
     trainerID: 1,
     trainingExerciseID: 1,
-    name: 'Exercise 1',
-    description: 'Exercise Description 1',
   },
 ];
 
