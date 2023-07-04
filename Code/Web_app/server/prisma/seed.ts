@@ -148,19 +148,21 @@ const feedbacks = [
   },
 ];
 
+const trainingExercises = [
+  {
+    trainingExerciseID: 1,
+    name: "Exercise 1",
+    description: "Exercise Description 1",
+  },
+];
+
 const aiTrainings = [
   {
-    AITrainingID: 1,
     fencerID: 1,
     date: new Date(),
     duration: 120,
     feedback: 'Feedback training ai',
     trainerID: 1,
-  },
-];
-
-const trainingExercises = [
-  {
     trainingExerciseID: 1,
     name: 'Exercise 1',
     description: 'Exercise Description 1',
@@ -169,12 +171,10 @@ const trainingExercises = [
 
 const errors = [
   {
-    errorID: 1,
-    name: 'Error 1',
-    description: 'Error Description 1',
-    trainingExerciseID: 1,
-    correctPose: 'json pose',
-    systemName: 'AI name',
+    name: "Error 1",
+    description: "Error Description 1",
+    correctPose: "json pose",
+    systemName: "AI name"
   },
 ];
 
@@ -236,11 +236,11 @@ async function main() {
   await prisma.singleFeedback.createMany({
     data: feedbacks,
   });
-  await prisma.aITraining.createMany({
-    data: aiTrainings,
-  });
   await prisma.trainingExercise.createMany({
     data: trainingExercises,
+  });
+  await prisma.aITraining.createMany({
+    data: aiTrainings,
   });
   await prisma.error.createMany({
     data: errors,

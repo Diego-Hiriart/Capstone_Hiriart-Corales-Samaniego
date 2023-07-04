@@ -12,10 +12,15 @@ import {
   DialogActions,
   Box,
 } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Navigate, Link as RouterLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { useEffect, useState } from "react";
+import axios from "../../services/axios";
+import { TrainingExercise } from "../../types";
+import useAuth from "../../hooks/useAuth";
+import { useAlert } from "../../hooks/useAlert";
 
 interface Props {
   open: boolean;
@@ -23,31 +28,21 @@ interface Props {
 }
 
 const schema = z.object({
-  exercise: z.string().nonempty("Campo obligatorio"),
-  duration: z.coerce.number().positive("Campo obligatorio").max(10, "Máximo 10 minutos"),
+  exercise: z.number().positive("Campo obligatorio"),
+  duration: z.coerce
+    .number()
+    .positive("Campo obligatorio")
+    .max(5, "Máximo 5 minutos"),
 });
 
 type NewTrainingDialogType = z.infer<typeof schema>;
 
-const exercises = {
-  data: [
-    {
-      id: "1",
-      name: "Fleche",
-    },
-    {
-      id: "2",
-      name: "Parry",
-    },
-    {
-      id: "3",
-      name: "Reposte",
-    },
-  ],
-};
-
 const NewTrainingDialog = ({ open, handleClose }: Props) => {
+  const [exercises, setExercises] = useState<TrainingExercise[]>([]);
+  const { showError } = useAlert();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
   const {
     control,
     formState: { errors },
@@ -56,10 +51,45 @@ const NewTrainingDialog = ({ open, handleClose }: Props) => {
     register,
   } = useForm<NewTrainingDialogType>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      exercise: 1,
+      duration: 1,
+    },
   });
 
-  const onSubmit = () => {
-    navigate("/aitrainings/new", { state: { exercise: getValues().exercise, duration: getValues().duration } });
+  useEffect(() => {
+    const fetchExercises = async () => {
+      const url = "/dashboard/training-exercises";
+      const { data } = await axios.get(url);
+      setExercises(data.data);
+    };
+    fetchExercises().catch((err) => {
+      console.log(err);
+    });
+  }, []);
+
+  const onSubmit: SubmitHandler<NewTrainingDialogType> = async (formData) => {
+    try {
+      const aiTraining = {
+        fencerID: user?.fencer?.fencerID,
+        date: new Date(),
+        duration: formData.duration,
+        trainingExerciseID: formData.exercise,
+      };
+      const { data } = await axios.post("/dashboard/aitraining", {
+        data: aiTraining,
+      });
+      navigate("/aitrainings/new", {
+        state: {
+          sessionId: data.data.AITrainingID,
+          exercise: getValues().exercise,
+          duration: getValues().duration,
+        },
+      });
+    } catch (error) {
+      showError("Error al crear el entrenamiento");
+      console.error(error);
+    }
   };
 
   return (
@@ -71,12 +101,14 @@ const NewTrainingDialog = ({ open, handleClose }: Props) => {
             <InputLabel id="exercise-label">Ejercicio</InputLabel>
             <Controller
               name="exercise"
-              defaultValue=""
               control={control}
               render={({ field }) => (
                 <Select {...field} labelId="exercise-label" label="Ejercicio">
-                  {exercises.data.map((exercise) => (
-                    <MenuItem key={exercise.id} value={exercise.name}>
+                  {exercises.map((exercise) => (
+                    <MenuItem
+                      key={exercise.trainingExerciseID}
+                      value={exercise.trainingExerciseID}
+                    >
                       {exercise.name}
                     </MenuItem>
                   ))}
@@ -99,11 +131,7 @@ const NewTrainingDialog = ({ open, handleClose }: Props) => {
             <Button fullWidth variant="outlined" onClick={handleClose}>
               Cancelar
             </Button>
-            <Button
-              fullWidth
-              variant="contained"
-              type="submit"
-            >
+            <Button fullWidth variant="contained" type="submit">
               Confirmar
             </Button>
           </DialogActions>

@@ -26,6 +26,7 @@ import trainingError_routes from "./trainingError_routes";
 import trainingGroup_routes from "./trainingGroup_routes";
 import user_routes from "./users_routes";
 import weeklyReport_routes from "./weeklyReport_routes";
+import trainingExercise_routes from "./trainingExercise_routes";
 
 const router = Router();
 
@@ -80,6 +81,8 @@ router.use('/', trainingGroup_routes);
 // USERS
 router.use('/', user_routes);
 // WEEKLY REPORT
-router.use('/', weeklyReport_routes);
+router.use("/", weeklyReport_routes);
+// TRAINING EXERCISE
+router.use("/", trainingExercise_routes);
 
 export default router;
