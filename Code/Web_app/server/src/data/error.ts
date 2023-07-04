@@ -43,7 +43,6 @@ export async function createError(data: Error) {
       data: {
         name: data.name,
         description: data.description,
-        trainingExerciseID: data.trainingExerciseID,
         correctPose: data.correctPose,
         systemName: data.systemName,
       },

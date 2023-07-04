@@ -407,3 +407,9 @@ export type TabItem = {
   label: string;
   component: JSX.Element;
 };
+
+export type TrainingExercise = {
+  trainingExerciseID: number;
+  name: string;
+  description: string;
+};

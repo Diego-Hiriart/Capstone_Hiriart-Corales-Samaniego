@@ -40,6 +40,7 @@ export async function createAITraining(data: AITraining) {
         duration: data.duration,
         feedback: data.feedback,
         trainerID: data.trainerID,
+        trainingExerciseID: data.trainingExerciseID,
       },
     });
     return aITraining;
