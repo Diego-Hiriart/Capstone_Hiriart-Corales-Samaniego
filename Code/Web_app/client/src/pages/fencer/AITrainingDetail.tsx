@@ -9,7 +9,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { AITraining, PoseAnalisisData } from "../../types";
+import { AITraining, Move, PoseAnalisisData } from "../../types";
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import dayjs from "dayjs";
@@ -32,7 +32,8 @@ const AITrainingDetail = () => {
   const { user } = useAuth();
   const { id } = useParams();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
-  const [poseAnalisisData, setPoseAnalisisData] = useState<PoseAnalisisData | null>(null);
+  const [poseAnalisisData, setPoseAnalisisData] =
+    useState<PoseAnalisisData | null>(null);
   const [training, setTraining] = useState<AITraining | null>(null);
   const aitrainingURL = `/dashboard/aitraining/${id}`;
   const { showSuccess, showError } = useAlert();
@@ -56,7 +57,7 @@ const AITrainingDetail = () => {
 
   useEffect(() => {
     reset({ feedback: training?.feedback });
-  }, [training])
+  }, [training]);
 
   const handleClose = () => {
     setErrorDialogOpen(false);
@@ -64,13 +65,24 @@ const AITrainingDetail = () => {
 
   const handleOpen = async (id: number) => {
     // Testing (remove eventually)
-    setPoseAnalisisData(poseAnalisisResponseMock.data);
+    // setPoseAnalisisData(poseAnalisisResponseMock.data);
 
-    // Production
-    // const { data } = await axios.get(`/dashboard/aitraining/${trainingID}/error/${id}}`)
-    // setPoseAnalisisData(data.data);
+    try {
+      const { data } = await axios.get(`/dashboard/training_error/${id}`);
+      const trainingError = data.data;
 
-    setErrorDialogOpen(true);
+      const dialogData: PoseAnalisisData = {
+        incorrectMove: trainingError.poseData,
+        correctMove: trainingError.error.correctPose,
+        title: trainingError.error.name,
+        description: trainingError.error.description,
+      };
+      setPoseAnalisisData(dialogData);
+      setErrorDialogOpen(true);
+    } catch (error) {
+      console.error(error);
+      showError("Error al obtener datos de error");
+    }
   };
 
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
@@ -93,17 +105,12 @@ const AITrainingDetail = () => {
         <Typography>
           Fecha: {String(dayjs(training?.date).format("DD/MM/YYYY"))}
         </Typography>
-        <Typography>Ejercicio: {training?.exercise}</Typography>
         <Typography variant="h5" mt={5}>
           Errores
         </Typography>
         <List>
           {training?.trainingError.map((te) => (
-            <ListItem
-              key={te.trainingErrorID}
-              disablePadding
-              divider
-            >
+            <ListItem key={te.trainingErrorID} disablePadding divider>
               <ListItemButton
                 sx={{ px: 1 }}
                 onClick={() => handleOpen(te.trainingErrorID)}
@@ -138,7 +145,11 @@ const AITrainingDetail = () => {
         )}
       </Box>
       {poseAnalisisData && (
-        <AIErrorDialog open={errorDialogOpen} handleClose={handleClose} poseAnalisisData={poseAnalisisData}/>
+        <AIErrorDialog
+          open={errorDialogOpen}
+          handleClose={handleClose}
+          poseAnalisisData={poseAnalisisData}
+        />
       )}
     </Container>
   );
