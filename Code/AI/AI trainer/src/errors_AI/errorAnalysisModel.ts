@@ -102,10 +102,10 @@ export async function createAndTrainModel(
     //Create Xs and Ys for training
     //Get labels and data from files
     let trainLabelArray = JSON.parse(
-      readFileSync('./AITrainingLabels 50.json').toString()
+      readFileSync('./AITrainingLabels.json').toString()
     );
     let trainDataJSON = JSON.parse(
-      readFileSync('./AITrainingData 50.json').toString()
+      readFileSync('./AITrainingData.json').toString()
     );
     //Create data array from JSON
     let trainDataArray: Array<any> = [];
@@ -135,10 +135,10 @@ export async function createAndTrainModel(
     let trainingTensorData = tf.tensor(trainTensors3D);
     //Get validation data from giles
     let validationLabelArray = JSON.parse(
-      readFileSync('./AIValidationLabels 50.json').toString()
+      readFileSync('./AIValidationLabels.json').toString()
     );
     let validationDataJSON = JSON.parse(
-      readFileSync('./AIValidationData 50.json').toString()
+      readFileSync('./AIValidationData.json').toString()
     );
     //Create data array from JSON
     let validationDataArray: Array<any> = [];
