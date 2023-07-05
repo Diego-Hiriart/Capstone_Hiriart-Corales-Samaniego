@@ -45,13 +45,17 @@ const savePoseData = (poseData) => {
     poseData[0] !== null
   ) {
     let extrationKeypoints = extract2D ? 'keypoints' : 'keypoints3D';
-    let keypoints3DData = poseData[0][extrationKeypoints];
+    let keypointsData = poseData[0][extrationKeypoints];
     //Check if the current packet in the JSON is full, create a new one if so, otherwise add pose data
     if (posesJSON[currentPosesIndex].length == posesPacketSize) {
-      posesJSON.push([keypoints3DData]);
+      posesJSON.push(
+        extract2D ? [{ keypoints: keypointsData }] : [keypointsData]
+      );
       currentPosesIndex++;
     } else {
-      posesJSON[currentPosesIndex].push(keypoints3DData);
+      posesJSON[currentPosesIndex].push(
+        extract2D ? { keypoints: keypointsData } : keypointsData
+      );
     }
   }
 };
@@ -91,9 +95,12 @@ const downloadPosesJSON = () => {
     }
     alert('downloading poses JSON');
     const a = document.createElement('a');
-    const file = new Blob([JSON.stringify(posesJSON)], {
-      type: 'text/plain',
-    });
+    const file = new Blob(
+      [JSON.stringify(extract2D ? posesJSON[0] : posesJSON)],
+      {
+        type: 'text/plain',
+      }
+    );
     a.href = URL.createObjectURL(file);
     let fileName = videoName;
     fileName = `${fileName.substring(0, fileName.lastIndexOf('.'))}_${
