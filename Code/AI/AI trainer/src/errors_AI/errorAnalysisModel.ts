@@ -30,7 +30,7 @@ export async function createAndTrainModel(
   try {
     let errorsModel;
     const trainingEpochs = epochs;
-    const outputNeurons = 50; //Detectable movements (includes correct movements)
+    const outputNeurons = 8; //Detectable movements (includes correct movements)
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
         readFileSync('../errors_AI_model_data/model.json').toString()
