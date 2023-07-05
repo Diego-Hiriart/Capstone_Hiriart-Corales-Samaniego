@@ -92,7 +92,6 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={"md"} fullWidth>
-      <DialogTitle>{poseAnalisisData.title}</DialogTitle>
       <DialogContent css={dialogContentStyles}>
         <div css={canvasContainerStyles}>
           <canvas
@@ -106,6 +105,7 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
             id="correct-canvas"
           ></canvas>
         </div>
+        <Typography>{poseAnalisisData.title}</Typography>
         <Typography>{poseAnalisisData.description}</Typography>
         <DialogActions sx={{paddingBottom: 0}}>
           <Button variant="contained" onClick={handleClose}>
@@ -130,6 +130,7 @@ const canvasContainerStyles = css`
   object-fit: contain;
   min-height: 0;
 `;
+
 const outputCanvasStyles = (canvasSize: number) => css`
   transform: scaleX(-1);
   object-fit: contain;

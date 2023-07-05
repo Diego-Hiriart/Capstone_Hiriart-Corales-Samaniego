@@ -8,6 +8,9 @@ export async function findTrainingErrorById(id: number) {
       where: {
         trainingErrorID: id,
       },
+      include: {
+        error: true,
+      }
     });
     return trainingError;
   } catch (error) {

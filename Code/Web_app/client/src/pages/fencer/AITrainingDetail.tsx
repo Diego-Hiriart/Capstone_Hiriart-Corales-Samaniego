@@ -9,7 +9,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { AITraining, PoseAnalisisData } from "../../types";
+import { AITraining, Move, PoseAnalisisData } from "../../types";
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import dayjs from "dayjs";
@@ -64,13 +64,25 @@ const AITrainingDetail = () => {
 
   const handleOpen = async (id: number) => {
     // Testing (remove eventually)
-    setPoseAnalisisData(poseAnalisisResponseMock.data);
+    // setPoseAnalisisData(poseAnalisisResponseMock.data);
 
-    // Production
-    // const { data } = await axios.get(`/dashboard/aitraining/${trainingID}/error/${id}}`)
-    // setPoseAnalisisData(data.data);
+    try {
+      const { data } = await axios.get(`/dashboard/training_error/${id}`)
+      const trainingError = data.data;
 
-    setErrorDialogOpen(true);
+      const dialogData: PoseAnalisisData = {
+        incorrectMove: trainingError.poseData,
+        correctMove: trainingError.error.correctPose,
+        title: trainingError.error.name,
+        description: trainingError.error.description,
+      }
+      console.log(dialogData)
+      setPoseAnalisisData(dialogData);
+      setErrorDialogOpen(true);
+    } catch (error) {
+      console.error(error);
+      showError("Error al obtener datos de error");
+    }
   };
 
   const onSubmit: SubmitHandler<FormType> = async (formData) => {
