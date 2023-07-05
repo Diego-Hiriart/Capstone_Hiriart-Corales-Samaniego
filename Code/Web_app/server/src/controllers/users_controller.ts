@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import argon2 from "argon2";
 
 import {
   createUser,
@@ -10,6 +11,7 @@ import {
   findUserByEmail,
   findUserById,
   softDeleteUserById,
+  updatePassword,
   updateUserById,
 } from "../data/user";
 import { errorLog } from "../utils/logs";
@@ -153,6 +155,29 @@ export async function postUserTrainer(req: Request, res: Response) {
         });
       }
     }
+    return res.sendStatus(500);
+  }
+}
+
+export async function putPassword(req: Request, res: Response) {
+  try {
+    console.log(req.body.user.password);
+    console.log(req.body.data.currentPassword);
+    const validPassword = await argon2.verify(
+      req.body.user.password,
+      req.body.data.currentPassword
+    );
+    if (!validPassword) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
+    }
+    return res.status(200).json({
+      data: await updatePassword(
+        Number(req.params.id),
+        req.body.data.newPassword
+      ),
+    });
+  } catch (error) {
+    errorLog(error);
     return res.sendStatus(500);
   }
 }

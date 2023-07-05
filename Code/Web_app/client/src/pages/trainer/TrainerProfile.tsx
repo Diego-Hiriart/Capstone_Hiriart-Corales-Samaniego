@@ -20,6 +20,7 @@ import { AxiosError } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { User } from "../../types";
 import AuthContext from "../../contexts/AuthContext";
+import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),
@@ -47,6 +48,8 @@ const TrainerProfile = () => {
   const { pathname } = useLocation();
   const { user } = useContext(AuthContext);
   const trainerID = pathname === "/profile" ? user?.trainer?.trainerID : id;
+  const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] =
+    useState(false);
 
   useEffect(() => {
     const fetchTrainer = async () => {
@@ -101,6 +104,14 @@ const TrainerProfile = () => {
   } = useForm<UpdateTrainerForm>({
     resolver: zodResolver(schema),
   });
+
+  const handleClose = () => {
+    setIsChangePasswordDialogOpen(false);
+  };
+
+  const handleOpen = () => {
+    setIsChangePasswordDialogOpen(true);
+  };
 
   interface IObjectKeys {
     [key: string]: string | undefined | File | null;
@@ -248,6 +259,15 @@ const TrainerProfile = () => {
             )}
           />
           <Button
+            sx={{ mt: 3 }}
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleOpen}
+          >
+            Cambiar Contraseña
+          </Button>
+          <Button
             type="submit"
             fullWidth
             variant="contained"
@@ -257,6 +277,10 @@ const TrainerProfile = () => {
             Guardar Cambios
           </Button>
         </Box>
+        <ChangePasswordDialog
+          open={isChangePasswordDialogOpen}
+          handleClose={handleClose}
+        />
       </Box>
     </Container>
   );

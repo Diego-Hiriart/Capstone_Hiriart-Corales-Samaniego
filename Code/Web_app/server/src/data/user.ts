@@ -196,3 +196,15 @@ export async function updateUserById(id: number, data: User) {
     throw error;
   }
 }
+
+export async function updatePassword(id: number, newPassword: string) {
+  const user = await prisma.user.update({
+    where: {
+      userID: id,
+    },
+    data: {
+      password: newPassword ? await hashPassword(newPassword) : undefined,
+    },
+  });
+  return user && removePasswordInUser(user);
+}

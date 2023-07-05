@@ -9,10 +9,11 @@ import { AxiosError } from "axios";
 import { SignupFormType } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../../services/axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AuthContext from "../../contexts/AuthContext";
 import { Stack } from "@mui/material";
 import { z } from "zod";
+import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),
@@ -23,6 +24,8 @@ const schema = z.object({
 export default function FencerProfileUser() {
   const { showError, showSuccess } = useAlert();
   const { user } = useContext(AuthContext);
+  const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] =
+    useState(false);
 
   const {
     register,
@@ -65,6 +68,14 @@ export default function FencerProfileUser() {
         }
       }
     }
+  };
+
+  const handleClose = () => {
+    setIsChangePasswordDialogOpen(false);
+  };
+
+  const handleOpen = () => {
+    setIsChangePasswordDialogOpen(true);
   };
 
   return (
@@ -116,17 +127,29 @@ export default function FencerProfileUser() {
             error={!!errors.email}
             helperText={errors.email?.message}
           />
-          <Stack direction="row" spacing={2}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              disabled={!!dirtyFields && Object.keys(dirtyFields).length === 0}
-            >
-              Guardar Cambios
-            </Button>
-          </Stack>
+          <Button
+            sx={{ mt: 3 }}
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleOpen}
+          >
+            Cambiar Contraseña
+          </Button>
+          <Button
+            sx={{ mt: 3 }}
+            type="submit"
+            fullWidth
+            variant="contained"
+            disabled={!!dirtyFields && Object.keys(dirtyFields).length === 0}
+          >
+            Guardar Cambios
+          </Button>
         </Box>
+        <ChangePasswordDialog
+          open={isChangePasswordDialogOpen}
+          handleClose={handleClose}
+        />
       </Box>
     </Container>
   );
