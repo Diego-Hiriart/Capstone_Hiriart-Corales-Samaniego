@@ -54,7 +54,7 @@ const savePoseData = (poseData) => {
       currentPosesIndex++;
     } else {
       posesJSON[currentPosesIndex].push(
-        extract2D ? [{ keypoints: keypointsData }] : [keypointsData]
+        extract2D ? { keypoints: keypointsData } : keypointsData
       );
     }
   }
@@ -96,7 +96,7 @@ const downloadPosesJSON = () => {
     alert('downloading poses JSON');
     const a = document.createElement('a');
     const file = new Blob(
-      [JSON.stringify(extract2D ? posesJSON[0] : posesJSON[0])],
+      [JSON.stringify(extract2D ? posesJSON[0] : posesJSON)],
       {
         type: 'text/plain',
       }
