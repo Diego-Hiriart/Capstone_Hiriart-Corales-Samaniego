@@ -37,13 +37,13 @@ function AITrainingDetection() {
     useState<PoseAnalisisData | null>(null);
   const [move, setMove] = useState<Move>([]);
   const beepWarning = useRef(new Audio("/static/audio/beep-warning.mp3"));
-  const [incorrectMoves, setIncorrectMoves] = useState<Move[]>([]);
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalId = useRef<number>();
   const isAnalyzingRef = useRef(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const previousTime = useRef<number>(0);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -105,7 +105,7 @@ function AITrainingDetection() {
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data: { data: "asdf"} });
+        resolve({ data: "asdf" });
       }, duration);
     });
   };
@@ -125,7 +125,6 @@ function AITrainingDetection() {
           move,
           laterality: user?.fencer?.laterality,
         }
-        console.log(body)
         const { data } = await axios.post(url, {data: body});
         // test
         // const { data } = await asyncRequest(1000);
@@ -183,7 +182,7 @@ function AITrainingDetection() {
     stopCapture();
     setMove([]);
     navigate(`/aitrainings`);
-  }, [incorrectMoves]);
+  }, []);
 
   const startCapture = async () => {
     if (webcamRef.current?.paused) {
@@ -270,8 +269,11 @@ function AITrainingDetection() {
             <Button
               css={buttonStyles({ isMobile })}
               variant="contained"
-              onClick={startSetupTimer}
-              disabled={isSetupTimerRunning}
+              onClick={() => {
+                setInitialized(true);
+                startSetupTimer()
+              }}
+              disabled={initialized}
             >
               Iniciar ({setupTimer})
             </Button>

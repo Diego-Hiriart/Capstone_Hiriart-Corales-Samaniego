@@ -2,9 +2,6 @@ import {
   Box,
   Button,
   Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   IconButton,
   List,
   ListItem,
@@ -36,11 +33,11 @@ const MoveErrorList = () => {
   const handleDelete = async (id: number) => {
     try {
       await axios.delete(`${url}/${id}`);
-      showSuccess("Error de entrenamiento eliminado correctamente");
+      showSuccess("Movimiento de entrenamiento eliminado correctamente");
       fetchMoveErrors();
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al eliminar el error de entrenamiento");
+      showError("Hubo un error al eliminar el movimiento de entrenamiento");
     }
   };
 
@@ -52,7 +49,7 @@ const MoveErrorList = () => {
   useEffect(() => {
     fetchMoveErrors().catch((error) => {
       console.error(error);
-      showError("Hubo un error al cargar los errores de entrenamiento");
+      showError("Hubo un error al cargar los movimientos de entrenamiento");
     });
   }, []);
 
@@ -68,7 +65,7 @@ const MoveErrorList = () => {
           }}
         >
           <Typography variant="h1" alignSelf="start">
-            Errores de entrenamiento
+            Movimiento de entrenamiento
           </Typography>
           <Button variant="contained" onClick={handleOpen}>
             Crear nuevo

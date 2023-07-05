@@ -32,7 +32,8 @@ const AITrainingDetail = () => {
   const { user } = useAuth();
   const { id } = useParams();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
-  const [poseAnalisisData, setPoseAnalisisData] = useState<PoseAnalisisData | null>(null);
+  const [poseAnalisisData, setPoseAnalisisData] =
+    useState<PoseAnalisisData | null>(null);
   const [training, setTraining] = useState<AITraining | null>(null);
   const aitrainingURL = `/dashboard/aitraining/${id}`;
   const { showSuccess, showError } = useAlert();
@@ -56,7 +57,7 @@ const AITrainingDetail = () => {
 
   useEffect(() => {
     reset({ feedback: training?.feedback });
-  }, [training])
+  }, [training]);
 
   const handleClose = () => {
     setErrorDialogOpen(false);
@@ -67,7 +68,7 @@ const AITrainingDetail = () => {
     // setPoseAnalisisData(poseAnalisisResponseMock.data);
 
     try {
-      const { data } = await axios.get(`/dashboard/training_error/${id}`)
+      const { data } = await axios.get(`/dashboard/training_error/${id}`);
       const trainingError = data.data;
 
       const dialogData: PoseAnalisisData = {
@@ -75,8 +76,7 @@ const AITrainingDetail = () => {
         correctMove: trainingError.error.correctPose,
         title: trainingError.error.name,
         description: trainingError.error.description,
-      }
-      console.log(dialogData)
+      };
       setPoseAnalisisData(dialogData);
       setErrorDialogOpen(true);
     } catch (error) {
@@ -105,17 +105,12 @@ const AITrainingDetail = () => {
         <Typography>
           Fecha: {String(dayjs(training?.date).format("DD/MM/YYYY"))}
         </Typography>
-        <Typography>Ejercicio: {training?.exercise}</Typography>
         <Typography variant="h5" mt={5}>
           Errores
         </Typography>
         <List>
           {training?.trainingError.map((te) => (
-            <ListItem
-              key={te.trainingErrorID}
-              disablePadding
-              divider
-            >
+            <ListItem key={te.trainingErrorID} disablePadding divider>
               <ListItemButton
                 sx={{ px: 1 }}
                 onClick={() => handleOpen(te.trainingErrorID)}
@@ -150,7 +145,11 @@ const AITrainingDetail = () => {
         )}
       </Box>
       {poseAnalisisData && (
-        <AIErrorDialog open={errorDialogOpen} handleClose={handleClose} poseAnalisisData={poseAnalisisData}/>
+        <AIErrorDialog
+          open={errorDialogOpen}
+          handleClose={handleClose}
+          poseAnalisisData={poseAnalisisData}
+        />
       )}
     </Container>
   );

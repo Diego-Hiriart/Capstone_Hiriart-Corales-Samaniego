@@ -76,7 +76,7 @@ const MoveErrorCreate = ({ open, handleClose, fetchMoveErrors }: Props) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Agregar Error</DialogTitle>
+      <DialogTitle>Agregar Movimiento</DialogTitle>
       <DialogContent>
         <Container component="main" maxWidth="xs">
           <Box
