@@ -18,7 +18,7 @@ const users = [
     password: password,
     names: 'Michael',
     lastNames: 'Scott',
-    roles: ['trainer'],
+    roles: ['trainer', 'admin'],
   },
   {
     email: 'rsanchez@gmail.com',
