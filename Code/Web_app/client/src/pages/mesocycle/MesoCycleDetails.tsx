@@ -15,6 +15,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import MesoCycleAddPlan from "./MesoCycleAddPlan";
 import MesoCycleMicroLoad from "./MesoCycleMicroLoad";
+import MesoCycleAddActivity from "./MesoCycleAddActivity";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
@@ -23,6 +24,7 @@ const MesoCycleDetails = () => {
   const [currentCycle, setCurrentCycle] = useState<MicroCycle>(null!);
   const [cyclePlans, setCyclePlans] = useState<DailyPlanFull[]>(null!);
   const [currentPlan, setCurrentPlan] = useState<DailyPlanFull>(null!);
+  const [openAddActivityType, setOpenAddActivityType] = useState(false);
   const [openAddActivity, setOpenAddActivity] = useState(false);
   const [openLoad, setOpenLoad] = useState(false);
   const [index, setIndex] = useState<number>(0);
@@ -61,6 +63,15 @@ const MesoCycleDetails = () => {
     setCurrentCycle(mesoCycle.microCycle[newI]);
     setCyclePlans(mesoCycle.microCycle[newI].dailyPlan);
     setIndex(newI);
+  };
+
+  const handleOpenAddActivityType = (dailyPlan: DailyPlanFull) => {
+    setCurrentPlan(dailyPlan);
+    setOpenAddActivityType(true);
+  };
+
+  const handleCloseAddActivityType = () => {
+    setOpenAddActivityType(false);
   };
 
   const handleOpenAddActivity = (dailyPlan: DailyPlanFull) => {
@@ -188,16 +199,34 @@ const MesoCycleDetails = () => {
                             <Divider></Divider>
                           </Box>
 
-                          <Typography sx={{ fontWeight: "bold" }}>
+                          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
                             {item.activityType?.name}
                           </Typography>
 
                           <Button
                             sx={{ marginTop: "2rem" }}
                             variant="contained"
+                            onClick={() => handleOpenAddActivityType(item)}
+                          >
+                            Actividad del día
+                          </Button>
+
+                          {item.dailyPlanActivity.map((plan) => (
+                            <Typography
+                              key={plan.activityID}
+                              variant="h4"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              {plan.activity.name}
+                            </Typography>
+                          ))}
+
+                          <Button
+                            sx={{ marginTop: "2rem" }}
+                            variant="contained"
                             onClick={() => handleOpenAddActivity(item)}
                           >
-                            +
+                            + Añadir actividad
                           </Button>
                         </Grid>
                       );
@@ -212,14 +241,20 @@ const MesoCycleDetails = () => {
       </Box>
       <MesoCycleAddPlan
         cycle={currentCycle}
-        handleClose={handleCloseAddActivity}
-        open={openAddActivity}
+        handleClose={handleCloseAddActivityType}
+        open={openAddActivityType}
         dailyPlan={currentPlan}
       />
       <MesoCycleMicroLoad
         cycle={currentCycle}
         handleClose={handleCloseLoad}
         open={openLoad}
+      />
+      <MesoCycleAddActivity
+        cycle={currentCycle}
+        handleClose={handleCloseAddActivity}
+        open={openAddActivity}
+        dailyPlan={currentPlan}
       />
     </Container>
   );

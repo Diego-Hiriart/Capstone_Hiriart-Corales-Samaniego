@@ -57,6 +57,36 @@ export async function updateDailyPlanById(id: number, data: DailyPlan) {
   }
 }
 
+export async function addActivityToDailyPlan(
+  dailyPlanID: number,
+  activityID: number
+) {
+  try {
+    const dailyPlanActivity = await prisma.dailyPlanActivity.create({
+      data: {
+        dailyPlanID: dailyPlanID,
+        activityID: activityID,
+      },
+    });
+
+    const dailyPlan = await prisma.dailyPlan.update({
+      where: {
+        dailyPlanID: dailyPlanID,
+      },
+      data: {
+        dailyPlanActivity: {
+          connect: {
+            dailyPlanActivityID: dailyPlanActivity.dailyPlanActivityID,
+          },
+        },
+      },
+    });
+    return dailyPlan;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function deleteDailyPlanById(id: number) {
   try {
     const dailyPlan = await prisma.dailyPlan.delete({

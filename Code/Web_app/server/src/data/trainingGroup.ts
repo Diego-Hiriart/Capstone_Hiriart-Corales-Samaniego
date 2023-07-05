@@ -79,3 +79,26 @@ export async function deleteTrainingGroupById(id: number) {
     throw error;
   }
 }
+
+export async function deleteCycleById(
+  trainingGroupID: number,
+  mesoCycleID: number
+) {
+  try {
+    const trainingGroup = await prisma.trainingGroup.update({
+      where: {
+        trainingGroupID: trainingGroupID,
+      },
+      data: {
+        mesoCycle: {
+          disconnect: {
+            mesoCycleID: mesoCycleID,
+          },
+        },
+      },
+    });
+    return trainingGroup;
+  } catch (error) {
+    throw error;
+  }
+}
