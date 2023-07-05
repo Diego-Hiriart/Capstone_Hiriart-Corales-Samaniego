@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import {
+  addActivityToDailyPlan,
   createDailyPlan,
   deleteDailyPlanById,
   findAllDailyPlan,
@@ -35,6 +36,20 @@ export async function postDailyPlan(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await createDailyPlan(req.body.data),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function postDailyPlanAddActivity(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await addActivityToDailyPlan(
+        Number(req.params.id),
+        req.body.data.activityID
+      ),
     });
   } catch (error) {
     errorLog(error);

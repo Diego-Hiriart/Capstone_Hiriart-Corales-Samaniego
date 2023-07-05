@@ -21,6 +21,11 @@ export async function findMesoCycleById(id: number) {
                     activity: true,
                   },
                 },
+                dailyPlanActivity: {
+                  include: {
+                    activity: true,
+                  },
+                },
               },
             },
           },

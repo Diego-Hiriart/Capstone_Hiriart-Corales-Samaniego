@@ -34,11 +34,14 @@ export interface SignupForm {
 
 export interface TrainingGroupFull extends TrainingGroup {
   fencer: Fencer[];
-  mesoCycle: MesoCycle[];
+  mesoCycle: MesoCycleFull[];
 }
 
 export interface DailyPlanFull extends DailyPlan {
   activityType: ActivityType;
+  dailyPlanActivity: (DailyPlanActivity & {
+    activity: Activity;
+  })[];
 }
 
 export interface TrainingCombatFull extends TrainingCombat {
@@ -61,12 +64,15 @@ export interface TrainingCombatFull extends TrainingCombat {
 
 export type MesoCycleFull = MesoCycle & {
   microCycle: (MicroCycle & {
-    dailyPlan: (DailyPlanFull & {
+    dailyPlan: (DailyPlan & {
       activityType:
         | (ActivityType & {
             activity: Activity[];
           })
         | null;
+      dailyPlanActivity: (DailyPlanActivity & {
+        activity: Activity;
+      })[];
     })[];
   })[];
 };
