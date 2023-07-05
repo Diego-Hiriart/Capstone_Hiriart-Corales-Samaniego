@@ -93,7 +93,7 @@ const NavBar = () => {
               noWrap
               sx={{ display: { xs: "none", sm: "block" } }}
             >
-              Capstone
+              AECQ
             </Typography>
             <Box sx={{ display: { xs: "none", sm: "block" }, mx: 2 }}>
               {Object.keys(navLinks).map((link) => (
