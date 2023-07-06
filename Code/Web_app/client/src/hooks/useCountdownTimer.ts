@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import sound1 from "/static/audio/beep1.mp3";
+import sound2 from "/static/audio/beep2.mp3";
+
+const beep1 = new Audio(sound1);
+const beep2 = new Audio(sound2);
 
 const useCountdownTimer = (initialTime: number, onTimerEnd: () => void) => {
   const [timer, setTimer] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
-  const [beep1] = useState(new Audio("/static/audio/beep1.mp3"));
-  const [beep2] = useState(new Audio("/static/audio/beep2.mp3"));
   const timerId = useRef<number>();
 
   const startTimer = () => {
@@ -43,7 +46,7 @@ const useCountdownTimer = (initialTime: number, onTimerEnd: () => void) => {
     return () => clearInterval(timerId.current);
   }, [timer, onTimerEnd, isRunning]);
 
-  return [ timer, startTimer, stopTimer, resetTimer, isRunning ] as const;
+  return [timer, startTimer, stopTimer, resetTimer, isRunning] as const;
 };
 
 export default useCountdownTimer;
