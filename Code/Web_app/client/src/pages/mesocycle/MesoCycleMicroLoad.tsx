@@ -144,7 +144,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.speed}
                 {...register("speed")}
-                error={!errors.speed}
+                error={!!errors.speed}
                 helperText={errors.speed?.message}
               />
               <TextField
@@ -157,7 +157,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.coordination}
                 {...register("coordination")}
-                error={!errors.coordination}
+                error={!!errors.coordination}
                 helperText={errors.coordination?.message}
               />
               <TextField
@@ -170,7 +170,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.resistance}
                 {...register("resistance")}
-                error={!errors.resistance}
+                error={!!errors.resistance}
                 helperText={errors.resistance?.message}
               />
               <TextField
@@ -183,7 +183,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.strength}
                 {...register("strength")}
-                error={!errors.strength}
+                error={!!errors.strength}
                 helperText={errors.strength?.message}
               />
 
@@ -198,7 +198,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.individualLessons}
                 {...register("individualLessons")}
-                error={!errors.individualLessons}
+                error={!!errors.individualLessons}
                 helperText={errors.individualLessons?.message}
               />
               <TextField
@@ -211,7 +211,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.groupLessons}
                 {...register("groupLessons")}
-                error={!errors.groupLessons}
+                error={!!errors.groupLessons}
                 helperText={errors.groupLessons?.message}
               />
               <TextField
@@ -224,7 +224,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.pairWork}
                 {...register("pairWork")}
-                error={!errors.pairWork}
+                error={!!errors.pairWork}
                 helperText={errors.pairWork?.message}
               />
               <TextField
@@ -237,7 +237,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.individualWork}
                 {...register("individualWork")}
-                error={!errors.individualWork}
+                error={!!errors.individualWork}
                 helperText={errors.individualWork?.message}
               />
               <TextField
@@ -250,7 +250,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.technicalBasedCombats}
                 {...register("technicalBasedCombats")}
-                error={!errors.technicalBasedCombats}
+                error={!!errors.technicalBasedCombats}
                 helperText={errors.technicalBasedCombats?.message}
               />
 
@@ -265,7 +265,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.trainingTournament}
                 {...register("trainingTournament")}
-                error={!errors.trainingTournament}
+                error={!!errors.trainingTournament}
                 helperText={errors.trainingTournament?.message}
               />
               <TextField
@@ -278,7 +278,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.freeCombat}
                 {...register("freeCombat")}
-                error={!errors.freeCombat}
+                error={!!errors.freeCombat}
                 helperText={errors.freeCombat?.message}
               />
               <TextField
@@ -291,7 +291,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.tacticalIndividualLesson}
                 {...register("tacticalIndividualLesson")}
-                error={!errors.tacticalIndividualLesson}
+                error={!!errors.tacticalIndividualLesson}
                 helperText={errors.tacticalIndividualLesson?.message}
               />
               <TextField
@@ -304,7 +304,7 @@ const MesoCycleMicroLoad = ({
                 InputProps={{ inputProps: { min: min, max: max } }}
                 defaultValue={cycle?.competitionAnalysis}
                 {...register("competitionAnalysis")}
-                error={!errors.competitionAnalysis}
+                error={!!errors.competitionAnalysis}
                 helperText={errors.competitionAnalysis?.message}
               />
 
