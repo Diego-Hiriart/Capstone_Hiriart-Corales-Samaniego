@@ -72,7 +72,7 @@ export const App = () => {
           <Route path="trainer" element={<TrainerList />} />
           <Route path="trainer/create" element={<CreateTrainer />} />
           <Route path="ai-config" element={<AIConfig />} />
-          <Route path="admin/profile" element={<AdminProfile />}/>
+          <Route path="admin/profile" element={<AdminProfile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["admin", "trainer"]} />}>
           <Route path="academy" element={<AcademyOptions />} />
