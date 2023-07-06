@@ -7,7 +7,6 @@ import NavBar from "./components/Navbar/Navbar";
 import Snackbar from "./components/Snackbar";
 import AuthContext from "./contexts/AuthContext";
 import Unauthorized from "./pages/Unauthorized";
-import ActivityList from "./pages/activity/ActivityList";
 import GroupDetails from "./pages/group/GroupDetails";
 import MesoCycleDetails from "./pages/mesocycle/MesoCycleDetails";
 import CreateTrainer from "./pages/trainer/TrainerCreate";
@@ -25,7 +24,6 @@ import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
 import dayjs from "dayjs";
 import Profile from "./pages/Profile";
-import FencerMesoCycleDetails from "./pages/fencer/groups/FencerMesoCycleDetails";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
 import AITrainingDetection from "./pages/fencer/AITrainingDetection";
@@ -92,10 +90,7 @@ export const App = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
-          <Route
-            path="groups/:id/cycles/:id"
-            element={<FencerMesoCycleDetails />}
-          />
+          <Route path="groups/:id/cycles/:id" element={<MesoCycleDetails />} />
           <Route path="groups/:id" element={<GroupDetails />} />
           <Route path="aitrainings/new" element={<AITrainingDetection />} />
           <Route path="feedback" element={<FencerFeedback />} />

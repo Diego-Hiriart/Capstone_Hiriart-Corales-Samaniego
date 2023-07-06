@@ -6,7 +6,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../services/axios";
 import { DailyPlanFull, MesoCycleFull, MicroCycle } from "../../types";
@@ -16,6 +16,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import MesoCycleAddPlan from "./MesoCycleAddPlan";
 import MesoCycleMicroLoad from "./MesoCycleMicroLoad";
 import MesoCycleAddActivity from "./MesoCycleAddActivity";
+import AuthContext from "../../contexts/AuthContext";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
@@ -28,6 +29,7 @@ const MesoCycleDetails = () => {
   const [openAddActivity, setOpenAddActivity] = useState(false);
   const [openLoad, setOpenLoad] = useState(false);
   const [index, setIndex] = useState<number>(0);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchCycle = async () => {
@@ -137,13 +139,15 @@ const MesoCycleDetails = () => {
                 <Button onClick={nextCycle}>
                   <ArrowForwardIosIcon />
                 </Button>
-                <Button
-                  sx={{ marginTop: "2rem" }}
-                  variant="contained"
-                  onClick={() => handleOpenLoad(currentCycle)}
-                >
-                  Cambiar carga
-                </Button>
+                {!user?.roles.includes("fencer") && (
+                  <Button
+                    sx={{ marginTop: "2rem" }}
+                    variant="contained"
+                    onClick={() => handleOpenLoad(currentCycle)}
+                  >
+                    Cambiar carga
+                  </Button>
+                )}
               </Box>
 
               <Box sx={{ flexGrow: 1 }}>
@@ -203,13 +207,15 @@ const MesoCycleDetails = () => {
                             {item.activityType?.name}
                           </Typography>
 
-                          <Button
-                            sx={{ marginTop: "2rem" }}
-                            variant="contained"
-                            onClick={() => handleOpenAddActivityType(item)}
-                          >
-                            Actividad del día
-                          </Button>
+                          {!user?.roles.includes("fencer") && (
+                            <Button
+                              sx={{ marginTop: "2rem" }}
+                              variant="contained"
+                              onClick={() => handleOpenAddActivityType(item)}
+                            >
+                              Actividad del día
+                            </Button>
+                          )}
 
                           {item.dailyPlanActivity.map((plan) => (
                             <Typography
@@ -221,13 +227,15 @@ const MesoCycleDetails = () => {
                             </Typography>
                           ))}
 
-                          <Button
-                            sx={{ marginTop: "2rem" }}
-                            variant="contained"
-                            onClick={() => handleOpenAddActivity(item)}
-                          >
-                            + Añadir actividad
-                          </Button>
+                          {!user?.roles.includes("fencer") && (
+                            <Button
+                              sx={{ marginTop: "2rem" }}
+                              variant="contained"
+                              onClick={() => handleOpenAddActivity(item)}
+                            >
+                              + Añadir actividad
+                            </Button>
+                          )}
                         </Grid>
                       );
                     })}
