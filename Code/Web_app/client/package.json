@@ -20,7 +20,6 @@
     "@mui/material": "^5.12.3",
     "@mui/x-date-pickers": "^6.0.3",
     "@tensorflow-models/pose-detection": "^2.1.0",
-    "@tensorflow/tfjs-backend-wasm": "^4.4.0",
     "@tensorflow/tfjs-backend-webgl": "^4.4.0",
     "@tensorflow/tfjs-backend-webgpu": "0.0.1-alpha.19",
     "@tensorflow/tfjs-converter": "^4.4.0",

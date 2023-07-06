@@ -1,17 +1,14 @@
-import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
-
-tfjsWasm.setWasmPaths(
-  `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`
-);
-
+import '@tensorflow/tfjs-backend-webgl';
+import * as tf from '@tensorflow/tfjs-core';
 import * as poseDetection from "@tensorflow-models/pose-detection";
 
-export const createDetector = () => {
-  const runtime = "mediapipe";
+export const createDetector = async () => {
+  await tf.setBackend("webgpu");
+  const runtime = "tfjs";
   const model = poseDetection.SupportedModels.BlazePose;
   return poseDetection.createDetector(model, {
     runtime: runtime,
     modelType: "full",
-    solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404",
+    solutionPath: "/node_modules/@mediapipe/pose",
   });
 };

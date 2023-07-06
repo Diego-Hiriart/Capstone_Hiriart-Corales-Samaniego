@@ -245,6 +245,7 @@ function AITrainingDetection() {
       )}
       <Box>
         <div className="canvas-wrapper" css={canvasWrapperStyles({ isMobile })}>
+          <Typography>Puedes empezar cuando se muestren los puntos en la imagen de tu cuerpo</Typography>
           <div css={durationTimerStyles}>{durationTimer + "s"}</div>
           <video
             ref={webcamRef}
@@ -273,7 +274,7 @@ function AITrainingDetection() {
                 setInitialized(true);
                 startSetupTimer()
               }}
-              disabled={initialized}
+              disabled={initialized || detector === undefined}
             >
               Iniciar ({setupTimer})
             </Button>
