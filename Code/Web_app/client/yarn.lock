@@ -769,14 +769,6 @@
     rimraf "^3.0.2"
     tslib "2.4.0"
 
-"@tensorflow/tfjs-backend-cpu@4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-4.4.0.tgz#c6700c6285f012d06ba030422850aba68e883b24"
-  integrity sha512-d4eln500/qNym78z9IrUUzF0ITBoJGLrxV8xd92kLVoXhg35Mm+zqUXShjFcrH8joOHOFuST0qZ0TbDDqcPzPA==
-  dependencies:
-    "@types/seedrandom" "^2.4.28"
-    seedrandom "^3.0.5"
-
 "@tensorflow/tfjs-backend-cpu@4.6.0":
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-4.6.0.tgz#c2cb473596d3813143048f08d3fa6f9bf8d28b35"
@@ -795,13 +787,6 @@
     "@types/seedrandom" "^2.4.28"
     "@types/webgl-ext" "0.0.30"
     seedrandom "^3.0.5"
-
-"@tensorflow/tfjs-backend-webgpu@0.0.1-alpha.19":
-  version "0.0.1-alpha.19"
-  resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-backend-webgpu/-/tfjs-backend-webgpu-0.0.1-alpha.19.tgz#a942c81e037002d73a629e0ebe194d71e921260b"
-  integrity sha512-IlmP85AY5IjtSn6O0ScufSsvfbR5tsm3shELfG+5yAHzRltZfwoMsGXGsDWLgx72B+1QghwT1BBj6R4YySbwOA==
-  dependencies:
-    "@tensorflow/tfjs-backend-cpu" "4.4.0"
 
 "@tensorflow/tfjs-converter@^4.4.0":
   version "4.6.0"
