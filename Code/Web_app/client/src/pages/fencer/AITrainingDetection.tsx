@@ -118,7 +118,7 @@ function AITrainingDetection() {
     if (durationTimer === previousTime.current - requestInterval / 1000) {
       handlePause();
       const poseAnalysis = async () => {
-        const url = "/dashboard/analyze-poses";
+        const url = "/dashboard/analyze_poses/";
         const body = {
           sessionId: state.sessionId,
           exercise: state.exercise,
