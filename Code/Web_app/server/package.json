@@ -45,7 +45,7 @@
     "env-win": "copy .env.example .env",
     "env-lin": "cp .env.example .env",
     "setup": "yarn install && prisma generate && yarn migrate",
-    "db-reset": "prisma db push --force-reset && prisma db seed"
+    "db-reset": "prisma db push --force-reset && yarn migrate"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

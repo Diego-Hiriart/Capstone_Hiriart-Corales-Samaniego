@@ -19,6 +19,8 @@ const FencerGroupList = () => {
 
   useEffect(() => {
     const fetchGroup = async () => {
+      if (id === "0") return;
+
       const { data } = await axios.get("/dashboard/training_group/" + id);
 
       setGroup(data.data);
@@ -27,7 +29,7 @@ const FencerGroupList = () => {
     fetchGroup();
   }, []);
 
-  return (
+  return id !== "0" ? (
     <Container component="main" maxWidth="sm">
       <Box py={{ xs: 2, lg: 4 }}>
         <Box
@@ -59,6 +61,10 @@ const FencerGroupList = () => {
         {/* TODO: Add pagination */}
       </Box>
     </Container>
+  ) : (
+    <Typography variant="h1" alignSelf="start">
+      No perteneces a ningun grupo
+    </Typography>
   );
 };
 
