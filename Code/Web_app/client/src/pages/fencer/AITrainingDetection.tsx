@@ -22,12 +22,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { DetectedPose, Move, PoseAnalisisData } from "../../types";
 import soundWarning from "/static/audio/beep-warning.mp3";
+import { useAlert } from "../../hooks/useAlert";
 
 const beepWarning = new Audio(soundWarning);
 
 function AITrainingDetection() {
   const countdown = 5; // seconds before starting detection
-  const detectionInterval = 100; // milliseconds between each pose detection
+  const detectionInterval = 50; // milliseconds between each pose detection
   const requestInterval = 3000; // milliseconds between each request to backend (aka move duration)
 
   const { user } = useAuth();
@@ -45,7 +46,8 @@ function AITrainingDetection() {
   const isAnalyzingRef = useRef(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const previousTime = useRef<number>(0);
-  const [initialized, setInitialized] = useState(false);
+  const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(false);
+  const { showError } = useAlert();
 
   useEffect(() => {
     const init = async () => {
@@ -107,7 +109,7 @@ function AITrainingDetection() {
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data: "asdf" });
+        resolve({ data: {data: "asdf"} });
       }, duration);
     });
   };
@@ -135,6 +137,7 @@ function AITrainingDetection() {
           setErrorDialogOpen(true);
           beepWarning.play();
           setMove([]);
+          setIsStartButtonDisabled(false);
           return;
         }
         setMove([]);
@@ -143,7 +146,7 @@ function AITrainingDetection() {
       // Send array of poses to backend
       poseAnalysis().catch((error) => {
         console.error("Error sending poses to backend", error);
-        handleStop();
+        showError("Hubo un error al analizar la pose")
       });
     }
   }, [move]);
@@ -276,10 +279,10 @@ function AITrainingDetection() {
               css={buttonStyles({ isMobile })}
               variant="contained"
               onClick={() => {
-                setInitialized(true);
+                setIsStartButtonDisabled(true);
                 startSetupTimer();
               }}
-              disabled={initialized || detector === undefined}
+              disabled={isStartButtonDisabled}
             >
               Iniciar ({setupTimer})
             </Button>
