@@ -28,6 +28,12 @@ export default function FencerInvite({
     watch,
   } = useForm<FencerInviteForm>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      isGuest: false,
+      names: "",
+      lastNames: "",
+      email: "",
+    }
   });
 
   const onSubmit: SubmitHandler<FencerInviteForm> = async (formData) => {
@@ -72,6 +78,9 @@ export default function FencerInvite({
             label="Es Invitado (coming soon)"
             disabled={true}
           />
+          {errors.isGuest && (
+            <div style={{ color: "red" }}>{errors.isGuest.message}</div>
+          )}
           <TextField
             required
             fullWidth
