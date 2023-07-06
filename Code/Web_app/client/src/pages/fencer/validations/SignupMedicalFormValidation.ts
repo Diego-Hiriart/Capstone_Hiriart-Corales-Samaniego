@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 const physicalActivityMaxLength = 100;
-const personalMedicalDetailsMaxLength = 100;
-const familyOtherDetailsMaxLength = 100;
+const medicalDetailsMaxLength = 100;
+const personalOtherDetailsMaxLength = 100;
 
 export const schema = z
   .object({
@@ -14,49 +14,49 @@ export const schema = z
       })
       .nullish()
       .transform((data) => (data === "" ? null : data)),
-    personalHeartDisease: z.boolean(),
-    personalHeartAttack: z.boolean(),
-    personalDiabetes: z.boolean(),
-    personalCholesterol: z.boolean(),
-    personalHypertension: z.boolean(),
-    personalHypotension: z.boolean(),
-    familyBoneDisease: z.boolean(),
-    familyAllergies: z.boolean(),
-    familyAsthma: z.boolean(),
-    familyPregnancy: z.boolean(),
-    familyHospitalization: z.boolean(),
-    familyDrugs: z.boolean(),
+    familyHeartDisease: z.boolean(),
+    familyHeartAttack: z.boolean(),
+    familyDiabetes: z.boolean(),
+    familyCholesterol: z.boolean(),
     familyHypertension: z.boolean(),
     familyHypotension: z.boolean(),
-    familyPsychological: z.boolean(),
-    familyOther: z.boolean(),
-    familyOtherDetails: z
+    personalBoneDisease: z.boolean(),
+    personalAllergies: z.boolean(),
+    personalAsthma: z.boolean(),
+    personalPregnancy: z.boolean(),
+    personalHospitalization: z.boolean(),
+    personalDrugs: z.boolean(),
+    personalHypertension: z.boolean(),
+    personalHypotension: z.boolean(),
+    personalPsychological: z.boolean(),
+    personalOther: z.boolean(),
+    personalOtherDetails: z
       .string()
       .trim()
-      .max(familyOtherDetailsMaxLength, {
-        message: `La longitud del texto debe ser menor a ${familyOtherDetailsMaxLength} caracteres`,
+      .max(personalOtherDetailsMaxLength, {
+        message: `La longitud del texto debe ser menor a ${personalOtherDetailsMaxLength} caracteres`,
       })
       .nullish(),
-    personalMedicalDetails: z
+    medicalDetails: z
       .string()
       .trim()
-      .max(personalMedicalDetailsMaxLength, {
-        message: `La longitud del texto debe ser menor a ${personalMedicalDetailsMaxLength} caracteres`,
+      .max(medicalDetailsMaxLength, {
+        message: `La longitud del texto debe ser menor a ${medicalDetailsMaxLength} caracteres`,
       })
       .nullish()
       .transform((data) => (data === "" ? null : data)),
   })
   .refine(
     (data) => {
-      return data.familyOther && !data.familyOtherDetails ? false : true;
+      return data.personalOther && !data.personalOtherDetails ? false : true;
     },
-    { message: "Campo requerido", path: ["familyOtherDetails"] }
+    { message: "Campo requerido", path: ["personalOtherDetails"] }
   )
   .transform((data) => {
-    if (!data.familyOther) {
-      data.familyOtherDetails = null;
+    if (!data.personalOther) {
+      data.personalOtherDetails = null;
     } else {
-      data.familyOtherDetails = data.familyOtherDetails || null;
+      data.personalOtherDetails = data.personalOtherDetails || null;
     }
     return data;
   });
