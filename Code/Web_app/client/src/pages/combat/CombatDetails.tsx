@@ -65,7 +65,8 @@ const CombatDetails = () => {
             Detalles del combate
           </Typography>
 
-          {user?.roles.includes("trainer") && (
+          {(user?.roles.includes("trainer") ||
+            user?.roles.includes("admin")) && (
             <>
               <Button variant="contained" onClick={handleOpen}>
                 Editar combate

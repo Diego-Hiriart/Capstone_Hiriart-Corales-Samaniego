@@ -56,7 +56,8 @@ const TrainerCombat = () => {
             Combates
           </Typography>
 
-          {user?.roles.includes("trainer") && (
+          {(user?.roles.includes("trainer") ||
+            user?.roles.includes("admin")) && (
             <Button variant="contained" onClick={handleOpen}>
               + Agregar combate
             </Button>
