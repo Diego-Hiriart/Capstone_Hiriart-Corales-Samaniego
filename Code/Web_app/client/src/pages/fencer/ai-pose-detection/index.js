@@ -10,6 +10,6 @@ export const createDetector = () => {
   return poseDetection.createDetector(model, {
     runtime: runtime,
     modelType: "full",
-    solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404",
+    solutionPath: "/node_modules/@mediapipe/pose",
   });
 };
