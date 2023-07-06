@@ -1,6 +1,8 @@
 import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
-tfjsWasm.setWasmPaths(".node_modules/@tensorflow/tfjs-backend-wasm/dist/");
+tfjsWasm.setWasmPaths(
+  `https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@${tfjsWasm.version_wasm}/dist/`
+);
 
 import * as poseDetection from "@tensorflow-models/pose-detection";
 
@@ -10,6 +12,6 @@ export const createDetector = () => {
   return poseDetection.createDetector(model, {
     runtime: runtime,
     modelType: "full",
-    solutionPath: "/node_modules/@mediapipe/pose",
+    solutionPath: "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404",
   });
 };
