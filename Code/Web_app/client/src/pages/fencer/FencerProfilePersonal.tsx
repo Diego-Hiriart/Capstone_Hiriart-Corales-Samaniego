@@ -201,7 +201,6 @@ const FencerProfilePersonal = () => {
             )}
           />
           <TextField
-            required
             fullWidth
             margin="normal"
             id="school"

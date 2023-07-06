@@ -42,36 +42,36 @@ const SignupMedicalForm = () => {
 
   const onSubmit: SubmitHandler<SignupMedicalFormType> = async (formData) => {
     try {
-      const medicalPersonal = {
-        personalHeartDisease: formData.personalHeartDisease,
-        personalHeartAttack: formData.personalHeartAttack,
-        personalDiabetes: formData.personalDiabetes,
-        personalCholesterol: formData.personalCholesterol,
-        personalHypertension: formData.personalHypertension,
-        personalHypotension: formData.personalHypotension,
-      };
       const medicalFamily = {
-        familyBoneDisease: formData.familyBoneDisease,
-        familyAllergies: formData.familyAllergies,
-        familyAsthma: formData.familyAsthma,
-        familyPregnancy: formData.familyPregnancy,
-        familyHospitalization: formData.familyHospitalization,
-        familyDrugs: formData.familyDrugs,
+        familyHeartDisease: formData.familyHeartDisease,
+        familyHeartAttack: formData.familyHeartAttack,
+        familyDiabetes: formData.familyDiabetes,
+        familyCholesterol: formData.familyCholesterol,
         familyHypertension: formData.familyHypertension,
         familyHypotension: formData.familyHypotension,
-        familyPsychological: formData.familyPsychological,
-        familyOther: formData.familyOther,
-        familyOtherDetails: formData.familyOtherDetails,
+      };
+      const medicalPersonal = {
+        personalBoneDisease: formData.personalBoneDisease,
+        personalAllergies: formData.personalAllergies,
+        personalAsthma: formData.personalAsthma,
+        personalPregnancy: formData.personalPregnancy,
+        personalHospitalization: formData.personalHospitalization,
+        personalDrugs: formData.personalDrugs,
+        personalHypertension: formData.personalHypertension,
+        personalHypotension: formData.personalHypotension,
+        personalPsychological: formData.personalPsychological,
+        personalOther: formData.personalOther,
+        personalOtherDetails: formData.personalOtherDetails,
       };
       const data = {
         ...formData,
         medicalPersonal: JSON.stringify(medicalPersonal),
         medicalFamily: JSON.stringify(medicalFamily),
       };
-      Object.keys(medicalPersonal).forEach((key) => {
+      Object.keys(medicalFamily).forEach((key) => {
         delete data[key as keyof SignupMedicalFormType];
       });
-      Object.keys(medicalFamily).forEach((key) => {
+      Object.keys(medicalPersonal).forEach((key) => {
         delete data[key as keyof SignupMedicalFormType];
       });
       await axios.put(`/dashboard/fencer/${user?.fencer?.fencerID}`, { data: data });
@@ -112,81 +112,30 @@ const SignupMedicalForm = () => {
             helperText={errors.physicalActivity?.message}
           />
           <Typography mt={3} variant="h6">
-            Antecedentes medicos personales
+            Antecedentes medicos familiares
           </Typography>
           <Stack>
             <ControlledCheckbox
               label="Enfermedad cardiaca"
-              name="personalHeartDisease"
+              name="familyHeartDisease"
               control={control}
               defaultValue={false}
             />
             <ControlledCheckbox
               label="Infarto"
-              name="personalHeartAttack"
+              name="familyHeartAttack"
               control={control}
               defaultValue={false}
             />
             <ControlledCheckbox
               label="Diabetes"
-              name="personalDiabetes"
+              name="familyDiabetes"
               control={control}
               defaultValue={false}
             />
             <ControlledCheckbox
               label="Problemas de colesterol"
-              name="personalCholesterol"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Hipertensión"
-              name="personalHypertension"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Hipotensión"
-              name="personalHypotension"
-              control={control}
-              defaultValue={false}
-            />
-            <Typography mt={3} variant="h6">
-              Antecedentes medicos familiares
-            </Typography>
-            <ControlledCheckbox
-              label="Problemas de articulaciones o huesos"
-              name="familyBoneDisease"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Alergias"
-              name="familyAllergies"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Asma"
-              name="familyAsthma"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Embarazo"
-              name="familyPregnancy"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Hospitalización en los últimos 2 meses"
-              name="familyHospitalization"
-              control={control}
-              defaultValue={false}
-            />
-            <ControlledCheckbox
-              label="Medicamentos que toma de forma regular"
-              name="familyDrugs"
+              name="familyCholesterol"
               control={control}
               defaultValue={false}
             />
@@ -202,29 +151,80 @@ const SignupMedicalForm = () => {
               control={control}
               defaultValue={false}
             />
+            <Typography mt={3} variant="h6">
+              Antecedentes medicos personales
+            </Typography>
+            <ControlledCheckbox
+              label="Problemas de articulaciones o huesos"
+              name="personalBoneDisease"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Alergias"
+              name="personalAllergies"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Asma"
+              name="personalAsthma"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Embarazo"
+              name="personalPregnancy"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hospitalización en los últimos 2 meses"
+              name="personalHospitalization"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Medicamentos que toma de forma regular"
+              name="personalDrugs"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hipertensión"
+              name="personalHypertension"
+              control={control}
+              defaultValue={false}
+            />
+            <ControlledCheckbox
+              label="Hipotensión"
+              name="personalHypotension"
+              control={control}
+              defaultValue={false}
+            />
             <ControlledCheckbox
               label="Apoyo psicológico"
-              name="familyPsychological"
+              name="personalPsychological"
               control={control}
               defaultValue={false}
             />
             <ControlledCheckbox
               label="Otro"
-              name="familyOther"
+              name="personalOther"
               control={control}
               defaultValue={false}
             />
             <TextField
-              disabled={!watch("familyOther")}
+              disabled={!watch("personalOther")}
               fullWidth
               margin="normal"
               multiline
               rows={4}
               label="Especificar otro"
-              id="familyOtherDetails"
-              {...register("familyOtherDetails")}
-              error={!!errors.familyOtherDetails}
-              helperText={errors.familyOtherDetails?.message}
+              id="personalOtherDetails"
+              {...register("personalOtherDetails")}
+              error={!!errors.personalOtherDetails}
+              helperText={errors.personalOtherDetails?.message}
             />
             <Typography>
               Si marcaste alguna condicion anterior por favor especificar
@@ -235,10 +235,10 @@ const SignupMedicalForm = () => {
               multiline
               rows={4}
               // TODO: Change label
-              id="personalMedicalDetails"
-              {...register("personalMedicalDetails")}
-              error={!!errors.personalMedicalDetails}
-              helperText={errors.personalMedicalDetails?.message}
+              id="medicalDetails"
+              {...register("medicalDetails")}
+              error={!!errors.medicalDetails}
+              helperText={errors.medicalDetails?.message}
             />
             <Stack direction="row" spacing={2} mt={3}>
               <Button type="submit" fullWidth variant="contained" disabled={!isDirty}>
