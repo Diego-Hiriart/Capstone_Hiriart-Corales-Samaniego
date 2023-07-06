@@ -67,7 +67,7 @@ export const schema = z
       .refine((input) => input !== null, {
         message: "Campo requerido",
       }),
-    school: z.string().trim(),
+    school: z.string().trim().nonempty({ message: "Campo requerido" }).trim(),
     legalGuardian: z.string().trim().nonempty({ message: "Campo requerido" }),
     legalGuardianPhone: z
       .string()
