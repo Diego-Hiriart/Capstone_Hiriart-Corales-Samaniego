@@ -28,7 +28,7 @@ const beepWarning = new Audio(soundWarning);
 
 function AITrainingDetection() {
   const countdown = 5; // seconds before starting detection
-  const detectionInterval = 50; // milliseconds between each pose detection
+  const detectionInterval = 66; // milliseconds between each pose detection
   const requestInterval = 3000; // milliseconds between each request to backend (aka move duration)
 
   const { user } = useAuth();
