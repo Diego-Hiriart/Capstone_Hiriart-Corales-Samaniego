@@ -26,6 +26,6 @@ jobs:
       # - name: Run tests
       # run: yarn test
       # working-directory: Code/Web_app/client
-      - name: build frontend
-        run: yarn build
-        working-directory: Code/Web_app/client
+      # - name: build frontend
+      #   run: yarn build
+      #   working-directory: Code/Web_app/client
