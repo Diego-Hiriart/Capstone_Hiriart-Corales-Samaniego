@@ -94,6 +94,7 @@ function AITrainingDetection() {
     // Detect Pose
     const pose = await detector.estimatePoses(webcamRef.current, {
       maxPoses: 1,
+      flipHorizontal: false,
     });
 
     // Draw Pose
@@ -140,14 +141,14 @@ function AITrainingDetection() {
           setIsStartButtonDisabled(false);
           return;
         }
-        setMove([]);
-        startSetupTimer();
       };
       // Send array of poses to backend
       poseAnalysis().catch((error) => {
         console.error("Error sending poses to backend", error);
         showError("Hubo un error al analizar la pose")
       });
+      setMove([]);
+      startSetupTimer();
     }
   }, [move]);
 
