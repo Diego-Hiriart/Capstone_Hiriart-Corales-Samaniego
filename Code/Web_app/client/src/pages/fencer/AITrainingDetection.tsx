@@ -21,6 +21,9 @@ import { poseAnalisisResponseMock } from "./poseErrorMock";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { DetectedPose, Move, PoseAnalisisData } from "../../types";
+import soundWarning from "/static/audio/beep-warning.mp3";
+
+const beepWarning = new Audio(soundWarning);
 
 function AITrainingDetection() {
   const countdown = 5; // seconds before starting detection
@@ -36,7 +39,6 @@ function AITrainingDetection() {
   const [poseAnalisisData, setPoseAnalisisData] =
     useState<PoseAnalisisData | null>(null);
   const [move, setMove] = useState<Move>([]);
-  const beepWarning = useRef(new Audio("/static/audio/beep-warning.mp3"));
   const webcamRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const intervalId = useRef<number>();
@@ -124,14 +126,14 @@ function AITrainingDetection() {
           exercise: state.exercise,
           move,
           laterality: user?.fencer?.laterality,
-        }
-        const { data } = await axios.post(url, {data: body});
+        };
+        const { data } = await axios.post(url, { data: body });
         // test
         // const { data } = await asyncRequest(1000);
         if (data.data) {
           setPoseAnalisisData(data.data);
           setErrorDialogOpen(true);
-          beepWarning.current.play();
+          beepWarning.play();
           setMove([]);
           return;
         }
@@ -245,7 +247,10 @@ function AITrainingDetection() {
       )}
       <Box>
         <div className="canvas-wrapper" css={canvasWrapperStyles({ isMobile })}>
-          <Typography>Puedes empezar cuando se muestren los puntos en la imagen de tu cuerpo</Typography>
+          <Typography>
+            Puedes empezar cuando se muestren los puntos en la imagen de tu
+            cuerpo
+          </Typography>
           <div css={durationTimerStyles}>{durationTimer + "s"}</div>
           <video
             ref={webcamRef}
@@ -272,7 +277,7 @@ function AITrainingDetection() {
               variant="contained"
               onClick={() => {
                 setInitialized(true);
-                startSetupTimer()
+                startSetupTimer();
               }}
               disabled={initialized || detector === undefined}
             >
@@ -318,7 +323,7 @@ const buttonWrapperStyles = css`
   bottom: -60px;
   transform: translateX(-50%);
   z-index: 10;
-`
+`;
 
 const buttonStyles = ({ isMobile }: { isMobile: boolean }) => css`
   width: 8rem;
