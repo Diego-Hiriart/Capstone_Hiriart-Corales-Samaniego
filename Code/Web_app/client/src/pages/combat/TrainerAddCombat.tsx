@@ -33,7 +33,6 @@ const schema = z.object({
   fencer2Name: z.string(),
   fencer1Score: z.string(),
   fencer2Score: z.string(),
-  winner: z.string(),
 });
 
 type TrainerAddCombatForm = z.infer<typeof schema>;
@@ -76,7 +75,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
       reset({
         fencer1Score: machineData.leftScore.toString(),
         fencer2Score: machineData.rightScore.toString(),
-        winner: setScore(machineData),
       });
 
       setSelectedWinner(setScore(machineData));
@@ -264,7 +262,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     value={selectedWinner}
-                    {...register("winner")}
                   >
                     <FormControlLabel
                       value={"left"}
