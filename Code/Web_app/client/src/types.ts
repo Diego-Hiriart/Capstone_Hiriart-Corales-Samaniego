@@ -396,6 +396,8 @@ export type Error = {
   errorID: number;
   name: string;
   description: string;
+  correctPose: string;
+  systemName: string;
 };
 
 export type DetectedPose = Pose[];

@@ -9,7 +9,7 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { AITraining, Move, PoseAnalisisData } from "../../types";
+import { AITraining, Move, PoseAnalisisData, TrainingError } from "../../types";
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import dayjs from "dayjs";
@@ -69,11 +69,11 @@ const AITrainingDetail = () => {
 
     try {
       const { data } = await axios.get(`/dashboard/training_error/${id}`);
-      const trainingError = data.data;
+      const trainingError = data.data as TrainingError;
 
       const dialogData: PoseAnalisisData = {
-        incorrectMove: trainingError.poseData,
-        correctMove: trainingError.error.correctPose,
+        incorrectMove: JSON.parse(trainingError.poseData) as Move,
+        correctMove: JSON.parse(trainingError.error.correctPose) as Move,
         title: trainingError.error.name,
         description: trainingError.error.description,
       };
