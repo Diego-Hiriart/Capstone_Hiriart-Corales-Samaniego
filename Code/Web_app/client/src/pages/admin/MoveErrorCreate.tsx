@@ -67,10 +67,10 @@ const MoveErrorCreate = ({ open, handleClose, fetchMoveErrors }: Props) => {
       };
       await axios.post(url, { data: data });
       fetchMoveErrors();
-      showSuccess("Error de entrenamiento creado con éxito");
+      showSuccess("Movimiento de entrenamiento creado con éxito");
       handleClose();
     } catch (error) {
-      showError("Hubo un error al crear el error de entrenamiento");
+      showError("Hubo un error al crear el movimiento de entrenamiento");
     }
   };
 

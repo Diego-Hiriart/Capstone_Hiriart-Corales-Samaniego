@@ -16,9 +16,9 @@ const users = [
   {
     email: "mscott@gmail.com",
     password: password,
-    names: "Michael",
-    lastNames: "Scott",
-    roles: ["trainer", "admin"],
+    names: 'Michael',
+    lastNames: 'Scott',
+    roles: ['trainer'],
   },
   {
     email: "rsanchez@gmail.com",
@@ -40,6 +40,13 @@ const users = [
     names: "Luis",
     lastNames: "Corales",
     roles: ["admin"],
+  },
+  {
+    email: 'tkamado@gmail.com',
+    password: password,
+    names: 'Tanjiro',
+    lastNames: 'Kamado',
+    roles: ['trainer'],
   },
 ];
 
@@ -109,6 +116,11 @@ const trainers = [
     userID: 2,
     experience: "Too much",
     weapon: "Sable",
+  },
+  {
+    userID: 6,
+    experience: 'Too much',
+    weapon: 'Espada',
   },
 ];
 

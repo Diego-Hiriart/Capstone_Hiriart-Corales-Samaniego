@@ -21,6 +21,8 @@ import { useContext, useEffect, useState } from "react";
 import { User } from "../../types";
 import AuthContext from "../../contexts/AuthContext";
 import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
+import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
+import useAuth from "../../hooks/useAuth";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),
@@ -28,6 +30,7 @@ const schema = z.object({
   email: z.string().email({ message: "Email inválido" }),
   experience: z.string().optional(),
   weapon: z.string().optional(),
+  isAdmin: z.boolean().optional(),
 });
 
 type UpdateTrainerForm = z.infer<typeof schema>;
@@ -46,7 +49,7 @@ const TrainerProfile = () => {
   // const [previewImageURL, setPreviewImageURL] = useState<string | null>(null);
   const [trainer, setTrainer] = useState<TrainerAPIResponse | null>(null);
   const { pathname } = useLocation();
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth() as { user: User };
   const trainerID = pathname === "/profile" ? user?.trainer?.trainerID : id;
   const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] =
     useState(false);
@@ -54,7 +57,7 @@ const TrainerProfile = () => {
   useEffect(() => {
     const fetchTrainer = async () => {
       const { data } = await axios.get(`/dashboard/trainer/${trainerID}`);
-      setTrainer(data.data);
+      setTrainer(data.data as TrainerAPIResponse);
       //replace when backend is ready:
       // setPreviewImageURL(data.data.pictureURL);
     };
@@ -69,6 +72,7 @@ const TrainerProfile = () => {
         email: user?.email,
         experience: user?.trainer?.experience,
         weapon: user?.trainer?.weapon,
+        isAdmin: user?.roles?.includes("admin"),
       });
     } else {
       reset({
@@ -77,6 +81,7 @@ const TrainerProfile = () => {
         email: trainer?.user.email,
         experience: trainer?.experience,
         weapon: trainer?.weapon,
+        isAdmin: trainer?.user.roles?.includes("admin"),
       });
     }
   }, [trainer]);
@@ -114,7 +119,7 @@ const TrainerProfile = () => {
   };
 
   interface IObjectKeys {
-    [key: string]: string | undefined | File | null;
+    [key: string]: any;
   }
 
   const onSubmit: SubmitHandler<UpdateTrainerForm> = async (formData) => {
@@ -135,7 +140,21 @@ const TrainerProfile = () => {
       // if no fields were changed, don't send the request
       if (Object.keys(updatedData).length === 0) return;
 
-      await axios.put(`/dashboard/trainer/${trainerID}`, { data: updatedData });
+      const url = `/dashboard/trainer/${trainerID}`;
+      let body = { data: updatedData };
+
+      // if an admin is updating a trainer, send roles too
+      if (user?.roles?.includes("admin") && updatedData.isAdmin !== undefined) {
+        if (!trainer?.user.roles) return;
+        const roles = [...trainer.user.roles];
+        if (formData.isAdmin && !roles.includes("admin")) {
+          roles.push("admin");
+        } else if (!formData.isAdmin && roles.includes("admin")) {
+          roles.splice(roles.indexOf("admin"), 1);
+        }
+        body = { data: { ...updatedData, roles } };
+      }
+      await axios.put(url, body);
       showSuccess("Entrenador actualizado exitosamente");
       reset({}, { keepValues: true });
       // setImage(null);
@@ -258,6 +277,14 @@ const TrainerProfile = () => {
               </FormControl>
             )}
           />
+          {user?.roles?.includes("admin") && (
+            <ControlledCheckbox
+              label="Es Admin"
+              name="isAdmin"
+              control={control}
+              defaultValue={!!trainer?.user.roles?.includes("admin")}
+            />
+          )}
           <Button
             sx={{ mt: 3 }}
             type="submit"
