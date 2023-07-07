@@ -57,7 +57,7 @@ const TrainerProfile = () => {
   useEffect(() => {
     const fetchTrainer = async () => {
       const { data } = await axios.get(`/dashboard/trainer/${trainerID}`);
-      setTrainer(data.data);
+      setTrainer(data.data as TrainerAPIResponse);
       //replace when backend is ready:
       // setPreviewImageURL(data.data.pictureURL);
     };
@@ -145,7 +145,8 @@ const TrainerProfile = () => {
 
       // if an admin is updating a trainer, send roles too
       if (user?.roles?.includes("admin") && updatedData.isAdmin !== undefined) {
-        const roles = [...trainer?.user.roles!];
+        if (!trainer?.user.roles) return;
+        const roles = [...trainer.user.roles];
         if (formData.isAdmin && !roles.includes("admin")) {
           roles.push("admin");
         } else if (!formData.isAdmin && roles.includes("admin")) {
