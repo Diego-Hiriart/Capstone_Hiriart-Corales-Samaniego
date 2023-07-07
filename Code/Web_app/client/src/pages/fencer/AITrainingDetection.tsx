@@ -146,14 +146,14 @@ function AITrainingDetection() {
           setIsStartButtonDisabled(false);
           return;
         }
+        setMove([]);
+        startSetupTimer();
       };
       // Send array of poses to backend
       poseAnalysis().catch((error) => {
         console.error("Error during pose analyisis:", error);
         showError("Hubo un error al analizar la pose");
       });
-      setMove([]);
-      startSetupTimer();
     }
   }, [move]);
 
