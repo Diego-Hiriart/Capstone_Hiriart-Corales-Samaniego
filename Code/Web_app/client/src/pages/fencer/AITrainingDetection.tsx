@@ -110,7 +110,7 @@ function AITrainingDetection() {
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data: {data: "asdf"} });
+        resolve({ data: { data: "asdf" } });
       }, duration);
     });
   };
@@ -130,25 +130,30 @@ function AITrainingDetection() {
           move,
           laterality: user?.fencer?.laterality,
         };
+        // TODO: It seems incorrectMove is not necessary in the response. Consider removing it.
         const { data } = await axios.post(url, { data: body });
         // test
         // const { data } = await asyncRequest(1000);
         if (data.data) {
-          setPoseAnalisisData(data.data);
+          const poseAnalysisData = {
+            ...data.data,
+            correctMove: JSON.parse(data.data.correctMove),
+          };
+          setPoseAnalisisData(poseAnalysisData);
           setErrorDialogOpen(true);
           beepWarning.play();
           setMove([]);
           setIsStartButtonDisabled(false);
           return;
         }
+        setMove([]);
+        startSetupTimer();
       };
       // Send array of poses to backend
       poseAnalysis().catch((error) => {
-        console.error("Error sending poses to backend", error);
-        showError("Hubo un error al analizar la pose")
+        console.error("Error during pose analyisis:", error);
+        showError("Hubo un error al analizar la pose");
       });
-      setMove([]);
-      startSetupTimer();
     }
   }, [move]);
 
