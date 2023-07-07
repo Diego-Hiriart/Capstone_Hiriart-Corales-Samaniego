@@ -11,7 +11,12 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../services/axios";
-import { DailyPlanFull, MesoCycleFull, MicroCycle } from "../../types";
+import {
+  Activity,
+  DailyPlanFull,
+  MesoCycleFull,
+  MicroCycle,
+} from "../../types";
 import { formatDate } from "../../utils/formatDate";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -19,6 +24,7 @@ import MesoCycleAddPlan from "./MesoCycleAddPlan";
 import MesoCycleMicroLoad from "./MesoCycleMicroLoad";
 import MesoCycleAddActivity from "./MesoCycleAddActivity";
 import AuthContext from "../../contexts/AuthContext";
+import MesoCycleActivityDetails from "./MesoCycleActivityDetails";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
@@ -29,6 +35,9 @@ const MesoCycleDetails = () => {
   const [openAddActivityType, setOpenAddActivityType] = useState(false);
   const [openAddActivity, setOpenAddActivity] = useState(false);
   const [openLoad, setOpenLoad] = useState(false);
+  const [openActivity, setOpenActivity] = useState(false);
+  const [activity, setActivity] = useState<Activity>(null!);
+  const [dailyPlanActivityID, setDailyPlanActivityID] = useState<number>(null!);
   const [index, setIndex] = useState<number>(0);
   const { user } = useContext(AuthContext);
 
@@ -92,6 +101,19 @@ const MesoCycleDetails = () => {
 
   const handleCloseLoad = () => {
     setOpenLoad(false);
+  };
+
+  const handleOpenActivity = (
+    activity: Activity,
+    dailyPlanActivityID: number
+  ) => {
+    setDailyPlanActivityID(dailyPlanActivityID);
+    setActivity(activity);
+    setOpenActivity(true);
+  };
+
+  const handleCloseActivity = () => {
+    setOpenActivity(false);
   };
 
   const hasSunday = (startDate: Date, endDate: Date) => {
@@ -228,7 +250,12 @@ const MesoCycleDetails = () => {
                                 justifyContent: "center",
                                 textAlign: "center",
                               }}
-                              onClick={undefined}
+                              onClick={() =>
+                                handleOpenActivity(
+                                  plan.activity,
+                                  plan.dailyPlanActivityID
+                                )
+                              }
                             >
                               <Typography
                                 sx={{
@@ -278,6 +305,12 @@ const MesoCycleDetails = () => {
         handleClose={handleCloseAddActivity}
         open={openAddActivity}
         dailyPlan={currentPlan}
+      />
+      <MesoCycleActivityDetails
+        activity={activity}
+        handleClose={handleCloseActivity}
+        open={openActivity}
+        dailyPlanActivityID={dailyPlanActivityID}
       />
     </Container>
   );
