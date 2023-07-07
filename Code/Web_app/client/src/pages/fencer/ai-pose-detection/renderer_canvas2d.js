@@ -86,7 +86,6 @@ export class RendererCanvas2d {
   }
 
   flip(videoWidth, videoHeight) {
-    console.log("flip");
     // Because the image from camera is mirrored, need to flip horizontally.
     this.ctx.translate(videoWidth, 0);
     this.ctx.scale(-1, 1);
