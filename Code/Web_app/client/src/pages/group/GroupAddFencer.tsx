@@ -31,6 +31,7 @@ interface GroupAddFencerProps {
 
 const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
   const [fencers, setFencers] = useState<Fencer[]>(null!);
+  const [fencerID, setFencerID] = useState<number>(null!);
 
   useEffect(() => {
     const fetchFencers = async () => {
@@ -54,13 +55,11 @@ const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
 
   const onSubmit: SubmitHandler<GroupAddFencerForm> = async (formData) => {
     try {
-      const fencer = fencers.find(
-        (fencer) =>
-          fencer.user.names + " " + fencer.user.lastNames === formData.fencer
-      );
+      if (!fencerID) return;
+      console.log(fencerID);
 
       await axios.put("/dashboard/fencer/", {
-        id: fencer?.fencerID,
+        id: fencerID,
         groupID: group.trainingGroupID,
       });
       navigate(0);
@@ -102,10 +101,12 @@ const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
                           groupFencer.fencerID === fencer.fencerID
                       )
                   )
-                  .map(
-                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                  )}
+                  .map((fencer) => ({
+                    label: fencer.user.names + " " + fencer.user.lastNames,
+                    id: fencer.fencerID,
+                  }))}
                 sx={{ width: 300 }}
+                onChange={(e, value) => setFencerID(value?.id || 0)}
                 renderInput={(params) => (
                   <TextField
                     margin="normal"

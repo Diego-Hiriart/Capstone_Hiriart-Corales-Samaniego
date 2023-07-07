@@ -70,3 +70,32 @@ export async function deleteDailyPlanActivityById(id: number) {
     throw error;
   }
 }
+
+export async function removeActivityFromPlanByID(
+  dailyPlanActivityID: number
+  // activityID: number
+) {
+  try {
+    const dailyPlanActivity = await prisma.dailyPlanActivity.delete({
+      where: {
+        dailyPlanActivityID: dailyPlanActivityID,
+      },
+    });
+
+    // const activity = await prisma.activity.update({
+    //   where: {
+    //     activityID: activityID,
+    //   },
+    //   data: {
+    //     dailyPlanActivity: {
+    //       disconnect: {
+    //         dailyPlanActivityID: dailyPlanActivityID,
+    //       },
+    //     },
+    //   },
+    // });
+    return dailyPlanActivity;
+  } catch (error) {
+    throw error;
+  }
+}

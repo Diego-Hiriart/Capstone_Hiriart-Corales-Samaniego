@@ -5,6 +5,7 @@ import {
   deleteDailyPlanActivityById,
   findAllDailyPlanActivity,
   findDailyPlanActivityById,
+  removeActivityFromPlanByID,
   updateDailyPlanActivityById,
 } from "../data/dailyPlanActivity";
 import { errorLog } from "../utils/logs";
@@ -49,6 +50,17 @@ export async function updateDailyPlanActivity(req: Request, res: Response) {
         Number(req.params.id),
         req.body.data
       ),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function removeActivityFromPlan(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await removeActivityFromPlanByID(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);

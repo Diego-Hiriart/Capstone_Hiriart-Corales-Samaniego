@@ -33,7 +33,6 @@ const schema = z.object({
   fencer2Name: z.string(),
   fencer1Score: z.string(),
   fencer2Score: z.string(),
-  winner: z.string(),
 });
 
 type TrainerAddCombatForm = z.infer<typeof schema>;
@@ -51,6 +50,8 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
   const [selectedWinner, setSelectedWinner] = useState<leftRight>(null!);
   const [openModal, setOpenModal] = useState(false);
   const [machineData, setMachineData] = useState<MachineCombatData>(null!);
+  const [fencer1ID, setFencer1ID] = useState<number>(null!);
+  const [fencer2ID, setFencer2ID] = useState<number>(null!);
 
   useEffect(() => {
     const fetchFencers = async () => {
@@ -76,7 +77,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
       reset({
         fencer1Score: machineData.leftScore.toString(),
         fencer2Score: machineData.rightScore.toString(),
-        winner: setScore(machineData),
       });
 
       setSelectedWinner(setScore(machineData));
@@ -87,26 +87,14 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
 
   const onSubmit: SubmitHandler<TrainerAddCombatForm> = async (formData) => {
     try {
-      const fencer1 = fencers.find(
-        (fencer) =>
-          fencer.user.names + " " + fencer.user.lastNames ===
-          formData.fencer1Name
-      );
-      const fencer2 = fencers.find(
-        (fencer) =>
-          fencer.user.names + " " + fencer.user.lastNames ===
-          formData.fencer2Name
-      );
-
       await axios.post("/dashboard/training_combat/", {
         data: {
-          fencer1ID: fencer1?.fencerID,
-          fencer2ID: fencer2?.fencerID,
+          fencer1ID: fencer1ID,
+          fencer2ID: fencer2ID,
           fencer1Score: Number(formData.fencer1Score),
           fencer2Score: Number(formData.fencer2Score),
           dateTime: date,
-          winnerFencerID:
-            selectedWinner === "left" ? fencer1?.fencerID : fencer2?.fencerID,
+          winnerFencerID: selectedWinner === "left" ? fencer1ID : fencer2ID,
         },
       });
       navigate(0);
@@ -189,10 +177,12 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                 <Autocomplete
                   disablePortal
                   id="fencer"
-                  options={fencers?.map(
-                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                  )}
+                  options={fencers?.map((fencer) => ({
+                    label: fencer.user.names + " " + fencer.user.lastNames,
+                    id: fencer.fencerID,
+                  }))}
                   sx={{ width: 300 }}
+                  onChange={(e, value) => setFencer1ID(value?.id || 0)}
                   renderInput={(params) => (
                     <TextField
                       required
@@ -225,10 +215,12 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                 <Autocomplete
                   disablePortal
                   id="fencer"
-                  options={fencers?.map(
-                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                  )}
+                  options={fencers?.map((fencer) => ({
+                    label: fencer.user.names + " " + fencer.user.lastNames,
+                    id: fencer.fencerID,
+                  }))}
                   sx={{ width: 300 }}
+                  onChange={(e, value) => setFencer2ID(value?.id || 0)}
                   renderInput={(params) => (
                     <TextField
                       required
@@ -264,7 +256,6 @@ const TrainerAddCombat = ({ open, handleClose }: TrainerAddCombatProps) => {
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
                     value={selectedWinner}
-                    {...register("winner")}
                   >
                     <FormControlLabel
                       value={"left"}
