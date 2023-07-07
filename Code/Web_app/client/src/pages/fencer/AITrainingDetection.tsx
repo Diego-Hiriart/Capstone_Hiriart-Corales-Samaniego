@@ -94,7 +94,7 @@ function AITrainingDetection() {
     // Detect Pose
     const pose = await detector.estimatePoses(webcamRef.current, {
       maxPoses: 1,
-      flipHorizontal: true,
+      flipHorizontal: false,
     });
 
     // Draw Pose

@@ -82,7 +82,7 @@ export class RendererCanvas2d {
     // this.scatterGLHasInitialized = false;
     this.videoWidth = canvas.width;
     this.videoHeight = canvas.height;
-    // this.flip(this.videoWidth, this.videoHeight);
+    this.flip(this.videoWidth, this.videoHeight);
   }
 
   flip(videoWidth, videoHeight) {
@@ -90,12 +90,12 @@ export class RendererCanvas2d {
     this.ctx.translate(videoWidth, 0);
     this.ctx.scale(-1, 1);
 
-    this.scatterGLEl.style = `width: ${videoWidth}px; height: ${videoHeight}px;`;
-    this.scatterGL.resize();
+    // this.scatterGLEl.style = `width: ${videoWidth}px; height: ${videoHeight}px;`;
+    // this.scatterGL.resize();
 
-    this.scatterGLEl.style.display = params.STATE.modelConfig.render3D
-      ? 'inline-block'
-      : 'none';
+    // this.scatterGLEl.style.display = params.STATE.modelConfig.render3D
+    //   ? 'inline-block'
+    //   : 'none';
   }
 
   draw(rendererParams) {

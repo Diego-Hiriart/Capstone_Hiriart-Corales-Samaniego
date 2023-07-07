@@ -150,10 +150,21 @@ const feedbacks = [
 
 const trainingExercises = [
   {
-    trainingExerciseID: 1,
     name: "Exercise 1",
     description: "Exercise Description 1",
   },
+  {
+    name: "Exercise 2",
+    description: "Exercise Description 2",
+  },
+  { 
+    name: "Exercise 3",
+    description: "Exercise Description 3",
+  },
+  {
+    name: "Exercise 4",
+    description: "Exercise Description 4",
+  }
 ];
 
 const aiTrainings = [
@@ -169,10 +180,52 @@ const aiTrainings = [
 
 const errors = [
   {
-    name: "Error 1",
-    description: "Error Description 1",
-    correctPose: "json pose",
-    systemName: "AI name",
+    name: "Paso adelante (marchar) - izquierda",
+    description: "Movimiento de avance, se empieza en posición de guardia, se avanza el pie delantero y se apoya el talón, al mismo tiempo que se empuja con la pierna de atrás, se apoyan en el piso las plantas de los pies al mismo tiempo",
+    correctPose: "{foo: bar}",
+    systemName: "Step forward correct left",
+  },
+  {
+    name: "Paso adelante (marchar) - derecha",
+    description: "Movimiento de avance, se empieza en posición de guardia, se avanza el pie delantero y se apoya el talón, al mismo tiempo que se empuja con la pierna de atrás, se apoyan en el piso las plantas de los pies al mismo tiempo",
+    correctPose: "{foo: bar}",
+    systemName: "Step forward correct right",
+  },
+  {
+    name: "Paso atrás (romper) - izquierda",
+    description: "asdf",
+    correctPose: "{foo: bar}",
+    systemName: "Step back correct left",
+  },
+  {
+    name: "Paso atrás (romper) - derecha",
+    description: "asdf",
+    correctPose: "{foo: bar}",
+    systemName: "Step back correct right",
+  },
+  {
+    name: "Línea (punta en línea) - izquierda",
+    description: "asdf",
+    correctPose: "{foo: bar}",
+    systemName: "Point in line correct left",
+  },
+  {
+    name: "Línea (punta en línea) - derecha",
+    description: "asdf",
+    correctPose: "{foo: bar}",
+    systemName: "Point in line correct right",
+  },
+  {
+    name: "Fondo (afondo) - izquierda",
+    description: "asdf",
+    correctPose: "{foo: bar}",
+    systemName: "Lunge correct left",
+  },
+  {
+    name: "Fondo (afondo) - derecha",
+    description: "asdf",
+    correctPose: "{foo: bar}",
+    systemName: "Lunge correct right",
   },
 ];
 
