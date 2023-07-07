@@ -22,7 +22,6 @@ import AuthContext from "../../contexts/AuthContext";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();
-  const [microCycles, setMicroCycles] = useState<MicroCycle[]>(null!);
   const [mesoCycle, setMesoCycle] = useState<MesoCycleFull>(null!);
   const [currentCycle, setCurrentCycle] = useState<MicroCycle>(null!);
   const [cyclePlans, setCyclePlans] = useState<DailyPlanFull[]>(null!);
@@ -38,7 +37,6 @@ const MesoCycleDetails = () => {
       const { data } = await axios.get("/dashboard/meso_cycle/" + id);
 
       setMesoCycle(data.data);
-      setMicroCycles(sortByDate(data.data.microCycle));
       setCurrentCycle(sortByDate(data.data.microCycle)[0]);
       setCyclePlans(data.data.microCycle[0].dailyPlan);
     };

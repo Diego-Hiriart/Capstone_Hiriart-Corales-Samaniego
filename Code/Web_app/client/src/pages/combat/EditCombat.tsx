@@ -48,6 +48,8 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
   const [date, setDate] = useState<Date>(null!);
   const [fencers, setFencers] = useState<Fencer[]>(null!);
   const [selectedWinner, setSelectedWinner] = useState<leftRight>(null!);
+  const [fencer1ID, setFencer1ID] = useState<number>(null!);
+  const [fencer2ID, setFencer2ID] = useState<number>(null!);
   const { id } = useParams();
 
   useEffect(() => {
@@ -79,21 +81,10 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
 
   const onSubmit: SubmitHandler<TrainerAddCombatForm> = async (formData) => {
     try {
-      const fencer1 = fencers.find(
-        (fencer) =>
-          fencer.user.names + " " + fencer.user.lastNames ===
-          formData.fencer1Name
-      );
-      const fencer2 = fencers.find(
-        (fencer) =>
-          fencer.user.names + " " + fencer.user.lastNames ===
-          formData.fencer2Name
-      );
-
       await axios.put("/dashboard/training_combat/" + id, {
         data: {
-          fencer1ID: fencer1?.fencerID,
-          fencer2ID: fencer2?.fencerID,
+          fencer1ID: fencer1ID,
+          fencer2ID: fencer2ID,
           fencer1Score: Number(formData.fencer1Score),
           fencer2Score: Number(formData.fencer2Score),
           dateTime: date,
@@ -152,11 +143,16 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
                 <Autocomplete
                   disablePortal
                   id="fencer"
-                  options={fencers?.map(
-                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                  )}
-                  defaultValue={`${combat?.fencer1.user.names} ${combat?.fencer1.user.lastNames}`}
+                  options={fencers?.map((fencer) => ({
+                    label: fencer.user.names + " " + fencer.user.lastNames,
+                    id: fencer.fencerID,
+                  }))}
                   sx={{ width: 300 }}
+                  onChange={(e, value) => setFencer1ID(value?.id || 0)}
+                  defaultValue={{
+                    label: `${combat?.fencer1.user.names} ${combat?.fencer1.user.lastNames}`,
+                    id: combat?.fencer1ID,
+                  }}
                   renderInput={(params) => (
                     <TextField
                       margin="normal"
@@ -187,11 +183,16 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
                 <Autocomplete
                   disablePortal
                   id="fencer"
-                  options={fencers?.map(
-                    (fencer) => fencer.user.names + " " + fencer.user.lastNames
-                  )}
-                  defaultValue={`${combat?.fencer2.user.names} ${combat?.fencer2.user.lastNames}`}
+                  options={fencers?.map((fencer) => ({
+                    label: fencer.user.names + " " + fencer.user.lastNames,
+                    id: fencer.fencerID,
+                  }))}
                   sx={{ width: 300 }}
+                  onChange={(e, value) => setFencer1ID(value?.id || 0)}
+                  defaultValue={{
+                    label: `${combat?.fencer2.user.names} ${combat?.fencer2.user.lastNames}`,
+                    id: combat?.fencer2ID,
+                  }}
                   renderInput={(params) => (
                     <TextField
                       margin="normal"
