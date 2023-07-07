@@ -4,6 +4,8 @@ import {
   Container,
   Divider,
   Grid,
+  ListItemButton,
+  ListItemText,
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
@@ -203,13 +205,8 @@ const MesoCycleDetails = () => {
                             <Divider></Divider>
                           </Box>
 
-                          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
-                            {item.activityType?.name}
-                          </Typography>
-
                           {!user?.roles.includes("fencer") && (
                             <Button
-                              sx={{ marginTop: "2rem" }}
                               variant="contained"
                               onClick={() => handleOpenAddActivityType(item)}
                             >
@@ -217,19 +214,39 @@ const MesoCycleDetails = () => {
                             </Button>
                           )}
 
+                          <Divider></Divider>
+
+                          <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+                            {item.activityType?.name || "Sin actividad"}
+                          </Typography>
+
+                          <Divider></Divider>
+
                           {item.dailyPlanActivity.map((plan) => (
-                            <Typography
+                            <ListItemButton
                               key={plan.activityID}
-                              variant="h4"
-                              sx={{ fontWeight: "bold" }}
+                              sx={{
+                                px: 1,
+                                justifyContent: "center",
+                                textAlign: "center",
+                              }}
+                              onClick={undefined}
                             >
-                              {plan.activity.name}
-                            </Typography>
+                              <Typography
+                                sx={{
+                                  fontSize: "2rem",
+                                  color: "black",
+                                }}
+                              >
+                                {plan.activity.name}
+                              </Typography>
+                            </ListItemButton>
                           ))}
+
+                          <Divider></Divider>
 
                           {!user?.roles.includes("fencer") && (
                             <Button
-                              sx={{ marginTop: "2rem" }}
                               variant="contained"
                               onClick={() => handleOpenAddActivity(item)}
                             >
