@@ -144,17 +144,15 @@ const TrainerProfile = () => {
       let body = { data: updatedData };
 
       // if an admin is updating a trainer, send roles too
-      if (user?.roles?.includes("admin")) {
-
+      if (user?.roles?.includes("admin") && updatedData.isAdmin !== undefined) {
         const roles = [...trainer?.user.roles!];
-        if (updatedData.isAdmin && !roles.includes("admin")) {
+        if (formData.isAdmin && !roles.includes("admin")) {
           roles.push("admin");
-        } else if (!updatedData.isAdmin && roles.includes("admin")) {
+        } else if (!formData.isAdmin && roles.includes("admin")) {
           roles.splice(roles.indexOf("admin"), 1);
         }
         body = { data: { ...updatedData, roles } };
       }
-      console.log(body)
       await axios.put(url, body);
       showSuccess("Entrenador actualizado exitosamente");
       reset({}, { keepValues: true });

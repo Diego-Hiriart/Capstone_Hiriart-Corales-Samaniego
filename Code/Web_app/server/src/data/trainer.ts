@@ -75,9 +75,7 @@ export async function updateTrainerById(id: number, data: (Trainer & User)) {
             names: data.names || undefined,
             lastNames: data.lastNames || undefined,
             email: data.email || undefined,
-            roles: {
-              set: data.roles || undefined,
-            }
+            roles: data.roles || undefined,
           },
         }
       },
