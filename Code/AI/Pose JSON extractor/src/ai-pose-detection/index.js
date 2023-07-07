@@ -1,15 +1,15 @@
 //Based on: https://github.com/tensorflow/tfjs-models/blob/master/pose-detection/demos/upload_video/src/index.js
-import '@tensorflow/tfjs-backend-webgl';
-import '@tensorflow/tfjs-backend-webgpu';
+import "@tensorflow/tfjs-backend-webgl";
+import "@tensorflow/tfjs-backend-webgpu";
 
-import * as tfjsWasm from '@tensorflow/tfjs-backend-wasm';
+import * as tfjsWasm from "@tensorflow/tfjs-backend-wasm";
 
-tfjsWasm.setWasmPaths('.node_modules/@tensorflow/tfjs-backend-wasm/dist/');
+tfjsWasm.setWasmPaths(".node_modules/@tensorflow/tfjs-backend-wasm/dist/");
 
-import * as poseDetection from '@tensorflow-models/pose-detection';
+import * as poseDetection from "@tensorflow-models/pose-detection";
 
-import { Context } from './camera.js';
-import { STATE } from './params.js';
+import { Context } from "./camera.js";
+import { STATE } from "./params.js";
 
 let detector, camera;
 let rafId;
@@ -29,12 +29,12 @@ let count;
 const interFrameDelay = 100;
 
 const createDetector = async () => {
-  const runtime = 'mediapipe';
+  const runtime = "mediapipe";
   const model = poseDetection.SupportedModels.BlazePose;
   return poseDetection.createDetector(model, {
     runtime: runtime,
-    modelType: 'heavy',
-    solutionPath: './node_modules/@mediapipe/pose',
+    modelType: "heavy",
+    solutionPath: "./node_modules/@mediapipe/pose",
   });
 };
 
@@ -44,7 +44,7 @@ const savePoseData = (poseData) => {
     poseData[0] !== undefined &&
     poseData[0] !== null
   ) {
-    let extrationKeypoints = extract2D ? 'keypoints' : 'keypoints3D';
+    let extrationKeypoints = extract2D ? "keypoints" : "keypoints3D";
     let keypointsData = poseData[0][extrationKeypoints];
     //Check if the current packet in the JSON is full, create a new one if so, otherwise add pose data
     if (posesJSON[currentPosesIndex].length == posesPacketSize) {
@@ -54,7 +54,7 @@ const savePoseData = (poseData) => {
       currentPosesIndex++;
     } else {
       posesJSON[currentPosesIndex].push(
-        extract2D ? { keypoints: keypointsData } : keypointsData
+        extract2D ? [{ keypoints: keypointsData }] : keypointsData
       );
     }
   }
@@ -89,22 +89,19 @@ const downloadPosesJSON = () => {
     }*/
     if (posesJSON.length == 0) {
       statusP.innerHTML =
-        'Could not extract anything, try a diferent number of poses packet size or check your file';
+        "Could not extract anything, try a diferent number of poses packet size or check your file";
     } else {
-      statusP.innerHTML = 'Extraction complete, dowmloading';
+      statusP.innerHTML = "Extraction complete, downloading";
     }
-    alert('downloading poses JSON');
-    const a = document.createElement('a');
-    const file = new Blob(
-      [JSON.stringify(extract2D ? posesJSON : posesJSON)],
-      {
-        type: 'text/plain',
-      }
-    );
+    alert("downloading poses JSON");
+    const a = document.createElement("a");
+    const file = new Blob([JSON.stringify(extract2D ? posesJSON[0] : posesJSON)], {
+      type: "text/plain",
+    });
     a.href = URL.createObjectURL(file);
     let fileName = videoName;
-    fileName = `${fileName.substring(0, fileName.lastIndexOf('.'))}_${
-      extract2D ? '2D' : '3D'
+    fileName = `${fileName.substring(0, fileName.lastIndexOf("."))}_${
+      extract2D ? "2D" : "3D"
     }poses-JSON.json`;
     a.download = fileName;
     a.click();
@@ -123,7 +120,7 @@ const runPrediction = async () => {
   if (videoDone) {
     // video has finished.
     camera.clearCtx();
-    camera.video.style.visibility = 'visible';
+    camera.video.style.visibility = "visible";
     downloadPosesJSON();
     return;
   }
@@ -158,13 +155,13 @@ const updateVideo = async (videoFile) => {
 
 const startDetection = async () => {
   // Warming up pipeline.
-  const [runtime, $backend] = STATE.backend.split('-');
+  const [runtime, $backend] = STATE.backend.split("-");
 
-  if (runtime === 'tfjs') {
+  if (runtime === "tfjs") {
     const warmUpTensor = tf.fill(
       [camera.video.height, camera.video.width, 3],
       0,
-      'float32'
+      "float32"
     );
     await detector.estimatePoses(warmUpTensor, {
       maxPoses: STATE.modelConfig.maxPoses,
@@ -173,7 +170,7 @@ const startDetection = async () => {
     warmUpTensor.dispose();
   }
 
-  camera.video.style.visibility = 'hidden';
+  camera.video.style.visibility = "hidden";
   video.pause();
   //Run detection
   await runPrediction();
@@ -189,8 +186,8 @@ export const poseDetectionAI = async (extractionData) => {
   statusP;
   videoName;
   //Start process
-  statusP = document.getElementById('extraction-status');
-  statusP.innerHTML = 'Extraction in progress';
+  statusP = document.getElementById("extraction-status");
+  statusP.innerHTML = "Extraction in progress";
   videoName = extractionData.videoFile.name;
   //Update poses packet size
   posesPacketSize = Number(extractionData.posesPacketSize);
