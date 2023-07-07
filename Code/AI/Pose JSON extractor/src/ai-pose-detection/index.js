@@ -96,7 +96,7 @@ const downloadPosesJSON = () => {
     alert('downloading poses JSON');
     const a = document.createElement('a');
     const file = new Blob(
-      [JSON.stringify(extract2D ? posesJSON[0] : posesJSON)],
+      [JSON.stringify(extract2D ? posesJSON : posesJSON)],
       {
         type: 'text/plain',
       }
