@@ -27,20 +27,24 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   const correctCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const drawingInterval = 100; // milliseconds
-  const canvasSize = 700; // TODO: take value from error
+
+  const errorCanvasWidth = 640;
+  const errorCanvasHeight = 480;
+  const correctCanvasWidth = 1920;
+  const correctCanvasHeight = 1080;
 
   const setCanvasRef = useCallback((node: HTMLCanvasElement) => {
     if (!node) return;
     if (node.id === "error-canvas") {
       errorCanvasRef.current = node;
-      errorCanvasRef.current.width = canvasSize;
-      errorCanvasRef.current.height = canvasSize;
+      errorCanvasRef.current.width = errorCanvasWidth;
+      errorCanvasRef.current.height = errorCanvasHeight;
       setErrorRenderer(new RendererCanvas2d(errorCanvasRef.current));
       return;
     }
     correctCanvasRef.current = node;
-    correctCanvasRef.current.width = canvasSize;
-    correctCanvasRef.current.height = canvasSize;
+    correctCanvasRef.current.width = correctCanvasWidth;
+    correctCanvasRef.current.height = correctCanvasHeight;
     setCorrectRenderer(new RendererCanvas2d(correctCanvasRef.current));
   }, []);
 
@@ -65,12 +69,16 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
       drawCanvas(
         errorCanvasRef.current!,
         errorRenderer,
-        incorrectMoveGenerator.next().value
+        incorrectMoveGenerator.next().value,
+        errorCanvasWidth,
+        errorCanvasHeight
       );
       drawCanvas(
         correctCanvasRef.current!,
         correctRenderer,
-        correctMoveGenerator.next().value
+        correctMoveGenerator.next().value,
+        correctCanvasWidth,
+        correctCanvasHeight
       );
     }, drawingInterval);
 
@@ -82,10 +90,12 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   const drawCanvas = (
     canvas: HTMLCanvasElement,
     renderer: RendererCanvas2d,
-    pose: Pose[]
+    pose: Pose[],
+    width: number,
+    height: number
   ) => {
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+    canvas.width = width;
+    canvas.height = height;
     const rendererParams = [canvas, pose, false, "playback"];
     renderer?.draw(rendererParams);
   };
@@ -96,18 +106,18 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
         <div css={canvasContainerStyles}>
           <canvas
             ref={setCanvasRef}
-            css={[outputCanvasStyles(canvasSize), redBorder]}
+            css={[outputCanvasStyles, redBorder]}
             id="error-canvas"
           ></canvas>
           <canvas
             ref={setCanvasRef}
-            css={[outputCanvasStyles(canvasSize), greenBorder]}
+            css={[outputCanvasStyles, greenBorder]}
             id="correct-canvas"
           ></canvas>
         </div>
         <Typography>{poseAnalisisData.title}</Typography>
         <Typography>{poseAnalisisData.description}</Typography>
-        <DialogActions sx={{paddingBottom: 0}}>
+        <DialogActions sx={{ paddingBottom: 0 }}>
           <Button variant="contained" onClick={handleClose}>
             Cerrar
           </Button>
@@ -131,12 +141,14 @@ const canvasContainerStyles = css`
   min-height: 0;
 `;
 
-const outputCanvasStyles = (canvasSize: number) => css`
+const outputCanvasStyles = css`
   transform: scaleX(-1);
   object-fit: contain;
   width: 100%;
   max-width: 400px;
   min-width: 0;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 `;
 
 const redBorder = css`
