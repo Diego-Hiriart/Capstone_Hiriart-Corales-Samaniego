@@ -28,8 +28,8 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
 
   const drawingInterval = 100; // milliseconds
 
-  const errorCanvasWidth = 640;
-  const errorCanvasHeight = 480;
+  const errorCanvasWidth = 700;
+  const errorCanvasHeight = 700;
   const correctCanvasWidth = 1920;
   const correctCanvasHeight = 1080;
 
