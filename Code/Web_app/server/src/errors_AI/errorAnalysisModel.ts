@@ -95,97 +95,43 @@ export async function runModel(
   let movementLabels = JSON.parse(
     readFileSync("./movementDictionary.json").toString()
   );
-  let trainingClass: string = movementLabels[movementData.exercise - 1]; //To store detected class, initliaze with class being trained
+  let dictionaryIndex = movementData.exercise * 2;
+  if (movementData.laterality === "D") {
+    dictionaryIndex--;
+  } else {
+    dictionaryIndex -= 2;
+  }
+  let trainingClass: string = movementLabels[dictionaryIndex]; //To store detected class, initliaze with class being trained
   for (let i = 0; i < xyzMovements.length; i++) {
     if (xyzMovements[i]) {
       let tensorX = tf.tensor([xyzMovements[i]]);
       let results = errorsModel.predict(tensorX) as tf.Tensor;
-      let classLabel: string; //To check error made
       //Get which class the movement belongs to
       let resultsArray = Array.from(results.dataSync());
       aiResultIndex = Array.from(tf.argMax(resultsArray).dataSync())[0]; //Get index of largest result
       aiResultConfidence = resultsArray[aiResultIndex]; //Get max result
-      //Continue analysis if detection is below threshold, otherwise check if it is an error or correct movement
-      if (aiResultConfidence >= condifenceThreshold) {
-        //Get name of class
-        classLabel = movementLabels[aiResultIndex];
-        //Check if class detected belongs to movement being trained
-        let classMatchesMovementSelected = false;
-        switch (movementData.exercise) {
-          case 1:
-            if (classLabel.includes("Step forward")) {
-              classMatchesMovementSelected = true;
-            }
-            break;
-          case 2:
-            if (classLabel.includes("Step back")) {
-              classMatchesMovementSelected = true;
-            }
-            break;
-          case 3:
-            if (classLabel.includes("Point in line")) {
-              classMatchesMovementSelected = true;
-            }
-            break;
-          case 4:
-            if (classLabel.includes("Lunge")) {
-              classMatchesMovementSelected = true;
-            }
-            break;
-        }
-        //Check detected laterality matches
-        let classMatchesLaterality = false;
-        if (
-          (classLabel.includes("left") && movementData.laterality === "I") ||
-          (classLabel.includes("right") && movementData.laterality === "D")
-        ) {
-          classMatchesLaterality = true;
-        }
-        //If movement or laterality dont match, it means the movement was pretty bad return as error
-        if (!classMatchesMovementSelected || !classMatchesLaterality) {
-          incorrectMove = extract2DKeypoints(movementData.move);
-          let storedError = await findErrorBySystemName(trainingClass);
-          //Store error
-          let trainingError = {
-            AITrainingID: movementData.sessionId,
-            errorID: storedError?.errorID!,
-            poseData: JSON.stringify(incorrectMove),
-          };
-          await createTrainingError(trainingError);
-          return {
-            data: {
-              correctMove: storedError?.correctPose,
-              incorrectMove,
-              title: storedError?.name,
-              description: storedError?.description,
-            },
-          };
-        }
-        //If movement and laterality match, return empty, since it means it was a good movement
-        if (classMatchesMovementSelected && classMatchesLaterality) {
-          return;
-        }
+      //Check if class detected belongs to movement being trained
+      if (dictionaryIndex === aiResultIndex) {
+        return;
+      } else {
+        incorrectMove = extract2DKeypoints(movementData.move);
+        let storedError = await findErrorBySystemName(trainingClass);
+        //Store error
+        let trainingError = {
+          AITrainingID: movementData.sessionId,
+          errorID: storedError?.errorID!,
+          poseData: JSON.stringify(incorrectMove),
+        };
+        await createTrainingError(trainingError);
+        return {
+          data: {
+            correctMove: storedError?.correctPose,
+            incorrectMove,
+            title: storedError?.name,
+            description: storedError?.description,
+          },
+        };
       }
     }
   }
-  /*If execution gets to this point, it means a good enough movement
-   * was never detected, return as error
-   */
-  incorrectMove = extract2DKeypoints(movementData.move);
-  let storedError = await findErrorBySystemName(trainingClass);
-  //Store error
-  let trainingError = {
-    AITrainingID: movementData.sessionId,
-    errorID: storedError?.errorID!,
-    poseData: JSON.stringify(incorrectMove),
-  };
-  await createTrainingError(trainingError);
-  return {
-    data: {
-      correctMove: storedError?.correctPose,
-      incorrectMove,
-      title: storedError?.name,
-      description: storedError?.description,
-    },
-  };
 }
