@@ -80,7 +80,7 @@ const MesoCycleActivityDetails = ({
               Actividad: {activity?.name}
             </Typography>
             <Typography sx={{ wordWrap: "break-word", marginBottom: 2 }}>
-              Descripción: ${activity?.description}
+              Descripción: {activity?.description}
             </Typography>
             <Typography>
               Duración: {new Date(activity?.duration).getMinutes()}:
