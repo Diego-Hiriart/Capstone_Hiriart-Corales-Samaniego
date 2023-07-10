@@ -13,6 +13,7 @@ import AuthContext from "../contexts/AuthContext";
 import { Alert } from "@mui/material";
 import logoUrl from "/static/images/logo.png";
 import styled from "@emotion/styled";
+import { AxiosError } from "axios";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
@@ -27,11 +28,19 @@ export default function Login() {
   const onSubmit: SubmitHandler<LoginFormInputs> = async (formData) => {
     try {
       await login(formData);
-    } catch (error) {
-      setError("root", {
-        type: "manual",
-        message: "Email o contraseña incorrectos",
-      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response.data.message === "Login attempt - User deactivated") {
+        setError("root", {
+          type: "manual",
+          message: "Cuenta desactivada",
+        });
+      } else {
+        setError("root", {
+          type: "manual",
+          message: "Email o contraseña incorrectos",
+        });
+      }
     }
   };
 
@@ -96,4 +105,4 @@ export default function Login() {
 
 const StyledImg = styled.img`
   max-width: 80%;
-`
+`;
