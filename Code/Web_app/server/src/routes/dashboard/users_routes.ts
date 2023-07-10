@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+  activateUser,
   deleteUserById,
   getAllUsers,
   getOwnUser,
@@ -12,8 +13,8 @@ import {
   putPassword,
   updateUser,
 } from "../../controllers/users_controller";
-import { verifyRole } from "../../middlewares/roles_middlewares";
 import { verifyIfUserExists } from "../../middlewares/auth_middlewares";
+import { verifyRole } from "../../middlewares/roles_middlewares";
 
 const router = Router();
 
@@ -27,7 +28,8 @@ router.post("/user/admin", postUserAdmin);
 router.post("/user/trainer", verifyRole(["admin", "trainer"]), postUserTrainer);
 router.post("/user/", verifyRole(["admin", "trainer"]), postUser);
 
-router.delete("/user/:id", verifyRole(["admin"]), deleteUserById);
+router.delete("/user/:id", verifyRole(["admin", "trainer"]), deleteUserById);
+router.patch("/user/:id", verifyRole(["admin", "trainer"]), activateUser);
 
 router.put(
   "/user/:id/change-password",

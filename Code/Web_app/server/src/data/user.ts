@@ -177,6 +177,22 @@ export async function softDeleteUserById(id: number) {
   }
 }
 
+export async function activateUserById(id: number) {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        userID: id,
+      },
+      data: {
+        deletedAt: null,
+      },
+    });
+    return user && removePasswordInUser(user);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export async function updateUserById(id: number, data: User) {
   try {
     const user = await prisma.user.update({

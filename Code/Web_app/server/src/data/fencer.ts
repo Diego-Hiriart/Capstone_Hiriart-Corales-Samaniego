@@ -60,6 +60,7 @@ export async function findAllFencer() {
             names: true,
             lastNames: true,
             email: true,
+            deletedAt: true,
           },
         },
       },

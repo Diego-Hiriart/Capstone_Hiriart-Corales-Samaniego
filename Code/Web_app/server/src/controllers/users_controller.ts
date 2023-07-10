@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import argon2 from "argon2";
 
 import {
+  activateUserById,
   createUser,
   createUserAdmin,
   createUserFencer,
@@ -71,7 +72,18 @@ export async function getUserByEmail(req: Request, res: Response) {
 export async function deleteUserById(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await softDeleteUserById(Number(req.body.userID)),
+      data: await softDeleteUserById(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function activateUser(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await activateUserById(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);

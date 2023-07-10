@@ -1,12 +1,9 @@
-import DeleteIcon from "@mui/icons-material/Delete";
+import DoneIcon from "@mui/icons-material/Done";
 import {
   Avatar,
   Box,
   Button,
   Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   List,
   ListItem,
   ListItemAvatar,
@@ -18,35 +15,22 @@ import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "../../services/axios";
 import { Fencer } from "../../types";
-import FencerInvite from "./FencerInvite";
-import LinkInvite from "./LinkInvite";
-import FencerDeactivate from "./FencerDeactivate";
+import FencerActivate from "./FencerActivate";
 
-const FencerList = () => {
+const FencerDeactivatedList = () => {
   const [fencers, setFencers] = useState<Fencer[]>(null!);
-  const [open, setOpen] = useState(false);
-  const [inviteLink, setInviteLink] = useState("");
-  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [activateOpen, setActivateOpen] = useState(false);
   const [selectedUserID, setSelectedUserID] = useState<number>(null!);
   const [selectedUserName, setSelectedUserName] = useState<string>(null!);
 
   const handleRemoveClose = () => {
-    setRemoveDialogOpen(false);
+    setActivateOpen(false);
   };
 
   const handleRemoveOpen = (userID: number, userName: string) => {
     setSelectedUserID(userID);
     setSelectedUserName(userName);
-    setRemoveDialogOpen(true);
-  };
-
-  const handleOpen = () => {
-    setInviteLink("");
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+    setActivateOpen(true);
   };
 
   useEffect(() => {
@@ -69,15 +53,12 @@ const FencerList = () => {
           }}
         >
           <Typography variant="h1" alignSelf="start">
-            Esgrimistas
+            Esgrimistas inactivos
           </Typography>
-          <Button variant="contained" onClick={handleOpen}>
-            Crear nuevo
-          </Button>
         </Box>
         <List sx={{ mt: 1 }}>
           {fencers?.map((fencer) =>
-            fencer.user.deletedAt ? (
+            !fencer.user.deletedAt ? (
               <></>
             ) : (
               <ListItem key={fencer.fencerID} disablePadding>
@@ -102,7 +83,7 @@ const FencerList = () => {
                     )
                   }
                 >
-                  <DeleteIcon />
+                  <DoneIcon />
                 </Button>
               </ListItem>
             )
@@ -110,27 +91,14 @@ const FencerList = () => {
         </List>
         {/* TODO: Add pagination */}
       </Box>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Crear Esgrimista</DialogTitle>
-        <DialogContent>
-          {inviteLink ? (
-            <LinkInvite inviteLink={inviteLink} handleClose={handleClose} />
-          ) : (
-            <FencerInvite
-              handleClose={handleClose}
-              setInviteLink={setInviteLink}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-      <FencerDeactivate
+      <FencerActivate
         userID={selectedUserID}
         userName={selectedUserName}
         handleClose={handleRemoveClose}
-        open={removeDialogOpen}
+        open={activateOpen}
       />
     </Container>
   );
 };
 
-export default FencerList;
+export default FencerDeactivatedList;
