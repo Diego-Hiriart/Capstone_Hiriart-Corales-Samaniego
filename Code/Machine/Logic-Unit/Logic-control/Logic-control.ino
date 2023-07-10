@@ -160,6 +160,11 @@ void setup() {
   EEPROM.get(rightPriorityAddress, rightPriority);
   EEPROM.get(periodAddress, period);
   EEPROM.end();
+  //Boot up delay for sync
+  delay(1500);
+  currentBuzzAlert = 1;  //Long beep for ON
+  sendLEDsTimerPeriod();
+  sendScores();
 }
 
 void loop() {
@@ -196,7 +201,7 @@ void checkPower() {
       powerLost = false;
     }
     return;
-  }else{
+  } else {
     powerLost = true;
   }
   //If jack voltage was low, pause machine and save data in EEPROM (if battery not low to avoid issues)
