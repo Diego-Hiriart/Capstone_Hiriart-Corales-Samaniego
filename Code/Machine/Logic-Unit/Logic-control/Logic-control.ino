@@ -196,11 +196,12 @@ void checkPower() {
       powerLost = false;
     }
     return;
+  }else{
+    powerLost = true;
   }
   //If jack voltage was low, pause machine and save data in EEPROM (if battery not low to avoid issues)
-  if (!batteryLow && !powerLost) {
+  if (!batteryLow && powerLost) {
     //Power has been lost
-    powerLost = true;
     paused = true;
     //Use EEPROM.put() to write, allows writing of any length but uses EEPROM.update() so it doesnt overwrite if value didnt change
     EEPROM.begin(EEPROM_SIZE);
@@ -238,7 +239,7 @@ void lowBattIndicator() {
 
 void checkTimerEnd() {
   //Check if timer has ended, play alert and pause
-  if (setTime - elapsedTime <= 0 && !paused) {
+  if (elapsedTime >= setTime && !paused) {
     paused = true;
     currentBuzzAlert = 5;
   }
@@ -537,13 +538,13 @@ void handleRemote(String receivedCommand) {
       }
       break;
     case 45:
-      paused = !paused;
-      //Reset start time if unpaused
-      if (!paused) {
-        lastTimeUpdate = millis();
-      }
-      if (setTime - elapsedTime > 0) {
+      if (elapsedTime < setTime) {
         currentBuzzAlert = 1;  //Play 1 long beep to indicate pause/continue
+        paused = !paused;
+        //Reset start time if unpaused
+        if (!paused) {
+          lastTimeUpdate = millis();
+        }
       } else {
         currentBuzzAlert = 3;  //Indicate time has ended, cant resume
       }
