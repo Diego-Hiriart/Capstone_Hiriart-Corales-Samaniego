@@ -7,32 +7,32 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import axios from "../../services/axios";
 
-interface GroupRemoveProps {
-  groupID: number;
-  groupName: string;
+interface FencerDeactivateProps {
+  userID: number;
+  userName: string;
   handleClose: () => void;
   open: boolean;
 }
 
-const GroupRemove = ({
+const FencerDeactivate = ({
   open,
   handleClose,
-  groupID,
-  groupName,
-}: GroupRemoveProps) => {
+  userID,
+  userName,
+}: FencerDeactivateProps) => {
   const navigate = useNavigate();
 
   const { setError } = useForm();
 
   const onSubmit = async () => {
     try {
-      await axios.delete("/dashboard/training_group/" + groupID);
+      await axios.delete("/dashboard/user/" + userID);
       navigate(0);
     } catch (error) {
       if (error instanceof AxiosError) {
         setError("root", {
           type: "manual",
-          message: "Ha ocurrido un error al remover el grupo",
+          message: "Ha ocurrido un error al desactivar usuario",
         });
       }
     }
@@ -40,7 +40,7 @@ const GroupRemove = ({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Eliminar Grupo</DialogTitle>
+      <DialogTitle>Desactivar usuario</DialogTitle>
       <DialogContent>
         <Container component="main" maxWidth="xs">
           <Box
@@ -50,7 +50,7 @@ const GroupRemove = ({
             }}
           >
             <Typography>
-              ¿Seguro que desea remover el grupo &quot;{groupName}&quot;?
+              ¿Seguro que desea desactivar la cuenta de &quot;{userName}&quot;?
             </Typography>
             <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
               <Button
@@ -59,7 +59,7 @@ const GroupRemove = ({
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Remover grupo
+                Desactivar
               </Button>
               <Button fullWidth variant="outlined" onClick={handleClose}>
                 Cancelar
@@ -72,4 +72,4 @@ const GroupRemove = ({
   );
 };
 
-export default GroupRemove;
+export default FencerDeactivate;

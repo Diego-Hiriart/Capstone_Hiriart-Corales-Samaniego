@@ -71,7 +71,7 @@ export async function getUserByEmail(req: Request, res: Response) {
 export async function deleteUserById(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await softDeleteUserById(Number(req.body.userID)),
+      data: await softDeleteUserById(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);

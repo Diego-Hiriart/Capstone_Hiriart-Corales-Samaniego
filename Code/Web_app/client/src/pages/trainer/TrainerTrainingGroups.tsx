@@ -1,4 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import {
   Box,
   Button,
@@ -10,11 +11,10 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import GroupWorkIcon from "@mui/icons-material/GroupWork";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import axios from "../../services/axios";
-import { TrainingGroup, TrainingGroupFull } from "../../types";
+import { TrainingGroup } from "../../types";
 import GroupCreateDialog from "../group/GroupCreateDialog";
 import GroupRemove from "../group/GroupRemove";
 

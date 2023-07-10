@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Avatar,
   Box,
@@ -14,19 +15,33 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import axios from "../../services/axios";
 import { Link as RouterLink } from "react-router-dom";
+import axios from "../../services/axios";
 import { Fencer } from "../../types";
 import FencerInvite from "./FencerInvite";
 import LinkInvite from "./LinkInvite";
+import FencerDeactivate from "./FencerDeactivate";
 
 const FencerList = () => {
   const [fencers, setFencers] = useState<Fencer[]>(null!);
   const [open, setOpen] = useState(false);
   const [inviteLink, setInviteLink] = useState("");
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
+  const [selectedUserID, setSelectedUserID] = useState<number>(null!);
+  const [selectedUserName, setSelectedUserName] = useState<string>(null!);
+
+  const handleRemoveClose = () => {
+    setRemoveDialogOpen(false);
+  };
+
+  const handleRemoveOpen = (userID: number, userName: string) => {
+    setSelectedUserID(userID);
+    setSelectedUserName(userName);
+    setRemoveDialogOpen(true);
+  };
 
   const handleOpen = () => {
-    setInviteLink("")
+    setInviteLink("");
     setOpen(true);
   };
 
@@ -61,22 +76,37 @@ const FencerList = () => {
           </Button>
         </Box>
         <List sx={{ mt: 1 }}>
-          {fencers?.map((fencer) => (
-            <ListItem key={fencer.fencerID} disablePadding>
-              <ListItemButton
-                sx={{ px: 1 }}
-                component={RouterLink}
-                to={`/fencer/${String(fencer.fencerID)}`}
-              >
-                <ListItemAvatar>
-                  <Avatar></Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={`${fencer.user.names} ${fencer.user.lastNames}`}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {fencers?.map((fencer) =>
+            fencer.user.deletedAt ? (
+              <></>
+            ) : (
+              <ListItem key={fencer.fencerID} disablePadding>
+                <ListItemButton
+                  sx={{ px: 1 }}
+                  component={RouterLink}
+                  to={`/fencer/${String(fencer.fencerID)}`}
+                >
+                  <ListItemAvatar>
+                    <Avatar></Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={`${fencer.user.names} ${fencer.user.lastNames}`}
+                  />
+                </ListItemButton>
+                <Button
+                  variant="text"
+                  onClick={() =>
+                    handleRemoveOpen(
+                      fencer.userID || 0,
+                      `${fencer.user.names} ${fencer.user.lastNames}`
+                    )
+                  }
+                >
+                  <DeleteIcon />
+                </Button>
+              </ListItem>
+            )
+          )}
         </List>
         {/* TODO: Add pagination */}
       </Box>
@@ -93,6 +123,12 @@ const FencerList = () => {
           )}
         </DialogContent>
       </Dialog>
+      <FencerDeactivate
+        userID={selectedUserID}
+        userName={selectedUserName}
+        handleClose={handleRemoveClose}
+        open={removeDialogOpen}
+      />
     </Container>
   );
 };
