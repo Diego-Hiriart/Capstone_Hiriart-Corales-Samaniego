@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 import { Request, Response } from "express";
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
 import { generateToken, jwtSecret } from "../utils/jwt";
 import { errorLog } from "../utils/logs";
@@ -13,10 +13,14 @@ const prisma = new PrismaClient();
 /** To POST login route */
 export async function login(req: Request, res: Response) {
   try {
-    if (!req.body.user) throw new Error("Login attempt - User does not exist");
+    const user: User = req.body.user;
 
-    if (await argon2.verify(req.body.user.password, req.body.password)) {
-      req.headers.authorization = generateToken(req.body.user, jwtSecret);
+    if (!user) throw new Error("Login attempt - User does not exist");
+
+    if (user.deletedAt) throw new Error("Login attempt - User deactivated");
+
+    if (await argon2.verify(user.password, req.body.password)) {
+      req.headers.authorization = generateToken(user, jwtSecret);
     } else {
       throw new Error("Login attempt - User info does not match");
     }
@@ -28,7 +32,7 @@ export async function login(req: Request, res: Response) {
       })
       .status(200)
       .json({
-        user: req.body.user,
+        user: user,
       });
   } catch (error) {
     errorLog(error);
