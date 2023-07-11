@@ -183,8 +183,10 @@ void loop() {
   }
   //Check if time has ran out and timer must be stopped
   checkTimerEnd();
-  //Check on board buttons presses
-  onBoardButtons();
+  //Check on board buttons presses only if machine is paused to avoid timer issues
+  if (paused) {
+    onBoardButtons();
+  }
   //Check for remote instructions and execute commands
   handleRemote(receiveRemote());
   //Send data to display units
