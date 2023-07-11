@@ -46,41 +46,56 @@ export async function createAndTrainModel(
       errorsModel.setWeights(weightsTensor);
     } else {
       errorsModel = tf.sequential();
-      errorsModel.name = 'posesRNN';
+      errorsModel.name = 'posesMLP';
       const inputKeypoints = 33;
       const keypointFeatures = 3;
       //If xs is a 3d tensor of shape [a, b, c,d], then inputShape of the first layer should be [b, c, d].
       //Shape of xs is [batch, 10 (poses per movement), 33 (keypoints), 3 (x, y, z of each keypoint)];
       const inputLayerShape = [timesteps, inputKeypoints, keypointFeatures];
-      const rnnTimeSteps = timesteps;
-      const rnnInputLayerFeatures = inputKeypoints * timesteps;
-      const rnnInputShape = [rnnInputLayerFeatures, rnnTimeSteps];
-      const nHiddenLayers = 1;
+      const hidden1LayerFeatures = inputKeypoints * keypointFeatures;
+      const hidden1InputShape = [timesteps, hidden1LayerFeatures];
       //Input layer
       errorsModel.add(
         tf.layers.dense({
           name: 'input-layer',
-          units: timesteps,
+          units: keypointFeatures,
           inputShape: inputLayerShape,
           activation: 'sigmoid',
         })
       );
-      //Hidden layer, unidirectional RNN using LSTM
+      //Hidden layers, fully connected with sigmoid activation
       errorsModel.add(
-        tf.layers.reshape({ name: 'rnnReshape', targetShape: rnnInputShape })
+        tf.layers.reshape({ name: 'hidden1Reshape', targetShape: hidden1InputShape })
       );
-      let lstm_cells = [];
-      for (let index = 0; index < nHiddenLayers; index++) {
-        lstm_cells.push(tf.layers.lstmCell({ units: rnnTimeSteps }));
-      }
-      debugLog('Cells');
-      debugLog(lstm_cells.length.toString());
       errorsModel.add(
-        tf.layers.rnn({
-          name: 'hidden-rnn',
-          cell: lstm_cells, //LSTM uses tahn activation
-          inputShape: rnnInputShape,
-          returnSequences: false,
+        tf.layers.dense({
+          name: 'hidden-1',
+          activation: 'sigmoid',
+          units: 11
+        })
+      );
+      errorsModel.add(
+        tf.layers.reshape({ name: 'hidden2Reshape', targetShape: [110] })
+      );
+      errorsModel.add(
+        tf.layers.dense({
+          name: 'hidden-2',
+          activation: 'sigmoid',
+          units: 55
+        })
+      );
+      errorsModel.add(
+        tf.layers.dense({
+          name: 'hidden-3',
+          activation: 'sigmoid',
+          units: 25
+        })
+      );
+      errorsModel.add(
+        tf.layers.dense({
+          name: 'hidden-4',
+          activation: 'sigmoid',
+          units: 15
         })
       );
       //Output layer
