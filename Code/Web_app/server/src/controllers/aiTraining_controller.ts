@@ -4,6 +4,7 @@ import {
   createAITraining,
   deleteAITrainingById,
   findAITrainingById,
+  findAITrainingsByFencerId,
   findAllAITraining,
   updateAITrainingById,
 } from "../data/aiTraining";
@@ -58,6 +59,17 @@ export async function deleteAITraining(req: Request, res: Response) {
     return res.status(200).json({
       data: await deleteAITrainingById(Number(req.params.id)),
     });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getAITrainingsByFencerId(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await findAITrainingsByFencerId(Number(req.params.id)),
+    })
   } catch (error) {
     errorLog(error);
     return res.sendStatus(500);
