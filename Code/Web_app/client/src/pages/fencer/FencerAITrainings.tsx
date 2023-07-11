@@ -11,15 +11,18 @@ import {
 import { useEffect, useState } from "react";
 import axios from "../../services/axios";
 import { AITraining } from "../../types";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import NewTrainingDialog from "./NewTrainingDialog";
 import dayjs from "dayjs";
 import useAuth from "../../hooks/useAuth";
+import { useAlert } from "../../hooks/useAlert";
 
 const FencerAITrainings = () => {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const [trainings, setTrainings] = useState<AITraining[]>([]);
+  const { id } = useParams();
+  const { showError } = useAlert();
 
   const handleOpen = () => {
     setOpen(true);
@@ -31,10 +34,15 @@ const FencerAITrainings = () => {
 
   useEffect(() => {
     const fetchTrainings = async () => {
-      const { data } = await axios.get("/dashboard/aitraining");
+      const fencerID = id ? id : user?.fencer?.fencerID;
+      const url = `/dashboard/fencer/aitraining/${fencerID}`;
+      const { data } = await axios.get(url);
       setTrainings(data.data);
     };
-    fetchTrainings();
+    fetchTrainings().catch((error) => {
+      showError("Error al cargar los entrenamientos")
+      console.error(error);
+    });
   }, []);
 
   const detailUrl = (id: number) => {

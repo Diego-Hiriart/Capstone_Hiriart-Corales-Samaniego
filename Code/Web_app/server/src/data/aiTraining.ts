@@ -81,3 +81,12 @@ export async function deleteAITrainingById(id: number) {
     throw error;
   }
 }
+
+export async function findAITrainingsByFencerId(id: number) {
+  const AITrainings = await prisma.aITraining.findMany({
+    where: {
+      fencerID: id,
+    },
+  });
+  return AITrainings;
+}
