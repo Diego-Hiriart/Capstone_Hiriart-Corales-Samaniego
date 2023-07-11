@@ -45,17 +45,17 @@ const AuthStatus = () => {
           onClose={handleCloseUserMenu}
         >
           { user?.roles?.includes("admin") && (
-            <MenuItem component={RouterLink} to="admin/profile">
+            <MenuItem component={RouterLink} to="/admin/profile">
               Perfil Admin
             </MenuItem>
           )}
           { user?.roles?.includes("trainer") && (
-            <MenuItem component={RouterLink} to="profile">
+            <MenuItem component={RouterLink} to="/profile">
               Perfil Trainer
             </MenuItem>
           )}
           { user?.roles?.includes("fencer") && (
-            <MenuItem component={RouterLink} to="profile">
+            <MenuItem component={RouterLink} to="/profile">
               Perfil Fencer
             </MenuItem>
           )}
