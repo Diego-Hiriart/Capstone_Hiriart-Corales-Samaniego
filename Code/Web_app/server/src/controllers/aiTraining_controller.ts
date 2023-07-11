@@ -69,7 +69,7 @@ export async function getAITrainingsByFencerId(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await findAITrainingsByFencerId(Number(req.params.id)),
-    })
+    });
   } catch (error) {
     errorLog(error);
     return res.sendStatus(500);
