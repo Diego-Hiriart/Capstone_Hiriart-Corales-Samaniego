@@ -1,3 +1,5 @@
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {
   Box,
   Button,
@@ -5,11 +7,12 @@ import {
   Divider,
   Grid,
   ListItemButton,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import {
   Activity,
@@ -18,13 +21,10 @@ import {
   MicroCycle,
 } from "../../types";
 import { formatDate } from "../../utils/formatDate";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import MesoCycleActivityDetails from "./MesoCycleActivityDetails";
+import MesoCycleAddActivity from "./MesoCycleAddActivity";
 import MesoCycleAddPlan from "./MesoCycleAddPlan";
 import MesoCycleMicroLoad from "./MesoCycleMicroLoad";
-import MesoCycleAddActivity from "./MesoCycleAddActivity";
-import AuthContext from "../../contexts/AuthContext";
-import MesoCycleActivityDetails from "./MesoCycleActivityDetails";
 
 const MesoCycleDetails = () => {
   const { id } = useParams();

@@ -1,4 +1,4 @@
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { Checkbox, FormControlLabel } from "@mui/material";
 import { Control, Controller } from "react-hook-form";
 
 type ControlledCheckboxPropsType = {

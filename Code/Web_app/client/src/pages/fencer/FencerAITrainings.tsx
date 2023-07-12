@@ -1,21 +1,22 @@
 import {
-  Container,
   Box,
-  Typography,
   Button,
+  Container,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
+  Typography,
 } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+
+import { useAlert } from "../../hooks/useAlert";
+import useAuth from "../../hooks/useAuth";
 import axios from "../../services/axios";
 import { AITraining } from "../../types";
-import { Link as RouterLink, useParams } from "react-router-dom";
 import NewTrainingDialog from "./NewTrainingDialog";
-import dayjs from "dayjs";
-import useAuth from "../../hooks/useAuth";
-import { useAlert } from "../../hooks/useAlert";
 
 const FencerAITrainings = () => {
   const [open, setOpen] = useState(false);
@@ -40,8 +41,7 @@ const FencerAITrainings = () => {
       setTrainings(data.data);
     };
     fetchTrainings().catch((error) => {
-      showError("Error al cargar los entrenamientos")
-      console.error(error);
+      showError("Error al cargar los entrenamientos");
     });
   }, []);
 
@@ -50,7 +50,7 @@ const FencerAITrainings = () => {
       return `/fencer/aitraining/${id}`;
     }
     return String(id);
-  }
+  };
 
   return (
     <Container component="main" maxWidth="sm">

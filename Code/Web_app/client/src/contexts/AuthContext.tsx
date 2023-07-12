@@ -1,14 +1,15 @@
+import { AxiosError } from "axios";
 import React, {
+  createContext,
   Dispatch,
   SetStateAction,
-  createContext,
   useState,
 } from "react";
-import { LoginFormInputs, User } from "../types";
-import { SignupFormType } from "../pages/fencer/validations/SignupFormValidation";
 import { useNavigate } from "react-router-dom";
+
+import { SignupFormType } from "../pages/fencer/validations/SignupFormValidation";
 import axios from "../services/axios";
-import { AxiosError } from "axios";
+import { LoginFormInputs, User } from "../types";
 
 interface AuthContext {
   user: User | null;

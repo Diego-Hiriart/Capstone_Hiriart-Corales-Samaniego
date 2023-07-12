@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import useTab from "../../hooks/useTab";
-import VerticalTabs from "../../components/VerticalTabs";
-import useAuth from "../../hooks/useAuth";
+
 import {
   fencerGroupTabs,
   trainerGroupTabs,
 } from "../../components/Sidebar/groupTabs";
+import VerticalTabs from "../../components/VerticalTabs";
+import useAuth from "../../hooks/useAuth";
+import useTab from "../../hooks/useTab";
 
 const GroupDetails = () => {
   // TODO: Fetch group data and store in context or sm

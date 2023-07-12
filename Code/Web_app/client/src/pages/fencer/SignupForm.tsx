@@ -1,23 +1,24 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Link as RouterLink,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { SubmitHandler, useForm } from "react-hook-form";
+
 import { useAlert } from "../../hooks/useAlert";
-import { AxiosError } from "axios";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
-import { SignupFormType, schema } from "./validations/SignupFormValidation";
-import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "../../services/axios";
-import { useEffect } from "react";
+import { schema,SignupFormType } from "./validations/SignupFormValidation";
 
 export default function SignupForm() {
   const { multiFormState, setMultiFormState, setRegistrationToken } =

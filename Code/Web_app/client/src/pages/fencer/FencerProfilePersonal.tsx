@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -11,9 +12,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useAlert } from "../../hooks/useAlert";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormControl,
   FormControlLabel,
@@ -22,17 +20,20 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import {
-  SignupPersonalFormType,
-  schema,
-  leadSources,
-  inscriptionReasons,
-  bloodTypes,
-} from "./validations/SignupPersonalFormValidation";
-import { useContext } from "react";
-import AuthContext from "../../contexts/AuthContext";
-import axios from "../../services/axios";
 import dayjs from "dayjs";
+import { useContext } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
+import AuthContext from "../../contexts/AuthContext";
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
+import {
+  bloodTypes,
+  inscriptionReasons,
+  leadSources,
+  schema,
+  SignupPersonalFormType,
+} from "./validations/SignupPersonalFormValidation";
 
 const FencerProfilePersonal = () => {
   const { showError, showSuccess } = useAlert();

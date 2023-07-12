@@ -1,14 +1,16 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Checkbox, DialogActions, FormControlLabel } from "@mui/material";
-import { AxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Checkbox, DialogActions, FormControlLabel } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import { AxiosError } from "axios";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
 import { FencerInviteForm, schema } from "./validations/FencerInviteValidation";
+
 interface FencerCreateProps {
   handleClose: () => void;
   setInviteLink: (link: string) => void;
@@ -33,7 +35,7 @@ export default function FencerInvite({
       names: "",
       lastNames: "",
       email: "",
-    }
+    },
   });
 
   const onSubmit: SubmitHandler<FencerInviteForm> = async (formData) => {

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
+
 import axios from "../../../services/axios";
 import { TrainingGroupFull } from "../../../types";
 import { formatDate } from "../../../utils/formatDate";

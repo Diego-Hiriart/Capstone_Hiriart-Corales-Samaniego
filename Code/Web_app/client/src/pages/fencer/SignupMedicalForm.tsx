@@ -1,22 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Container,
   Box,
-  Typography,
-  TextField,
-  Stack,
   Button,
+  Container,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  SignupMedicalFormType,
-  schema,
-} from "./validations/SignupMedicalFormValidation";
+import { useNavigate } from "react-router-dom";
+
+import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
 import { useAlert } from "../../hooks/useAlert";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
-import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
-import { useNavigate } from "react-router-dom";
 import axios from "../../services/axios";
+import {
+  schema,
+  SignupMedicalFormType,
+} from "./validations/SignupMedicalFormValidation";
 
 const SignupMedicalForm = () => {
   const navigate = useNavigate();

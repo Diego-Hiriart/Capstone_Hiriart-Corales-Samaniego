@@ -7,13 +7,13 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { fileToString } from "../../utils/files";
+
 import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
+import { fileToString } from "../../utils/files";
 
 const schema = z.object({
   name: z.string().nonempty("Campo obligatorio"),

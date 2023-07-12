@@ -1,17 +1,16 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  Avatar,
   Box,
   Button,
   Container,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+
 import axios from "../../services/axios";
 import { ActivityType } from "../../types";
 import ActivityAddType from "./ActivityAddType";

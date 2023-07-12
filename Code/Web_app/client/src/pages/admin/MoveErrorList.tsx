@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -9,10 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+
+import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
 import { Error as MoveError } from "../../types";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { useAlert } from "../../hooks/useAlert";
 import MoveErrorCreate from "./MoveErrorCreate";
 
 const MoveErrorList = () => {
@@ -79,7 +80,7 @@ const MoveErrorList = () => {
               secondaryAction={
                 <IconButton
                   aria-label="delete"
-                  onClick={(e) => handleDelete(moveError.errorID)}
+                  onClick={() => handleDelete(moveError.errorID)}
                 >
                   <DeleteIcon />
                 </IconButton>

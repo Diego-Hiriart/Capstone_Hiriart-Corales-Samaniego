@@ -1,13 +1,11 @@
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { AxiosError } from "axios";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { z } from "zod";
+
 import axios from "../../services/axios";
 import { Fencer, TrainingGroupFull } from "../../types";
 

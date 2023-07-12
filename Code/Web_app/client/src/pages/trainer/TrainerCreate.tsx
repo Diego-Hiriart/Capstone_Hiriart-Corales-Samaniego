@@ -1,11 +1,4 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useAlert } from "../../hooks/useAlert";
-import axios from "../../services/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormControl,
   FormControlLabel,
@@ -13,10 +6,18 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { AxiosError } from "axios";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
 
 const schema = z
   .object({

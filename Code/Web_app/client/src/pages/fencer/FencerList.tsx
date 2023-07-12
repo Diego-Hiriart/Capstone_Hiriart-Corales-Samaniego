@@ -16,11 +16,12 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+
 import axios from "../../services/axios";
 import { Fencer } from "../../types";
+import FencerDeactivate from "./FencerDeactivate";
 import FencerInvite from "./FencerInvite";
 import LinkInvite from "./LinkInvite";
-import FencerDeactivate from "./FencerDeactivate";
 
 const FencerList = () => {
   const [fencers, setFencers] = useState<Fencer[]>(null!);

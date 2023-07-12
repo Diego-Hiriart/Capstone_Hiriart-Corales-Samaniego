@@ -1,19 +1,17 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { Link as RouterLink } from "react-router-dom";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { LoginFormInputs } from "../types";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useContext } from "react";
-import AuthContext from "../contexts/AuthContext";
-import { Alert } from "@mui/material";
-import logoUrl from "/static/images/logo.png";
 import styled from "@emotion/styled";
-import { AxiosError } from "axios";
+import { Alert } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useContext } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import logoUrl from "/static/images/logo.png";
+
+import AuthContext from "../contexts/AuthContext";
+import { LoginFormInputs } from "../types";
 
 export default function Login() {
   const { login } = useContext(AuthContext);

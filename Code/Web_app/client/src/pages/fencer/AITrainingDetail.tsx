@@ -1,25 +1,26 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Container,
   Box,
-  Typography,
+  Button,
+  Container,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   TextField,
-  Button,
+  Typography,
 } from "@mui/material";
-import { AITraining, Move, PoseAnalisisData, TrainingError } from "../../types";
-import { useEffect, useState } from "react";
-import axios from "../../services/axios";
 import dayjs from "dayjs";
-import { useParams } from "react-router-dom";
-import AIErrorDialog from "./AIErrorDialog";
-import useAuth from "../../hooks/useAuth";
-import { z } from "zod";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useParams } from "react-router-dom";
+import { z } from "zod";
+
 import { useAlert } from "../../hooks/useAlert";
+import useAuth from "../../hooks/useAuth";
+import axios from "../../services/axios";
+import { AITraining, Move, PoseAnalisisData, TrainingError } from "../../types";
+import AIErrorDialog from "./AIErrorDialog";
 import { poseAnalisisResponseMock } from "./poseErrorMock";
 
 const schema = z.object({

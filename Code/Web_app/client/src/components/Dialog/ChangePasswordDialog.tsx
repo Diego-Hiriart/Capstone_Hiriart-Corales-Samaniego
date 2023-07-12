@@ -8,12 +8,13 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { setErrorMap, z } from "zod";
+import { z } from "zod";
+
+import { useAlert } from "../../hooks/useAlert";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../services/axios";
-import { isAxiosError } from "axios";
-import { useAlert } from "../../hooks/useAlert";
 
 interface Props {
   open: boolean;

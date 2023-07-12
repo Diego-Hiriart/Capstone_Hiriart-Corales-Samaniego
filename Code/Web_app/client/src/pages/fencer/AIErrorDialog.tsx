@@ -1,18 +1,19 @@
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Typography,
-  Button,
-  DialogActions,
-  Stack,
-  Box,
-} from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
 import { css } from "@emotion/react";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { Keypoint, Pose } from "@tensorflow-models/pose-detection";
+import { useCallback, useEffect, useRef, useState } from "react";
+
 import { DetectedPose, PoseAnalisisData } from "../../types";
+import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
 
 interface Props {
   open: boolean;

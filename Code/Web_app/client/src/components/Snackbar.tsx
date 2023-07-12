@@ -1,5 +1,6 @@
 import { Snackbar as MuiSnackbar } from "@mui/material";
 import { Alert } from "@mui/material";
+
 import { useAlert } from "../hooks/useAlert";
 
 const Snackbar = () => {

@@ -11,8 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import axios from "../../services/axios";
 import { Link as RouterLink } from "react-router-dom";
+
+import axios from "../../services/axios";
 import { Trainer } from "../../types";
 
 const TrainerList = () => {

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import useTab from "../../hooks/useTab";
+
 import { trainerFencerTabs } from "../../components/Sidebar/trainerFencerTabs";
 import VerticalTabs from "../../components/VerticalTabs";
+import useTab from "../../hooks/useTab";
 
 export default function TrainerViewFencers() {
   const { setTabValue, setTabItems } = useTab();

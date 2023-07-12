@@ -1,7 +1,8 @@
+import { Avatar, Box, IconButton, Menu, MenuItem } from "@mui/material";
 import { useContext, useState } from "react";
-import AuthContext from "../../contexts/AuthContext";
-import { Avatar, Box, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+
+import AuthContext from "../../contexts/AuthContext";
 
 const AuthStatus = () => {
   const { user, logout } = useContext(AuthContext);
@@ -44,17 +45,17 @@ const AuthStatus = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          { user?.roles?.includes("admin") && (
+          {user?.roles?.includes("admin") && (
             <MenuItem component={RouterLink} to="/admin/profile">
               Perfil Admin
             </MenuItem>
           )}
-          { user?.roles?.includes("trainer") && (
+          {user?.roles?.includes("trainer") && (
             <MenuItem component={RouterLink} to="/profile">
               Perfil Trainer
             </MenuItem>
           )}
-          { user?.roles?.includes("fencer") && (
+          {user?.roles?.includes("fencer") && (
             <MenuItem component={RouterLink} to="/profile">
               Perfil Fencer
             </MenuItem>

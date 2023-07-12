@@ -1,13 +1,14 @@
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Typography,
 } from "@mui/material";
-import { SingleFeedback } from "../../types";
 import dayjs from "dayjs";
+
+import { SingleFeedback } from "../../types";
 
 interface Props {
   open: boolean;

@@ -1,21 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Autocomplete,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormLabel,
-  Typography,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, FormLabel } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import { AxiosError } from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
+
 import axios from "../../services/axios";
 import { MicroCycle } from "../../types";
 

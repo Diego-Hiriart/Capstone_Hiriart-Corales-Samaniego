@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "../contexts/AuthContext";
 import { Navigate, Outlet, useSearchParams } from "react-router-dom";
+
+import AuthContext from "../contexts/AuthContext";
 import { MultiStepFormProvider } from "../contexts/MultiStepFormContext";
 import axios from "../services/axios";
 

@@ -1,26 +1,27 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Container,
   Box,
-  Typography,
+  Button,
+  Container,
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputAdornment,
   Radio,
   RadioGroup,
-  TextField,
-  InputAdornment,
-  Button,
   Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { useAlert } from "../../hooks/useAlert";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+
+import { useAlert } from "../../hooks/useAlert";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
 import {
-  SignupFencerFormType,
   schema,
+  SignupFencerFormType,
 } from "./validations/SignupFencerFormValidation";
 
 const SignupFencerForm = () => {

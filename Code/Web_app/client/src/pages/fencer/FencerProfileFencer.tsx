@@ -1,28 +1,29 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Container,
   Box,
-  Typography,
+  Button,
+  Container,
   FormControl,
   FormControlLabel,
   FormLabel,
+  InputAdornment,
   Radio,
   RadioGroup,
-  TextField,
-  InputAdornment,
-  Button,
   Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { useAlert } from "../../hooks/useAlert";
+import { useContext } from "react";
 import { Controller, SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  SignupFencerFormType,
-  schema,
-} from "./validations/SignupFencerFormValidation";
-import axios from "../../services/axios";
-import { useContext } from "react";
+
 import AuthContext from "../../contexts/AuthContext";
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
+import {
+  schema,
+  SignupFencerFormType,
+} from "./validations/SignupFencerFormValidation";
 
 const FencerProfileFencer = () => {
   const { user } = useContext(AuthContext);

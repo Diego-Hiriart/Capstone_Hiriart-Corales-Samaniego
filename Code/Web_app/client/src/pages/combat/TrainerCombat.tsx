@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
+
 import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import { TrainingCombatFull } from "../../types";
@@ -18,9 +19,6 @@ import TrainerAddCombat from "./TrainerAddCombat";
 const TrainerCombat = () => {
   const [combats, setCombats] = useState<TrainingCombatFull[]>(null!);
   const [open, setOpen] = useState(false);
-  const [selectedCombat, setSelectedCycle] = useState<TrainingCombatFull>(
-    null!
-  );
   const { user } = useContext(AuthContext);
 
   useEffect(() => {

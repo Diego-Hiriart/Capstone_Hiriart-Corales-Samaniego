@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+
 import AuthContext from "../contexts/AuthContext";
 
 interface ProtectedRouteProps {
@@ -7,12 +8,11 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { user, setUser, checkToken } = useContext(AuthContext);
+  const { user, checkToken } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    checkToken()
-      .finally(() => setIsLoading(false));
+    checkToken().finally(() => setIsLoading(false));
   }, []);
 
   if (isLoading) {
@@ -24,7 +24,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     <Navigate to="/unauthorized" />
   ) : (
     <Navigate to="/login" />
-  )
+  );
 };
 
 export default ProtectedRoute;

@@ -1,22 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Container,
   Box,
-  Typography,
-  TextField,
-  Stack,
   Button,
+  Container,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  SignupMedicalFormType,
-  schema,
-} from "./validations/SignupMedicalFormValidation";
-import { useAlert } from "../../hooks/useAlert";
-import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
-import axios from "../../services/axios";
 import { useContext } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
 import AuthContext from "../../contexts/AuthContext";
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
+import {
+  schema,
+  SignupMedicalFormType,
+} from "./validations/SignupMedicalFormValidation";
 
 const SignupMedicalForm = () => {
   const { showError, showSuccess } = useAlert();

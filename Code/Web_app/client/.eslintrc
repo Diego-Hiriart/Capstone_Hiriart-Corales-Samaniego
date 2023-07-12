@@ -1,7 +1,12 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "no-loops", "autofix"],
+  "plugins": [
+    "@typescript-eslint",
+    "no-loops",
+    "autofix",
+    "simple-import-sort"
+  ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -13,16 +18,14 @@
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
     "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": "off",
-
-    // TODO Error
-    "semi": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "simple-import-sort/imports": "error",
+    "@typescript-eslint/no-explicit-any": "off",
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-unused-vars": "off", 
     "@typescript-eslint/no-non-null-assertion": "off",
     "no-loops/no-loops": "off",
-    "eol-last": "off",
-    // "eol-last": ["error", "always"],
-
+    "eol-last": ["error", "always"],
     "react/no-unknown-property": ["error", { "ignore": ["css"] }] // Allow css prop from emotion
   }
 }

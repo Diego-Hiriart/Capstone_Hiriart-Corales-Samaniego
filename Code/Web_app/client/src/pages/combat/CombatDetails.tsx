@@ -2,13 +2,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
 import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import { TrainingCombatFull } from "../../types";
 import { formatDate } from "../../utils/formatDate";
 import { CombatEntry } from "./CombatEntry";
-import EditCombat from "./EditCombat";
 import DeleteCombat from "./DeleteCombat";
+import EditCombat from "./EditCombat";
 
 const CombatDetails = () => {
   const [combat, setCombat] = useState<TrainingCombatFull>(null!);
