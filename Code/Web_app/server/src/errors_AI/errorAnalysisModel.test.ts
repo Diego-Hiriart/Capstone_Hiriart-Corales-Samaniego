@@ -1,6 +1,6 @@
-import { loadModel, runModel } from "./errorAnalysisModel";
-import correctMovementData from "./mocks/puntaEnLineaDerecha.json";
-import incorrectMovementData from "./mocks/puntaEnLineaDerechaIncorrecto.json";
+// import { loadModel, runModel } from "./errorAnalysisModel";
+// import correctMovementData from "./mocks/puntaEnLineaDerecha.json";
+// import incorrectMovementData from "./mocks/puntaEnLineaDerechaIncorrecto.json";
 
 describe("errorAnalysisModel", () => {
   test("should return void when passed the correct move", async () => {
