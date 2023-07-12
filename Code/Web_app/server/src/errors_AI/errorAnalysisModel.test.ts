@@ -1,8 +1,8 @@
-import { loadModel, runModel } from "./errorAnalysisModel";
-import correctMovementData from "./mocks/puntaEnLineaDerecha.json";
-import incorrectMovementData from "./mocks/puntaEnLineaDerechaIncorrecto.json";
+// import { loadModel, runModel } from "./errorAnalysisModel";
+// import correctMovementData from "./mocks/puntaEnLineaDerecha.json";
+// import incorrectMovementData from "./mocks/puntaEnLineaDerechaIncorrecto.json";
 
-describe("errorAnalysisModel", () => {
+// describe("errorAnalysisModel", () => {
   // test("should return void when passed the correct move", async () => {
   //   const errorsModel = await loadModel();
   //   const modelResult = await runModel(errorsModel, correctMovementData);
@@ -13,4 +13,4 @@ describe("errorAnalysisModel", () => {
   //   const modelResult = await runModel(errorsModel, incorrectMovementData);
   //   expect(modelResult).not.toBe(undefined);
   // });
-});
+// });
