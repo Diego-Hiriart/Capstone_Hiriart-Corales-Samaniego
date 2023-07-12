@@ -1,6 +1,4 @@
-import { FC, useEffect, useState } from "react";
-import { AcademyConfig as Config } from "../../types";
-import axios from "../../services/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Avatar,
   Box,
@@ -9,11 +7,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import { FC, useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { z } from "zod";
+
+import axios from "../../services/axios";
+import { AcademyConfig as Config } from "../../types";
 
 const schema = z.object({
   name: z.string().optional(),

@@ -1,19 +1,19 @@
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useAlert } from "../../hooks/useAlert";
-import { AxiosError } from "axios";
-import { SignupFormType } from "./validations/SignupFormValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "../../services/axios";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { AxiosError } from "axios";
 import { useContext, useState } from "react";
-import AuthContext from "../../contexts/AuthContext";
-import { Stack } from "@mui/material";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+
 import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
+import AuthContext from "../../contexts/AuthContext";
+import { useAlert } from "../../hooks/useAlert";
+import axios from "../../services/axios";
+import { SignupFormType } from "./validations/SignupFormValidation";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),

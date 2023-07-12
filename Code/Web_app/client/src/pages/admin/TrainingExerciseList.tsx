@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -9,11 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
+
+import { useAlert } from "../../hooks/useAlert";
 import axios from "../../services/axios";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { TrainingExercise } from "../../types";
 import TrainingExerciseCreate from "./TrainingExerciseCreate";
-import { useAlert } from "../../hooks/useAlert";
 
 const TrainingExerciseList = () => {
   const [TrainingExercise, setTrainingExercise] = useState<TrainingExercise[]>(
@@ -81,7 +82,7 @@ const TrainingExerciseList = () => {
               secondaryAction={
                 <IconButton
                   aria-label="delete"
-                  onClick={(e) => handleDelete(exercise.trainingExerciseID)}
+                  onClick={() => handleDelete(exercise.trainingExerciseID)}
                 >
                   <DeleteIcon />
                 </IconButton>

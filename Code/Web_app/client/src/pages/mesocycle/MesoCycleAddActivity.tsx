@@ -14,8 +14,9 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
+
 import axios from "../../services/axios";
-import { Activity, ActivityType, DailyPlan, MicroCycle } from "../../types";
+import { Activity, DailyPlan, MicroCycle } from "../../types";
 
 const schema = z.object({
   name: z.string(),
@@ -58,7 +59,7 @@ const MesoCycleAddActivity = ({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<MesoCycleAddPlanForm> = async (formData) => {
+  const onSubmit: SubmitHandler<MesoCycleAddPlanForm> = async () => {
     try {
       await axios.post(
         "/dashboard/daily_plan/activity/" + dailyPlan.dailyPlanID,

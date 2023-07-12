@@ -10,11 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+
 import axios from "../../services/axios";
 import { Activity } from "../../types";
 import ActivityAddType from "./AcademyAddActivity";
-import ActivityRemoveType from "./AcademyRemoveActivity";
 import AcademyEditActivity from "./AcademyEditActivity";
+import ActivityRemoveType from "./AcademyRemoveActivity";
 
 const AcademyActivities = () => {
   const [activities, setActivities] = useState<Activity[]>(null!);

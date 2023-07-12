@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import useTab from "../../hooks/useTab";
-import VerticalTabs from "../../components/VerticalTabs";
+
 import { aiConfigTabs } from "../../components/Sidebar/AIConfigTabs";
+import VerticalTabs from "../../components/VerticalTabs";
+import useTab from "../../hooks/useTab";
 
 const AIConfig = () => {
   const { setTabValue, setTabItems } = useTab();

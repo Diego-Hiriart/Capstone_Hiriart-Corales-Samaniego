@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
+
 import axios from "../../services/axios";
 import { Fencer, TrainingGroupFull } from "../../types";
 import GroupAddFencer from "./GroupAddFencer";

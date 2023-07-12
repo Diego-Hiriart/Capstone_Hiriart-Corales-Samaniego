@@ -1,9 +1,3 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { Link as RouterLink } from "react-router-dom";
-import { useContext, useState } from "react";
-import AuthContext from "../../contexts/AuthContext";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   Box,
@@ -16,9 +10,16 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useContext, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+
+import AuthContext from "../../contexts/AuthContext";
+import useTab from "../../hooks/useTab";
 import AuthStatus from "./AuthStatus";
 import { SideBarItems } from "./SideBarItems";
-import useTab from "../../hooks/useTab";
 
 declare module "@mui/material/AppBar" {
   export interface AppBarPropsColorOverrides {

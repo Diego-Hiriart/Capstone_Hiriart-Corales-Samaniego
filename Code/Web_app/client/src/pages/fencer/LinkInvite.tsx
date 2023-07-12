@@ -1,4 +1,5 @@
 import { Button, DialogActions, TextField } from "@mui/material";
+
 import { useAlert } from "../../hooks/useAlert";
 
 interface LinkInviteProps {

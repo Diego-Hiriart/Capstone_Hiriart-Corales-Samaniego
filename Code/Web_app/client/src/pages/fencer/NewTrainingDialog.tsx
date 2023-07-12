@@ -1,26 +1,27 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Box,
+  Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
-  TextField,
+  DialogTitle,
   FormControl,
   FormHelperText,
   InputLabel,
   MenuItem,
   Select,
-  Button,
-  DialogActions,
-  Box,
+  TextField,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+
+import { useAlert } from "../../hooks/useAlert";
+import useAuth from "../../hooks/useAuth";
 import axios from "../../services/axios";
 import { TrainingExercise } from "../../types";
-import useAuth from "../../hooks/useAuth";
-import { useAlert } from "../../hooks/useAlert";
 
 interface Props {
   open: boolean;

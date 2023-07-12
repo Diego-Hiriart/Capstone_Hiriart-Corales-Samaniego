@@ -1,5 +1,6 @@
-import useTab from "../../hooks/useTab";
 import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+
+import useTab from "../../hooks/useTab";
 import { TabItem } from "../../types";
 
 export const SideBarItems = ({ items }: { items: TabItem[] }) => {

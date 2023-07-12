@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+
 import sound1 from "/static/audio/beep1.mp3";
 import sound2 from "/static/audio/beep2.mp3";
 

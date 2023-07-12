@@ -1,5 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
-import axios from "../../services/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -12,17 +11,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import { useAlert } from "../../hooks/useAlert";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
-import { useContext, useEffect, useState } from "react";
-import { User } from "../../types";
-import AuthContext from "../../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useLocation, useParams } from "react-router-dom";
+import { z } from "zod";
+
 import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
 import ControlledCheckbox from "../../components/Form/ControlledCheckbox";
+import { useAlert } from "../../hooks/useAlert";
 import useAuth from "../../hooks/useAuth";
+import axios from "../../services/axios";
+import { User } from "../../types";
 
 const schema = z.object({
   names: z.string().nonempty({ message: "Campo requerido" }),

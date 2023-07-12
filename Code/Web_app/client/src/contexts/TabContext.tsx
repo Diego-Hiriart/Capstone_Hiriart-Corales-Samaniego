@@ -1,4 +1,5 @@
-import { ReactNode, createContext, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
+
 import { TabItem } from "../types";
 interface TabContext {
   tabValue: number;

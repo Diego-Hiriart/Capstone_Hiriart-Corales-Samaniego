@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+
 import { academyTabs } from "../../components/Sidebar/academyTabs";
 import VerticalTabs from "../../components/VerticalTabs";
 import useTab from "../../hooks/useTab";

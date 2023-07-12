@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
+
 import axios from "../../services/axios";
 import { Fencer, TrainingGroupFull } from "../../types";
 
@@ -53,10 +54,9 @@ const GroupAddFencer = ({ open, handleClose, group }: GroupAddFencerProps) => {
 
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<GroupAddFencerForm> = async (formData) => {
+  const onSubmit: SubmitHandler<GroupAddFencerForm> = async () => {
     try {
       if (!fencerID) return;
-      console.log(fencerID);
 
       await axios.put("/dashboard/fencer/", {
         id: fencerID,

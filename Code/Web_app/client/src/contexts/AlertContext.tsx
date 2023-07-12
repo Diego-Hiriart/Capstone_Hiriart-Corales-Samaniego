@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 type AlertType = {
   severity: "success" | "info" | "warning" | "error";

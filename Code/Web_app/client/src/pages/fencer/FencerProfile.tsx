@@ -1,7 +1,8 @@
 import { useEffect } from "react";
-import useTab from "../../hooks/useTab";
+
 import { fencerProfileTabs } from "../../components/Sidebar/fencerProfileTabs";
 import VerticalTabs from "../../components/VerticalTabs";
+import useTab from "../../hooks/useTab";
 
 const FencerProfile = () => {
   const { setTabValue, setTabItems } = useTab();

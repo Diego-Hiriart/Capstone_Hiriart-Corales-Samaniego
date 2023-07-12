@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -11,9 +12,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useAlert } from "../../hooks/useAlert";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormControl,
   FormControlLabel,
@@ -23,14 +21,17 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+import { useAlert } from "../../hooks/useAlert";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
 import {
-  SignupPersonalFormType,
-  schema,
-  leadSources,
-  inscriptionReasons,
   bloodTypes,
+  inscriptionReasons,
+  leadSources,
+  schema,
+  SignupPersonalFormType,
 } from "./validations/SignupPersonalFormValidation";
 
 const SignupPersonalForm = () => {

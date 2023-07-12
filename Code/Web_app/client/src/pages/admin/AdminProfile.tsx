@@ -1,6 +1,7 @@
 import { Box, Button, Container, Typography } from "@mui/material";
-import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
 import { useState } from "react";
+
+import ChangePasswordDialog from "../../components/Dialog/ChangePasswordDialog";
 
 const AdminProfile = () => {
   const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] =

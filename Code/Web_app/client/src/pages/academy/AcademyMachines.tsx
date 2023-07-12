@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+
 import axios from "../../services/axios";
 import { MachineCombatData } from "../../types";
 import AcademyDeleteMachine from "./AcademyDeleteMachine";

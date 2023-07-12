@@ -1,3 +1,6 @@
+import { css } from "@emotion/react";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { PoseDetector } from "@tensorflow-models/pose-detection";
 import {
   useCallback,
   useEffect,
@@ -5,24 +8,23 @@ import {
   useRef,
   useState,
 } from "react";
-import { createDetector } from "./ai-pose-detection/index";
 import { isMobile } from "react-device-detect";
-import { css } from "@emotion/react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import soundWarning from "/static/audio/beep-warning.mp3";
+
 import Navbar from "../../components/Navbar/Navbar";
-import { Box, Button, Stack, Typography } from "@mui/material";
-import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
-import axios from "../../services/axios";
-import { Camera } from "./ai-pose-detection/camera";
-import { STATE } from "./ai-pose-detection/params";
-import { PoseDetector } from "@tensorflow-models/pose-detection";
+import { useAlert } from "../../hooks/useAlert";
+import useAuth from "../../hooks/useAuth";
 import useCountdown from "../../hooks/useCountdownTimer";
+import axios from "../../services/axios";
+import { DetectedPose, Move, PoseAnalisisData } from "../../types";
+import { Camera } from "./ai-pose-detection/camera";
+import { createDetector } from "./ai-pose-detection/index";
+import { STATE } from "./ai-pose-detection/params";
+import { RendererCanvas2d } from "./ai-pose-detection/renderer_canvas2d";
 import AIErrorDialog from "./AIErrorDialog";
 import { poseAnalisisResponseMock } from "./poseErrorMock";
-import { useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import { DetectedPose, Move, PoseAnalisisData } from "../../types";
-import soundWarning from "/static/audio/beep-warning.mp3";
-import { useAlert } from "../../hooks/useAlert";
 
 const beepWarning = new Audio(soundWarning);
 

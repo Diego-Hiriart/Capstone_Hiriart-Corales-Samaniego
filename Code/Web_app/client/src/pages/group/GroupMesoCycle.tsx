@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
+
 import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
 import { MesoCycle, TrainingGroupFull } from "../../types";

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
 import { Box, Tab, Tabs } from "@mui/material";
+import { useEffect } from "react";
+
 import useTab from "../hooks/useTab";
-import { TabPanel } from "./TabPanel";
 import { TabItem } from "../types";
+import { TabPanel } from "./TabPanel";
 
 interface Props {
   tabItems: TabItem[];

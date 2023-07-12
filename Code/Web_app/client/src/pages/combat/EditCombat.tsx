@@ -24,6 +24,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
+
 import axios from "../../services/axios";
 import { Fencer, TrainingCombatFull } from "../../types";
 
@@ -188,7 +189,7 @@ const EditCombat = ({ open, handleClose, combat }: TrainerAddCombatProps) => {
                     id: fencer.fencerID,
                   }))}
                   sx={{ width: 300 }}
-                  onChange={(e, value) => setFencer1ID(value?.id || 0)}
+                  onChange={(e, value) => setFencer2ID(value?.id || 0)}
                   defaultValue={{
                     label: `${combat?.fencer2.user.names} ${combat?.fencer2.user.lastNames}`,
                     id: combat?.fencer2ID,

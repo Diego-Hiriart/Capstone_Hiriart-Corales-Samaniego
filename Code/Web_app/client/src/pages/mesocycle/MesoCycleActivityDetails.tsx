@@ -1,24 +1,14 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  Autocomplete,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/TextField";
-import { AxiosError } from "axios";
-import { useContext, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
-import { z } from "zod";
+
 import AuthContext from "../../contexts/AuthContext";
 import axios from "../../services/axios";
-import { Activity, ActivityType, DailyPlan } from "../../types";
+import { Activity } from "../../types";
 
 interface MesoCycleActivityDetailsProps {
   activity: Activity;
@@ -33,19 +23,9 @@ const MesoCycleActivityDetails = ({
   handleClose,
   dailyPlanActivityID,
 }: MesoCycleActivityDetailsProps) => {
-  const [activityTypes, setActivityTypes] = useState<ActivityType[]>([]);
   const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchFencers = async () => {
-      const { data } = await axios.get("/dashboard/activity_type/");
-      setActivityTypes(data.data);
-    };
-
-    fetchFencers();
-  }, []);
 
   function padTo2Digits(num: number) {
     return String(num).padStart(2, "0");
