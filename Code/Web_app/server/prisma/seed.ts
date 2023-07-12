@@ -307,12 +307,12 @@ async function main() {
   await prisma.aITraining.createMany({
     data: aiTrainings,
   });
-  await prisma.error.createMany({
-    data: errors,
-  });
-  await prisma.trainingError.createMany({
-    data: trainingErrors,
-  });
+  // await prisma.error.createMany({
+  //   data: errors,
+  // });
+  // await prisma.trainingError.createMany({
+  //   data: trainingErrors,
+  // });
   await prisma.machineCombatData.createMany({
     data: machineCombatData,
   });

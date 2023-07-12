@@ -89,7 +89,7 @@ export async function runModel(
   //Run inference on all packets
   let aiResultIndex; //To get the correct movement data from DB, index of result
   let aiResultConfidence; //Percentage of confidence that movement belongs to a class
-  const condifenceThreshold = 0.7;
+  const condifenceThreshold = 0.5;
   let correctMove; //To return correct pose from DB
   let incorrectMove; //To return error that was made
   let movementLabels = JSON.parse(
@@ -102,36 +102,53 @@ export async function runModel(
     dictionaryIndex -= 2;
   }
   let trainingClass: string = movementLabels[dictionaryIndex]; //To store detected class, initliaze with class being trained
+  let analysisResults = [];
   for (let i = 0; i < xyzMovements.length; i++) {
     if (xyzMovements[i]) {
       let tensorX = tf.tensor([xyzMovements[i]]);
       let results = errorsModel.predict(tensorX) as tf.Tensor;
       //Get which class the movement belongs to
-      let resultsArray = Array.from(results.dataSync());
-      aiResultIndex = Array.from(tf.argMax(resultsArray).dataSync())[0]; //Get index of largest result
-      aiResultConfidence = resultsArray[aiResultIndex]; //Get max result
-      //Check if class detected belongs to movement being trained
-      if (dictionaryIndex === aiResultIndex) {
-        return;
-      } else {
-        incorrectMove = extract2DKeypoints(movementData.move);
-        let storedError = await findErrorBySystemName(trainingClass);
-        //Store error
-        let trainingError = {
-          AITrainingID: movementData.sessionId,
-          errorID: storedError?.errorID!,
-          poseData: JSON.stringify(incorrectMove),
-        };
-        await createTrainingError(trainingError);
-        return {
-          data: {
-            correctMove: storedError?.correctPose,
-            incorrectMove,
-            title: storedError?.name,
-            description: storedError?.description,
-          },
-        };
-      }
+      analysisResults.push(Array.from(results.dataSync()));
     }
   }
+
+  let lowConfidence = false;
+  let correctMoveDetected = false;
+
+  analysisResults.forEach((result) => {
+    // console.log(result);
+    //Check if class detected belongs to movement being trained
+    aiResultIndex = Array.from(tf.argMax(result).dataSync())[0]; //Get index of largest result
+    aiResultConfidence = result[aiResultIndex]; //Get max result
+    if (dictionaryIndex === aiResultIndex) {
+      if (aiResultConfidence >= condifenceThreshold) {
+        correctMoveDetected = true;
+      } else {
+        lowConfidence = true
+      }
+    }
+  });
+
+  if (correctMoveDetected) {
+    return;
+  }
+
+  incorrectMove = extract2DKeypoints(movementData.move);
+  let storedError = await findErrorBySystemName(trainingClass);
+  //Store error
+  let trainingError = {
+    AITrainingID: movementData.sessionId,
+    errorID: storedError?.errorID!,
+    poseData: JSON.stringify(incorrectMove),
+  };
+  await createTrainingError(trainingError);
+  return {
+    data: {
+      correctMove: storedError?.correctPose,
+      incorrectMove,
+      title: storedError?.name,
+      description: storedError?.description,
+      lowConfidence
+    },
+  };
 }
