@@ -73,3 +73,12 @@ export async function deleteCycleGoalById(id: number) {
     throw error;
   }
 }
+
+export async function findCycleGoalsByFencerId(id: number) {
+  const cycleGoals = await prisma.cycleGoal.findMany({
+    where: {
+      fencerID: id,
+    },
+  });
+  return cycleGoals;
+}

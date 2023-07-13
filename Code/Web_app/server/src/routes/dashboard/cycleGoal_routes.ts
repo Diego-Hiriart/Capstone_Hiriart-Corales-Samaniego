@@ -4,6 +4,7 @@ import {
   deleteCycleGoal,
   getAllCycleGoal,
   getCycleGoalById,
+  getCycleGoalsByFencerId,
   postCycleGoal,
   updateCycleGoal,
 } from "../../controllers/cycleGoal_controller";
@@ -15,5 +16,6 @@ router.get("/cyclegoal_routes/", getAllCycleGoal);
 router.post("/cyclegoal_routes/", postCycleGoal);
 router.put("/cyclegoal_routes/:id", updateCycleGoal);
 router.delete("/cyclegoal_routes/:id", deleteCycleGoal);
+router.get("/fencer/cyclegoal_routes/:id", getCycleGoalsByFencerId);
 
 export default router;

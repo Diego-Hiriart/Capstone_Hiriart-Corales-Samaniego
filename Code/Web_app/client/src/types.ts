@@ -198,6 +198,7 @@ export type CycleGoal = {
   trainerID: number;
   fencerID: number;
   mesoCycleID: number;
+  mesoCycle: MesoCycle;
   content: string;
   date: Date;
 };
