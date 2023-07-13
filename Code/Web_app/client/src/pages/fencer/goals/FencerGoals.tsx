@@ -10,9 +10,8 @@ import {
 } from "@mui/material";
 import useAuth from "../../../hooks/useAuth";
 import { useCallback, useEffect, useState } from "react";
-import { CycleGoal, MesoCycle } from "../../../types";
+import { CycleGoal } from "../../../types";
 import AddGoalDialog from "./AddGoalDialog";
-import GoalDialog from "./GoalDialog";
 import dayjs from "dayjs";
 import axios from "../../../services/axios";
 import { useParams } from "react-router-dom";
@@ -45,6 +44,7 @@ const FencerGoals = () => {
     const fencerId = id ? id : user?.fencer?.fencerID;
     const url = `/dashboard/fencer/cyclegoal_routes/${fencerId}`;
     const { data } = await axios.get(url);
+    console.log(data.data);
     setGoals(data.data);
   }, [id]);
 
@@ -54,6 +54,9 @@ const FencerGoals = () => {
       showError("Hubo un error al cargar los objetivos");
     });
   }, [fetchGoals]);
+
+  const isTrainerOrAdmin =
+    user?.roles.includes("trainer") || user?.roles.includes("admin");
 
   return (
     <Container component="main" maxWidth="sm">
@@ -69,12 +72,11 @@ const FencerGoals = () => {
           <Typography sx={{ flexGrow: 1 }} variant="h1">
             Objetivos
           </Typography>
-          {user?.roles.includes("trainer") ||
-            (user?.roles.includes("admin") && (
-              <Button variant="contained" onClick={handleAddGoalDialogOpen}>
-                Crear nuevo
-              </Button>
-            ))}
+          {isTrainerOrAdmin && (
+            <Button variant="contained" onClick={handleAddGoalDialogOpen}>
+              Crear nuevo
+            </Button>
+          )}
         </Box>
         <List>
           {goals?.map((goal) => (
@@ -89,9 +91,14 @@ const FencerGoals = () => {
                 onClick={() => handleGoalDialogOpen(goal)}
               >
                 <ListItemText
-                  primary={dayjs(goal.mesoCycle.startDate).format(
-                    "DD MMMM YYYY"
-                  )}
+                  primary={
+                    goal.mesoCycle.name +
+                    " ( " +
+                    dayjs(goal.mesoCycle.startDate).format("DD MMM YYYY") +
+                    " - " +
+                    dayjs(goal.mesoCycle.endDate).format("DD MMM YYYY") +
+                    " )"
+                  }
                   secondary={
                     <Typography
                       sx={{ display: "inline" }}

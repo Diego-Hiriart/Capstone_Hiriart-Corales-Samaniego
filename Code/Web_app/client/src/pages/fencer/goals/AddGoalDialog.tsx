@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAlert } from "../../../hooks/useAlert";
 import useAuth from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
@@ -21,10 +21,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { MesoCycle } from "../../../types";
+import dayjs from "dayjs";
 
 const schema = z.object({
-  goal: z.string().nonempty("Campo obligatorio"),
-  mesoCycle: z.number().positive("Campo obligatorio"),
+  content: z.string().nonempty("Campo obligatorio"),
+  mesoCycle: z.union([
+    z.string().nonempty("Campo obligatorio"),
+    z.number().positive("Campo obligatorio"),
+  ]),
 });
 
 type AddGoalDialogType = z.infer<typeof schema>;
@@ -44,18 +48,28 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
   const {
     control,
     formState: { errors },
-    getValues,
     handleSubmit,
     register,
+    setError,
   } = useForm<AddGoalDialogType>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      content: "",
+      mesoCycle: "",
+    },
   });
 
   useEffect(() => {
     const fetchMesoCycles = async () => {
-      const url = "/dashboard/mesocycle_routes/";
+      const fencerId = id ? id : user?.fencer?.fencerID;
+      const url = `/dashboard/group/meso_cycle/${fencerId}`;
       const { data } = await axios.get(url);
       setMesoCycles(data.data);
+      if (data.data.length <= 0) {
+        setError("mesoCycle", {
+          message: "No hay mesociclos disponibles",
+        });
+      }
     };
     fetchMesoCycles().catch((error) => {
       console.error(error);
@@ -66,15 +80,15 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
 
   const onSubmit: SubmitHandler<AddGoalDialogType> = async (formData) => {
     try {
-      await axios.post(`/dashboard/cyclegoal_routes/`, {
-        data: {
-          fencerID: id,
-          trainerID: user?.trainer?.trainerID,
-          mesoCycleID: formData.mesoCycle, // TODO
-          date: new Date(),
-          content: formData.goal,
-        },
-      });
+      const url = "/dashboard/cyclegoal_routes/";
+      const body = {
+        fencerID: Number(id),
+        trainerID: user?.trainer?.trainerID,
+        mesoCycleID: Number(formData.mesoCycle),
+        date: new Date(),
+        content: formData.content,
+      };
+      await axios.post(url, { data: body });
       fetchGoals();
       showSuccess("Feedback creado con éxito");
       handleClose();
@@ -90,18 +104,20 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
       <DialogContent>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal" error={!!errors.mesoCycle}>
-            <InputLabel id="mesocycle-label">Ejercicio</InputLabel>
+            <InputLabel id="mesocycle-label">Meso-ciclo</InputLabel>
             <Controller
               name="mesoCycle"
               control={control}
               render={({ field }) => (
-                <Select {...field} labelId="mesocycle-label" label="Ejercicio">
+                <Select {...field} labelId="mesocycle-label" label="Meso-ciclo">
                   {mesoCycles.map((mesoCycle) => (
                     <MenuItem
                       key={mesoCycle.mesoCycleID}
                       value={mesoCycle.mesoCycleID}
                     >
-                      {mesoCycle.name}
+                      {mesoCycle.name} ({" "}
+                      {dayjs(mesoCycle.startDate).format("DD MMM YYYY")} -{" "}
+                      {dayjs(mesoCycle.endDate).format("DD MMM YYYY")} )
                     </MenuItem>
                   ))}
                 </Select>
@@ -115,10 +131,10 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
             multiline
             rows={4}
             label="Objetivo"
-            id="goal"
-            {...register("goal")}
-            error={!!errors.goal}
-            helperText={errors.goal?.message}
+            id="content"
+            {...register("content")}
+            error={!!errors.content}
+            helperText={errors.content?.message}
           />
           <DialogActions sx={{ mt: 3 }}>
             <Button fullWidth variant="outlined" onClick={handleClose}>

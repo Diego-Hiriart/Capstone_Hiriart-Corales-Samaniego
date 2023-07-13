@@ -79,6 +79,9 @@ export async function findCycleGoalsByFencerId(id: number) {
     where: {
       fencerID: id,
     },
+    include: {
+      mesoCycle: true,
+    }
   });
   return cycleGoals;
 }

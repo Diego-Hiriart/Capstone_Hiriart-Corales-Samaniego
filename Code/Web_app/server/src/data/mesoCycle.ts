@@ -146,3 +146,18 @@ export async function deleteMesoCycleById(id: number) {
     throw error;
   }
 }
+
+export async function findGroupMesoCyclesByFencerId(id: number) {
+  const mesoCycles = await prisma.mesoCycle.findMany({
+    where: {
+      trainingGroup: {
+        fencer: {
+          some: {
+            fencerID: id,
+          },
+        },
+      },
+    }
+  })
+  return mesoCycles;
+}
