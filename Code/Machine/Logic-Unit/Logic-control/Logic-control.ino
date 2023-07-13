@@ -309,8 +309,13 @@ void handleRemote(String receivedCommand) {
       currentBuzzAlert = 2;
       break;
     case 24:
-      //If the yellow card has already been assigned, it becomes a red and a touch against
-      if (!yCardLeft) {
+      //If a red card was assigned before any yellow cards, the yellow card isnt assigned and becomes red immediately
+      //according to FIE technical rules t.162 2 https://static.fie.org/uploads/29/149099-technical%20rules%20ang.pdf
+      if (rCardLeft) {
+        rCardLeft = true;
+        rightScore = scoreIncCheck(rightScore);
+      } else if (!yCardLeft) {
+        //If the yellow card has already been assigned, it becomes a red and a touch against
         yCardLeft = true;
       } else {
         rCardLeft = true;
@@ -495,7 +500,12 @@ void handleRemote(String receivedCommand) {
       break;
     case 39:
       //If the yellow card has already been assigned, it becomes a red and a touch against
-      if (!yCardRight) {
+      //according to FIE technical rules t.162 2 https://static.fie.org/uploads/29/149099-technical%20rules%20ang.pdf
+      if (rCardRight) {
+        rCardRight = true;
+        leftScore = scoreIncCheck(leftScore);
+      } else if (!yCardRight) {
+        //If a red card was assigned before any yellow cards, the yellow card isnt assigned and becomes red immediately
         yCardRight = true;
       } else {
         rCardRight = true;
