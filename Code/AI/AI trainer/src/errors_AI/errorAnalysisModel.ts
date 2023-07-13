@@ -78,6 +78,20 @@ export async function createAndTrainModel(
         tf.layers.dense({
           name: "hidden-1",
           activation: "sigmoid",
+          units: 77,
+        })
+      );
+      errorsModel.add(
+        tf.layers.dense({
+          name: "hidden-2",
+          activation: "sigmoid",
+          units: 55,
+        })
+      );
+      errorsModel.add(
+        tf.layers.dense({
+          name: "hidden-3",
+          activation: "sigmoid",
           units: 33,
         })
       );
