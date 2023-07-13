@@ -91,7 +91,7 @@ uint8_t batteryLow = 0;
 uint8_t lastBatteryLow = 0;
 //About 4V from DC jack
 //A small value of around 1200 will be read when tehre is no power, this is noise from the display arduino receiving serial data and kinda turning on
-const uint16_t lowJackVolts = 3000;
+const uint16_t lowJackVolts = 2500;
 //About 2.78V (after lowering 6.4V from 4xAA, 2.78 (5.4V in batt) or less means the batteries are dead)
 const uint16_t lowBattVolts = 3000;
 //Low battery indicator LED
