@@ -5,6 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -14,6 +16,7 @@ import { useState } from "react";
 import axios from "../../../services/axios";
 import { useAlert } from "../../../hooks/useAlert";
 import useAuth from "../../../hooks/useAuth";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props {
   open: boolean;
@@ -52,18 +55,42 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
     setContent(event.target.value);
   };
 
+  const handleDelete = async () => {
+    try {
+      const url = `/dashboard/cyclegoal_routes/${goal.cycleGoalID}`;
+      await axios.delete(url);
+      fetchGoals();
+      handleClose();
+      showSuccess("Objetivo eliminado");
+    } catch (error) {
+      console.error(error);
+      showError("Hubo un error al eliminar el objetivo");
+    }
+  };
+
   const isTrainer = user?.roles.includes("trainer");
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle>
-        Objetivo para meso-ciclo:{" "}
-        {goal.mesoCycle.name +
-          " ( " +
-          dayjs(goal.mesoCycle.startDate).format("DD MMM YYYY") +
-          " - " +
-          dayjs(goal.mesoCycle.endDate).format("DD MMM YYYY") +
-          " )"}
+        <Stack direction="row" alignItems="start" gap={3}>
+          Objetivo para meso-ciclo:{" "}
+          {goal.mesoCycle.name +
+            " ( " +
+            dayjs(goal.mesoCycle.startDate).format("DD MMM YYYY") +
+            " - " +
+            dayjs(goal.mesoCycle.endDate).format("DD MMM YYYY") +
+            " )"}
+          {isTrainer && (
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={handleDelete}
+            >
+              Eliminar
+            </Button>
+          )}
+        </Stack>
       </DialogTitle>
       <DialogContent>
         <Box component="form">
