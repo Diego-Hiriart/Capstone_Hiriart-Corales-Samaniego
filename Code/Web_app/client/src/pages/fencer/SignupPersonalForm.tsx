@@ -264,7 +264,7 @@ const SignupPersonalForm = () => {
             margin="normal"
           >
             <InputLabel id="inscriptionReason-label">
-              Como te enteraste de la academia?
+              ¿Cual es la razón por la que te inscribes?
             </InputLabel>
             <Controller
               name="inscriptionReason"
@@ -275,7 +275,7 @@ const SignupPersonalForm = () => {
                   {...field}
                   labelId="inscriptionReason-label"
                   id="select-label"
-                  label="Como te enteraste de la academia?"
+                  label="Razón por la que te inscribes"
                 >
                   {inscriptionReasons.map((inscriptionReason) => (
                     <MenuItem

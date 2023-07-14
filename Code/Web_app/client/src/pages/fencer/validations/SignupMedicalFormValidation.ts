@@ -37,7 +37,7 @@ export const schema = z
         message: `La longitud del texto debe ser menor a ${personalOtherDetailsMaxLength} caracteres`,
       })
       .nullish(),
-    medicalDetails: z
+    personalMedicalDetails: z
       .string()
       .trim()
       .max(medicalDetailsMaxLength, {
