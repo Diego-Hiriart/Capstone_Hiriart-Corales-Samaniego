@@ -30,10 +30,10 @@ model MachineCombatData {
 
 model User {
   userID        Int            @id @default(autoincrement())
-  email         String         @unique @db.VarChar(320)
+  email         String         @unique @db.Text
   password      String
-  names         String         @db.VarChar(100)
-  lastNames     String         @db.VarChar(100)
+  names         String         @db.Text
+  lastNames     String         @db.Text
   roles         String[]       @default(["fencer"])
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -54,8 +54,8 @@ model Trainer {
   user           User             @relation(fields: [userID], references: [userID])
   userID         Int              @unique
   experience     String           @db.Text
-  weapon         String           @db.VarChar(25)
-  pictureURL     String?          @db.VarChar(255)
+  weapon         String           @db.Text
+  pictureURL     String?          @db.Text
   weeklyReport   WeeklyReport[]
   singleFeedback SingleFeedback[]
   cycleGoal      CycleGoal[]
@@ -133,8 +133,8 @@ model SingleFeedback {
 
 model TrainingGroup {
   trainingGroupID Int         @id @default(autoincrement())
-  name            String      @db.VarChar(25)
-  weapon          String      @db.VarChar(25)
+  name            String      @db.Text
+  weapon          String      @db.Text
   fencer          Fencer[]
   mesoCycle       MesoCycle[]
 }
@@ -169,11 +169,11 @@ model MesoCycle {
   trainingGroupID Int?
   trainer         Trainer         @relation(fields: [trainerID], references: [trainerID])
   trainerID       Int
-  name            String          @db.VarChar(50)
+  name            String          @db.Text
   startDate       DateTime
   endDate         DateTime
-  period          String          @db.VarChar(50)
-  stage           String          @db.VarChar(100)
+  period          String          @db.Text
+  stage           String          @db.Text
   physicalScore   Int             @default(0) @db.SmallInt
   technicalScore  Int             @default(0) @db.SmallInt
   tacticalScore   Int             @default(0) @db.SmallInt
@@ -231,8 +231,8 @@ model DailyPlanActivity {
 
 model Activity {
   activityID        Int                 @id @default(autoincrement())
-  name              String              @db.VarChar(25)
-  description       String              @db.VarChar(150)
+  name              String              @db.Text
+  description       String              @db.Text
   duration          DateTime
   activityType      ActivityType?       @relation(fields: [activityTypeID], references: [activityTypeID])
   activityTypeID    Int?
@@ -278,7 +278,7 @@ model Attendance {
   fencer       Fencer   @relation(fields: [fencerID], references: [fencerID])
   fencerID     Int
   date         DateTime
-  status       String   @db.VarChar(50)
+  status       String   @db.Text
 }
 
 model AITraining {
@@ -313,7 +313,7 @@ model TrainingError {
 
 model Error {
   errorID       Int             @id @default(autoincrement())
-  name          String          @db.VarChar(100)
+  name          String          @db.Text
   description   String          @db.Text
   trainingError TrainingError[]
   correctPose   String          @db.Text
@@ -322,7 +322,7 @@ model Error {
 
 model TrainingExercise {
   trainingExerciseID Int          @id @default(autoincrement())
-  name               String       @db.VarChar(100)
+  name               String       @db.Text
   description        String?      @db.Text
   AITraining         AITraining[]
 }
