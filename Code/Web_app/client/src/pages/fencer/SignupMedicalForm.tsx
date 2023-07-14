@@ -238,11 +238,10 @@ const SignupMedicalForm = () => {
               margin="normal"
               multiline
               rows={4}
-              // TODO: Change label
               id="personalMedicalDetails"
-              {...register("medicalDetails")}
-              error={!!errors.medicalDetails}
-              helperText={errors.medicalDetails?.message}
+              {...register("personalMedicalDetails")}
+              error={!!errors.personalMedicalDetails}
+              helperText={errors.personalMedicalDetails?.message}
             />
             <Stack direction="row" spacing={2} mt={3}>
               <Button fullWidth variant="outlined" onClick={handleBack}>
