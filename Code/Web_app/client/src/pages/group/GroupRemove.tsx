@@ -23,7 +23,7 @@ const GroupRemove = ({
 }: GroupRemoveProps) => {
   const navigate = useNavigate();
 
-  const { setError } = useForm();
+  const { setError, handleSubmit } = useForm();
 
   const onSubmit = async () => {
     try {
@@ -53,7 +53,12 @@ const GroupRemove = ({
             <Typography>
               ¿Seguro que desea remover el grupo &quot;{groupName}&quot;?
             </Typography>
-            <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+              sx={{ mt: 1 }}
+            >
               <Button
                 type="submit"
                 fullWidth
