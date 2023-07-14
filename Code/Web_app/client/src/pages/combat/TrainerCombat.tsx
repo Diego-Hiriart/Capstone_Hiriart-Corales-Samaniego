@@ -47,6 +47,8 @@ const TrainerCombat = () => {
             px: 1,
             display: "flex",
             justifyContent: "space-between",
+            backgroundColor: "#efefef",
+            borderRadius: 1.6,
           }}
           component={RouterLink}
           to={String(combat.trainingCombatID)}
@@ -57,6 +59,8 @@ const TrainerCombat = () => {
             fencer1ID={combat.fencer1ID}
             fencer2ID={combat.fencer2ID}
             winnerFencerID={combat.winnerFencerID}
+            leftScore={combat.fencer1Score}
+            rightScore={combat.fencer2Score}
           />
         </ListItemButton>
       </ListItem>
@@ -85,7 +89,7 @@ const TrainerCombat = () => {
             </Button>
           )}
         </Box>
-        <List sx={{ mt: 1 }}>
+        <List sx={{ mt: 1, display: "flex", flexDirection: "column", gap: 2 }}>
           {user?.roles.includes("fencer")
             ? renderCombats(
                 combats?.filter(
