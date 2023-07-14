@@ -44,7 +44,6 @@ const FencerGoals = () => {
     const fencerId = id ? id : user?.fencer?.fencerID;
     const url = `/dashboard/fencer/cyclegoal_routes/${fencerId}`;
     const { data } = await axios.get(url);
-    console.log(data.data);
     setGoals(data.data);
   }, [id]);
 
@@ -55,8 +54,8 @@ const FencerGoals = () => {
     });
   }, [fetchGoals]);
 
-  const isTrainerOrAdmin =
-    user?.roles.includes("trainer") || user?.roles.includes("admin");
+  //To save a goal we need a trainerID, so only trainers are able to create goals
+  const isTrainer = user?.roles.includes("trainer");
 
   return (
     <Container component="main" maxWidth="sm">
@@ -72,7 +71,7 @@ const FencerGoals = () => {
           <Typography sx={{ flexGrow: 1 }} variant="h1">
             Objetivos
           </Typography>
-          {isTrainerOrAdmin && (
+          {isTrainer && (
             <Button variant="contained" onClick={handleAddGoalDialogOpen}>
               Crear nuevo
             </Button>
@@ -116,11 +115,13 @@ const FencerGoals = () => {
         </List>
         {/* TODO: add pagination */}
       </Box>
-      <AddGoalDialog
-        open={showAddGoalDialog}
-        handleClose={handleClose}
-        fetchGoals={fetchGoals}
-      />
+      {showAddGoalDialog && (
+        <AddGoalDialog
+          open={showAddGoalDialog}
+          handleClose={handleClose}
+          fetchGoals={fetchGoals}
+        />
+      )}
       {/* <GoalDialog
         open={showGoalDialog}
         handleClose={handleClose}

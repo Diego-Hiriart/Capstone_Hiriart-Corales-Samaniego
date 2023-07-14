@@ -157,7 +157,16 @@ export async function findGroupMesoCyclesByFencerId(id: number) {
           },
         },
       },
-    }
+      cycleGoal: {
+        none: {
+          fencerID: id,
+        }
+      }
+    },
+    orderBy: {
+      startDate: "desc",
+    },
+    take: 5,
   })
   return mesoCycles;
 }
