@@ -105,7 +105,6 @@ const AcademyAddActivity = ({ open, handleClose }: AcademyAddActivityProps) => {
                 margin="normal"
                 id="description"
                 label="Descripción de la actividad"
-                autoFocus
                 multiline
                 minRows={5}
                 {...register("description")}

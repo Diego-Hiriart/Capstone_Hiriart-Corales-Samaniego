@@ -54,7 +54,7 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
   const onSubmit: SubmitHandler<CreateGroupForm> = async (formData) => {
     try {
       await axios.post("/dashboard/training_group/", { data: formData });
-      // TODO: redirect to groups list
+      navigate(0);
     } catch (error) {
       if (error instanceof AxiosError) {
         setError("root", {
@@ -138,9 +138,6 @@ const GroupCreateDialog = ({ open, handleClose }: CreateGroupDialogProps) => {
                 disabled={!(disableButton.groupName && disableButton.weapon)}
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                  navigate(0);
-                }}
               >
                 Crear Grupo
               </Button>
