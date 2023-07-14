@@ -1,6 +1,6 @@
 const TrainerHome = () => {
   return (
-    <h1>TrainerHome</h1>
+    <h1>Home entrenador</h1>
   );
 };
 

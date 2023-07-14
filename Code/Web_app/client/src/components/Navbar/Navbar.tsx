@@ -5,6 +5,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -90,14 +91,28 @@ const NavBar = () => {
                 <MenuIcon />
               </IconButton>
             )}
-            <Typography
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              AECQ
-            </Typography>
+
+            <ListItem key={"/"} disablePadding sx={{ width: "auto" }}>
+              <Link
+                component={RouterLink}
+                to={"/"}
+                sx={{ my: 0, p: 2 }}
+                underline="none"
+              >
+                <Typography
+                  color="inherit"
+                  className="SADSAD"
+                  sx={{
+                    display: { xs: "none", sm: "block" },
+                    color: "black",
+                    fontWeight: 500,
+                    fontSize: "1.2rem",
+                  }}
+                >
+                  AECQ
+                </Typography>
+              </Link>
+            </ListItem>
             <Box sx={{ display: { xs: "none", sm: "block" }, mx: 2 }}>
               {Object.keys(navLinks).map((link) => (
                 <Button key={link} component={RouterLink} to={navLinks[link]}>
