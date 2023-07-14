@@ -8,6 +8,15 @@ export async function findFencerById(id: number) {
       where: {
         fencerID: id,
       },
+      include: {
+        user: {
+          select: {
+            names: true,
+            lastNames: true,
+            email: true,
+          }
+        }
+      }
     });
     return fencer;
   } catch (error) {
