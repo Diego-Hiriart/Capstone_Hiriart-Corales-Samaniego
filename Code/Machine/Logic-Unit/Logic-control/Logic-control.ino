@@ -91,7 +91,7 @@ uint8_t batteryLow = 0;
 uint8_t lastBatteryLow = 0;
 //About 4V from DC jack
 //A small value of around 1200 will be read when tehre is no power, this is noise from the display arduino receiving serial data and kinda turning on
-const uint16_t lowJackVolts = 3000;
+const uint16_t lowJackVolts = 2500;
 //About 2.78V (after lowering 6.4V from 4xAA, 2.78 (5.4V in batt) or less means the batteries are dead)
 const uint16_t lowBattVolts = 3000;
 //Low battery indicator LED
@@ -309,8 +309,13 @@ void handleRemote(String receivedCommand) {
       currentBuzzAlert = 2;
       break;
     case 24:
-      //If the yellow card has already been assigned, it becomes a red and a touch against
-      if (!yCardLeft) {
+      //If a red card was assigned before any yellow cards, the yellow card isnt assigned and becomes red immediately
+      //according to FIE technical rules t.162 2 https://static.fie.org/uploads/29/149099-technical%20rules%20ang.pdf
+      if (rCardLeft) {
+        rCardLeft = true;
+        rightScore = scoreIncCheck(rightScore);
+      } else if (!yCardLeft) {
+        //If the yellow card has already been assigned, it becomes a red and a touch against
         yCardLeft = true;
       } else {
         rCardLeft = true;
@@ -495,7 +500,12 @@ void handleRemote(String receivedCommand) {
       break;
     case 39:
       //If the yellow card has already been assigned, it becomes a red and a touch against
-      if (!yCardRight) {
+      //according to FIE technical rules t.162 2 https://static.fie.org/uploads/29/149099-technical%20rules%20ang.pdf
+      if (rCardRight) {
+        rCardRight = true;
+        leftScore = scoreIncCheck(leftScore);
+      } else if (!yCardRight) {
+        //If a red card was assigned before any yellow cards, the yellow card isnt assigned and becomes red immediately
         yCardRight = true;
       } else {
         rCardRight = true;

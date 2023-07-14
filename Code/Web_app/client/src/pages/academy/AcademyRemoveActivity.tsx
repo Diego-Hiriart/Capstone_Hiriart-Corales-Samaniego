@@ -22,7 +22,7 @@ const AcademyRemoveActivity = ({
 }: AcademyRemoveActivityProps) => {
   const navigate = useNavigate();
 
-  const { setError } = useForm();
+  const { handleSubmit, setError } = useForm();
 
   const onSubmit = async () => {
     try {
@@ -52,7 +52,12 @@ const AcademyRemoveActivity = ({
             <Typography>
               ¿Seguro que desea eliminar la actividad: {activity?.name}?
             </Typography>
-            <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+              sx={{ mt: 1 }}
+            >
               <Button
                 type="submit"
                 fullWidth
