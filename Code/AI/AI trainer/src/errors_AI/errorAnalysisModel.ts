@@ -25,12 +25,11 @@ export async function createAndTrainModel(
   epochs: number,
   learningRate: number,
   batchSize: number,
-  timesteps: number
 ) {
   try {
     let errorsModel;
     const trainingEpochs = epochs;
-    const outputNeurons = 8; //Detectable movements (includes correct movements)
+    const outputNeurons = 10; //Detectable movements
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
         readFileSync("../errors_AI_model_data/model.json").toString()
@@ -51,6 +50,7 @@ export async function createAndTrainModel(
       const keypointFeatures = 3;
       //If xs is a 3d tensor of shape [a, b, c,d], then inputShape of the first layer should be [b, c, d].
       //Shape of xs is [batch, 10 (poses per movement), 33 (keypoints), 3 (x, y, z of each keypoint)];
+      const timesteps = 10;
       const inputLayerShape = [timesteps, inputKeypoints, keypointFeatures];
       const hidden1LayerFeatures = inputKeypoints * keypointFeatures;
       const hidden1InputShape = [timesteps, hidden1LayerFeatures];
