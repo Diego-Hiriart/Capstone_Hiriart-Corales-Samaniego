@@ -24,12 +24,12 @@ function onEpochEnd(epoch: any, logs: any) {
 export async function createAndTrainModel(
   epochs: number,
   learningRate: number,
-  batchSize: number,
+  batchSize: number
 ) {
   try {
     let errorsModel;
     const trainingEpochs = epochs;
-    const outputNeurons = 10; //Detectable movements
+    const outputNeurons = 10; //Detectable movements (includes correct movements)
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
         readFileSync("../errors_AI_model_data/model.json").toString()
@@ -45,7 +45,7 @@ export async function createAndTrainModel(
       errorsModel.setWeights(weightsTensor);
     } else {
       errorsModel = tf.sequential();
-      errorsModel.name = "posesRNN";
+      errorsModel.name = "posesMLP";
       const inputKeypoints = 33;
       const keypointFeatures = 3;
       //If xs is a 3d tensor of shape [a, b, c,d], then inputShape of the first layer should be [b, c, d].
@@ -54,10 +54,6 @@ export async function createAndTrainModel(
       const inputLayerShape = [timesteps, inputKeypoints, keypointFeatures];
       const hidden1LayerFeatures = inputKeypoints * keypointFeatures;
       const hidden1InputShape = [timesteps, hidden1LayerFeatures];
-      const rnnTimeSteps = timesteps;
-      const rnnInputLayerFeatures = hidden1LayerFeatures / 3;
-      const rnnInputShape = [rnnTimeSteps, rnnInputLayerFeatures];
-      const nHiddenLayers = 4;
       //Input layer
       errorsModel.add(
         tf.layers.dense({
@@ -67,7 +63,7 @@ export async function createAndTrainModel(
           activation: "sigmoid",
         })
       );
-      //Hidden fully connected layer
+      //Hidden layers, fully connected with sigmoid activation
       errorsModel.add(
         tf.layers.reshape({
           name: "hidden1Reshape",
@@ -78,27 +74,31 @@ export async function createAndTrainModel(
         tf.layers.dense({
           name: "hidden-1",
           activation: "sigmoid",
-          units: 66,
+          units: 33,
         })
+      );
+      errorsModel.add(
+        tf.layers.reshape({ name: "hidden2Reshape", targetShape: [330] })
       );
       errorsModel.add(
         tf.layers.dense({
           name: "hidden-2",
           activation: "sigmoid",
-          units: 33,
+          units: 165,
         })
       );
-      //Hidden layer, unidirectional RNN using LSTM
-      let lstm_cells = [];
-      for (let index = 0; index < nHiddenLayers; index++) {
-        lstm_cells.push(tf.layers.lstmCell({ units: rnnTimeSteps }));
-      }
       errorsModel.add(
-        tf.layers.rnn({
-          name: "hidden-rnn",
-          cell: lstm_cells, //LSTM uses tahn activation
-          inputShape: rnnInputShape,
-          returnSequences: false,
+        tf.layers.dense({
+          name: "hidden-3",
+          activation: "sigmoid",
+          units: 65,
+        })
+      );
+      errorsModel.add(
+        tf.layers.dense({
+          name: "hidden-4",
+          activation: "sigmoid",
+          units: 20,
         })
       );
       //Output layer
