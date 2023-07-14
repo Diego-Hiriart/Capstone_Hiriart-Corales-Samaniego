@@ -98,9 +98,9 @@ const CombatDetails = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <Typography variant="h6">Lado izquierdo</Typography>
-                  <Typography>Puntaje</Typography>
-                  <Typography>{combat.fencer1Score}</Typography>
+                  <Typography variant="h3">Lado izquierdo</Typography>
+                  <Typography variant="h4">Puntaje</Typography>
+                  <Typography variant="h4">{combat.fencer1Score}</Typography>
                 </Box>
               </Grid>
               <Grid item xs={2}></Grid>
@@ -113,11 +113,15 @@ const CombatDetails = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <Typography variant="h6" sx={flexEnd}>
+                  <Typography variant="h3" sx={flexEnd}>
                     Lado derecho
                   </Typography>
-                  <Typography sx={flexEnd}>Puntaje</Typography>
-                  <Typography sx={flexEnd}>{combat.fencer2Score}</Typography>
+                  <Typography variant="h4" sx={flexEnd}>
+                    Puntaje
+                  </Typography>
+                  <Typography variant="h4" sx={flexEnd}>
+                    {combat.fencer2Score}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
