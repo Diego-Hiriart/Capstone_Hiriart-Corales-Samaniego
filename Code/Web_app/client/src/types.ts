@@ -196,6 +196,7 @@ export type TrainingGroup = {
 export type CycleGoal = {
   cycleGoalID: number;
   trainerID: number;
+  trainer: Trainer;
   fencerID: number;
   mesoCycleID: number;
   mesoCycle: MesoCycle;

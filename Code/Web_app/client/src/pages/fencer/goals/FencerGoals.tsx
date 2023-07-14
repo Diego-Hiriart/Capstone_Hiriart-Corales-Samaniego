@@ -16,12 +16,13 @@ import dayjs from "dayjs";
 import axios from "../../../services/axios";
 import { useParams } from "react-router-dom";
 import { useAlert } from "../../../hooks/useAlert";
+import GoalDialog from "./GoalDialog";
 
 const FencerGoals = () => {
   const { user } = useAuth();
   const [showAddGoalDialog, setShowAddGoalDialog] = useState(false);
   const [showGoalDialog, setShowGoalDialog] = useState(false);
-  const [selectedGoal, setSelectedGoal] = useState<CycleGoal | null>(null);
+  const [selectedGoal, setSelectedGoal] = useState<CycleGoal>();
   const [goals, setGoals] = useState<CycleGoal[]>();
   const { id } = useParams();
   const { showError } = useAlert();
@@ -99,12 +100,7 @@ const FencerGoals = () => {
                     " )"
                   }
                   secondary={
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
+                    <Typography noWrap variant="body2" color="text.primary">
                       {goal.content}
                     </Typography>
                   }
@@ -122,11 +118,14 @@ const FencerGoals = () => {
           fetchGoals={fetchGoals}
         />
       )}
-      {/* <GoalDialog
-        open={showGoalDialog}
-        handleClose={handleClose}
-        goal={selectedGoal}
-      /> */}
+      {showGoalDialog && selectedGoal && (
+        <GoalDialog
+          open={showGoalDialog}
+          handleClose={handleClose}
+          goal={selectedGoal}
+          fetchGoals={fetchGoals}
+        />
+      )}
     </Container>
   );
 };

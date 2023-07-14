@@ -81,6 +81,21 @@ export async function findCycleGoalsByFencerId(id: number) {
     },
     include: {
       mesoCycle: true,
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            }
+          }
+        }
+      }
+    },
+    orderBy: {
+      mesoCycle: {
+        startDate: "desc",
+      }
     }
   });
   return cycleGoals;
