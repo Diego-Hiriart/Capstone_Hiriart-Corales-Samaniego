@@ -1,16 +1,16 @@
-import * as tf from '@tensorflow/tfjs';
-import { existsSync, readFileSync, writeFile } from 'fs';
+import * as tf from "@tensorflow/tfjs";
+import { existsSync, readFileSync, writeFile } from "fs";
 
-import { errorLog, debugLog } from '../utils/logs';
+import { errorLog, debugLog } from "../utils/logs";
 
 export function checkModelDataExists() {
-  const modelPath = '../errors_AI_model_data/model.json';
-  const weightsPath = '../errors_AI_model_data/weights.json';
+  const modelPath = "../errors_AI_model_data/model.json";
+  const weightsPath = "../errors_AI_model_data/weights.json";
   if (existsSync(modelPath) && existsSync(weightsPath)) {
-    debugLog('Found previous model, loading');
+    debugLog("Found previous model, loading");
     return true;
   } else {
-    debugLog('No previous AI models found for transfer learning');
+    debugLog("No previous AI models found for transfer learning");
     return false;
   }
 }
@@ -33,11 +33,11 @@ export async function createAndTrainModel(
     const outputNeurons = 8; //Detectable movements (includes correct movements)
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
-        readFileSync('../errors_AI_model_data/model.json').toString()
+        readFileSync("../errors_AI_model_data/model.json").toString()
       );
       errorsModel = await tf.models.modelFromJSON(modelJSON);
       const weightsArray = JSON.parse(
-        readFileSync('../errors_AI_model_data/weights.json').toString()
+        readFileSync("../errors_AI_model_data/weights.json").toString()
       );
       let weightsTensor: tf.Tensor<tf.Rank>[] = [];
       weightsArray.forEach((weight: Array<number>) => {
@@ -46,7 +46,7 @@ export async function createAndTrainModel(
       errorsModel.setWeights(weightsTensor);
     } else {
       errorsModel = tf.sequential();
-      errorsModel.name = 'posesMLP';
+      errorsModel.name = "posesRNN";
       const inputKeypoints = 33;
       const keypointFeatures = 3;
       //If xs is a 3d tensor of shape [a, b, c,d], then inputShape of the first layer should be [b, c, d].
@@ -54,73 +54,76 @@ export async function createAndTrainModel(
       const inputLayerShape = [timesteps, inputKeypoints, keypointFeatures];
       const hidden1LayerFeatures = inputKeypoints * keypointFeatures;
       const hidden1InputShape = [timesteps, hidden1LayerFeatures];
+      const rnnTimeSteps = timesteps;
+      const rnnInputLayerFeatures = hidden1LayerFeatures / 3;
+      const rnnInputShape = [rnnTimeSteps, rnnInputLayerFeatures];
+      const nHiddenLayers = 4;
       //Input layer
       errorsModel.add(
         tf.layers.dense({
-          name: 'input-layer',
+          name: "input-layer",
           units: keypointFeatures,
           inputShape: inputLayerShape,
-          activation: 'sigmoid',
+          activation: "sigmoid",
         })
       );
-      //Hidden layers, fully connected with sigmoid activation
+      //Hidden fully connected layer
       errorsModel.add(
-        tf.layers.reshape({ name: 'hidden1Reshape', targetShape: hidden1InputShape })
-      );
-      errorsModel.add(
-        tf.layers.dense({
-          name: 'hidden-1',
-          activation: 'sigmoid',
-          units: 11
-        })
-      );
-      errorsModel.add(
-        tf.layers.reshape({ name: 'hidden2Reshape', targetShape: [110] })
-      );
-      errorsModel.add(
-        tf.layers.dense({
-          name: 'hidden-2',
-          activation: 'sigmoid',
-          units: 55
+        tf.layers.reshape({
+          name: "hidden1Reshape",
+          targetShape: hidden1InputShape,
         })
       );
       errorsModel.add(
         tf.layers.dense({
-          name: 'hidden-3',
-          activation: 'sigmoid',
-          units: 25
+          name: "hidden-1",
+          activation: "sigmoid",
+          units: 66,
         })
       );
       errorsModel.add(
         tf.layers.dense({
-          name: 'hidden-4',
-          activation: 'sigmoid',
-          units: 15
+          name: "hidden-2",
+          activation: "sigmoid",
+          units: 33,
+        })
+      );
+      //Hidden layer, unidirectional RNN using LSTM
+      let lstm_cells = [];
+      for (let index = 0; index < nHiddenLayers; index++) {
+        lstm_cells.push(tf.layers.lstmCell({ units: rnnTimeSteps }));
+      }
+      errorsModel.add(
+        tf.layers.rnn({
+          name: "hidden-rnn",
+          cell: lstm_cells, //LSTM uses tahn activation
+          inputShape: rnnInputShape,
+          returnSequences: false,
         })
       );
       //Output layer
       errorsModel.add(
         tf.layers.dense({
-          name: 'output-layer',
+          name: "output-layer",
           units: outputNeurons,
-          activation: 'softmax',
+          activation: "softmax",
         })
       );
     }
     //Compile model
     errorsModel.compile({
       optimizer: tf.train.adam(learningRate),
-      loss: 'categoricalCrossentropy',
-      metrics: ['accuracy'],
+      loss: "categoricalCrossentropy",
+      metrics: ["accuracy"],
     });
     debugLog(`${errorsModel.summary()}`);
     //Create Xs and Ys for training
     //Get labels and data from files
     let trainLabelArray = JSON.parse(
-      readFileSync('./AITrainingLabels.json').toString()
+      readFileSync("./AITrainingLabels.json").toString()
     );
     let trainDataJSON = JSON.parse(
-      readFileSync('./AITrainingData.json').toString()
+      readFileSync("./AITrainingData.json").toString()
     );
     //Create data array from JSON
     let trainDataArray: Array<any> = [];
@@ -129,7 +132,7 @@ export async function createAndTrainModel(
       movementSample.forEach((pose) => {
         trainDataArray[trainDataArray.length - 1].push([]);
         pose.forEach((keypoint: any) => {
-          let keypointXYZ = [keypoint['x'], keypoint['y'], keypoint['z']];
+          let keypointXYZ = [keypoint["x"], keypoint["y"], keypoint["z"]];
           trainDataArray[trainDataArray.length - 1][
             trainDataArray[trainDataArray.length - 1].length - 1
           ].push(keypointXYZ);
@@ -139,7 +142,7 @@ export async function createAndTrainModel(
     trainDataJSON = null; //Remove from memory
     //Create one hot encoding of training labels
     let trainingTensorLabels = tf.oneHot(
-      tf.tensor1d(trainLabelArray, 'int32'),
+      tf.tensor1d(trainLabelArray, "int32"),
       outputNeurons
     );
     //Create training data tensor
@@ -150,10 +153,10 @@ export async function createAndTrainModel(
     let trainingTensorData = tf.tensor(trainTensors3D);
     //Get validation data from giles
     let validationLabelArray = JSON.parse(
-      readFileSync('./AIValidationLabels.json').toString()
+      readFileSync("./AIValidationLabels.json").toString()
     );
     let validationDataJSON = JSON.parse(
-      readFileSync('./AIValidationData.json').toString()
+      readFileSync("./AIValidationData.json").toString()
     );
     //Create data array from JSON
     let validationDataArray: Array<any> = [];
@@ -162,7 +165,7 @@ export async function createAndTrainModel(
       movementSample.forEach((pose) => {
         validationDataArray[validationDataArray.length - 1].push([]);
         pose.forEach((keypoint: any) => {
-          let keypointXYZ = [keypoint['x'], keypoint['y'], keypoint['z']];
+          let keypointXYZ = [keypoint["x"], keypoint["y"], keypoint["z"]];
           validationDataArray[validationDataArray.length - 1][
             validationDataArray[validationDataArray.length - 1].length - 1
           ].push(keypointXYZ);
@@ -172,7 +175,7 @@ export async function createAndTrainModel(
     validationDataJSON = null; //Remove from memory
     //Create one hot encoding of validation labels
     let validationTensorLabels = tf.oneHot(
-      tf.tensor1d(validationLabelArray, 'int32'),
+      tf.tensor1d(validationLabelArray, "int32"),
       outputNeurons
     );
     //Create validation data tensor
@@ -200,13 +203,13 @@ export async function createAndTrainModel(
       weightsArray.push(weight.arraySync());
     });
     //Destination folder must exist, files get created if needed
-    writeFile('../errors_AI_model_data/model.json', modelJSON, (err) => {
+    writeFile("../errors_AI_model_data/model.json", modelJSON, (err) => {
       if (err) {
         errorLog(`Error writing topology file ${err}`);
       }
     });
     writeFile(
-      '../errors_AI_model_data/weights.json',
+      "../errors_AI_model_data/weights.json",
       JSON.stringify(weightsArray),
       (err) => {
         if (err) {
@@ -218,6 +221,6 @@ export async function createAndTrainModel(
     return trainingResults;
   } catch (error) {
     errorLog(error);
-    return { message: 'error' };
+    return { message: "error" };
   }
 }
