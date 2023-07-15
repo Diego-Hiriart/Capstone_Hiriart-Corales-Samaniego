@@ -36,6 +36,7 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupContextRoute from "./routes/SignupContextRoute";
+import FencerGoals from "./pages/fencer/goals/FencerGoals";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -98,6 +99,7 @@ export const App = () => {
           <Route path="feedback" element={<FencerFeedback />} />
           <Route path="aitrainings" element={<FencerAITrainings />} />
           <Route path="aitrainings/:id" element={<AITrainingDetail />} />
+          <Route path="goals" element={<FencerGoals />} />
         </Route>
         <Route
           element={

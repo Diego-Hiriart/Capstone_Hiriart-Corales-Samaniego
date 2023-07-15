@@ -5,7 +5,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  IconButton,
   Stack,
   TextField,
   Typography,
@@ -86,6 +85,7 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
               variant="outlined"
               startIcon={<DeleteIcon />}
               onClick={handleDelete}
+              sx={{paddingX: 4}}
             >
               Eliminar
             </Button>
@@ -101,6 +101,7 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
             variant="outlined"
             defaultValue={goal.content}
             onChange={handleChange}
+            disabled={!isTrainer}
           />
           <Typography variant="caption"></Typography>
           <Typography variant="caption">
