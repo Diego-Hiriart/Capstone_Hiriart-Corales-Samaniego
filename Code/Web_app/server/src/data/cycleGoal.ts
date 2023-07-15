@@ -73,3 +73,30 @@ export async function deleteCycleGoalById(id: number) {
     throw error;
   }
 }
+
+export async function findCycleGoalsByFencerId(id: number) {
+  const cycleGoals = await prisma.cycleGoal.findMany({
+    where: {
+      fencerID: id,
+    },
+    include: {
+      mesoCycle: true,
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            }
+          }
+        }
+      }
+    },
+    orderBy: {
+      mesoCycle: {
+        startDate: "desc",
+      }
+    }
+  });
+  return cycleGoals;
+}

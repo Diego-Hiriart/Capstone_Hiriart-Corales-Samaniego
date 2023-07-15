@@ -20,6 +20,7 @@ import AITrainingDetection from "./pages/fencer/AITrainingDetection";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
+import FencerGoals from "./pages/fencer/goals/FencerGoals";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
 import SignupForm from "./pages/fencer/SignupForm";
 import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
@@ -98,6 +99,7 @@ export const App = () => {
           <Route path="feedback" element={<FencerFeedback />} />
           <Route path="aitrainings" element={<FencerAITrainings />} />
           <Route path="aitrainings/:id" element={<AITrainingDetail />} />
+          <Route path="goals" element={<FencerGoals />} />
         </Route>
         <Route
           element={

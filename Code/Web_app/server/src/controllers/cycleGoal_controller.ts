@@ -5,6 +5,7 @@ import {
   deleteCycleGoalById,
   findAllCycleGoal,
   findCycleGoalById,
+  findCycleGoalsByFencerId,
   updateCycleGoalById,
 } from "../data/cycleGoal";
 import { errorLog } from "../utils/logs";
@@ -57,6 +58,17 @@ export async function deleteCycleGoal(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await deleteCycleGoalById(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getCycleGoalsByFencerId(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await findCycleGoalsByFencerId(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);
