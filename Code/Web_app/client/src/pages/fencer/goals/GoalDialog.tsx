@@ -1,3 +1,4 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
   Button,
@@ -9,13 +10,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { CycleGoal } from "../../../types";
 import dayjs from "dayjs";
 import { useState } from "react";
-import axios from "../../../services/axios";
+
 import { useAlert } from "../../../hooks/useAlert";
 import useAuth from "../../../hooks/useAuth";
-import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "../../../services/axios";
+import { CycleGoal } from "../../../types";
 
 interface Props {
   open: boolean;

@@ -8,14 +8,15 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import useAuth from "../../../hooks/useAuth";
+import dayjs from "dayjs";
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import { useAlert } from "../../../hooks/useAlert";
+import useAuth from "../../../hooks/useAuth";
+import axios from "../../../services/axios";
 import { CycleGoal } from "../../../types";
 import AddGoalDialog from "./AddGoalDialog";
-import dayjs from "dayjs";
-import axios from "../../../services/axios";
-import { useParams } from "react-router-dom";
-import { useAlert } from "../../../hooks/useAlert";
 import GoalDialog from "./GoalDialog";
 
 const FencerGoals = () => {

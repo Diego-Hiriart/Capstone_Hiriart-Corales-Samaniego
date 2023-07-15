@@ -20,6 +20,7 @@ import AITrainingDetection from "./pages/fencer/AITrainingDetection";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
+import FencerGoals from "./pages/fencer/goals/FencerGoals";
 import SignupFencerForm from "./pages/fencer/SignupFencerForm";
 import SignupForm from "./pages/fencer/SignupForm";
 import SignupMedicalForm from "./pages/fencer/SignupMedicalForm";
@@ -36,7 +37,6 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupContextRoute from "./routes/SignupContextRoute";
-import FencerGoals from "./pages/fencer/goals/FencerGoals";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);

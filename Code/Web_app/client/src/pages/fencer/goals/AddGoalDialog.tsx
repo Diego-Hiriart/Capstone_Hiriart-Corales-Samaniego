@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-import { useAlert } from "../../../hooks/useAlert";
-import useAuth from "../../../hooks/useAuth";
-import { useParams } from "react-router-dom";
-import axios from "../../../services/axios";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -17,11 +13,16 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { MesoCycle } from "../../../types";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { z } from "zod";
+
+import { useAlert } from "../../../hooks/useAlert";
+import useAuth from "../../../hooks/useAuth";
+import axios from "../../../services/axios";
+import { MesoCycle } from "../../../types";
 
 const schema = z.object({
   content: z.string().nonempty("Campo obligatorio"),
