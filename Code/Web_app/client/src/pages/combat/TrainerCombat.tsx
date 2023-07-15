@@ -39,6 +39,34 @@ const TrainerCombat = () => {
     setOpen(false);
   };
 
+  const renderCombats = (combats: TrainingCombatFull[]) => {
+    return combats?.map((combat) => (
+      <ListItem key={combat.trainingCombatID} disablePadding>
+        <ListItemButton
+          sx={{
+            px: 1,
+            display: "flex",
+            justifyContent: "space-between",
+            backgroundColor: "#efefef",
+            borderRadius: 1.6,
+          }}
+          component={RouterLink}
+          to={String(combat.trainingCombatID)}
+        >
+          <CombatEntry
+            fencer1Name={`${combat.fencer1.user.names} ${combat.fencer1.user.lastNames}`}
+            fencer2Name={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
+            fencer1ID={combat.fencer1ID}
+            fencer2ID={combat.fencer2ID}
+            winnerFencerID={combat.winnerFencerID}
+            leftScore={combat.fencer1Score}
+            rightScore={combat.fencer2Score}
+          />
+        </ListItemButton>
+      </ListItem>
+    ));
+  };
+
   return (
     <Container component="main" maxWidth="lg">
       <Box py={{ xs: 2, lg: 4 }}>
@@ -61,28 +89,16 @@ const TrainerCombat = () => {
             </Button>
           )}
         </Box>
-        <List sx={{ mt: 1 }}>
-          {combats?.map((combat) => (
-            <ListItem key={combat.trainingCombatID} disablePadding>
-              <ListItemButton
-                sx={{
-                  px: 1,
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-                component={RouterLink}
-                to={String(combat.trainingCombatID)}
-              >
-                <CombatEntry
-                  fencer1Name={`${combat.fencer1.user.names} ${combat.fencer1.user.lastNames}`}
-                  fencer2Name={`${combat.fencer2.user.names} ${combat.fencer2.user.lastNames}`}
-                  fencer1ID={combat.fencer1ID}
-                  fencer2ID={combat.fencer2ID}
-                  winnerFencerID={combat.winnerFencerID}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+        <List sx={{ mt: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+          {user?.roles.includes("fencer")
+            ? renderCombats(
+                combats?.filter(
+                  (combat) =>
+                    combat.fencer1ID === user.fencer?.fencerID ||
+                    combat.fencer2ID === user.fencer?.fencerID
+                )
+              )
+            : renderCombats(combats)}
         </List>
         {/* TODO: Add pagination */}
       </Box>

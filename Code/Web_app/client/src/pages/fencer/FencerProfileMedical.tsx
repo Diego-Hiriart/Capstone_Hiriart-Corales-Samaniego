@@ -235,11 +235,10 @@ const SignupMedicalForm = () => {
               margin="normal"
               multiline
               rows={4}
-              // TODO: Change label
-              id="medicalDetails"
-              {...register("medicalDetails")}
-              error={!!errors.medicalDetails}
-              helperText={errors.medicalDetails?.message}
+              id="personalMedicalDetails"
+              {...register("personalMedicalDetails")}
+              error={!!errors.personalMedicalDetails}
+              helperText={errors.personalMedicalDetails?.message}
             />
             <Stack direction="row" spacing={2} mt={3}>
               <Button type="submit" fullWidth variant="contained" disabled={!isDirty}>

@@ -10,8 +10,7 @@ export async function trainModel(req: Request, res: Response) {
   const trainingResult = await createAndTrainModel(
     req.body.epochs,
     req.body.learningRate,
-    req.body.batchSize,
-    req.body.timesteps
+    req.body.batchSize
   );
   return res.status(200).json(trainingResult);
 }

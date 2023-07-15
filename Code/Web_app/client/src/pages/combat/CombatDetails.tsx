@@ -81,13 +81,24 @@ const CombatDetails = () => {
 
         {combat ? (
           <>
-            <CombatEntry
-              fencer1Name={`${combat?.fencer1.user.names} ${combat?.fencer1.user.lastNames}`}
-              fencer2Name={`${combat?.fencer2.user.names} ${combat?.fencer2.user.lastNames}`}
-              fencer1ID={combat?.fencer1ID}
-              fencer2ID={combat?.fencer2ID}
-              winnerFencerID={combat?.winnerFencerID}
-            />
+            <Box
+              sx={{
+                pb: 2,
+                px: 1,
+                backgroundColor: "#efefef",
+                borderRadius: 1.6,
+              }}
+            >
+              <CombatEntry
+                fencer1Name={`${combat?.fencer1.user.names} ${combat?.fencer1.user.lastNames}`}
+                fencer2Name={`${combat?.fencer2.user.names} ${combat?.fencer2.user.lastNames}`}
+                fencer1ID={combat?.fencer1ID}
+                fencer2ID={combat?.fencer2ID}
+                winnerFencerID={combat?.winnerFencerID}
+                leftScore={combat?.fencer1Score}
+                rightScore={combat?.fencer2Score}
+              />
+            </Box>
 
             <Grid sx={{ mt: 2 }} container spacing={2} columns={16}>
               <Grid item xs={7}>
@@ -98,9 +109,9 @@ const CombatDetails = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <Typography variant="h6">Lado izquierdo</Typography>
-                  <Typography>Puntaje</Typography>
-                  <Typography>{combat.fencer1Score}</Typography>
+                  <Typography variant="h3">Lado izquierdo</Typography>
+                  <Typography variant="h4">Puntaje</Typography>
+                  <Typography variant="h4">{combat.fencer1Score}</Typography>
                 </Box>
               </Grid>
               <Grid item xs={2}></Grid>
@@ -113,11 +124,15 @@ const CombatDetails = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <Typography variant="h6" sx={flexEnd}>
+                  <Typography variant="h3" sx={flexEnd}>
                     Lado derecho
                   </Typography>
-                  <Typography sx={flexEnd}>Puntaje</Typography>
-                  <Typography sx={flexEnd}>{combat.fencer2Score}</Typography>
+                  <Typography variant="h4" sx={flexEnd}>
+                    Puntaje
+                  </Typography>
+                  <Typography variant="h4" sx={flexEnd}>
+                    {combat.fencer2Score}
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>

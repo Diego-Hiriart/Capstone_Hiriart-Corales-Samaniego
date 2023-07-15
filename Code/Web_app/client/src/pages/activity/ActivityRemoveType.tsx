@@ -22,7 +22,7 @@ const ActivityRemoveType = ({
 }: ActivityRemoveTypeProps) => {
   const navigate = useNavigate();
 
-  const { setError } = useForm();
+  const { setError, handleSubmit } = useForm();
 
   const onSubmit = async () => {
     try {
@@ -54,7 +54,12 @@ const ActivityRemoveType = ({
             <Typography>
               ¿Seguro que desea eliminar la actividad: {activityType?.name}?
             </Typography>
-            <Box component="form" noValidate onSubmit={onSubmit} sx={{ mt: 1 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit(onSubmit)}
+              sx={{ mt: 1 }}
+            >
               <Button
                 type="submit"
                 fullWidth

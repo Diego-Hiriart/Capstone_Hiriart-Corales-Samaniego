@@ -39,7 +39,7 @@ const TrainerList = () => {
           }}
         >
           <Typography variant="h1" alignSelf="start">
-            Trainers
+            Entrenadores
           </Typography>
           <Button component={RouterLink} to="create" variant="contained">
             Crear nuevo
