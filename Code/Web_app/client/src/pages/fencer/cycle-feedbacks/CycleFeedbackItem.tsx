@@ -14,13 +14,13 @@ const CycleFeedbackItem = () => {
   const [cycleFeedback, setCycleFeedback] = useState<CycleFeedback>();
 
   useEffect(() => {
-    const fetchCycleGoal = async () => {
+    const fetchCycleFeedback = async () => {
       const fencerId = user?.fencer?.fencerID;
       const url = `/dashboard/fencer/${fencerId}/cycle_feedback/${cycleId}`;
       const { data } = await axios.get(url);
       setCycleFeedback(data.data);
     };
-    fetchCycleGoal().catch((error) => {
+    fetchCycleFeedback().catch((error) => {
       console.error(error);
       showError("Hubo un error al cargar el feedback del mesociclo");
     });
@@ -32,13 +32,20 @@ const CycleFeedbackItem = () => {
         <Typography sx={{ flexGrow: 1 }} variant="h1">
           Feedback del mesociclo
         </Typography>
-        <Typography css={contentStyles}>
-          {cycleFeedback?.content}
-        </Typography>
-        <Typography paragraph variant="caption" sx={{textAlign: "end"}}>
-            {dayjs(cycleFeedback?.date).format("DD MMMM YYYY")} por{" "}
-            {cycleFeedback?.trainer?.user?.names} {cycleFeedback?.trainer?.user?.lastNames}
-        </Typography>
+        {cycleFeedback ? (
+          <Box>
+            <Typography css={contentStyles}>
+              {cycleFeedback?.content}
+            </Typography>
+            <Typography paragraph variant="caption" sx={{ textAlign: "end" }}>
+              {dayjs(cycleFeedback?.date).format("DD MMMM YYYY")} por{" "}
+              {cycleFeedback?.trainer?.user?.names}{" "}
+              {cycleFeedback?.trainer?.user?.lastNames}
+            </Typography>
+          </Box>
+        ) : (
+          <Typography>No hay feedback para este mesociclo</Typography>
+        )}
       </Box>
     </Container>
   );
@@ -49,6 +56,6 @@ const contentStyles = css`
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 1rem;
-`
+`;
 
 export default CycleFeedbackItem;

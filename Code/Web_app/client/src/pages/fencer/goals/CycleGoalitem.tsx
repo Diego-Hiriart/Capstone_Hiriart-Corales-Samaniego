@@ -32,13 +32,18 @@ const CycleGoalItem = () => {
         <Typography sx={{ flexGrow: 1 }} variant="h1">
           Objetivo del mesociclo
         </Typography>
-        <Typography css={contentStyles}>
-          {cycleGoal?.content}
-        </Typography>
-        <Typography paragraph variant="caption" sx={{textAlign: "end"}}>
-            {dayjs(cycleGoal?.date).format("DD MMMM YYYY")} por{" "}
-            {cycleGoal?.trainer?.user?.names} {cycleGoal?.trainer?.user?.lastNames}
-        </Typography>
+        {cycleGoal ? (
+          <Box>
+            <Typography css={contentStyles}>{cycleGoal?.content}</Typography>
+            <Typography paragraph variant="caption" sx={{ textAlign: "end" }}>
+              {dayjs(cycleGoal?.date).format("DD MMMM YYYY")} por{" "}
+              {cycleGoal?.trainer?.user?.names}{" "}
+              {cycleGoal?.trainer?.user?.lastNames}
+            </Typography>
+          </Box>
+        ) : (
+          <Typography>No hay objetivo para este mesociclo</Typography>
+        )}
       </Box>
     </Container>
   );
@@ -49,6 +54,6 @@ const contentStyles = css`
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 1rem;
-`
+`;
 
 export default CycleGoalItem;
