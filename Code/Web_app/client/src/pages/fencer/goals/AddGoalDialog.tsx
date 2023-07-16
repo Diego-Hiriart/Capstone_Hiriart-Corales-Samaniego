@@ -63,7 +63,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
   useEffect(() => {
     const fetchMesoCycles = async () => {
       const fencerId = id ? id : user?.fencer?.fencerID;
-      const url = `/dashboard/group/meso_cycle/${fencerId}`;
+      const url = `/dashboard/group/goals/meso_cycle/${fencerId}`;
       const { data } = await axios.get(url);
       setMesoCycles(data.data);
       if (data.data.length <= 0) {
@@ -91,17 +91,17 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
       };
       await axios.post(url, { data: body });
       fetchGoals();
-      showSuccess("Objetivo creado con éxito");
+      showSuccess("Feedback creado con éxito");
       handleClose();
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al crear el objetivo");
+      showError("Hubo un error al crear el feedback");
     }
   };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Agregar Objetivo</DialogTitle>
+      <DialogTitle>Agregar Feedback</DialogTitle>
       <DialogContent>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal" error={!!errors.mesoCycle}>
@@ -131,7 +131,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
             margin="normal"
             multiline
             rows={4}
-            label="Objetivo"
+            label="Feedback"
             id="content"
             {...register("content")}
             error={!!errors.content}

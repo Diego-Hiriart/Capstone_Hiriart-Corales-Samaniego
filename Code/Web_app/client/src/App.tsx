@@ -37,6 +37,7 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupContextRoute from "./routes/SignupContextRoute";
+import CycleDetail from "./pages/fencer/CycleDetail";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
@@ -93,7 +94,7 @@ export const App = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
-          <Route path="groups/:id/cycles/:id" element={<MesoCycleDetails />} />
+          <Route path="groups/:id/cycles/:cycleId" element={<CycleDetail />} />
           <Route path="groups/:id" element={<GroupDetails />} />
           <Route path="aitrainings/new" element={<AITrainingDetection />} />
           <Route path="feedback" element={<FencerFeedback />} />

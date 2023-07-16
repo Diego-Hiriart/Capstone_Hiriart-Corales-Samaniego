@@ -104,7 +104,6 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
             onChange={handleChange}
             disabled={!isTrainer}
           />
-          <Typography variant="caption"></Typography>
           <Typography variant="caption">
             {dayjs(goal?.date).format("DD MMMM YYYY")} por{" "}
             {goal.trainer?.user?.names} {goal?.trainer?.user?.lastNames}

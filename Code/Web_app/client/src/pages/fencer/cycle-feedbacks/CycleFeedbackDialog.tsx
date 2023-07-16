@@ -24,7 +24,7 @@ interface Props {
   feedback: CycleFeedback;
   fetchFeedbacks: () => void;
 }
-const GoalDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
+const CycleFeedbackDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
   const [content, setContent] = useState<string>("");
   const { showError, showSuccess } = useAlert();
   const { user } = useAuth();
@@ -32,10 +32,10 @@ const GoalDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
   const handleSave = async () => {
     try {
       if (!content) {
-        showError("El objetivo no puede estar vacío");
+        showError("El feedback no puede estar vacío");
         return;
       }
-      const url = `/dashboard/cyclegoal_routes/${goal.cycleGoalID}`;
+      const url = `/dashboard/cycle_feedback/${feedback.cycleFeedbackID}`;
       const body = {
         content: content,
         date: new Date(),
@@ -44,10 +44,10 @@ const GoalDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
       await axios.put(url, { data: body });
       fetchFeedbacks();
       handleClose();
-      showSuccess("Objetivo guardado");
+      showSuccess("Feedback guardado");
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al guardar el objetivo");
+      showError("Hubo un error al guardar el feedback");
     }
   };
 
@@ -57,7 +57,7 @@ const GoalDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
 
   const handleDelete = async () => {
     try {
-      const url = `/dashboard/cyclegoal_routes/${goal.cycleGoalID}`;
+      const url = `/dashboard/cycle_feedback/${feedback.cycleFeedbackID}`;
       await axios.delete(url);
       fetchFeedbacks();
       handleClose();
@@ -74,7 +74,7 @@ const GoalDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle>
         <Stack direction="row" alignItems="start" gap={3}>
-          Objetivo para meso-ciclo:{" "}
+          Feedback para meso-ciclo:{" "}
           {feedback.mesoCycle.name +
             " ( " +
             dayjs(feedback.mesoCycle.startDate).format("DD MMM YYYY") +
@@ -125,4 +125,4 @@ const GoalDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
   );
 };
 
-export default GoalDialog;
+export default CycleFeedbackDialog;

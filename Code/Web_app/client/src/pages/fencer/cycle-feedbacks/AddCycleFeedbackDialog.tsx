@@ -63,7 +63,7 @@ const AddCycleFeedbackDialog = ({ open, handleClose, fetchFeedbacks }: Props) =>
   useEffect(() => {
     const fetchMesoCycles = async () => {
       const fencerId = id ? id : user?.fencer?.fencerID;
-      const url = `/dashboard/group/meso_cycle/${fencerId}`;
+      const url = `/dashboard/group/feedbacks/meso_cycle/${fencerId}`;
       const { data } = await axios.get(url);
       setMesoCycles(data.data);
       if (data.data.length <= 0) {
@@ -81,7 +81,7 @@ const AddCycleFeedbackDialog = ({ open, handleClose, fetchFeedbacks }: Props) =>
 
   const onSubmit: SubmitHandler<AddCycleFeedbackDialogType> = async (formData) => {
     try {
-      const url = "/dashboard/cyclegoal_routes/";
+      const url = "/dashboard/cycle_feedback/";
       const body = {
         fencerID: Number(id),
         trainerID: user?.trainer?.trainerID,

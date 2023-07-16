@@ -29,7 +29,7 @@ const CycleFeedbacks = () => {
   const { showError } = useAlert();
 
   const handleFeedbackDialogOpen = (feedback: CycleFeedback) => {
-    setShowAddFeedbackDialog(true);
+    setShowFeedbackDialog(true);
     setSelectedFeedback(feedback);
   };
 
@@ -38,13 +38,13 @@ const CycleFeedbacks = () => {
   };
 
   const handleClose = () => {
-    setShowAddFeedbackDialog(false);
+    setShowFeedbackDialog(false);
     setShowAddFeedbackDialog(false);
   };
 
   const fetchFeedbacks = useCallback(async () => {
     const fencerId = id ? id : user?.fencer?.fencerID;
-    const url = `/dashboard/fencer/cyclegoal_routes/${fencerId}`;
+    const url = `/dashboard/fencer/cycle_feedback/${fencerId}`;
     const { data } = await axios.get(url);
     setFeedbacks(data.data);
   }, [id]);
@@ -130,4 +130,4 @@ const CycleFeedbacks = () => {
   );
 };
 
-export default FencerFeedbacks;
+export default CycleFeedbacks;

@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   deleteCycleGoal,
   getAllCycleGoal,
+  getCycleGoalByFencerIdAndCycleId,
   getCycleGoalById,
   getCycleGoalsByFencerId,
   postCycleGoal,
@@ -17,5 +18,6 @@ router.post("/cyclegoal_routes/", postCycleGoal);
 router.put("/cyclegoal_routes/:id", updateCycleGoal);
 router.delete("/cyclegoal_routes/:id", deleteCycleGoal);
 router.get("/fencer/cyclegoal_routes/:id", getCycleGoalsByFencerId);
+router.get("/fencer/:fencerId/cyclegoal_routes/:cycleId", getCycleGoalByFencerIdAndCycleId);
 
 export default router;
