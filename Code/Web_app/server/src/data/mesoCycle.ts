@@ -147,7 +147,7 @@ export async function deleteMesoCycleById(id: number) {
   }
 }
 
-export async function findGroupMesoCyclesByFencerId(id: number) {
+export async function findGroupMesoCyclesByFencerIdForGoals(id: number) {
   const mesoCycles = await prisma.mesoCycle.findMany({
     where: {
       trainingGroup: {
@@ -167,6 +167,31 @@ export async function findGroupMesoCyclesByFencerId(id: number) {
       startDate: "desc",
     },
     take: 5,
+  });
+  return mesoCycles;
+}
+
+
+export async function findGroupMesoCyclesByFencerIdForFeedbacks(id: number) {
+  const mesoCycles = await prisma.mesoCycle.findMany({
+    where: {
+      trainingGroup: {
+        fencer: {
+          some: {
+            fencerID: id,
+          },
+        },
+      },
+      cycleFeedback: {
+        none: {
+          fencerID: id,
+        }
+      }
+    },
+    orderBy: {
+      startDate: "desc",
+    },
+    take: 10,
   });
   return mesoCycles;
 }
