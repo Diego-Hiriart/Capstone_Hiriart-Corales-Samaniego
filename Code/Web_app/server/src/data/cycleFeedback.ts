@@ -17,7 +17,13 @@ export async function findCycleFeedbackById(id: number) {
 
 export async function findAllCycleFeedback() {
   try {
-    const cycleFeedback = await prisma.cycleFeedback.findMany();
+    const cycleFeedback = await prisma.cycleFeedback.findMany(
+      {
+        include: {
+          trainer: true,
+        }
+      }
+    );
     return cycleFeedback;
   } catch (error) {
     throw error;

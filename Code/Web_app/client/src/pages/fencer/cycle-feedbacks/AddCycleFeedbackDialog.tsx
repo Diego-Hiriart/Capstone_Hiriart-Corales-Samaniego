@@ -32,15 +32,15 @@ const schema = z.object({
   ]),
 });
 
-type AddGoalDialogType = z.infer<typeof schema>;
+type AddCycleFeedbackDialogType = z.infer<typeof schema>;
 
 interface Props {
   open: boolean;
   handleClose: () => void;
-  fetchGoals: () => void;
+  fetchFeedbacks: () => void;
 }
 
-const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
+const AddCycleFeedbackDialog = ({ open, handleClose, fetchFeedbacks }: Props) => {
   const { showError, showSuccess } = useAlert();
   const [mesoCycles, setMesoCycles] = useState<MesoCycle[]>([]);
   const { user } = useAuth();
@@ -52,7 +52,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
     handleSubmit,
     register,
     setError,
-  } = useForm<AddGoalDialogType>({
+  } = useForm<AddCycleFeedbackDialogType>({
     resolver: zodResolver(schema),
     defaultValues: {
       content: "",
@@ -79,7 +79,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
     });
   }, []);
 
-  const onSubmit: SubmitHandler<AddGoalDialogType> = async (formData) => {
+  const onSubmit: SubmitHandler<AddCycleFeedbackDialogType> = async (formData) => {
     try {
       const url = "/dashboard/cyclegoal_routes/";
       const body = {
@@ -90,18 +90,18 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
         content: formData.content,
       };
       await axios.post(url, { data: body });
-      fetchGoals();
-      showSuccess("Objetivo creado con éxito");
+      fetchFeedbacks();
+      showSuccess("Feedback creado con éxito");
       handleClose();
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al crear el objetivo");
+      showError("Hubo un error al crear el feedback");
     }
   };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Agregar Objetivo</DialogTitle>
+      <DialogTitle>Agregar Feedback</DialogTitle>
       <DialogContent>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal" error={!!errors.mesoCycle}>
@@ -131,7 +131,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
             margin="normal"
             multiline
             rows={4}
-            label="Objetivo"
+            label="Feedback"
             id="content"
             {...register("content")}
             error={!!errors.content}
@@ -151,4 +151,4 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
   );
 };
 
-export default AddGoalDialog;
+export default AddCycleFeedbackDialog;
