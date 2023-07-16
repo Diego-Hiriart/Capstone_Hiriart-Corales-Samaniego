@@ -5,6 +5,7 @@ import {
   deleteCycleFeedbackById,
   findAllCycleFeedback,
   findCycleFeedbackById,
+  findCycleFeedbacksByFencerId,
   updateCycleFeedbackById,
 } from "../data/cycleFeedback";
 import { errorLog } from "../utils/logs";
@@ -57,6 +58,17 @@ export async function deleteCycleFeedback(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await deleteCycleFeedbackById(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getCycleFeedbacksByFencerId(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await findCycleFeedbacksByFencerId(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);
