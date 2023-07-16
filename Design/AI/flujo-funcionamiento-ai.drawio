@@ -1,0 +1,63 @@
+<mxfile host="app.diagrams.net" modified="2023-07-16T19:06:01.331Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.82" etag="a_ddsqSQrzm1ksDV6tVj" version="21.6.2" type="device">
+  <diagram name="Page-1" id="xuYj9NN97bkch5wEjgfO">
+    <mxGraphModel dx="1055" dy="622" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-1" value="esgrimista" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="80" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-7" value="camara de &lt;br&gt;dispositivo" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#000000;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;align=center;shape=mxgraph.office.devices.video_camera;flipH=1;flipV=0;" vertex="1" parent="1">
+          <mxGeometry x="210" y="80" width="52" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=75;exitDy=200;exitPerimeter=0;endArrow=none;endFill=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="laQeV4f3AzjAFM1tyvjG-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="270" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.178;exitY=0.004;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.32;entryY=1.006;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="laQeV4f3AzjAFM1tyvjG-8" target="laQeV4f3AzjAFM1tyvjG-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-8" value="Frontend aplicación web" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="360" y="50" width="200" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-10" value="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="370" y="105" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-11" value="Captura de poses con inteligencia artificial pre entrenada" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="405" y="100" width="110" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.756;exitY=1.002;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.761;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="laQeV4f3AzjAFM1tyvjG-12" target="laQeV4f3AzjAFM1tyvjG-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-12" value="Backend aplicación web" style="verticalAlign=top;align=left;spacingTop=8;spacingLeft=2;spacingRight=12;shape=cube;size=10;direction=south;fontStyle=4;html=1;whiteSpace=wrap;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="760" y="50" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-14" value="2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="590" y="50" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-15" value="Envío de poses capturadas al backend" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="37.5" width="110" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-16" value="3" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="780" y="105" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-17" value="Análisis de movimiento con inteligencia artificial implementada para la solución" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="820" y="100" width="110" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-19" value="4" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="630" y="250" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-20" value="Retornar respuesta con resultados de análisis al frontend&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="670" y="237.5" width="110" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-21" value="5" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="370" y="237.5" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="laQeV4f3AzjAFM1tyvjG-22" value="Mostrar resultados en caso de haber error, caso contrario continuar capturando" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="405" y="217.5" width="130" height="75" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
