@@ -8,7 +8,7 @@
     (title "LEDs, timer, and period display unit schematic")
     (date "2023-05-20")
     (rev "1.0.0")
-    (comment 1 "Connection to logic unit pending")
+    (comment 1 "Hiriart Corales Samaniego")
   )
 
   (lib_symbols
