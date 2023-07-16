@@ -32,15 +32,15 @@ const schema = z.object({
   ]),
 });
 
-type AddGoalDialogType = z.infer<typeof schema>;
+type AddCycleFeedbackDialogType = z.infer<typeof schema>;
 
 interface Props {
   open: boolean;
   handleClose: () => void;
-  fetchGoals: () => void;
+  fetchFeedbacks: () => void;
 }
 
-const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
+const AddCycleFeedbackDialog = ({ open, handleClose, fetchFeedbacks }: Props) => {
   const { showError, showSuccess } = useAlert();
   const [mesoCycles, setMesoCycles] = useState<MesoCycle[]>([]);
   const { user } = useAuth();
@@ -52,7 +52,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
     handleSubmit,
     register,
     setError,
-  } = useForm<AddGoalDialogType>({
+  } = useForm<AddCycleFeedbackDialogType>({
     resolver: zodResolver(schema),
     defaultValues: {
       content: "",
@@ -63,7 +63,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
   useEffect(() => {
     const fetchMesoCycles = async () => {
       const fencerId = id ? id : user?.fencer?.fencerID;
-      const url = `/dashboard/group/goals/meso_cycle/${fencerId}`;
+      const url = `/dashboard/group/feedbacks/meso_cycle/${fencerId}`;
       const { data } = await axios.get(url);
       setMesoCycles(data.data);
       if (data.data.length <= 0) {
@@ -79,9 +79,9 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
     });
   }, []);
 
-  const onSubmit: SubmitHandler<AddGoalDialogType> = async (formData) => {
+  const onSubmit: SubmitHandler<AddCycleFeedbackDialogType> = async (formData) => {
     try {
-      const url = "/dashboard/cyclegoal_routes/";
+      const url = "/dashboard/cycle_feedback/";
       const body = {
         fencerID: Number(id),
         trainerID: user?.trainer?.trainerID,
@@ -90,7 +90,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
         content: formData.content,
       };
       await axios.post(url, { data: body });
-      fetchGoals();
+      fetchFeedbacks();
       showSuccess("Feedback creado con éxito");
       handleClose();
     } catch (error) {
@@ -151,4 +151,4 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
   );
 };
 
-export default AddGoalDialog;
+export default AddCycleFeedbackDialog;

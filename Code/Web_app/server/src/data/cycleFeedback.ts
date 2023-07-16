@@ -17,7 +17,11 @@ export async function findCycleFeedbackById(id: number) {
 
 export async function findAllCycleFeedback() {
   try {
-    const cycleFeedback = await prisma.cycleFeedback.findMany();
+    const cycleFeedback = await prisma.cycleFeedback.findMany({
+      include: {
+        trainer: true,
+      },
+    });
     return cycleFeedback;
   } catch (error) {
     throw error;
@@ -72,4 +76,54 @@ export async function deleteCycleFeedbackById(id: number) {
   } catch (error) {
     throw error;
   }
+}
+
+export async function findCycleFeedbacksByFencerId(id: number) {
+  const cycleFeedbacks = await prisma.cycleFeedback.findMany({
+    where: {
+      fencerID: id,
+    },
+    include: {
+      mesoCycle: true,
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      mesoCycle: {
+        startDate: "desc",
+      },
+    },
+  });
+  return cycleFeedbacks;
+}
+
+export async function findCycleFeedbackByFencerIdAndCycleId(fencerId: number, cycleId: number) {
+  const cycleFeedback = await prisma.cycleFeedback.findFirst({
+    where: {
+      fencerID: fencerId,
+      mesoCycleID: cycleId,
+    },
+    include: {
+      mesoCycle: true,
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            }
+          }
+        }
+      }
+    },
+  });
+  return cycleFeedback;
 }

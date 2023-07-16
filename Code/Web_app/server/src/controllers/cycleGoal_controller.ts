@@ -4,6 +4,7 @@ import {
   createCycleGoal,
   deleteCycleGoalById,
   findAllCycleGoal,
+  findCycleGoalByFencerIdAndCycleId,
   findCycleGoalById,
   findCycleGoalsByFencerId,
   updateCycleGoalById,
@@ -69,6 +70,17 @@ export async function getCycleGoalsByFencerId(req: Request, res: Response) {
   try {
     return res.status(200).json({
       data: await findCycleGoalsByFencerId(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getCycleGoalByFencerIdAndCycleId(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await findCycleGoalByFencerIdAndCycleId(Number(req.params.fencerId), Number(req.params.cycleId)),
     });
   } catch (error) {
     errorLog(error);

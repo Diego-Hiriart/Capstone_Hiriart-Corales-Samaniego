@@ -17,6 +17,7 @@ import CombatDetails from "./pages/combat/CombatDetails";
 import TrainerCombat from "./pages/combat/TrainerCombat";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
 import AITrainingDetection from "./pages/fencer/AITrainingDetection";
+import CycleDetail from "./pages/fencer/CycleDetail";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
@@ -93,7 +94,7 @@ export const App = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
-          <Route path="groups/:id/cycles/:id" element={<MesoCycleDetails />} />
+          <Route path="groups/:id/cycles/:cycleId" element={<CycleDetail />} />
           <Route path="groups/:id" element={<GroupDetails />} />
           <Route path="aitrainings/new" element={<AITrainingDetection />} />
           <Route path="feedback" element={<FencerFeedback />} />

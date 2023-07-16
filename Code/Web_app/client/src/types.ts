@@ -211,8 +211,10 @@ export type CycleGoal = {
 export type CycleFeedback = {
   cycleFeedbackID: number;
   trainerID: number;
+  trainer: Trainer;
   fencerID: number;
   mesoCycleID: number;
+  mesoCycle: MesoCycle;
   content: string;
   date: Date;
 };

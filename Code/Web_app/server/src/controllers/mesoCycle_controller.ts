@@ -4,7 +4,8 @@ import {
   createMesoCycle,
   deleteMesoCycleById,
   findAllMesoCycle,
-  findGroupMesoCyclesByFencerId,
+  findGroupMesoCyclesByFencerIdForFeedbacks,
+  findGroupMesoCyclesByFencerIdForGoals,
   findMesoCycleById,
   updateMesoCycleById,
 } from "../data/mesoCycle";
@@ -65,10 +66,21 @@ export async function deleteMesoCycle(req: Request, res: Response) {
   }
 }
 
-export async function getGroupMesoCyclesByFencerId(req: Request, res: Response) {
+export async function getGroupMesoCyclesByFencerIdForGoals(req: Request, res: Response) {
   try {
     return res.status(200).json({
-      data: await findGroupMesoCyclesByFencerId(Number(req.params.id)),
+      data: await findGroupMesoCyclesByFencerIdForGoals(Number(req.params.id)),
+    });
+  } catch (error) {
+    errorLog(error);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getGroupMesoCyclesByFencerIdForFeedbacks(req: Request, res: Response) {
+  try {
+    return res.status(200).json({
+      data: await findGroupMesoCyclesByFencerIdForFeedbacks(Number(req.params.id)),
     });
   } catch (error) {
     errorLog(error);

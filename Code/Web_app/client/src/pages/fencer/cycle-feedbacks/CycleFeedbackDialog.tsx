@@ -16,15 +16,15 @@ import { useState } from "react";
 import { useAlert } from "../../../hooks/useAlert";
 import useAuth from "../../../hooks/useAuth";
 import axios from "../../../services/axios";
-import { CycleGoal } from "../../../types";
+import { CycleFeedback } from "../../../types";
 
 interface Props {
   open: boolean;
   handleClose: () => void;
-  goal: CycleGoal;
-  fetchGoals: () => void;
+  feedback: CycleFeedback;
+  fetchFeedbacks: () => void;
 }
-const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
+const CycleFeedbackDialog = ({ open, handleClose, feedback, fetchFeedbacks }: Props) => {
   const [content, setContent] = useState<string>("");
   const { showError, showSuccess } = useAlert();
   const { user } = useAuth();
@@ -32,22 +32,22 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
   const handleSave = async () => {
     try {
       if (!content) {
-        showError("El objetivo no puede estar vacío");
+        showError("El feedback no puede estar vacío");
         return;
       }
-      const url = `/dashboard/cyclegoal_routes/${goal.cycleGoalID}`;
+      const url = `/dashboard/cycle_feedback/${feedback.cycleFeedbackID}`;
       const body = {
         content: content,
         date: new Date(),
         trainerID: user?.trainer?.trainerID,
       };
       await axios.put(url, { data: body });
-      fetchGoals();
+      fetchFeedbacks();
       handleClose();
-      showSuccess("Objetivo guardado");
+      showSuccess("Feedback guardado");
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al guardar el objetivo");
+      showError("Hubo un error al guardar el feedback");
     }
   };
 
@@ -57,14 +57,14 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
 
   const handleDelete = async () => {
     try {
-      const url = `/dashboard/cyclegoal_routes/${goal.cycleGoalID}`;
+      const url = `/dashboard/cycle_feedback/${feedback.cycleFeedbackID}`;
       await axios.delete(url);
-      fetchGoals();
+      fetchFeedbacks();
       handleClose();
-      showSuccess("Objetivo eliminado");
+      showSuccess("Feedback eliminado");
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al eliminar el objetivo");
+      showError("Hubo un error al eliminar el feedback");
     }
   };
 
@@ -74,12 +74,12 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle>
         <Stack direction="row" alignItems="start" gap={3}>
-          Objetivo para meso-ciclo:{" "}
-          {goal.mesoCycle.name +
+          Feedback para meso-ciclo:{" "}
+          {feedback.mesoCycle.name +
             " ( " +
-            dayjs(goal.mesoCycle.startDate).format("DD MMM YYYY") +
+            dayjs(feedback.mesoCycle.startDate).format("DD MMM YYYY") +
             " - " +
-            dayjs(goal.mesoCycle.endDate).format("DD MMM YYYY") +
+            dayjs(feedback.mesoCycle.endDate).format("DD MMM YYYY") +
             " )"}
           {isTrainer && (
             <Button
@@ -100,13 +100,14 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
             multiline
             rows={8}
             variant="outlined"
-            defaultValue={goal.content}
+            defaultValue={feedback.content}
             onChange={handleChange}
             disabled={!isTrainer}
           />
+          <Typography variant="caption"></Typography>
           <Typography variant="caption">
-            {dayjs(goal?.date).format("DD MMMM YYYY")} por{" "}
-            {goal.trainer?.user?.names} {goal?.trainer?.user?.lastNames}
+            {dayjs(feedback?.date).format("DD MMMM YYYY")} por{" "}
+            {feedback.trainer?.user?.names} {feedback?.trainer?.user?.lastNames}
           </Typography>
           <DialogActions sx={{ mt: 3 }}>
             <Button fullWidth variant="outlined" onClick={handleClose}>
@@ -124,4 +125,4 @@ const GoalDialog = ({ open, handleClose, goal, fetchGoals }: Props) => {
   );
 };
 
-export default GoalDialog;
+export default CycleFeedbackDialog;

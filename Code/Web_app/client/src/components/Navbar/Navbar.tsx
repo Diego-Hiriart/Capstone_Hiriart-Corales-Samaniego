@@ -57,7 +57,6 @@ const NavBar = () => {
         : `/groups/0`;
       items["Feedback"] = "/feedback";
       items["Entrenamiento IA"] = "/aitrainings";
-      items["Objetivos"] = "/goals";
     }
     return items;
   };

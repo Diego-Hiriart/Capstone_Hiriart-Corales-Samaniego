@@ -100,3 +100,26 @@ export async function findCycleGoalsByFencerId(id: number) {
   });
   return cycleGoals;
 }
+
+export async function findCycleGoalByFencerIdAndCycleId(fencerId: number, cycleId: number) {
+  const cycleGoal = await prisma.cycleGoal.findFirst({
+    where: {
+      fencerID: fencerId,
+      mesoCycleID: cycleId,
+    },
+    include: {
+      mesoCycle: true,
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            }
+          }
+        }
+      }
+    },
+  });
+  return cycleGoal;
+}
