@@ -1,7 +1,7 @@
+import CycleFeedbacks from "../../pages/fencer/cycle-feedbacks/CycleFeedbacks";
 import FencerAITrainings from "../../pages/fencer/FencerAITrainings";
 import FencerFeedback from "../../pages/fencer/FencerFeedback";
 import FencerInfo from "../../pages/fencer/FencerInfo";
-import CycleFeedbacks from "../../pages/fencer/cycle-feedbacks/CycleFeedbacks";
 import FencerGoals from "../../pages/fencer/goals/FencerGoals";
 
 export const fencerDetailTabs = [

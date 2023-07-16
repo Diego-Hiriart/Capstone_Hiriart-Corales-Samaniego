@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
+import { fencerMesocycleTabs } from "../../components/Sidebar/fencerMesocycleTabs";
 import VerticalTabs from "../../components/VerticalTabs";
 import useTab from "../../hooks/useTab";
-import { fencerMesocycleTabs } from "../../components/Sidebar/fencerMesocycleTabs";
 
 const CycleDetail = () => {
   const { setTabValue, setTabItems } = useTab();

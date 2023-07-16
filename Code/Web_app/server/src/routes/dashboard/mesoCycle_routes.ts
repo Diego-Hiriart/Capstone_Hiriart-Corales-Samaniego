@@ -18,6 +18,6 @@ router.post("/meso_cycle/", postMesoCycle);
 router.put("/meso_cycle/:id", updateMesoCycle);
 router.delete("/meso_cycle/:id", deleteMesoCycle);
 router.get("/group/goals/meso_cycle/:id", getGroupMesoCyclesByFencerIdForGoals);
-router.get("/group/feedbacks/meso_cycle/:id", getGroupMesoCyclesByFencerIdForFeedbacks)
+router.get("/group/feedbacks/meso_cycle/:id", getGroupMesoCyclesByFencerIdForFeedbacks);
 
 export default router;

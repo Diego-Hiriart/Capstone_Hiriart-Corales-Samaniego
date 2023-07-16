@@ -171,7 +171,6 @@ export async function findGroupMesoCyclesByFencerIdForGoals(id: number) {
   return mesoCycles;
 }
 
-
 export async function findGroupMesoCyclesByFencerIdForFeedbacks(id: number) {
   const mesoCycles = await prisma.mesoCycle.findMany({
     where: {

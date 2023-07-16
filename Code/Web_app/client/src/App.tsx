@@ -17,6 +17,7 @@ import CombatDetails from "./pages/combat/CombatDetails";
 import TrainerCombat from "./pages/combat/TrainerCombat";
 import AITrainingDetail from "./pages/fencer/AITrainingDetail";
 import AITrainingDetection from "./pages/fencer/AITrainingDetection";
+import CycleDetail from "./pages/fencer/CycleDetail";
 import FencerAITrainings from "./pages/fencer/FencerAITrainings";
 import FencerDetail from "./pages/fencer/FencerDetail";
 import FencerFeedback from "./pages/fencer/FencerFeedback";
@@ -37,7 +38,6 @@ import TrainerViewFencers from "./pages/trainer/TrainerViewFencers";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import SignupContextRoute from "./routes/SignupContextRoute";
-import CycleDetail from "./pages/fencer/CycleDetail";
 
 export const App = () => {
   const { checkToken } = useContext(AuthContext);
