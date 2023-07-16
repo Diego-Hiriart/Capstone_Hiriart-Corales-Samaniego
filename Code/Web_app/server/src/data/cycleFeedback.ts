@@ -104,3 +104,26 @@ export async function findCycleFeedbacksByFencerId(id: number) {
   });
   return cycleFeedbacks;
 }
+
+export async function findCycleFeedbackByFencerIdAndCycleId(fencerId: number, cycleId: number) {
+  const cycleFeedback = await prisma.cycleFeedback.findFirst({
+    where: {
+      fencerID: fencerId,
+      mesoCycleID: cycleId,
+    },
+    include: {
+      mesoCycle: true,
+      trainer: {
+        include: {
+          user: {
+            select: {
+              names: true,
+              lastNames: true,
+            }
+          }
+        }
+      }
+    },
+  });
+  return cycleFeedback;
+}
