@@ -22,8 +22,8 @@ def main():
                 if file.endswith(".json"):
                     jsonDataFiles+=[file]
             #Ask user how much data to use for validation
-            defaultValAmount = 20
-            validationAmount = input("Amount of data for validation (default is 20): ")
+            defaultValAmount = 25
+            validationAmount = input("Amount of data for validation (default is 25): ")
             if(validationAmount.strip()!=""):
                 validationAmount = int(validationAmount)
             else:
