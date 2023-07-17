@@ -413,6 +413,7 @@ export type PoseAnalisisData = {
   correctMove: Move;
   title: string;
   description: string;
+  lowConfidence: boolean;
 };
 
 export type TabItem = {
