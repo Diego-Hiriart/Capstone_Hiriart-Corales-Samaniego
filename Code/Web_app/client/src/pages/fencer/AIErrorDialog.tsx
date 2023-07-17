@@ -104,6 +104,12 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={"md"} fullWidth>
       <DialogContent css={dialogContentStyles}>
+        {poseAnalisisData.lowConfidence && (
+          <Typography color="orange">
+            La confianza de la pose es baja, por lo que el resultado puede no
+            ser preciso.
+          </Typography>
+        )}
         <div css={canvasContainerStyles}>
           <canvas
             ref={setCanvasRef}
