@@ -409,29 +409,27 @@ void handleRemote(String receivedCommand) {
       break;
     case 34:
       //Decrease remaining minutes, seconds, tenths or hundredths by increasing elapsed time
-      /*Take into consideration that tenths and hundredths cannot be edited if time remaining time 
+      /*Take into consideration that tenths and hundredths cannot be edited if remaining time 
       * is more than 10s, and minutes cannot be edited if remaning time is 10s or less*/
       {
         if (!editingTime) {
           break;
         }
-        uint32_t remainingTime = setTime - elapsedTime;
         //When checking what is being edited, don't allow time to end up being less than 0
-        if (currentlyEditing == 0 && remainingTime >= 60000) {
-          elapsedTime += 60000;
+        if (currentlyEditing == 0 && setTime >= 60000) {
+          setTime -= 60000;
         }
-        if (currentlyEditing == 1 && remainingTime >= 1000) {
-          elapsedTime += 1000;
+        if (currentlyEditing == 1 && setTime >= 1000) {
+          setTime -= 1000;
         }
-        if (currentlyEditing == 2 && remainingTime >= 100) {
-          elapsedTime += 100;
+        if (currentlyEditing == 2 && setTime >= 100) {
+          setTime -= 100;
         }
-        if (currentlyEditing == 3 && remainingTime >= 10) {
-          elapsedTime += 10;
+        if (currentlyEditing == 3 && setTime >= 10) {
+          setTime -= 10;
         }
-        remainingTime = setTime - elapsedTime;
-        //Automatically switch to seconds editing if needed (if time now 10s or less)
-        if (remainingTime <= timeDisplayThreshold && currentlyEditing == 0) {
+        //Automatically switch to seconds editing if needed (if time now less than 60s)
+        if (setTime < 60000 && currentlyEditing == 0) {
           currentlyEditing = 1;
         }
       }
@@ -441,10 +439,12 @@ void handleRemote(String receivedCommand) {
       //Toggle editing time
       {
         editingTime = !editingTime;
-        //If now editing, set the editing to start at the leftmost unit (i.e. minutes or seconds) depending on whether more then  10s are left
+        //If now editing, set the editing to start at the leftmost unit (i.e. minutes or seconds) depending on whether more than 10s are left
         if (editingTime) {
-          uint32_t remainingTime = setTime - elapsedTime;
-          if (remainingTime > timeDisplayThreshold) {
+          //Make setTime equal to whatever was left
+          setTime = setTime - elapsedTime;
+          elapsedTime = 0;  //Reset elapsed time
+          if (setTime > timeDisplayThreshold) {
             currentlyEditing = 0;
           } else {
             currentlyEditing = 1;
@@ -455,27 +455,26 @@ void handleRemote(String receivedCommand) {
       break;
     case 36:
       //Increase reamining minutes, seconds, tenths or hundredths by decreasing elapsed time
-      /*Take into consideration that tenths and hundredths cannot be edited if time remaining time 
+      /*Take into consideration that tenths and hundredths cannot be edited if remaining time 
       * is more than 10s, and minutes cannot be edited if remaning time is 10s or less*/
       {
         if (!editingTime) {
           break;
         }
         if (currentlyEditing == 0) {
-          elapsedTime -= 60000;
+          setTime += 60000;
         }
         if (currentlyEditing == 1) {
-          elapsedTime -= 1000;
+          setTime += 1000;
         }
         if (currentlyEditing == 2) {
-          elapsedTime -= 100;
+          setTime += 100;
         }
         if (currentlyEditing == 3) {
-          elapsedTime -= 10;
+          setTime += 10;
         }
-        uint32_t remainingTime = setTime - elapsedTime;
         //Automatically switch to seconds editing if needed (if time now more than 10s)
-        if (remainingTime > timeDisplayThreshold && currentlyEditing >= 2) {
+        if (setTime > timeDisplayThreshold && currentlyEditing >= 2) {
           currentlyEditing = 1;
         }
         currentBuzzAlert = 2;
