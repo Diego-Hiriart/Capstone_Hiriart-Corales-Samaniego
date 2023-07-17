@@ -554,6 +554,10 @@ void handleRemote(String receivedCommand) {
       }
       break;
     case 45:
+      //Dont allow play/continue timer if editing time
+      if (editingTime) {
+        break;
+      }
       if (elapsedTime < setTime) {
         currentBuzzAlert = 1;  //Play 1 long beep to indicate pause/continue
         paused = !paused;
