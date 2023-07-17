@@ -29,7 +29,7 @@ export async function createAndTrainModel(
   try {
     let errorsModel;
     const trainingEpochs = epochs;
-    const outputNeurons = 10; //Detectable movements (includes correct movements)
+    const outputNeurons = 50; //Detectable movements (includes correct movements)
     if (checkModelDataExists()) {
       const modelJSON = JSON.parse(
         readFileSync("../errors_AI_model_data/model.json").toString()
@@ -84,21 +84,21 @@ export async function createAndTrainModel(
         tf.layers.dense({
           name: "hidden-2",
           activation: "sigmoid",
-          units: 165,
+          units: 240,
         })
       );
       errorsModel.add(
         tf.layers.dense({
           name: "hidden-3",
           activation: "sigmoid",
-          units: 65,
+          units: 150,
         })
       );
       errorsModel.add(
         tf.layers.dense({
           name: "hidden-4",
           activation: "sigmoid",
-          units: 20,
+          units: 75,
         })
       );
       //Output layer
