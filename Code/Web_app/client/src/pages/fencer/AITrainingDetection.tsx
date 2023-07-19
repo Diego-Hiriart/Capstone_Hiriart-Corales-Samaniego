@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, Snackbar, Stack, Typography } from "@mui/material";
 import { PoseDetector } from "@tensorflow-models/pose-detection";
 import {
   useCallback,
@@ -49,6 +49,7 @@ function AITrainingDetection() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const previousTime = useRef<number>(0);
   const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
   const { showError } = useAlert();
 
   useEffect(() => {
@@ -112,7 +113,8 @@ function AITrainingDetection() {
   const asyncRequest = (duration: number): Promise<any> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ data: { data: "asdf" } });
+        // resolve({ data: poseAnalisisResponseMock });
+        resolve({ data: "asdf" });
       }, duration);
     });
   };
@@ -136,6 +138,8 @@ function AITrainingDetection() {
         const { data } = await axios.post(url, { data: body });
         // test
         // const { data } = await asyncRequest(1000);
+
+        // Error detected
         if (data.data) {
           const poseAnalysisData = {
             ...data.data,
@@ -148,6 +152,9 @@ function AITrainingDetection() {
           setIsStartButtonDisabled(false);
           return;
         }
+
+        // No error detected
+        setShowSuccessMessage(true);
         setMove([]);
         startSetupTimer();
       };
@@ -260,6 +267,19 @@ function AITrainingDetection() {
       )}
       <Box>
         <div className="canvas-wrapper" css={canvasWrapperStyles({ isMobile })}>
+          <Snackbar
+            open={showSuccessMessage}
+            autoHideDuration={1000}
+            onClose={() => setShowSuccessMessage(false)}
+            css={successMessageStyles}
+          >
+            <Typography css={successMessageTextStyles} variant="h1">
+              Correcto!
+            </Typography>
+          </Snackbar>
+          {isSetupTimerRunning && (
+            <div css={setupTimerStyles}>{setupTimer}</div>
+          )}
           <Typography>
             Puedes empezar cuando se muestren los puntos en la imagen de tu
             cuerpo
@@ -294,7 +314,7 @@ function AITrainingDetection() {
               }}
               disabled={isStartButtonDisabled}
             >
-              Iniciar ({setupTimer})
+              Iniciar
             </Button>
           </div>
         </div>
@@ -331,11 +351,13 @@ const renderPaneStyles = () => css`
 `;
 
 const buttonWrapperStyles = css`
-  position: absolute;
-  left: 50%;
-  bottom: -60px;
-  transform: translateX(-50%);
+  position: relative;
+  top: 100%;
   z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
 `;
 
 const buttonStyles = ({ isMobile }: { isMobile: boolean }) => css`
@@ -357,7 +379,6 @@ const canvasWrapperStyles = ({ isMobile }: { isMobile: boolean }) => css`
 
 const durationTimerStyles = css`
   position: absolute;
-  top: 0;
   left: 0;
   font-size: 2rem;
   font-weight: bold;
@@ -365,4 +386,32 @@ const durationTimerStyles = css`
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0 1rem;
+`;
+
+const successMessageStyles = css`
+  position: absolute;
+  top: 5rem;
+  bottom: 0;
+  left: 50% !important;
+  right: 0 !important;
+  transform: translateX(-50%);
+  justify-content: center;
+  align-items: start;
+`;
+
+const successMessageTextStyles = css`
+  font-size: 2rem;
+  font-weight: bold;
+  color: #34eb7d;
+`;
+
+const setupTimerStyles = css`
+  position: absolute;
+  z-index: 10;
+  color: white;
+  font-size: 20rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
 `;

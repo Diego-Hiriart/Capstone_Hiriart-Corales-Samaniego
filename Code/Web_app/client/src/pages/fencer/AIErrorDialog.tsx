@@ -104,6 +104,9 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={"md"} fullWidth>
       <DialogContent css={dialogContentStyles}>
+        <Typography paragraph variant="h1" textAlign="center" color="#eb344f">
+          Cometiste un error
+        </Typography>
         {poseAnalisisData.lowConfidence && (
           <Typography color="orange">
             La confianza de la pose es baja, por lo que el resultado puede no
@@ -111,19 +114,34 @@ const AIErrorDialog = ({ open, handleClose, poseAnalisisData }: Props) => {
           </Typography>
         )}
         <div css={canvasContainerStyles}>
-          <canvas
-            ref={setCanvasRef}
-            css={[outputCanvasStyles, redBorder]}
-            id="error-canvas"
-          ></canvas>
-          <canvas
-            ref={setCanvasRef}
-            css={[outputCanvasStyles, greenBorder]}
-            id="correct-canvas"
-          ></canvas>
+          <Box>
+            <Typography paragraph variant="h5" textAlign="center" fontWeight="bold">
+              Error Cometido
+            </Typography>
+            <canvas
+              ref={setCanvasRef}
+              css={[outputCanvasStyles, redBorder]}
+              id="error-canvas"
+            ></canvas>
+          </Box>
+          <Box>
+            <Typography paragraph variant="h5" textAlign="center" fontWeight="bold">
+              Movimiento Correcto
+            </Typography>
+            <canvas
+              ref={setCanvasRef}
+              css={[outputCanvasStyles, greenBorder]}
+              id="correct-canvas"
+            ></canvas>
+          </Box>
         </div>
-        <Typography>{poseAnalisisData.title}</Typography>
-        <Typography>{poseAnalisisData.description}</Typography>
+        <Box>
+          <Typography component="span" fontWeight="bold">Movimiento Correcto: </Typography>
+          <Typography component="span">{poseAnalisisData.title}</Typography>
+          <br/>
+          <Typography component="span" fontWeight="bold">Descripción: </Typography>
+          <Typography component="span">{poseAnalisisData.description}</Typography>
+        </Box>
         <DialogActions sx={{ paddingBottom: 0 }}>
           <Button variant="contained" onClick={handleClose}>
             Cerrar
@@ -154,8 +172,7 @@ const outputCanvasStyles = css`
   width: 100%;
   max-width: 400px;
   min-width: 0;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+  height: 400px;
 `;
 
 const redBorder = css`
