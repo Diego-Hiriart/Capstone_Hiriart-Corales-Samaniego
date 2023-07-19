@@ -273,8 +273,13 @@ function AITrainingDetection() {
             onClose={() => setShowSuccessMessage(false)}
             css={successMessageStyles}
           >
-            <Typography css={successMessageTextStyles} variant="h1">Correcto!</Typography>
+            <Typography css={successMessageTextStyles} variant="h1">
+              Correcto!
+            </Typography>
           </Snackbar>
+          {isSetupTimerRunning && (
+            <div css={setupTimerStyles}>{setupTimer}</div>
+          )}
           <Typography>
             Puedes empezar cuando se muestren los puntos en la imagen de tu
             cuerpo
@@ -309,7 +314,7 @@ function AITrainingDetection() {
               }}
               disabled={isStartButtonDisabled}
             >
-              Iniciar ({setupTimer})
+              Iniciar
             </Button>
           </div>
         </div>
@@ -398,4 +403,15 @@ const successMessageTextStyles = css`
   font-size: 2rem;
   font-weight: bold;
   color: #34eb7d;
+`;
+
+const setupTimerStyles = css`
+  position: absolute;
+  z-index: 10;
+  color: white;
+  font-size: 20rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
 `;
