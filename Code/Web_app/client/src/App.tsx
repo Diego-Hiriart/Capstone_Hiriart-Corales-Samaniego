@@ -94,7 +94,7 @@ export const App = () => {
           <Route path="profile" element={<Profile />} />
         </Route>
         <Route element={<ProtectedRoute allowedRoles={["fencer"]} />}>
-          <Route path="groups/:id/cycles/:cycleId" element={<CycleDetail />} />
+          <Route path="groups/:id/cycles/:id" element={<CycleDetail />} />
           <Route path="groups/:id" element={<GroupDetails />} />
           <Route path="aitrainings/new" element={<AITrainingDetection />} />
           <Route path="feedback" element={<FencerFeedback />} />
