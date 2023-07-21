@@ -1,0 +1,40 @@
+<mxfile host="app.diagrams.net" modified="2023-07-21T03:37:37.346Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.82" etag="WFdP4XxpmC0IzREM3ILh" version="21.6.5" type="device">
+  <diagram name="Page-1" id="QArdhgqGYWnSluUq844a">
+    <mxGraphModel dx="1266" dy="739" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5szk---XClKsi9Hrr3oe-1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="255" y="130" width="341" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;" parent="1" source="5szk---XClKsi9Hrr3oe-3" target="5szk---XClKsi9Hrr3oe-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-3" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bac8d3;strokeColor=#23445d;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="253" y="260" width="345" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-4" value="Cliente" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="385.5" y="142.5" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-5" value="Servidor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="375" y="260" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-9" value="JSON" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="425" y="210" width="70" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-11" value="Capa de controladores" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="270" y="300" width="310" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-12" value="Capa de Modelos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="270.5" y="350" width="310" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="d1CQOXOWRLRLBNxTb-bh-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=18;" parent="1" source="5szk---XClKsi9Hrr3oe-14" target="5szk---XClKsi9Hrr3oe-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5szk---XClKsi9Hrr3oe-14" value="DB" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#fad9d5;strokeColor=#ae4132;fontSize=18;" parent="1" vertex="1">
+          <mxGeometry x="640" y="330" width="60" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,43 @@
+<mxfile host="app.diagrams.net" modified="2023-07-21T03:23:14.619Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.82" etag="Hukt6ijat5OntlqPL1ya" version="21.6.5" type="device">
+  <diagram name="Page-1" id="iIeQYk8Ec7GAi2xhFV9x">
+    <mxGraphModel dx="1055" dy="616" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.003;entryY=0.261;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="WPBDb9YMmMVBLjs6uNiz-1" target="WPBDb9YMmMVBLjs6uNiz-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-1" value="&amp;nbsp;Control remoto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;verticalAlign=top;align=left;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="140" y="170" width="180" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="WPBDb9YMmMVBLjs6uNiz-2" target="WPBDb9YMmMVBLjs6uNiz-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-2" value="Microcontrolador" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="160" y="300" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-3" value="Emisor" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="160" y="210" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-6" value="&amp;nbsp; Máquina" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;verticalAlign=top;align=left;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="390" y="166" width="330" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="WPBDb9YMmMVBLjs6uNiz-8" target="WPBDb9YMmMVBLjs6uNiz-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-8" value="Microcontroladores" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="450" y="305" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.294;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="WPBDb9YMmMVBLjs6uNiz-9" target="WPBDb9YMmMVBLjs6uNiz-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-9" value="Receptor" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="410" y="205" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WPBDb9YMmMVBLjs6uNiz-11" value="Displays" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="570" y="205" width="140" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
