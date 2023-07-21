@@ -91,17 +91,17 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
       };
       await axios.post(url, { data: body });
       fetchGoals();
-      showSuccess("Feedback creado con éxito");
+      showSuccess("Objetivo creado con éxito");
       handleClose();
     } catch (error) {
       console.error(error);
-      showError("Hubo un error al crear el feedback");
+      showError("Hubo un error al crear el objetivo");
     }
   };
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-      <DialogTitle>Agregar Feedback</DialogTitle>
+      <DialogTitle>Agregar Objetivo</DialogTitle>
       <DialogContent>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth margin="normal" error={!!errors.mesoCycle}>
@@ -131,7 +131,7 @@ const AddGoalDialog = ({ open, handleClose, fetchGoals }: Props) => {
             margin="normal"
             multiline
             rows={4}
-            label="Feedback"
+            label="Objetivo"
             id="content"
             {...register("content")}
             error={!!errors.content}
