@@ -118,8 +118,8 @@ const AcademyAddActivity = ({ open, handleClose }: AcademyAddActivityProps) => {
                   adapterLocale={enGB}
                 >
                   <TimePicker
-                    views={["minutes", "seconds"]}
-                    format="mm:ss"
+                    views={["hours", "minutes", "seconds"]}
+                    format="hh:mm:ss"
                     defaultValue={defaultDuration}
                     onChange={(newValue: Date | null) => {
                       setDuration(newValue!);
