@@ -27,6 +27,11 @@ const uint8_t incRight = 42;
 const uint8_t threeMin = 43;
 const uint8_t nextUnit = 44;
 const uint8_t pauseRes = 45;
+//Debounce vars
+uint8_t pressedButtonDebounce = 0;
+uint32_t lastPressedButtonDebTime = 0;
+//Time for debounce check
+uint8_t debounceDelay = 50;
 //Controller's ID
 const uint32_t remoteId = 1;  //Must be diferent for every controller
 //RF SPI pins
@@ -35,8 +40,6 @@ const uint8_t rfCSNPin = 7;  //CS Not pin (CSN)
 //To store which button was just pressed
 int8_t buttonReset = 0;
 int8_t pressedButton = buttonReset;
-//Time for debounce check
-uint8_t debounceDelay = 50;
 //Last status for debounce check
 uint8_t lastPinStatus = LOW;
 
@@ -82,11 +85,28 @@ void setup() {
 void loop() {
   pressedButton = buttonReset;  //Reset press
   checkButtonPress();
-  debounce();
-  delay(100);
   if (pressedButton != buttonReset) {
     transmit();
+    delay(250);  //Delay to avoid sticky buttons
   }
+}
+
+//Reset debounce time if there was a press or noise that changed the state
+uint32_t debounceTimeUpdate(uint8_t press, uint8_t debounce, uint32_t lastDebTime) {
+  if (press != debounce) {
+    lastDebTime = millis();
+  }
+  return lastDebTime;
+}
+
+/*If that reading has been there for the set time, it was a press not just noise 
+* (presses last longer), return true if it was a press*/
+bool debounceCheck(uint32_t lastDebTime) {
+  bool wasPress = false;
+  if ((millis() - lastDebTime) > debounceDelay) {
+    return true;
+  }
+  return wasPress;
 }
 
 void checkButtonPress() {
@@ -162,26 +182,17 @@ void checkButtonPress() {
   if (digitalRead(pauseRes) == LOW) {
     updateButtonStatuses(pauseRes, LOW);
   }
+  //Debounce presses
+  lastPressedButtonDebTime = debounceTimeUpdate(pressedButton, pressedButtonDebounce, lastPressedButtonDebTime);
+    //Reset pressed button if there was no press
+    if (lastPinStatus != LOW && !debounceCheck(lastPressedButtonDebTime)) {
+    pressedButton = buttonReset;
+  }
 }
 
 void updateButtonStatuses(uint8_t pin, uint8_t value) {
   pressedButton = pin;
   lastPinStatus = value;
-}
-
-void debounce() {
-  //Wait to see if button was really pressed
-  delay(debounceDelay);
-  //Check if the button is still pressed after waiting, reset to 0 if it was noise
-  if (pressedButton != A6 && pressedButton != A7) {
-    if (digitalRead(pressedButton) != lastPinStatus) {
-      pressedButton = buttonReset;
-    }
-  } else {
-    if (analogRead(pressedButton) > lastPinStatus) {
-      pressedButton = buttonReset;
-    }
-  }
 }
 
 void transmit() {

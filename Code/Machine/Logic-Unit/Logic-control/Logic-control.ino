@@ -653,7 +653,12 @@ void onBoardButtons() {
   lastAutoToggleDebTime = debounceTimeUpdate(autoTogglePress, autoToggleDebounce, lastAutoToggleDebTime);
   //If that reading has been there for the set time, it was a press not just noise
   if (autoTogglePress == HIGH && debounceCheck(lastAutoToggleDebTime)) {
+    currentBuzzAlert = 2;   //Short beep
+    sendLEDsTimerPeriod();  //Send beep
+    currentBuzzAlert = 0;   //Reset beep
     pointsIncAuto = !pointsIncAuto;
+    //Pause to avoid sticky bttons
+    delay(200);
   }
   autoToggleDebounce = autoTogglePress;  //Save last state
   //Reset debounce time if there was a press or noise that changed the state
@@ -661,6 +666,9 @@ void onBoardButtons() {
   //If that reading has been there for the set time, it was a press not just noise
   if (syncPress == HIGH && debounceCheck(lastSyncDebTime)) {
     //Attempt to sync remote
+    currentBuzzAlert = 2;   //Short beep
+    sendLEDsTimerPeriod();  //Send beep
+    currentBuzzAlert = 0;   //Reset beep
     syncRemote();
   }
   syncDebounce = syncPress;  //Save last state
