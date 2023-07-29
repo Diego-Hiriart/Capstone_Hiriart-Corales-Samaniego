@@ -1,0 +1,27 @@
+Cambios realizados
+
+1 Problema
+	- Algunos cambios en redacción para claridad
+	- Se añaden datos de estudios de la importancia de mantener registros de los deportistas
+	- Solución removida
+2 Posibles soluciones
+	- Diagramas de contexto
+	- Selección de parámetros de evaluación justificada
+	- Justificar y explicar parámetros y calificaciones dadas para escoger la solución
+3 Objetivos
+	- Objetivo general ajustado según recomendación
+	- Objetivos específicos revisados, orientados a 4 pasos principales del ciclo de vida de desarrollo
+4 Alcance
+	- Mockups añadidos
+	- Separación por módulos más clara
+	- Limitaciones y restricciones revisadas
+	- Item de "Supuestos" eliminado
+5 Planificación
+	- EDT eliminado
+	- Diagrama de Gantt refleja Scrum
+7.1 Diseño
+	- Se explica más como Kanban complementa a Scrum
+7.3 Pruebas
+	- Restructuración por tipos de pruebas
+	- Se detalla el porque de la necesidad ejecución de cada prueba
+	- Se especifican las herramientas/métodos usados para cada prueba
