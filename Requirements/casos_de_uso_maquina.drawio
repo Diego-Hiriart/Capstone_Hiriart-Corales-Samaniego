@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" modified="2023-07-16T07:02:27.599Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.82" etag="X9nJz0diPkqgoIx7Ja5i" version="21.6.2" type="device">
+<mxfile host="app.diagrams.net" modified="2023-07-30T19:05:24.690Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188" etag="1mdMPhcFxx-N9JqeaA_n" version="21.6.6" type="device">
   <diagram name="Page-1" id="K6UgD4kqSmbPpRhTwACa">
     <mxGraphModel dx="1266" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="auHC2lMCmRA8J_y3KW6C-5" value="Casos de uso máquina" style="swimlane;fillStyle=solid;swimlaneFillColor=default;container=0;" parent="1" vertex="1">
-          <mxGeometry x="140" y="10" width="590" height="591.75" as="geometry">
+          <mxGeometry x="140" y="10" width="590" height="650" as="geometry">
             <mxRectangle x="105" y="130" width="100" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -14,6 +14,22 @@
         </mxCell>
         <mxCell id="v4G_ObGwsf4DBaVxpbZ9-44" value="Asignar prioridad auto/manual" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" parent="auHC2lMCmRA8J_y3KW6C-5" vertex="1">
           <mxGeometry x="340" y="450" width="110" height="43.5" as="geometry" />
+        </mxCell>
+        <mxCell id="OvTQ29FL7ANVGQ18eiGb-9" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="auHC2lMCmRA8J_y3KW6C-5" source="OvTQ29FL7ANVGQ18eiGb-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OvTQ29FL7ANVGQ18eiGb-7" value="Pausar automáticamente" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="auHC2lMCmRA8J_y3KW6C-5">
+          <mxGeometry x="380" y="518" width="110" height="43.5" as="geometry" />
+        </mxCell>
+        <mxCell id="OvTQ29FL7ANVGQ18eiGb-10" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" edge="1" parent="auHC2lMCmRA8J_y3KW6C-5" source="OvTQ29FL7ANVGQ18eiGb-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="OvTQ29FL7ANVGQ18eiGb-8" value="Subir puntaje automáticamente" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" vertex="1" parent="auHC2lMCmRA8J_y3KW6C-5">
+          <mxGeometry x="320" y="590" width="110" height="43.5" as="geometry" />
         </mxCell>
         <mxCell id="auHC2lMCmRA8J_y3KW6C-52" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;jumpStyle=arc;endArrow=none;endFill=0;" parent="1" target="auHC2lMCmRA8J_y3KW6C-15" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -125,6 +141,9 @@
         </mxCell>
         <mxCell id="v4G_ObGwsf4DBaVxpbZ9-36" value="Gestionar tarjetas amarillas/rojas" style="rounded=1;whiteSpace=wrap;html=1;perimeterSpacing=0;arcSize=120;" parent="1" vertex="1">
           <mxGeometry x="540" y="373.5" width="120" height="43.5" as="geometry" />
+        </mxCell>
+        <mxCell id="OvTQ29FL7ANVGQ18eiGb-1" value="&amp;lt;&amp;lt;hardware&amp;gt;&amp;gt;&lt;br&gt;máquina existente" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="770" y="530" width="30" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

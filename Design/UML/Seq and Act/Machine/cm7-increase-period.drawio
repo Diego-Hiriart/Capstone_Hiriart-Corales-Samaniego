@@ -1,0 +1,87 @@
+<mxfile host="app.diagrams.net" modified="2023-07-31T17:27:32.607Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188" etag="yO-dYDpyEQzVNWMGmADI" version="21.6.6" type="device">
+  <diagram id="Gi5_93j05Tq5kSE1P_lF" name="Page-2">
+    <mxGraphModel dx="733" dy="924" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="S5m8VR_HZ--lrlstfprA-1" value="Usuario" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" parent="1" vertex="1">
+          <mxGeometry x="960" y="120" width="195" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-85" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" parent="S5m8VR_HZ--lrlstfprA-1" vertex="1">
+          <mxGeometry x="87.5" y="50" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-63" value="Presionar botón de alternar puntos entre auto/manual" style="rounded=1;whiteSpace=wrap;html=1;" parent="S5m8VR_HZ--lrlstfprA-1" vertex="1">
+          <mxGeometry x="37.5" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="S5m8VR_HZ--lrlstfprA-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="S5m8VR_HZ--lrlstfprA-1" source="18j1XGoCvIrTiXG_NGVG-85" target="18j1XGoCvIrTiXG_NGVG-63" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ePJA7sKkPswgZLmJT1RE-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="18j1XGoCvIrTiXG_NGVG-63" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1195" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-39" value="Máquina de puntaje" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1155" y="120" width="475" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="7F6fqmXWAmK54oai2_qa-39" source="7F6fqmXWAmK54oai2_qa-48" target="wDgB7R5WLJVPPXyU6Aqu-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="102" y="365" />
+              <mxPoint x="102" y="365" />
+              <mxPoint x="102" y="390" />
+              <mxPoint x="102" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z8KY6_KUwVPF0PQ8KZnu-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="7F6fqmXWAmK54oai2_qa-39" source="7F6fqmXWAmK54oai2_qa-48" target="z8KY6_KUwVPF0PQ8KZnu-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="202.53030303030278" y="364.9696969696971" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-48" value="Puntos &lt;br&gt;automáticos?" style="rhombus;whiteSpace=wrap;html=1;" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1">
+          <mxGeometry x="47.5" y="225" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-55" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1">
+          <mxGeometry x="65" y="335" width="40" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="7F6fqmXWAmK54oai2_qa-39" source="7F6fqmXWAmK54oai2_qa-60" target="18j1XGoCvIrTiXG_NGVG-71" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-60" value="Actualizar Display" style="rounded=1;whiteSpace=wrap;html=1;" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1">
+          <mxGeometry x="182.5" y="490" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-58" value="Si" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1">
+          <mxGeometry x="157.5" y="250" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="z8KY6_KUwVPF0PQ8KZnu-5" target="7F6fqmXWAmK54oai2_qa-60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="z8KY6_KUwVPF0PQ8KZnu-5" value="Cambiar a manual" style="rounded=1;whiteSpace=wrap;html=1;" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1">
+          <mxGeometry x="182.5" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-1" target="7F6fqmXWAmK54oai2_qa-48">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-1" value="Detectar botón presionado" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="42.5" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-3" target="7F6fqmXWAmK54oai2_qa-60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-3" value="Cambiar a &lt;br&gt;automático" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="42.5" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-73" value="" style="group" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1" connectable="0">
+          <mxGeometry x="222.5" y="590" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-71" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="18j1XGoCvIrTiXG_NGVG-73" vertex="1">
+          <mxGeometry width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-72" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" parent="18j1XGoCvIrTiXG_NGVG-73" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
