@@ -1,5 +1,7 @@
 Cambios realizados
 
+Redacción: se valida todo el documento con más lectores para encontrar y corregir contenido no claro, se encuentran algunos puntos de corrección. 
+
 1 Problema
 	- Algunos cambios en redacción para claridad
 	- Se añaden datos de estudios de la importancia de mantener registros de los deportistas
@@ -20,8 +22,11 @@ Cambios realizados
 	- EDT eliminado
 	- Diagrama de Gantt refleja Scrum
 7.1 Diseño
-	- Se explica más como Kanban complementa a Scrum
+	- Se añaden diagramas de secuencia y actividades para cada caso de uso, la mayoría se encuentran en anexos por su extensión
+- Se explica más como Kanban complementa a Scrum
+7.2 Desarrollo
+	- Se reestructura la sección para reflejar la aplicación de Scrum
 7.3 Pruebas
 	- Restructuración por tipos de pruebas
-	- Se detalla el porque de la necesidad ejecución de cada prueba
+	- Se detalla la importancia/necesidad de ejecución de cada prueba
 	- Se especifican las herramientas/métodos usados para cada prueba
