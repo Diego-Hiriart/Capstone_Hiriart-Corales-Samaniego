@@ -67,7 +67,7 @@ uint8_t currentlyEditing = 0;  //0 for mins, 1 for s, 2 for tenths, 3 for hundre
 * 2: one beep
 * 3: two beeps
 * 4: three beeps
-* 5: six bepes*/
+* 5: six beeps*/
 
 //Message delimiters
 const String messageStartDelimiter = "s";
