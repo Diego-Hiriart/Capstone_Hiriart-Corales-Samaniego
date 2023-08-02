@@ -1,0 +1,108 @@
+<mxfile host="app.diagrams.net" modified="2023-07-31T17:44:17.834Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.188" etag="eOcG5HcMoASg-ApoyfI0" version="21.6.6" type="device">
+  <diagram id="Gi5_93j05Tq5kSE1P_lF" name="Page-2">
+    <mxGraphModel dx="-217" dy="370" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="S5m8VR_HZ--lrlstfprA-1" value="Usuario" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" parent="1" vertex="1">
+          <mxGeometry x="960" y="120" width="195" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-85" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" parent="S5m8VR_HZ--lrlstfprA-1" vertex="1">
+          <mxGeometry x="87.5" y="50" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-63" value="Presionar botón para sincronizar nuevo control" style="rounded=1;whiteSpace=wrap;html=1;" parent="S5m8VR_HZ--lrlstfprA-1" vertex="1">
+          <mxGeometry x="37.5" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="S5m8VR_HZ--lrlstfprA-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="S5m8VR_HZ--lrlstfprA-1" source="18j1XGoCvIrTiXG_NGVG-85" target="18j1XGoCvIrTiXG_NGVG-63" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-8" value="Presionar botón de sincronización en control remoto" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="S5m8VR_HZ--lrlstfprA-1">
+          <mxGeometry x="37.5" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ePJA7sKkPswgZLmJT1RE-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="18j1XGoCvIrTiXG_NGVG-63" target="wDgB7R5WLJVPPXyU6Aqu-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1195" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7F6fqmXWAmK54oai2_qa-39" value="Máquina de puntaje" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1315" y="120" width="385" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-1" target="wDgB7R5WLJVPPXyU6Aqu-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-1" value="Detectar botón presionado" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="42.5" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-73" value="" style="group" parent="7F6fqmXWAmK54oai2_qa-39" vertex="1" connectable="0">
+          <mxGeometry x="222.5" y="590" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-71" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="18j1XGoCvIrTiXG_NGVG-73" vertex="1">
+          <mxGeometry width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="18j1XGoCvIrTiXG_NGVG-72" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" parent="18j1XGoCvIrTiXG_NGVG-73" vertex="1">
+          <mxGeometry x="10" y="10" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-6" value="Indicar inicio de tiempo para sincronización (alerta sonora)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="42.5" y="240" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-12" target="wDgB7R5WLJVPPXyU6Aqu-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="275" y="409.9999999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-16" value="Sí" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="wDgB7R5WLJVPPXyU6Aqu-14">
+          <mxGeometry x="-0.1616" y="-1" relative="1" as="geometry">
+            <mxPoint x="-18" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-12" target="wDgB7R5WLJVPPXyU6Aqu-20">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-22" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="wDgB7R5WLJVPPXyU6Aqu-21">
+          <mxGeometry x="-0.2939" y="-1" relative="1" as="geometry">
+            <mxPoint x="-9" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-12" value="Es comando de sincronizar?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="48.75" y="340" width="107.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-15" target="wDgB7R5WLJVPPXyU6Aqu-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-15" value="Registrar nuevo identificador de control remoto" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="245" y="365" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-17" target="18j1XGoCvIrTiXG_NGVG-71">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-17" value="Emitir alerta sonora de éxito" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="245" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="7F6fqmXWAmK54oai2_qa-39" source="wDgB7R5WLJVPPXyU6Aqu-20" target="18j1XGoCvIrTiXG_NGVG-71">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-20" value="Emitir alerta sonora de error" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="7F6fqmXWAmK54oai2_qa-39">
+          <mxGeometry x="42.5" y="490" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="wDgB7R5WLJVPPXyU6Aqu-6" target="wDgB7R5WLJVPPXyU6Aqu-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-24" value="Control remoto" style="swimlane;whiteSpace=wrap;html=1;startSize=23;" vertex="1" parent="1">
+          <mxGeometry x="1155" y="120" width="160" height="640" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wDgB7R5WLJVPPXyU6Aqu-8" target="wDgB7R5WLJVPPXyU6Aqu-28">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1058" y="420" as="sourcePoint" />
+            <mxPoint x="1364" y="515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="wDgB7R5WLJVPPXyU6Aqu-28" target="wDgB7R5WLJVPPXyU6Aqu-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wDgB7R5WLJVPPXyU6Aqu-28" value="Enviar comando de sincronización" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="485" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
