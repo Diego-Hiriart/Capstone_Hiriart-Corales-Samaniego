@@ -1,0 +1,9 @@
+Cambios realizados en segunda revisión
+
+Redacción: se valida todo el documento con más lectores para encontrar y corregir contenido no claro, se encuentran algunos puntos de corrección. 
+
+General
+	- Se hacen referencias (que también son hipervínculos) y explican los diagramas, tablas, imágenes, mockups, capturas, y figuras en todo el documento.
+
+2 Posibles soluciones
+	- Se indica de donde se obtuvieron los criterios de evaluación (ISO 25010 y datos de Microsoft)

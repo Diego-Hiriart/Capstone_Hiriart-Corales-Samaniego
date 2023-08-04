@@ -1,0 +1,32 @@
+Cambios realizados
+
+Redacción: se valida todo el documento con más lectores para encontrar y corregir contenido no claro, se encuentran algunos puntos de corrección. 
+
+1 Problema
+	- Algunos cambios en redacción para claridad
+	- Se añaden datos de estudios de la importancia de mantener registros de los deportistas
+	- Solución removida
+2 Posibles soluciones
+	- Diagramas de contexto
+	- Selección de parámetros de evaluación justificada
+	- Justificar y explicar parámetros y calificaciones dadas para escoger la solución
+3 Objetivos
+	- Objetivo general ajustado según recomendación
+	- Objetivos específicos revisados, orientados a 4 pasos principales del ciclo de vida de desarrollo
+4 Alcance
+	- Mockups añadidos
+	- Separación por módulos más clara
+	- Limitaciones y restricciones revisadas
+	- Item de "Supuestos" eliminado
+5 Planificación
+	- EDT eliminado
+	- Diagrama de Gantt refleja Scrum
+7.1 Diseño
+	- Se añaden diagramas de secuencia y actividades para cada caso de uso, la mayoría se encuentran en anexos por su extensión
+- Se explica más como Kanban complementa a Scrum
+7.2 Desarrollo
+	- Se reestructura la sección para reflejar la aplicación de Scrum
+7.3 Pruebas
+	- Restructuración por tipos de pruebas
+	- Se detalla la importancia/necesidad de ejecución de cada prueba
+	- Se especifican las herramientas/métodos usados para cada prueba
